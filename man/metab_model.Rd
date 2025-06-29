@@ -9,7 +9,8 @@ metab_model(
   info = "user metadata goes here",
   metab_daily = NULL,
   fit = "generic metab_model class; no actual fit",
-  fitting_time = system.time({ }),
+  fitting_time = system.time({
+ }),
   specs = list(),
   data = mm_data(solar.time, DO.obs, DO.sat, depth, temp.water, light),
   data_daily = mm_data(date, optional = "all"),

@@ -109,22 +109,22 @@ parameters describing the rates and/or shapes of GPP, ER, or reaeration.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{metab_Kmodel}: Make daily re-predictions of K600.daily based on the
+\item \code{get_params(metab_Kmodel)}: Make daily re-predictions of K600.daily based on the
 across-days model of K600.daily versus predictors. Only returns estimates
 for K600.daily, not any of the other daily parameters
 
-\item \code{metab_bayes}: Does a little formatting to convert from Stan output
+\item \code{get_params(metab_bayes)}: Does a little formatting to convert from Stan output
 to streamMetabolizer parameter names; otherwise the same as
 \code{get_params.metab_model}
 
-\item \code{metab_model}: This implementation is shared by many model types
+\item \code{get_params(metab_model)}: This implementation is shared by many model types
 
-\item \code{metab_sim}: Generates new simulated values for daily parameters if
+\item \code{get_params(metab_sim)}: Generates new simulated values for daily parameters if
 they were described with evaluatable expressions in \code{\link{specs}}, or
 returns the fixed values for daily parameters if they were set in
 \code{data_daily}
-}}
 
+}}
 \examples{
 dat <- data_metab('3', day_start=12, day_end=36)
 mm <- metab_night(specs(mm_name('night')), data=dat)
@@ -135,10 +135,10 @@ get_params(mm, date_start=get_fit(mm)$date[2])
 \code{\link{predict_metab}} for daily average rates of GPP and ER
 
 Other metab_model_interface: 
-\code{\link{get_data_daily}()},
 \code{\link{get_data}()},
-\code{\link{get_fitting_time}()},
+\code{\link{get_data_daily}()},
 \code{\link{get_fit}()},
+\code{\link{get_fitting_time}()},
 \code{\link{get_info}()},
 \code{\link{get_param_names}()},
 \code{\link{get_specs}()},

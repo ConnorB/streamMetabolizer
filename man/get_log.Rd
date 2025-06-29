@@ -3,7 +3,7 @@
 \name{get_log}
 \alias{get_log}
 \alias{get_log.metab_bayes}
-\title{Return the log file[s] from a model run}
+\title{Return the log file(s) from a model run}
 \usage{
 get_log(metab_model)
 
@@ -14,15 +14,15 @@ get_log(metab_model)
 return the log file, if available}
 }
 \value{
-The MCMC log file[s] lines
+The MCMC log file(s) lines
 }
 \description{
 If a log file was created during a model run, this function can retrieve it.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{metab_bayes}: If a log file was created during the Bayesian MCMC run,
+\item \code{get_log(metab_bayes)}: If a log file was created during the Bayesian MCMC run,
 metab_bayes() attempted to capture it. Retrieve what was captured with this
 function.
-}}
 
+}}

@@ -11,10 +11,10 @@ get_mcmc(metab_model)
 }
 \arguments{
 \item{metab_model}{A Bayesian metabolism model (metab_bayes) from which to
-return the MCMC model object\link{s}}
+return the MCMC model object(s)}
 }
 \value{
-The MCMC model object\link{s}
+The MCMC model object(s)
 }
 \description{
 A function specific to metab_bayes models. Returns an MCMC object of class
@@ -28,6 +28,6 @@ for \link[rstan:stanfit-class]{rstan::stanfit} objects include \code{summary()},
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{metab_bayes}: Get the Bayesian MCMC model object
-}}
+\item \code{get_mcmc(metab_bayes)}: Get the Bayesian MCMC model object
 
+}}

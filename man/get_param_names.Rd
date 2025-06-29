@@ -29,12 +29,12 @@ optional daily metabolism parameters for the model.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{character}: This implementation is shared by many model types
+\item \code{get_param_names(character)}: This implementation is shared by many model types
 
-\item \code{metab_model}: Lets you pass in a model object rather than a
+\item \code{get_param_names(metab_model)}: Lets you pass in a model object rather than a
 character string
-}}
 
+}}
 \examples{
 
 # pass in a character string:
@@ -52,10 +52,10 @@ get_param_names(metab(specs('sim'), data=dat))
 }
 \seealso{
 Other metab_model_interface: 
-\code{\link{get_data_daily}()},
 \code{\link{get_data}()},
-\code{\link{get_fitting_time}()},
+\code{\link{get_data_daily}()},
 \code{\link{get_fit}()},
+\code{\link{get_fitting_time}()},
 \code{\link{get_info}()},
 \code{\link{get_params}()},
 \code{\link{get_specs}()},

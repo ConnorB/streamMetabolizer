@@ -162,7 +162,7 @@ metab_bayes <- function(
         bayes_1ply, data=data, data_daily=data_daily, # for mm_model_by_ply
         day_start=specs$day_start, day_end=specs$day_end, day_tests=specs$day_tests, required_timestep=specs$required_timestep, # for mm_model_by_ply
         specs=specs) # for bayes_1ply
-      # if we saved the modeling object[s] in the df, pull them out now
+      # if we saved the modeling object(s) in the df, pull them out now
       extract_object_list <- function(col) {
         # has side effects on bayes_daily!
         if(col %in% names(bayes_daily)) {
@@ -195,7 +195,7 @@ metab_bayes <- function(
       bayes_all_list <- bayes_allply(
         data_all=filtered$data, data_daily_all=filtered$data_daily, removed=filtered$removed,
         specs=specs)
-      # if we saved the modeling object[s] in the list, pull them out now
+      # if we saved the modeling object(s) in the list, pull them out now
       . <- '.dplyr.var'
       bayes_log <- bayes_all_list[c('compile_log', 'log')] %>%
         setNames(c('Compilation','MCMC_All_Days')) %>% { .[!sapply(., is.null)] }
@@ -892,8 +892,8 @@ setClass(
 #'
 #' @md
 #' @param metab_model A Bayesian metabolism model (metab_bayes) from which to
-#'   return the MCMC model object[s]
-#' @return The MCMC model object[s]
+#'   return the MCMC model object(s)
+#' @return The MCMC model object(s)
 #' @export
 get_mcmc <- function(metab_model) {
   UseMethod("get_mcmc")
@@ -905,7 +905,7 @@ get_mcmc.metab_bayes <- function(metab_model) {
   metab_model@mcmc
 }
 
-#' Extract any MCMC data list[s] that were stored with the model
+#' Extract any MCMC data list(s) that were stored with the model
 #'
 #' A function specific to metab_bayes models. Returns data as formatted to run
 #' through the MCMC process or, for nopool models, a list of data lists. These
@@ -920,20 +920,20 @@ get_mcmc_data <- function(metab_model) {
   UseMethod("get_mcmc_data")
 }
 
-#' @describeIn get_mcmc_data Retrieve any MCMC data list[s] that were saved with
+#' @describeIn get_mcmc_data Retrieve any MCMC data list(s) that were saved with
 #'   a metab_bayes model
 #' @export
 get_mcmc_data.metab_bayes <- function(metab_model) {
   metab_model@mcmc_data
 }
 
-#' Return the log file[s] from a model run
+#' Return the log file(s) from a model run
 #'
 #' If a log file was created during a model run, this function can retrieve it.
 #'
 #' @param metab_model A Bayesian metabolism model (metab_bayes) from which to
 #'   return the log file, if available
-#' @return The MCMC log file[s] lines
+#' @return The MCMC log file(s) lines
 #' @export
 get_log <- function(metab_model) {
   UseMethod("get_log")
@@ -951,7 +951,7 @@ get_log.metab_bayes <- function(metab_model) {
     } )
     class(out) <- c('logs_metab', class(out))
   } else {
-    message('no log file[s] found')
+    message('no log file(s) found')
   }
   out
 }

@@ -91,16 +91,16 @@ GPP, ER, and K600.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{metab_bayes}: Pulls daily metabolism estimates out of the Stan
+\item \code{predict_metab(metab_bayes)}: Pulls daily metabolism estimates out of the Stan
 model results; looks for \code{GPP} or \code{GPP_daily} and for \code{ER}
 or \code{ER_daily} among the \code{params_out} (see \code{\link{specs}}),
 which means you can save just one (or both) of those sets of daily
 parameters when running the Stan model. Saving fewer parameters can help
 models run faster and use less RAM.
 
-\item \code{metab_model}: This implementation is shared by many model types
-}}
+\item \code{predict_metab(metab_model)}: This implementation is shared by many model types
 
+}}
 \examples{
 dat <- data_metab('3', day_start=12, day_end=36)
 mm <- metab_night(specs(mm_name('night')), data=dat)
@@ -109,10 +109,10 @@ predict_metab(mm, date_start=get_fit(mm)$date[2])
 }
 \seealso{
 Other metab_model_interface: 
-\code{\link{get_data_daily}()},
 \code{\link{get_data}()},
-\code{\link{get_fitting_time}()},
+\code{\link{get_data_daily}()},
 \code{\link{get_fit}()},
+\code{\link{get_fitting_time}()},
 \code{\link{get_info}()},
 \code{\link{get_param_names}()},
 \code{\link{get_params}()},

@@ -64,22 +64,22 @@ oxygen.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{metab_Kmodel}: Throws an error because models of type 'Kmodel' can't
+\item \code{predict_DO(metab_Kmodel)}: Throws an error because models of type 'Kmodel' can't
 predict DO. \code{metab_Kmodel} predicts K at daily timesteps and usually
 knows nothing about GPP or ER. So it's not possible to predict DO from this
 model. Try passing the output to metab_mle and THEN predicting DO.
 
-\item \code{metab_model}: This implementation is shared by many model types
+\item \code{predict_DO(metab_model)}: This implementation is shared by many model types
 
-\item \code{metab_night}: Generate nighttime dissolved oxygen predictions from a
+\item \code{predict_DO(metab_night)}: Generate nighttime dissolved oxygen predictions from a
 nighttime regression model. \code{metab_night} only fits ER and K, and only
 for the darkness hours, so predictions are only generated for those hours.
 
-\item \code{metab_sim}: Simulate values for DO.obs (with process and
+\item \code{predict_DO(metab_sim)}: Simulate values for DO.obs (with process and
 observation error), DO.mod (with process error only), and DO.pure (with no
 error). The errors are randomly generated on every new call to predict_DO.
-}}
 
+}}
 \examples{
 dat <- data_metab('3', day_start=12, day_end=36)
 mm <- metab_night(specs(mm_name('night')), data=dat)
@@ -88,10 +88,10 @@ head(preds)
 }
 \seealso{
 Other metab_model_interface: 
-\code{\link{get_data_daily}()},
 \code{\link{get_data}()},
-\code{\link{get_fitting_time}()},
+\code{\link{get_data_daily}()},
 \code{\link{get_fit}()},
+\code{\link{get_fitting_time}()},
 \code{\link{get_info}()},
 \code{\link{get_param_names}()},
 \code{\link{get_params}()},

@@ -89,7 +89,6 @@
 #'
 #'   }
 #'
-#' @docType package
-#' @name streamMetabolizer
-#' @aliases streamMetabolizer-package
-NULL
+#' @keywords internal
+"_PACKAGE"
+

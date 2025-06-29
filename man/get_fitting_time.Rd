@@ -22,13 +22,13 @@ fit the model; see \code{\link{proc.time}} for details.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{metab_model}: This implementation is shared by many model types
-}}
+\item \code{get_fitting_time(metab_model)}: This implementation is shared by many model types
 
+}}
 \seealso{
 Other metab_model_interface: 
-\code{\link{get_data_daily}()},
 \code{\link{get_data}()},
+\code{\link{get_data_daily}()},
 \code{\link{get_fit}()},
 \code{\link{get_info}()},
 \code{\link{get_param_names}()},

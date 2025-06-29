@@ -7,8 +7,7 @@
 data_metab(
   num_days = c("1", "3", "10"),
   res = c("5", "10", "15", "30"),
-  flaws = c("missing middle", "missing start", "missing end", "missorted",
-    "duplicated"),
+  flaws = c("missing middle", "missing start", "missing end", "missorted", "duplicated"),
   day_start = 4,
   day_end = 28,
   attach.units = deprecated()

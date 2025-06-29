@@ -3,7 +3,7 @@
 \name{get_mcmc_data}
 \alias{get_mcmc_data}
 \alias{get_mcmc_data.metab_bayes}
-\title{Extract any MCMC data list[s] that were stored with the model}
+\title{Extract any MCMC data list(s) that were stored with the model}
 \usage{
 get_mcmc_data(metab_model)
 
@@ -24,7 +24,7 @@ lists are not saved by default; see \code{keep_mcmc_data} argument to
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{metab_bayes}: Retrieve any MCMC data list[s] that were saved with
+\item \code{get_mcmc_data(metab_bayes)}: Retrieve any MCMC data list(s) that were saved with
 a metab_bayes model
-}}
 
+}}
