@@ -2,21 +2,20 @@
 #' @importFrom utils available.packages contrib.url
 #' @keywords internal
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage(paste(c(
-    strwrap(paste(
-      "streamMetabolizer is a USGS Archive Research Package:",
-      "https://owi.usgs.gov/R/packages.html#research")),
-    '',
-    strwrap(paste(
-      "Project funding has ended and our maintenance time is limited,",
-      "but we do attempt to provide bug fixes and lightweight support as we are able.",
-      "Submit questions or suggestions to https://github.com/USGS-R/streamMetabolizer/issues.")),
-    '',
-    c("In summer or fall 2023, this package will move from",
-      "https://github.com/USGS-R/streamMetabolizer to",
-      "https://github.com/DOI-USGS/streamMetabolizer.",
-      "Please update your links accordingly.")),
-    collapse='\n'))
+  packageStartupMessage(
+    "streamMetabolizer (fork) - based on the original USGS-R package:\n",
+    "  https://github.com/DOI-USGS/streamMetabolizer\n",
+    "This fork is maintained at:\n",
+    "  https://github.com/ConnorB/streamMetabolizer\n\n",
+    "The original package was a USGS Archive Research Package:\n",
+    "  https://owi.usgs.gov/R/packages.html#research\n",
+    "Original project funding has ended. For historical documentation,\n",
+    "see:\n",
+    "  https://github.com/DOI-USGS/streamMetabolizer\n\n",
+    "For issues specific to this fork, please open them at:\n",
+    "  https://github.com/ConnorB/streamMetabolizer/issues"
+  )
+  
   
   # Load deSolve because otherwise after a few model runs we're likely to get
   # the following error. (It's possible this has been resolved by moving deSolve

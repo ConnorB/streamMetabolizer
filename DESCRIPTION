@@ -1,17 +1,15 @@
 Package: streamMetabolizer
 Type: Package
 Title: Models for Estimating Aquatic Photosynthesis and Respiration
-Version: 0.12.1
-Date: 2023-07-02
-Author: Alison P. Appling, Robert O. Hall, Jr., Maite Arroita, and Charles B.
-    Yackulic
+Version: 0.12.1.9000
+Date: 2025-06-29
 Authors@R: c(
-    person("Alison P.", "Appling", , "aappling@usgs.gov", c("aut", "cre")),
-    person("Robert O.", "Hall", , , "aut"),
-    person("Maite", "Arroita", , , "aut"),
-    person("Charles B.", "Yackulic", , , "aut")
-    )
-Maintainer: Alison Appling <aappling@usgs.gov>
+    person("Alison P.", "Appling", , "aappling@usgs.gov", role = c("aut")),
+    person("Robert O.", "Hall", role = "aut"),
+    person("Maite", "Arroita", role = "aut"),
+    person("Charles B.", "Yackulic", role = "aut"),
+    person("Connor L.", "Brown", , "connor.brown@ku.edu", role = c("cre", "ctb"))
+  )
 Description: streamMetabolizer uses inverse modeling to estimate aquatic
     photosynthesis and respiration (collectively, metabolism) from time series
     data on dissolved oxygen, water temperature, depth, and light. The package
@@ -19,14 +17,18 @@ Description: streamMetabolizer uses inverse modeling to estimate aquatic
     provides tabular and graphical reports of model outputs. Several
     time-honored methods are implemented along with many promising new variants
     that produce more accurate and precise metabolism estimates.
+    This package is a fork of the original USGS-R
+    streamMetabolizer package. It includes enhancements and bug fixes beyond the
+    original version. The original package can be found at
+    https://github.com/DOI-USGS/streamMetabolizer.
 License: file LICENSE
 Copyright: This software is in the public domain because it contains materials
     that originally came from the United States Geological Survey, an agency of
     the United States Department of Interior. For more information, see the
     official USGS copyright policy at
     https://www.usgs.gov/visual-id/credit_usgs.html#copyright
-URL: https://github.com/USGS-R/streamMetabolizer, http://usgs-r.github.io/streamMetabolizer/
-BugReports: https://github.com/USGS-R/streamMetabolizer/issues
+URL: https://github.com/ConnorB/streamMetabolizer
+BugReports: https://github.com/ConnorB/streamMetabolizer/issues
 VignetteBuilder: knitr
 Depends:
     R (>= 3.0)
