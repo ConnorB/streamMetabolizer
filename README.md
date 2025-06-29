@@ -1,11 +1,10 @@
+# streamMetabolizer: Models for Estimating Aquatic Photosynthesis and Respiration
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![USGS Status](https://img.shields.io/badge/USGS-Research-blue.svg)](https://owi.usgs.gov/R/packages.html#research)
 <!-- badges: end -->
-# streamMetabolizer: Models for Estimating Aquatic Photosynthesis and Respiration
 
 This is a fork of the original [`streamMetabolizer`](https://github.com/DOI-USGS/streamMetabolizer)
-
-The original package was developed by USGS and archived as a [USGS Research R Package](https://owi.usgs.gov/R/packages.html#research). This fork continues development and support for use cases not covered by the original project.
 
 The `streamMetabolizer` R package uses inverse modeling to estimate aquatic
 photosynthesis and respiration (collectively, metabolism) from time series
@@ -24,7 +23,7 @@ streams across the U.S. is described in [Appling et al. 2018b](https://doi.org/1
 > Appling, A. P., Read, J. S., Winslow, L. A., Arroita, M., Bernhardt, E. S., Griffiths, N. A., Hall, R. O., Harvey, J. W., Heffernan, J. B., Stanley, E. H., Stets, E. G., & Yackulic, C. B. (2018b). The metabolic regimes of 356 rivers in the United States. Scientific Data, 5(1), 180292. https://doi.org/10.1038/sdata.2018.292
 
 To see the recommended citation for this package, please run `citation('streamMetabolizer')` at the R prompt.
-```{r eval=TRUE}
+``` r
 citation('streamMetabolizer')
 ```
 
@@ -34,12 +33,12 @@ To install the `streamMetabolizer` package, use the `remotes` package (running `
 replacing yyyy with the PAT you established on the GitHub website.
 
 You may first need to install the `unitted` dependency:
-```{r, eval=FALSE}
+``` r
 remotes::install_github('appling/unitted')
 ```
 
 You can then install the most cutting edge version of `streamMetabolizer` with this command:
-```{r, eval=FALSE}
+``` r
 remotes::install_github("ConnorB/streamMetabolizer", 
                         build_vignettes = TRUE)
 ```
@@ -52,7 +51,7 @@ The major dependency for Bayesian models is the `rstan` package, and installatio
 ## Getting started
 
 After installing and loading `streamMetabolizer`, run `vignette()` in R to see tutorials on getting started and customizing your metabolism models.
-```{r eval=FALSE}
+``` r 
 vignette(package='streamMetabolizer')
 ## displays a list of available vignettes
 

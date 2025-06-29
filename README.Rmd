@@ -7,10 +7,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-<!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-<!-- badges: end -->
-
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -20,10 +16,12 @@ knitr::opts_chunk$set(
 ```
 
 # streamMetabolizer: Models for Estimating Aquatic Photosynthesis and Respiration
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![USGS Status](https://img.shields.io/badge/USGS-Research-blue.svg)](https://owi.usgs.gov/R/packages.html#research)
+<!-- badges: end -->
 
 This is a fork of the original [`streamMetabolizer`](https://github.com/DOI-USGS/streamMetabolizer)
-
-The original package was developed by USGS and archived as a [USGS Research R Package](https://owi.usgs.gov/R/packages.html#research). This fork continues development and support for use cases not covered by the original project.
 
 The `streamMetabolizer` R package uses inverse modeling to estimate aquatic
 photosynthesis and respiration (collectively, metabolism) from time series
