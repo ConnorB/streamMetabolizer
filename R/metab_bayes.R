@@ -716,7 +716,7 @@ runstan_bayes <- function(
   } else {
     stan_draws <- runstan_out$draws()
     vars <- dimnames(stan_draws)[[3]]
-    summarise_vec <- function(x) c(mean=mean(x), sd=sd(x), `2.5%`=quantile(x,0.025), `50%`=quantile(x,0.5), `97.5%`=quantile(x,0.975))
+    summarise_vec <- function(x) c(mean=mean(x), sd=sd(x), `2.5%`= stats::quantile(x,0.025), `50%` = stats::quantile(x,0.5), `97.5%` = stats::quantile(x,0.975))
     stan_mat <- t(sapply(vars, function(v) summarise_vec(as.vector(stan_draws[,,v]))))
     colnames(stan_mat) <- c('mean','sd','2.5%','50%','97.5%')
   }
