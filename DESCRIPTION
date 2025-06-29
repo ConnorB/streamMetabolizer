@@ -54,6 +54,7 @@ Suggests:
     microbenchmark,
     RCurl,
     rstan,
+    cmdstanr,
     testthat,
     XML,
     xts,

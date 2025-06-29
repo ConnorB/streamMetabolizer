@@ -434,6 +434,7 @@ specs <- function(
   burnin_steps = 500,
   saved_steps = 500,
   thin_steps = 1,
+  stan_engine = c('rstan','cmdstanr'),
   verbose = FALSE,
   
   
@@ -572,8 +573,8 @@ specs <- function(
         all_specs$params_in, 'params_in',
         
         # inheritParams runstan_bayes
-        'params_out', 'n_chains', 'n_cores', 
-        'burnin_steps', 'saved_steps', 'thin_steps', 'verbose'
+        'params_out', 'n_chains', 'n_cores',
+        'burnin_steps', 'saved_steps', 'thin_steps', 'stan_engine', 'verbose'
       )
       
       # compute some arguments
