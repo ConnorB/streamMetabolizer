@@ -62,6 +62,7 @@ specs(
   burnin_steps = 500,
   saved_steps = 500,
   thin_steps = 1,
+  stan_engine = "rstan",
   verbose = FALSE,
   weights = c("K600/CI"),
   filters = c(CI.max = NA, discharge.daily.max = NA, velocity.daily.max = NA),
@@ -153,7 +154,7 @@ of this test will be combined with the results of the tests listed in
 \code{day_tests} and reported to \code{model_fun} as the
 \code{ply_validity} argument to that function.}
 
-\item{init.GPP.daily}{the inital value of daily mean GPP (gO2 d^-1 m^-2) to
+\item{init.GPP.daily}{the initial value of daily mean GPP (gO2 d^-1 m^-2) to
 use in the NLM fitting process. See the MLE Initial Values section under
 Details.}
 
@@ -162,12 +163,12 @@ versus light relationship in the NLM fitting process. Pmax is the maximum
 GPP value of the GPP-light curve. See the MLE Initial Values section under
 Details.}
 
-\item{init.alpha}{the inital value of alpha (gO2 s d^-1 umol^-1, i.e., units
+\item{init.alpha}{the initial value of alpha (gO2 s d^-1 umol^-1, i.e., units
 of GPP/light) to use in the GPP versus light relationship in the NLM
 fitting process. alpha is the initial slope of the GPP-light curve. See the
 MLE Initial Values section under Details.}
 
-\item{init.ER.daily}{the inital value of daily mean ER (gO2 d^-1 m^-2) to use
+\item{init.ER.daily}{the initial value of daily mean ER (gO2 d^-1 m^-2) to use
 in the NLM fitting process. See the MLE Initial Values section under
 Details.}
 
@@ -176,7 +177,7 @@ versus temperature relationship in the NLM fitting process. ER20 is the
 respiration rate at 20 degrees C. See the MLE Initial Values section under
 Details.}
 
-\item{init.K600.daily}{the inital value of daily mean K600 (d^-1) to use in
+\item{init.K600.daily}{the initial value of daily mean K600 (d^-1) to use in
 the NLM fitting process. Ignored if K600 is supplied in data_daily, except
 for those dates where K600 is NA. If there are any such dates, K600_init
 must have a numeric (non-NA) value, as this will be used to estimate K600
@@ -357,6 +358,10 @@ starting to collect MCMC 'data'}
 
 \item{thin_steps}{the number of steps to move before saving another step. 1
 means save all steps.}
+
+\item{stan_engine}{Character string specifying which Stan R interface to use.
+Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
+behavior of the streamMetabolizer package.}
 
 \item{verbose}{logical. give status messages?}
 

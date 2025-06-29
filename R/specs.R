@@ -96,25 +96,25 @@
 #' @inheritParams mm_model_by_ply
 #' @inheritParams mm_is_valid_day
 #'
-#' @param init.GPP.daily the inital value of daily mean GPP (gO2 d^-1 m^-2) to
+#' @param init.GPP.daily the initial value of daily mean GPP (gO2 d^-1 m^-2) to
 #'   use in the NLM fitting process. See the MLE Initial Values section under
 #'   Details.
 #' @param init.Pmax the initial value of Pmax (gO2 d^-1 m^-2) to use in the GPP
 #'   versus light relationship in the NLM fitting process. Pmax is the maximum
 #'   GPP value of the GPP-light curve. See the MLE Initial Values section under
 #'   Details.
-#' @param init.alpha the inital value of alpha (gO2 s d^-1 umol^-1, i.e., units
+#' @param init.alpha the initial value of alpha (gO2 s d^-1 umol^-1, i.e., units
 #'   of GPP/light) to use in the GPP versus light relationship in the NLM
 #'   fitting process. alpha is the initial slope of the GPP-light curve. See the
 #'   MLE Initial Values section under Details.
-#' @param init.ER.daily the inital value of daily mean ER (gO2 d^-1 m^-2) to use
+#' @param init.ER.daily the initial value of daily mean ER (gO2 d^-1 m^-2) to use
 #'   in the NLM fitting process. See the MLE Initial Values section under
 #'   Details.
 #' @param init.ER20 the initial value of ER20 (gO2 d^-1 m^-2) to use in the ER
 #'   versus temperature relationship in the NLM fitting process. ER20 is the
 #'   respiration rate at 20 degrees C. See the MLE Initial Values section under
 #'   Details.
-#' @param init.K600.daily the inital value of daily mean K600 (d^-1) to use in
+#' @param init.K600.daily the initial value of daily mean K600 (d^-1) to use in
 #'   the NLM fitting process. Ignored if K600 is supplied in data_daily, except
 #'   for those dates where K600 is NA. If there are any such dates, K600_init
 #'   must have a numeric (non-NA) value, as this will be used to estimate K600
@@ -434,6 +434,7 @@ specs <- function(
   burnin_steps = 500,
   saved_steps = 500,
   thin_steps = 1,
+  stan_engine = "rstan",
   verbose = FALSE,
   
   
@@ -572,8 +573,8 @@ specs <- function(
         all_specs$params_in, 'params_in',
         
         # inheritParams runstan_bayes
-        'params_out', 'n_chains', 'n_cores', 
-        'burnin_steps', 'saved_steps', 'thin_steps', 'verbose'
+        'params_out', 'n_chains', 'n_cores',
+        'burnin_steps', 'saved_steps', 'thin_steps', 'stan_engine', 'verbose'
       )
       
       # compute some arguments

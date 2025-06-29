@@ -149,7 +149,7 @@ plot_DO_preds(mm)
 ```
 
 For Bayesian models only, you can dig even deeper using `get_mcmc`, which
-returns a `stanfit` object that can be inspected using the `rstan` package.
+returns a Stan model object that can be inspected using the `rstan` or `cmdstanr` packages.
 (These traceplots are pretty bad because we used so few MCMC iterations. You
 should strive for better in your final models.)
 ```{r, fig.width=5, fig.height=5}

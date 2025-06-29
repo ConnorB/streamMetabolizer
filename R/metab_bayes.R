@@ -611,6 +611,9 @@ prepdata_bayes <- function(
 #' @param saved_steps the number of MCMC steps per chain to save
 #' @param thin_steps the number of steps to move before saving another step. 1
 #'   means save all steps.
+#' @param stan_engine Character string specifying which Stan R interface to use.
+#'   Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
+#'   behavior of the streamMetabolizer package.
 #' @param verbose logical. give status messages?
 #' @param ... ignored arguments
 #' @import parallel
@@ -621,104 +624,118 @@ prepdata_bayes <- function(
 runstan_bayes <- function(
   data_list, model_path, model_name, params_out, split_dates, keep_mcmc=FALSE,
   n_chains=4, n_cores=4, burnin_steps=1000, saved_steps=1000, thin_steps=1,
-  verbose=FALSE, ...) {
+  stan_engine=c('rstan','cmdstanr'), verbose=FALSE, ...) {
 
   # determine how many cores to use
   tot_cores <- detectCores()
   if (!is.finite(tot_cores)) { tot_cores <- 1 }
   n_cores <- min(tot_cores, n_cores)
-  if(verbose) message(paste0("MCMC (","Stan","): requesting ",n_chains," chains on ",n_cores," of ",tot_cores," available cores"))
+  stan_engine <- match.arg(stan_engine)
+  if(verbose) message(paste0("MCMC (",stan_engine,"): requesting ",n_chains," chains on ",n_cores," of ",tot_cores," available cores"))
 
-  # stan() can't find its own function cpp_object_initializer() unless the
-  # namespace is loaded. requireNamespace is somehow not doing this. Thoughts
-  # (not solution):
-  # https://stat.ethz.ch/pipermail/r-devel/2014-September/069803.html
-  if(!suppressPackageStartupMessages(require(rstan))) {
-    stop("the rstan package is required for Stan MCMC models")
-  }
-
-  # use auto_write=TRUE to recompile if needed, or load from existing .rds file
-  # without recompiling if possible
-  compile_time <- system.time({})
-  mobj_path <- gsub('.stan$', '.stanrds', model_path)
-  if(!file.exists(mobj_path) || file.info(mobj_path)$mtime < file.info(model_path)$mtime) {
-    if(verbose) message("compiling Stan model")
-    compile_time <- system.time({
-      compile_log <- capture.output({
-        stan_mobj <- rstan::stan_model(file=model_path, auto_write=TRUE)
-      }, type=c('output'), split=verbose)
-    })
-    rm(stan_mobj)
-    gc() # this humble line saves us from many horrible R crashes
-    autowrite_path <- gsub('.stan$', '.rds', model_path)
-    if(!file.exists(autowrite_path)) autowrite_path <- gsub('.stan$', '.rda', model_path) # for backwards compatibility with rstan < 2.13
-    if(!file.exists(autowrite_path)) autowrite_path <- file.path(tempdir(), basename(autowrite_path))
-    if(!file.exists(autowrite_path)) {
-      warning('could not find saved rds model file')
-    } else {
-      tryCatch({
-        file.copy(autowrite_path, mobj_path, overwrite=TRUE)
-        file.remove(autowrite_path)
-      }, error=function(e) {
-        warning('could not copy Stan rds to .stanrds file: ', e$message)
-        mobj_path <- autowrite_path
-      })
+  if(stan_engine == 'rstan') {
+    if(!suppressPackageStartupMessages(require(rstan))) {
+      stop("the rstan package is required for Stan MCMC models")
     }
+
+    compile_time <- system.time({})
+    mobj_path <- gsub('.stan$', '.stanrds', model_path)
+    if(!file.exists(mobj_path) || file.info(mobj_path)$mtime < file.info(model_path)$mtime) {
+      if(verbose) message("compiling Stan model")
+      compile_time <- system.time({
+        compile_log <- capture.output({
+          stan_mobj <- rstan::stan_model(file=model_path, auto_write=TRUE)
+        }, type=c('output'), split=verbose)
+      })
+      rm(stan_mobj)
+      gc()
+      autowrite_path <- gsub('.stan$', '.rds', model_path)
+      if(!file.exists(autowrite_path)) autowrite_path <- gsub('.stan$', '.rda', model_path)
+      if(!file.exists(autowrite_path)) autowrite_path <- file.path(tempdir(), basename(autowrite_path))
+      if(!file.exists(autowrite_path)) {
+        warning('could not find saved rds model file')
+      } else {
+        tryCatch({
+          file.copy(autowrite_path, mobj_path, overwrite=TRUE)
+          file.remove(autowrite_path)
+        }, error=function(e) {
+          warning('could not copy Stan rds to .stanrds file: ', e$message)
+          mobj_path <- autowrite_path
+        })
+      }
+    } else {
+      if(verbose) message("loading pre-compiled Stan model")
+    }
+    stan_mobj <- readRDS(mobj_path)
+
+    oldlogfiles <- normalizePath(file.path(tempdir(), grep("_StanProgress.txt", dir(tempdir()), value=TRUE)))
+
+    if(verbose) message("sampling Stan model")
+    consolelog <- capture.output(
+      runstan_out <- rstan::sampling(
+        object=stan_mobj,
+        data=data_list,
+        pars=params_out,
+        include=TRUE,
+        chains=n_chains,
+        warmup=burnin_steps,
+        iter=saved_steps+burnin_steps,
+        thin=thin_steps,
+        init="random",
+        verbose=verbose,
+        open_progress=FALSE,
+        cores=n_cores),
+      split=verbose)
   } else {
-    if(verbose) message("loading pre-compiled Stan model")
+    if(!requireNamespace('cmdstanr', quietly=TRUE))
+      stop('the cmdstanr package is required for Stan MCMC models')
+    compile_time <- system.time({
+      stan_mobj <- cmdstanr::cmdstan_model(model_path, quiet=!verbose)
+    })
+    consolelog <- capture.output({
+      runstan_out <- stan_mobj$sample(
+        data=data_list,
+        chains=n_chains,
+        parallel_chains=n_cores,
+        iter_warmup=burnin_steps,
+        iter_sampling=saved_steps,
+        thin=thin_steps,
+        refresh=if(verbose) 100 else 0
+      )
+    }, type='output', split=verbose)
   }
-  stan_mobj <- readRDS(mobj_path)
-
-  # make note of existing log files so we don't read them later
-  oldlogfiles <- normalizePath(file.path(tempdir(), grep("_StanProgress.txt", dir(tempdir()), value=TRUE)))
-
-  # run Stan
-  if(verbose) message("sampling Stan model")
-  consolelog <- capture.output(
-    runstan_out <- rstan::sampling(
-      object=stan_mobj,
-      data=data_list,
-      pars=params_out,
-      include=TRUE,
-      chains=n_chains,
-      warmup=burnin_steps,
-      iter=saved_steps+burnin_steps,
-      thin=thin_steps,
-      init="random",
-      verbose=verbose,
-      open_progress=FALSE,
-      cores=n_cores),
-    split=verbose)
-
-  # this is a good place for a breakpoint when running small numbers of models
-  # manually (or keep_mcmc also helps with inspection)
-  #   show(runstan_out)
-  #   rstan::plot(runstan_out)
-  #   pairs(runstan_out)
-  #   traceplot(runstan_out)
 
   # format output (but first detect and handle a failed model run)
-  if(runstan_out@mode == 2L) {
-    # for failed model runs, we still want to keep the mcmc
-    stan_out <- NULL
-    warning(capture.output(print(runstan_out)))
-  } else if(split_dates) {
-    # for one-day models, use a 1-row data.frame. see ls('package:rstan')
-    stan_mat <- rstan::summary(runstan_out)$summary
-    names_params <- rep(gsub("\\[1\\]", "", rownames(stan_mat)), each=ncol(stan_mat)) # the GPP, ER, etc. part of the name
-    names_stats <- rep(gsub("%", "pct", colnames(stan_mat)), times=nrow(stan_mat)) # the mean, sd, etc. part of the name
+  if(stan_engine == 'rstan') {
+    if(runstan_out@mode == 2L) {
+      stan_out <- NULL
+      warning(capture.output(print(runstan_out)))
+    } else {
+      stan_mat <- rstan::summary(runstan_out)$summary
+    }
+  } else {
+    stan_draws <- runstan_out$draws()
+    vars <- dimnames(stan_draws)[[3]]
+    summarise_vec <- function(x) c(mean=mean(x), sd=sd(x), `2.5%`= stats::quantile(x,0.025), `50%` = stats::quantile(x,0.5), `97.5%` = stats::quantile(x,0.975))
+    stan_mat <- t(sapply(vars, function(v) summarise_vec(as.vector(stan_draws[,,v]))))
+    colnames(stan_mat) <- c('mean','sd','2.5%','50%','97.5%')
+  }
+
+  if(split_dates) {
+    names_params <- rep(gsub("\\[1\\]", "", rownames(stan_mat)), each=ncol(stan_mat))
+    names_stats <- rep(gsub("%", "pct", colnames(stan_mat)), times=nrow(stan_mat))
     stan_out <- format_mcmc_mat_split(stan_mat, names_params, names_stats, keep_mcmc, runstan_out)
   } else {
-    # for multi-day or unsplit models, format output into a list of data.frames,
-    # one per unique number of nodes sharing a variable name
-    stan_mat <- rstan::summary(runstan_out)$summary
     stan_out <- format_mcmc_mat_nosplit(stan_mat, data_list$d, data_list$n, model_name, keep_mcmc, runstan_out)
   }
 
-  # attach the contents of the most recent logfile in tempdir(), which should be for this model
-  newlogfiles <- normalizePath(file.path(tempdir(), grep("_StanProgress.txt", dir(tempdir()), value=TRUE)))
-  logfile <- setdiff(newlogfiles, oldlogfiles)
-  log <- if(length(logfile) > 0) readLines(logfile) else consolelog
+  if(stan_engine == 'rstan') {
+    newlogfiles <- normalizePath(file.path(tempdir(), grep("_StanProgress.txt", dir(tempdir()), value=TRUE)))
+    logfile <- setdiff(newlogfiles, oldlogfiles)
+    log <- if(length(logfile) > 0) readLines(logfile) else consolelog
+  } else {
+    log <- consolelog
+  }
   stan_out <- c(stan_out, c(
     list(log=log),
     if(exists('compile_log')) list(compile_log=compile_log),

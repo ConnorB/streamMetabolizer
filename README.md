@@ -29,7 +29,7 @@ citation('streamMetabolizer')
 
 ## Installation
 
-To install the `streamMetabolizer` package, use the `remotes` package (running `install.packages('remotes')` first if needed). To use `remotes::install_github()` it is convenient to set a [GitHub Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). There are [several methods](https://usethis.r-lib.org/articles/git-credentials.html) for setting your PATs within R; the simplest is to call `Sys.setenv(GITHUB_PAT="yyyy"),
+To install the `streamMetabolizer` package, use the `remotes` package (running `install.packages('remotes')` first if needed). To use `remotes::install_github()` it is convenient to set a [GitHub Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). There are [several methods](https://usethis.r-lib.org/articles/git-credentials.html) for setting your PATs within R; the simplest is to call `Sys.setenv(GITHUB_PAT="yyyy")`,
 replacing yyyy with the PAT you established on the GitHub website.
 
 You may first need to install the `unitted` dependency:
@@ -45,7 +45,7 @@ remotes::install_github("ConnorB/streamMetabolizer",
 
 ### Software dependencies for Bayesian models
 
-The major dependency for Bayesian models is the `rstan` package, and installation of that package is rarely as simple as a call to `install.packages()`. Start at the [rstan wiki page](https://github.com/stan-dev/rstan/wiki) for the most up-to-date installation instructions, which differ by operating system.
+Bayesian models require a Stan backend. You may use either the `rstan` or `cmdstanr` packages, and installation of these packages is rarely as simple as a call to `install.packages()`. Start at the [rstan wiki page](https://github.com/stan-dev/rstan/wiki) or the [cmdstanr installation guide](https://mc-stan.org/cmdstanr/articles/quick-start.html) for the most up-to-date instructions.
 
 
 ## Getting started

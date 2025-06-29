@@ -200,14 +200,20 @@ plot_distribs <- function(
   # if available, augment the data.frame with data illustrating the posterior
   plot_posterior <- class(dist_data)[1] == 'metab_bayes' && !is.null(get_mcmc(dist_data))
   if(plot_posterior) {
-    if(!requireNamespace("rstan", quietly=TRUE))
-      stop("the rstan package is required to investigate Stan MCMC models")
     mc <- get_mcmc(dist_data)
-    # extract MCMC draws from the specified index/indices. If indices, collapse
-    # from matrix into vector
-    draws <- rstan::extract(mc, pars=parname)[[parname]]
-    indexed_posterior <- is.matrix(draws)
-    if(indexed_posterior) draws <- c(draws[,index])
+    if(inherits(mc, 'stanfit')) {
+      if(!requireNamespace('rstan', quietly=TRUE))
+        stop('the rstan package is required to investigate Stan MCMC models')
+      draws <- rstan::extract(mc, pars=parname)[[parname]]
+      indexed_posterior <- is.matrix(draws)
+      if(indexed_posterior) draws <- c(draws[,index])
+    } else if(inherits(mc, 'CmdStanMCMC')) {
+      draws_arr <- mc$draws(variables=parname)
+      draws <- as.vector(draws_arr)
+      indexed_posterior <- length(dim(draws_arr)) > 1
+    } else {
+      stop('unknown mcmc object class')
+    }
     # generate density w/ 1000 points along the line
     post <- density(draws, n=1000)[c('x','y')] %>%
       tibble::as_tibble() %>%

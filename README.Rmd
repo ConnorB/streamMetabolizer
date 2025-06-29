@@ -46,7 +46,7 @@ citation('streamMetabolizer')
 
 ## Installation
 
-To install the `streamMetabolizer` package, use the `remotes` package (running `install.packages('remotes')` first if needed). To use `remotes::install_github()` it is convenient to set a [GitHub Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). There are [several methods](https://usethis.r-lib.org/articles/git-credentials.html) for setting your PATs within R; the simplest is to call `Sys.setenv(GITHUB_PAT="yyyy"),
+To install the `streamMetabolizer` package, use the `remotes` package (running `install.packages('remotes')` first if needed). To use `remotes::install_github()` it is convenient to set a [GitHub Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). There are [several methods](https://usethis.r-lib.org/articles/git-credentials.html) for setting your PATs within R; the simplest is to call `Sys.setenv(GITHUB_PAT="yyyy")`,
 replacing yyyy with the PAT you established on the GitHub website.
 
 You may first need to install the `unitted` dependency:

@@ -30,7 +30,7 @@ The structure and specifications of Bayesian models require special attention. F
 
 ### Stan MCMC information
 
-After fitting a `streamMetabolizer` model, you can pull out the original Stan model object using `get_mcmc(mm)` where `mm` is your fitted metabolism model. You'll need the `rstan` package to inspect the outputs from there, so run `library(rstan)` before proceeding.
+After fitting a `streamMetabolizer` model, you can pull out the original Stan model object using `get_mcmc(mm)` where `mm` is your fitted metabolism model. Inspect the outputs using either `rstan` or `cmdstanr` functions, such as `rstan::traceplot()` or `cmdstanr::posterior` utilities.
 
 See `?stanfit` for some ideas on how to inspect the Stan model object. My go-to first method is `traceplot()` (and the `inc_warmup=TRUE` arg to `traceplot()` can be handy). `plot()`, `print()`, and `summary()` are also useful. 
 
