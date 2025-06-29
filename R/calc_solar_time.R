@@ -4,7 +4,7 @@
 #' must be POSIXct clock time and should have the correct timezone information 
 #' embedded in the object, whether the tz is UTC, local time with daylight
 #' savings, or local standard time. The output is always mean solar time (not
-#' apparent; see \code{convert_UTC_to_solaritme}).
+#' apparent; see \code{convert_UTC_to_solartime}).
 #' 
 #' @inheritParams convert_localtime_to_UTC
 #' @inheritParams convert_UTC_to_solartime

@@ -612,7 +612,8 @@ prepdata_bayes <- function(
 #' @param thin_steps the number of steps to move before saving another step. 1
 #'   means save all steps.
 #' @param stan_engine Character string specifying which Stan R interface to use.
-#'   Either "rstan" or "cmdstanr".
+#'   Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
+#'   behavior of the streamMetabolizer package.
 #' @param verbose logical. give status messages?
 #' @param ... ignored arguments
 #' @import parallel

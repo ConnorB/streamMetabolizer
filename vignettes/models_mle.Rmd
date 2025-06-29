@@ -73,7 +73,7 @@ specifications in that help file are omitted from the output of
 `specs(mle_name)` above - this is because MLE models are simple and don't have
 many parameters to set. Any of those parameters that are included in
 `mle_specs` can be modified, either by calling `specs()` again or by replacing
-that value in the `mle_specs` list. Here is a command that sets the the inital
+that value in the `mle_specs` list. Here is a command that sets the the initial
 values of GPP, ER, and K600 for the likelihood maximization. (I've done this
 just for illustration; the model results aren't affected by these particular
 changes for this particular dataset, and you will seldom need to edit these values.)

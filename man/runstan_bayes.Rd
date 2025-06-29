@@ -16,6 +16,7 @@ runstan_bayes(
   burnin_steps = 1000,
   saved_steps = 1000,
   thin_steps = 1,
+  stan_engine = c("rstan", "cmdstanr"),
   verbose = FALSE,
   ...
 )
@@ -46,6 +47,10 @@ starting to collect MCMC 'data'}
 
 \item{thin_steps}{the number of steps to move before saving another step. 1
 means save all steps.}
+
+\item{stan_engine}{Character string specifying which Stan R interface to use.
+Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
+behavior of the streamMetabolizer package.}
 
 \item{verbose}{logical. give status messages?}
 

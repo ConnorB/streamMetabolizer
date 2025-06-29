@@ -62,6 +62,7 @@ specs(
   burnin_steps = 500,
   saved_steps = 500,
   thin_steps = 1,
+  stan_engine = "rstan",
   verbose = FALSE,
   weights = c("K600/CI"),
   filters = c(CI.max = NA, discharge.daily.max = NA, velocity.daily.max = NA),
@@ -357,6 +358,10 @@ starting to collect MCMC 'data'}
 
 \item{thin_steps}{the number of steps to move before saving another step. 1
 means save all steps.}
+
+\item{stan_engine}{Character string specifying which Stan R interface to use.
+Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
+behavior of the streamMetabolizer package.}
 
 \item{verbose}{logical. give status messages?}
 
