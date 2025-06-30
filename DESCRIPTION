@@ -4,7 +4,7 @@ Title: Models for Estimating Aquatic Photosynthesis and Respiration
 Version: 0.12.1.9000
 Date: 2025-06-29
 Authors@R: c(
-    person("Alison P.", "Appling", , "aappling@usgs.gov", role = c("aut")),
+    person("Alison P.", "Appling", , "aappling@usgs.gov", role = "aut"),
     person("Robert O.", "Hall", role = "aut"),
     person("Maite", "Arroita", role = "aut"),
     person("Charles B.", "Yackulic", role = "aut"),
@@ -40,6 +40,7 @@ Imports:
     lifecycle,
     lubridate,
     methods,
+    stats,
     tibble (>= 1.1.0),
     tidyr,
     unitted (>= 0.2.8)
@@ -130,6 +131,7 @@ Collate:
     'revise.R'
     'specs.R'
     'streamMetabolizer-deprecated.R'
+    'streamMetabolizer-package.R'
     'streamMetabolizer.R'
     'zz_build_docs.R'
 RoxygenNote: 7.3.2.9000

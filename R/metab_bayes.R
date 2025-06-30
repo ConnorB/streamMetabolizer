@@ -723,16 +723,22 @@ runstan_bayes <- function(
     stan_sum <- posterior::summarise_draws(
       runstan_out$draws(),
       mean,
-      posterior::mcse_mean,
+      se_mean = posterior::mcse_mean,
       sd,
-      ~posterior::quantile2(.x, probs = c(0.025, 0.25, 0.5, 0.75, 0.975)),
-      posterior::ess_bulk,
-      posterior::rhat,
+      posterior::default_convergence_measures(),
+      `2.5%` = function(x) quantile(x, probs = 0.025),
+      `25%`  = function(x) quantile(x, probs = 0.25),
+      `50%`  = function(x) quantile(x, probs = 0.50),
+      `75%`  = function(x) quantile(x, probs = 0.75),
+      `97.5%`= function(x) quantile(x, probs = 0.975),
       .cores = n_cores
     )
-    stan_mat <- as.matrix(stan_sum[,-1])
-    rownames(stan_mat) <- stan_sum$variable
-    colnames(stan_mat) <- c('mean','se_mean','sd','2.5%','25%','50%','75%','97.5%','n_eff','Rhat')
+    names(stan_sum)[names(stan_sum) == "rhat"] <- "Rhat"
+    stan_sum <- stan_sum[ , c("variable", "mean", "se_mean", "sd", "2.5%", "25%", "50%", "75%", "97.5%", "ess_bulk", "ess_tail", "Rhat")]
+    stan_sum <- as.data.frame(stan_sum)
+    rownames(stan_sum) <- stan_sum[ , "variable"]
+    stan_sum <- stan_sum[ , !(names(stan_sum) == "variable")]
+    stan_mat <- as.matrix(stan_sum)
   }
 
   if(split_dates) {
@@ -841,6 +847,8 @@ format_mcmc_mat_nosplit <- function(mcmc_mat, data_list_d, data_list_n, model_na
     if(length(home) == 0) home <- var_table[[parname]]
     return(home)
   })
+  # remove temp vars from output
+  par_dfs <- par_dfs[par_dfs != "144"]
   all_dims <- lapply(setNames(nm=unique(par_dfs)), function(upd) names(par_dfs)[which(par_dfs == upd)])
 
   # for each unique nrows, create the data.frame with vars in columns and indices in rows
