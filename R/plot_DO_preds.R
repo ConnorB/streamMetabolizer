@@ -98,9 +98,9 @@ plot_DO_preds <- function(
       }
       g <- ggplot2::ggplot(preds_ggplot, ggplot2::aes(x=solar.time, group=date))
       # optional (only applies to sim models): 'pure' lines
-      if(any(!is.na(preds_ggplot$pure))) g <- g + ggplot2::geom_line(ggplot2::aes(y=pure, color=col.pure), size=0.8, na.rm=TRUE)
+      if(any(!is.na(preds_ggplot$pure))) g <- g + ggplot2::geom_line(ggplot2::aes(y=pure, color=col.pure), linewidth=0.8, na.rm=TRUE)
       g + ggplot2::geom_point(ggplot2::aes(y=obs, color=col.obs), alpha=0.6, na.rm=TRUE) +
-        ggplot2::geom_line(ggplot2::aes(y=mod, color=col.mod), size=0.8, na.rm=TRUE) +
+        ggplot2::geom_line(ggplot2::aes(y=mod, color=col.mod), linewidth=0.8, na.rm=TRUE) +
         ggplot2::scale_color_identity(guide='none') +
         ggplot2::theme_bw() + 
         ggplot2::facet_grid(var ~ ., scales="free_y") + 
