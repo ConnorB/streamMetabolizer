@@ -12,7 +12,7 @@ mm_check_mcmc_file <- function(model_file) {
   # namespace is loaded. requireNamespace is somehow not doing this. Thoughts
   # (not solution):
   # https://stat.ethz.ch/pipermail/r-devel/2014-September/069803.html
-  if(!suppressPackageStartupMessages(require(rstan))) {
+  if(!requireNamespace("rstan", quietly = TRUE)) {
     stop("the rstan package is required to check Stan MCMC models")
   }
   model_status <- tryCatch({

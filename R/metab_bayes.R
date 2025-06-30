@@ -634,7 +634,7 @@ runstan_bayes <- function(
   if(verbose) message(paste0("MCMC (",stan_engine,"): requesting ",n_chains," chains on ",n_cores," of ",tot_cores," available cores"))
 
   if(stan_engine == 'rstan') {
-    if(!suppressPackageStartupMessages(require(rstan))) {
+    if(!requireNamespace("rstan", quietly = TRUE)) {
       stop("the rstan package is required for Stan MCMC models")
     }
 
@@ -673,36 +673,42 @@ runstan_bayes <- function(
     if(verbose) message("sampling Stan model")
     consolelog <- capture.output(
       runstan_out <- rstan::sampling(
-        object=stan_mobj,
-        data=data_list,
-        pars=params_out,
-        include=TRUE,
-        chains=n_chains,
-        warmup=burnin_steps,
-        iter=saved_steps+burnin_steps,
-        thin=thin_steps,
-        init="random",
-        verbose=verbose,
-        open_progress=FALSE,
-        cores=n_cores),
-      split=verbose)
+        object = stan_mobj,
+        data = data_list,
+        pars = params_out,
+        include = TRUE,
+        chains = n_chains,
+        warmup = burnin_steps,
+        iter = saved_steps + burnin_steps,
+        thin = thin_steps,
+        init = "random",
+        verbose = verbose,
+        open_progress = FALSE,
+        cores = n_cores
+      ),
+      split = verbose
+    )
   } else {
     if(!requireNamespace('cmdstanr', quietly=TRUE))
       stop('the cmdstanr package is required for Stan MCMC models')
     compile_time <- system.time({
       stan_mobj <- cmdstanr::cmdstan_model(model_path, quiet=!verbose)
     })
-    consolelog <- capture.output({
-      runstan_out <- stan_mobj$sample(
-        data=data_list,
-        chains=n_chains,
-        parallel_chains=n_cores,
-        iter_warmup=burnin_steps,
-        iter_sampling=saved_steps,
-        thin=thin_steps,
-        refresh=if(verbose) 100 else 0
-      )
-    }, type='output', split=verbose)
+    consolelog <- capture.output(
+      {
+        runstan_out <- stan_mobj$sample(
+          data = data_list,
+          chains = n_chains,
+          parallel_chains = n_cores,
+          iter_warmup = burnin_steps,
+          iter_sampling = saved_steps,
+          thin = thin_steps,
+          refresh = if(verbose) 100 else 0
+          )
+      },
+      type = "output",
+      split = verbose
+    )
   }
 
   # format output (but first detect and handle a failed model run)
@@ -714,11 +720,19 @@ runstan_bayes <- function(
       stan_mat <- rstan::summary(runstan_out)$summary
     }
   } else {
-    stan_draws <- runstan_out$draws()
-    vars <- dimnames(stan_draws)[[3]]
-    summarise_vec <- function(x) c(mean=mean(x), sd=sd(x), `2.5%`= stats::quantile(x,0.025), `50%` = stats::quantile(x,0.5), `97.5%` = stats::quantile(x,0.975))
-    stan_mat <- t(sapply(vars, function(v) summarise_vec(as.vector(stan_draws[,,v]))))
-    colnames(stan_mat) <- c('mean','sd','2.5%','50%','97.5%')
+    stan_sum <- posterior::summarise_draws(
+      runstan_out$draws(),
+      mean,
+      posterior::mcse_mean,
+      sd,
+      ~posterior::quantile2(.x, probs = c(0.025, 0.25, 0.5, 0.75, 0.975)),
+      posterior::ess_bulk,
+      posterior::rhat,
+      .cores = n_cores
+    )
+    stan_mat <- as.matrix(stan_sum[,-1])
+    rownames(stan_mat) <- stan_sum$variable
+    colnames(stan_mat) <- c('mean','se_mean','sd','2.5%','25%','50%','75%','97.5%','n_eff','Rhat')
   }
 
   if(split_dates) {
