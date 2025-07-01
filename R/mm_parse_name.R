@@ -56,6 +56,7 @@ mm_parse_name <- function(model_name, expand=FALSE) {
   })
   err_obs_iid <- grepl('oi', sapply(parsed, `[`, 3))
   err_proc_acor <- grepl('pc', sapply(parsed, `[`, 3))
+  err_proc_acor_light <- grepl('ph', sapply(parsed, `[`, 3))
   err_proc_iid <-  grepl('pi', sapply(parsed, `[`, 3))
   err_proc_GPP <-  grepl('pp', sapply(parsed, `[`, 3))
   ode_method <- unname(
@@ -85,6 +86,7 @@ mm_parse_name <- function(model_name, expand=FALSE) {
     pool_K600_sd=pool_K600_sd,
     err_obs_iid=err_obs_iid,
     err_proc_acor=err_proc_acor,
+    err_proc_acor_light=err_proc_acor_light,
     err_proc_iid=err_proc_iid,
     err_proc_GPP=err_proc_GPP,
     ode_method=ifelse(is.na(ode_method), 'NA', ode_method),

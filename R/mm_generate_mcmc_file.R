@@ -10,6 +10,7 @@ mm_generate_mcmc_file <- function(
                 'binned','binned_sdzero','binned_sdfixed'),
     err_obs_iid=c(TRUE, FALSE),
     err_proc_acor=c(FALSE, TRUE),
+    err_proc_acor_light=c(FALSE, TRUE),
     err_proc_iid=c(FALSE, TRUE),
     err_proc_GPP=c(FALSE, TRUE),
     ode_method=c('trapezoid','euler'),
@@ -30,7 +31,8 @@ mm_generate_mcmc_file <- function(
   model_name <- mm_name(
     type='bayes',
     pool_K600=pool_K600,
-    err_obs_iid=err_obs_iid, err_proc_acor=err_proc_acor, err_proc_iid=err_proc_iid, err_proc_GPP=err_proc_GPP,
+    err_obs_iid=err_obs_iid, err_proc_acor=err_proc_acor, err_proc_acor_light=err_proc_acor_light,
+    err_proc_iid=err_proc_iid, err_proc_GPP=err_proc_GPP,
     ode_method=ode_method, GPP_fun=GPP_fun, ER_fun=ER_fun, deficit_src=deficit_src, engine=engine,
     check_validity=FALSE)
   features <- mm_parse_name(model_name, expand=TRUE)
@@ -182,7 +184,8 @@ mm_generate_mcmc_file <- function(
         if(err_proc_acor) c(
           'real err_proc_acor_phi_alpha;',
           'real err_proc_acor_phi_beta;',
-          'real<lower=0> err_proc_acor_sigma_scale;'),
+          'real<lower=0> err_proc_acor_sigma_scale;',
+          if(err_proc_acor_light) 'real<lower=0> err_proc_acor_light_sigma;'),
         if(err_proc_iid) c(
           'real<lower=0> err_proc_iid_sigma_scale;'),
         if(err_proc_GPP) c(
@@ -291,6 +294,7 @@ mm_generate_mcmc_file <- function(
           # need to figure out how to scale phi (which might be 0-1 or very close to 0)
           'real<lower=0, upper=1> err_proc_acor_phi;',
           'real<lower=0> err_proc_acor_sigma_scaled;',
+          if(err_proc_acor_light) 'real<lower=0> err_proc_acor_light_scaled;',
           sprintf('array[%s] vector[d] err_proc_acor_inc;', switch(ode_method, euler='n-1', trapezoid='n'))),
         if(err_proc_iid) c(
           'real<lower=0> err_proc_iid_sigma_scaled;'),
@@ -332,7 +336,8 @@ mm_generate_mcmc_file <- function(
       ),
       if(err_proc_acor) c(
         # 'real<lower=0, upper=1> err_proc_acor_phi;', # currently opting not to scale phi (which might be 0-1 or very close to 0)
-        'real<lower=0> err_proc_acor_sigma;'),
+        'real<lower=0> err_proc_acor_sigma;',
+        if(err_proc_acor_light) 'real<lower=0> err_proc_acor_light;'),
       if(err_proc_iid) c(
         'real<lower=0> err_proc_iid_sigma;'),
       if(err_proc_GPP) c(
@@ -384,7 +389,8 @@ mm_generate_mcmc_file <- function(
         s(fs('halfcauchy', 'err_obs_iid_sigma'))),
       if(err_proc_acor) c(
         # s(fs('beta', 'err_proc_acor_phi'?)), # currently opting not to scale phi (which might be 0-1 or very close to 0)
-        s(fs('halfcauchy', 'err_proc_acor_sigma'))),
+        s(fs('halfcauchy', 'err_proc_acor_sigma')),
+        if(err_proc_acor_light) s(fs('halfnormal', 'err_proc_acor_light'))),
       if(err_proc_iid) c(
         s(fs('halfcauchy', 'err_proc_iid_sigma'))),
       if(err_proc_GPP) c(
@@ -597,7 +603,7 @@ mm_generate_mcmc_file <- function(
         comment('Autocorrelated process error'),
         p('for(i in 1:n) {'),
         indent(
-          s('err_proc_acor_inc[i-1] ~ ', f('normal', mu='0', sigma='err_proc_acor_sigma'))
+          s('err_proc_acor_inc[i-1] ~ ', f('normal', mu='0', sigma=if(err_proc_acor_light) paste0('err_proc_acor_sigma * (1 + err_proc_acor_light * ', if(features$GPP_fun=="linlight") 'light_mult_GPP[i]' else 'light[i]', ')') else 'err_proc_acor_sigma'))
         ),
         p('}')
       ),
@@ -607,7 +613,8 @@ mm_generate_mcmc_file <- function(
       if(err_proc_acor) c(
         comment('Autocorrelation (phi) & SD (sigma) of the process errors'),
         s('err_proc_acor_phi ~ ', f('beta', alpha='err_proc_acor_phi_alpha', beta='err_proc_acor_phi_beta')), # currently opting not to scale phi (which might be 0-1 or very close to 0)
-        s('err_proc_acor_sigma_scaled ~ ', f('halfcauchy', scale='1')))
+        s('err_proc_acor_sigma_scaled ~ ', f('halfcauchy', scale='1')),
+        if(err_proc_acor_light) s('err_proc_acor_light_scaled ~ ', f('normal', mu=0, sigma=1)))
     ),
     
     if(err_proc_GPP) chunk(
@@ -812,6 +819,7 @@ mm_generate_mcmc_files <- function() {
                 'binned','binned_sdzero','binned_sdfixed'),
     err_obs_iid=c(TRUE, FALSE),
     err_proc_acor=FALSE,
+    err_proc_acor_light=FALSE,
     err_proc_iid=c(FALSE, TRUE),
     err_proc_GPP=c(FALSE, TRUE),
     ode_method=c('trapezoid','euler'),
