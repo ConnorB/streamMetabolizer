@@ -29,7 +29,7 @@ data {
   
   // Daily data
   vector[d] DO_obs_1;
-  int<lower=1,upper=b> lnQ_bins[2,d];
+  array[2, d] int<lower=1, upper=b> lnQ_bins;
   array[2] vector<lower=0,upper=1>[d] lnQ_bin_weights;
   
   // Data
