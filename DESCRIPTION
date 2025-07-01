@@ -116,6 +116,7 @@ Collate:
     'mm_parse_name.R'
     'mm_name.R'
     'mm_generate_mcmc_file.R'
+    'mm_generate_mcmc_file_deprecated.R'
     'mm_get_timestep.R'
     'mm_is_valid_day.R'
     'mm_locate_filename.R'
