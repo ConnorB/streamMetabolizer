@@ -203,7 +203,7 @@ mm_generate_mcmc_file <- function(
           linear=c(
             'vector[d] lnQ_daily;'),
           binned=c(
-            'int<lower=1,upper=b> lnQ_bins[2,d];',
+            'array[2, d] int<lower=1, upper=b> lnQ_bins;',
             'array[2] vector<lower=0,upper=1>[d] lnQ_bin_weights;')
         )),
       
