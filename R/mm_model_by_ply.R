@@ -73,7 +73,17 @@ mm_model_by_ply <- function(
   if(day_end - day_start > 48) stop("day_end - day_start must not be > 48") # would break our odd/even algorithm
   if(-24 >= day_start || day_start >= 24) stop("day_start must be in (-24,24)")
   if(0 >= day_end || day_end >= 48) stop("day_end must be in (0,48)")
-
+  
+  #### Order data and daily data by solar.time/date, if not getting error
+  #### min datestep is <= 0 in mm_model_by_ply
+  #### maybe a problem w/ data but unsure, so order by date and move on??
+  if (!is.null(data) && nrow(data) > 1 && "solar.time" %in% names(data) && all(!is.na(data$solar.time))) {
+    data <- data[order(data$solar.time), ]
+  }
+  if (!is.null(data_daily) && nrow(data_daily) > 1 && "date" %in% names(data_daily) && all(!is.na(data_daily$date))) {
+    data_daily <- data_daily[order(data_daily$date), ]
+  }
+  
   # Identify the data plys that will let us use a user-specified-hr window for
   # each date (day_start to day_end, which may be != 24). store this labeling in
   # two additional columns (odd.- and even.- date.groups)
