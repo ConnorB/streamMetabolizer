@@ -35,6 +35,13 @@ predict_DO.metab_model <- function(
 
   # get the metabolism estimates; filter as we did for data
   metab_ests <- get_params(metab_model, date_start=date_start, date_end=date_end, uncertainty='none', messages=FALSE)
+  
+  #### This is returning metab_ests out of order for some reason and causing min datestep is <= 0 in mm_model_by_ply
+  #### maybe a problem w/ data but unsure, so order by date and move on??
+  if (!is.null(metab_ests) && nrow(metab_ests) > 1) {
+    metab_ests <- metab_ests[order(metab_ests$date), ]
+  }
+  
 
   # if we lack the data or params to predict, return NULL now
   if(is.null(data) || nrow(data) == 0 || is.null(metab_ests))
