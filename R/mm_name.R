@@ -164,6 +164,7 @@ mm_name <- function(
               'complete'),
   err_obs_iid=c(TRUE, FALSE),
   err_proc_acor=c(FALSE, TRUE),
+  err_proc_acor_light=c(FALSE, TRUE),
   err_proc_iid=c(FALSE, TRUE),
   err_proc_GPP=c(FALSE, TRUE),
   ode_method=c('trapezoid','euler','rk2','lsoda','lsode','lsodes','lsodar','vode','daspk',
@@ -192,6 +193,7 @@ mm_name <- function(
     err_proc_acor=FALSE
     err_proc_iid=FALSE
     err_proc_GPP=FALSE
+    err_proc_acor_light=FALSE
     ode_method='NA'
     GPP_fun='NA'
     ER_fun='NA'
@@ -214,6 +216,8 @@ mm_name <- function(
     pool_all <- if(pool_K600 == 'none') 'none' else 'partial'
     if(!is.logical(err_obs_iid) || length(err_obs_iid) != 1) stop("need err_obs_iid to be a logical of length 1")
     if(!is.logical(err_proc_acor) || length(err_proc_acor) != 1) stop("need err_proc_acor to be a logical of length 1")
+    if(!is.logical(err_proc_acor_light) || length(err_proc_acor_light) != 1) stop("need err_proc_acor_light to be a logical of length 1")
+    if(err_proc_acor_light && !err_proc_acor) stop("err_proc_acor must be TRUE when err_proc_acor_light is TRUE")
     if(!is.logical(err_proc_iid) || length(err_proc_iid) != 1) stop("need err_proc_iid to be a logical of length 1")
     if(!is.logical(err_proc_GPP) || length(err_proc_GPP) != 1) stop("need err_proc_GPP to be a logical of length 1")
     ode_method <- match.arg(ode_method)
@@ -236,7 +240,7 @@ mm_name <- function(
     c(none='', normal='Kn', linear='Kl', binned='Kb', complete='Kc')[[strsplit(pool_K600, '_')[[1]][[1]]]],
     c(none_or_fitted='', sdzero='0', sdfixed='x')[[tryCatch(strsplit(pool_K600, '_')[[1]][[2]], error=function(e) 'none_or_fitted')]],
     c(none='np', partial='', complete='')[[pool_all]], '_',
-    if(err_obs_iid) 'oi', if(err_proc_acor) 'pc', if(err_proc_iid) 'pi', if(err_proc_GPP) 'pp', '_',
+    if(err_obs_iid) 'oi', if(err_proc_acor) 'pc', if(err_proc_acor_light) 'ph', if(err_proc_iid) 'pi', if(err_proc_GPP) 'pp', '_',
     c(Euler='Eu', pairmeans='pm', trapezoid='tr', rk2='r2', 
       lsoda='o1', lsode='o2', lsodes='o3', lsodar='o4', vode='o5', daspk='o6', euler='eu', rk4='o8', 
       ode23='o9', ode45='o10', radau='o11', bdf='o12', bdf_d='o13', adams='o14', impAdams='o15', impAdams_d='o16',

@@ -422,6 +422,7 @@ specs <- function(
   err_proc_acor_phi_alpha = 1,
   err_proc_acor_phi_beta = 1,
   err_proc_acor_sigma_scale = 1,
+  err_proc_acor_light_sigma = 1,
   err_mult_GPP_sdlog_sigma = 1,
   
   # vector of hyperparameters to include as MCMC data
@@ -552,7 +553,7 @@ specs <- function(
           fitted=switch(features$pool_K600_type, normal='K600_daily_sdlog_sigma', linear=, binned='K600_daily_sigma_sigma')
         ),
         if(features$err_obs_iid) 'err_obs_iid_sigma_scale',
-        if(features$err_proc_acor) c('err_proc_acor_phi_alpha', 'err_proc_acor_phi_beta', 'err_proc_acor_sigma_scale'),
+        if(features$err_proc_acor) c('err_proc_acor_phi_alpha', 'err_proc_acor_phi_beta', 'err_proc_acor_sigma_scale', if(features$err_proc_acor_light) 'err_proc_acor_light_sigma'),
         if(features$err_proc_iid) 'err_proc_iid_sigma_scale',
         if(features$err_proc_GPP) 'err_mult_GPP_sdlog_sigma'
       )
