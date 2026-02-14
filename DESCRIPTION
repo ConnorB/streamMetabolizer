@@ -135,5 +135,5 @@ Collate:
     'streamMetabolizer-package.R'
     'streamMetabolizer.R'
     'zz_build_docs.R'
-RoxygenNote: 7.3.2.9000
+RoxygenNote: 7.3.3.9000
 Encoding: UTF-8
