@@ -26,7 +26,7 @@ decdf <- data.frame(jday=1:366,
   dec=streamMetabolizer:::calc_declination_angle(1:366))
 \dontrun{
 library(ggplot2)
-ggplot(unitted::v(decdf), aes(x=jday, y=dec)) + geom_line()
+ggplot(decdf, aes(x=jday, y=dec)) + geom_line()
 }
 }
 \references{

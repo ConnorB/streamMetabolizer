@@ -7,8 +7,8 @@
 lookup_google_timezone(
   latitude,
   longitude,
-  timestamp = if (unitted::v(latitude) >= 0) as.POSIXct("2015-01-01 00:00:00", tz =
-    "UTC") else as.POSIXct("2015-07-01 00:00:00", tz = "UTC")
+  timestamp = if (latitude >= 0) as.POSIXct("2015-01-01 00:00:00", tz = "UTC") else
+    as.POSIXct("2015-07-01 00:00:00", tz = "UTC")
 )
 }
 \arguments{

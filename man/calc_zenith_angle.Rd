@@ -41,7 +41,7 @@ zendf <- transform(zendf,
   zen=streamMetabolizer:::calc_zenith_angle(lat, dec, hragl))
 \dontrun{
 library(ggplot2)
-ggplot(unitted::v(zendf), aes(x=hour, y=zen, color=jday, group=jday)) +
+ggplot(zendf, aes(x=hour, y=zen, color=jday, group=jday)) +
   geom_line() + facet_wrap(~lat) +
   ggtitle('zenith angles by latitude (panels) and day of year (colors)')
 }

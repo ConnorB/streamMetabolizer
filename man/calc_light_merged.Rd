@@ -51,7 +51,6 @@ this as a way to smoothly interpolate a time series of observations.
 \dontrun{
 library(dplyr)
 library(ggplot2)
-library(unitted)
 timebounds <- as.POSIXct(c('2008-03-12 00:00', '2008-03-12 23:59'), tz='UTC')
 coords <- list(lat=32.4, lon=-96.5)
 PAR.obs <- tibble::tibble(
@@ -64,8 +63,8 @@ PAR.mod <- tibble::tibble(
 ) \%>\% as.data.frame()
 PAR.merged <- calc_light_merged(PAR.obs, PAR.mod$solar.time,
   latitude=coords$lat, longitude=coords$lon, max.gap=as.difftime(20, units='hours'))
-ggplot(bind_rows(mutate(v(PAR.obs), type='obs'), mutate(v(PAR.mod), type='mod'),
-                 mutate(v(PAR.merged), type='merged')) \%>\%
+ggplot(bind_rows(mutate(PAR.obs, type='obs'), mutate(PAR.mod, type='mod'),
+                 mutate(PAR.merged, type='merged')) \%>\%
        mutate(type=ordered(type, levels=c('obs','mod','merged'))),
   aes(x=solar.time, y=light, color=type)) + geom_line() + geom_point() + theme_bw()
 }

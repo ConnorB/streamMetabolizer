@@ -12,7 +12,7 @@
 #' Qs <- seq(1,9,2)
 #' calc_depth(Q=Qs)
 #' calc_depth(Q=Qs, f=0.4)
-#' #' @references Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. 
+#' @references Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. 
 #'   Bott, Jody Potter, Patrick Mulholland, Andrew E. Laursen, William H. 
 #'   McDowell, and Denis Newbold. \emph{Scaling the gas transfer velocity and 
 #'   hydraulic geometry in streams and small rivers}. Limnology & Oceanography: 

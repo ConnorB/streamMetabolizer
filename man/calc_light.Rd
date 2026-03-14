@@ -8,7 +8,7 @@ calc_light(
   solar.time,
   latitude,
   longitude,
-  max.PAR = u(2326, "umol m^-2 s^-1"),
+  max.PAR = 2326,
   attach.units = deprecated()
 )
 }
@@ -37,6 +37,4 @@ date-times and site coordinates.
 \examples{
 solar.time <- lubridate::force_tz(as.POSIXct('2016-09-27 12:00'), 'UTC')
 calc_light(solar.time, 40, -120)
-library(unitted)
-calc_light(u(solar.time), u(40, 'degN'), u(-120, 'degE'), u(2315, 'umol m^-2 s^-1'))
 }
