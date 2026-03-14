@@ -4,7 +4,7 @@
 \alias{calc_velocity}
 \title{Estimate velocity from discharge and hydraulic geometry coefficients}
 \usage{
-calc_velocity(Q, k = u(0.194, "m s^-1"), m = u(0.285, ""))
+calc_velocity(Q, k = 0.194, m = 0.285)
 }
 \arguments{
 \item{Q}{discharge (m^3 s^-1)}
@@ -25,9 +25,6 @@ Leopold and Maddock, 1953; default values for k and m as in Raymond et al.
 Qs <- seq(1,9,2)
 calc_velocity(Q=Qs)
 calc_velocity(Q=Qs, k=0.4)
-library(unitted)
-calc_velocity(Q=u(Qs, "m^3 s^-1"), m=u(40))
-calc_velocity(Q=u(Qs, "m^3 s^-1"), k=u(0.36, "m s^-1"))
 }
 \references{
 Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. 

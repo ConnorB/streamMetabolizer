@@ -8,7 +8,7 @@ supplied conditions}
 calc_DO_sat(
   temp.water,
   pressure.air,
-  salinity.water = u(0, "PSU"),
+  salinity.water = 0,
   model = "garcia-benson",
   ...
 )
@@ -39,7 +39,5 @@ Calculates the equilibrium saturation concentration of oxygen in water at the
 supplied conditions
 }
 \examples{
-calc_DO_sat(temp=21, press=1000.1, sal=0) # no units checking if no units provided
-library(unitted)
-calc_DO_sat(temp=u(21,"degC"), press=u(1000.1,"mb"), sal=u(0,"PSU")) # units are checked
+calc_DO_sat(temp=21, press=1000.1, sal=0)
 }

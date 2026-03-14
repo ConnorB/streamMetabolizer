@@ -145,6 +145,9 @@ mm_data <- function(..., optional='none') {
     dat[.dotnames]
   }
 
+  # if dat is NULL (from passing NULL as ...), return NULL immediately
+  if(is.null(dat)) return(NULL)
+
   # add information about which columns, if any, are optional.
   optional <- if(missing(optional)) {
     if(isTRUE(.nulldot)) {

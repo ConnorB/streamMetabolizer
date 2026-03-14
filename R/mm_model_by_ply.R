@@ -96,7 +96,7 @@ mm_model_by_ply <- function(
     timegoof <- which.min(timesteps) + c(0,1)
     stop("min timestep is <= 0: ", format(min_timestep, digits=3), " days from ",
          data$solar.time[timegoof[1]], " (row ", timegoof[1], ") to ",
-         data$solar.time[timegoof[2]], " (row ", timegoof[2], ")"),
+         data$solar.time[timegoof[2]], " (row ", timegoof[2], ")")
   }
   if(!is.null(data_daily)) {
     if(!('date' %in% names(data_daily))) stop("data_daily must contain a 'date' column")
@@ -106,7 +106,7 @@ mm_model_by_ply <- function(
       timegoof <- which.min(timesteps) + c(0,1)
       stop("min datestep is <= 0: ", min_datestep, " days from ",
            data_daily$date[timegoof[1]], " (row ", timegoof[1], ") to ",
-           data_daily$date[timegoof[2]], " (row ", timegoof[2], ")"),
+           data_daily$date[timegoof[2]], " (row ", timegoof[2], ")")
     }
   }
   doyhr <- convert_date_to_doyhr(data.plys$solar.time)

@@ -4,7 +4,7 @@
 \alias{calc_depth}
 \title{Estimate depth from discharge and hydraulic geometry coefficients}
 \usage{
-calc_depth(Q, c = u(0.409, "m"), f = u(0.294, ""))
+calc_depth(Q, c = 0.409, f = 0.294)
 }
 \arguments{
 \item{Q}{discharge (m^3 s^-1)}
@@ -25,9 +25,6 @@ Leopold and Maddock, 1953; default values for c and f as in Raymond et al.
 Qs <- seq(1,9,2)
 calc_depth(Q=Qs)
 calc_depth(Q=Qs, f=0.4)
-library(unitted)
-calc_depth(Q=u(Qs, "m^3 s^-1"), c=u(40,"cm"))
-calc_depth(Q=u(Qs, "m^3 s^-1"), f=u(0.36))
 }
 \references{
 Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. 

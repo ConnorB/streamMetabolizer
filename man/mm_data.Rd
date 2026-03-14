@@ -20,7 +20,7 @@ column names are given, those columns may be omitted entirely or passed to
 data data.frame with columns as in the description
 }
 \description{
-Produces a unitted data.frame with the column names, units, and
+Produces a data.frame with the column names and
   data format to be used by metab_models that comply strictly with the
   metab_model_interface. These are the columns that may be included:
 
