@@ -18,7 +18,7 @@ get_param_names.character <- function(metab_model, ...) {
     metab.optional <- c()
   } else {
     . <- '.dplyr.var'
-    egdat <- unitted::v(eval(formals(paste0("metab_", features$type))$data)) %>%
+    egdat <- eval(formals(paste0("metab_", features$type))$data) %>%
       bind_rows(.,.)
     dDOdt <- create_calc_dDOdt(
       egdat, ode_method=features$ode_method, GPP_fun=features$GPP_fun,

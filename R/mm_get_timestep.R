@@ -11,7 +11,6 @@
 #'   to machine precision, but then subsetted to those that differ from one 
 #'   another by at least tol, where tol is a time difference in units of days 
 #'   (and thus 1/(24*60*60) is one second).
-#' @importFrom unitted v
 #' @importFrom stats approx
 #' @examples {
 #' datetimes <- Sys.time()+ as.difftime(c(0,304,600,900.2,1200,1500,1800), units='secs')
@@ -40,7 +39,7 @@ mm_get_timestep <- function(datetimes, format=c('mean','unique','modal'), requir
   if(length(datetimes) < 2) {
     if(require_unique) stop('!=1 unique timestep') else return(NA)
   }
-  timesteps <- as.numeric(diff(v(datetimes)), units="days")
+  timesteps <- as.numeric(diff(datetimes), units="days")
   timestep <- switch(
     match.arg(format),
     mean = {

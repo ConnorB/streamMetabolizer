@@ -5,7 +5,6 @@ NULL
 #' @export
 #' @import dplyr
 #' @importFrom lubridate tz
-#' @importFrom unitted u v get_units
 #' @importFrom lifecycle deprecated is_present
 predict_DO.metab_model <- function(
   metab_model, date_start=NA, date_end=NA,
@@ -13,7 +12,7 @@ predict_DO.metab_model <- function(
 
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    unitted_deprecate_warn("predict_DO(attach.units)")
+    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::predict_DO(attach.units)")
   } else {
     attach.units <- FALSE
   }
@@ -25,7 +24,6 @@ predict_DO.metab_model <- function(
 
   # get the input data; filter if requested
   data <- get_data(metab_model) %>%
-    v() %>% # units are discarded here. someday we'll get them worked through the whole system.
     mm_filter_dates(date_start=date_start, date_end=date_end, day_start=day_start, day_end=day_end)
 
   # if allowed and available, use previously stored values for DO.mod rather than re-predicting them now
@@ -54,6 +52,5 @@ predict_DO.metab_model <- function(
     model_name=specs$model_name) %>% # for mm_predict_DO_1ply
     mm_filter_dates(date_start=date_start, date_end=date_end) # trim off the extra
 
-  if(attach.units) preds <- u(preds, get_units(mm_data())[gsub('DO.mod','DO.obs',names(preds))])
   preds
 }

@@ -55,8 +55,8 @@ metab_mle <- function(
   fitting_time <- system.time({
     # Check data for correct column names & units
     dat_list <- mm_validate_data(if(missing(data)) NULL else data, if(missing(data_daily)) NULL else data_daily, "metab_mle")
-    data <- v(dat_list[['data']])
-    data_daily <- v(dat_list[['data_daily']])
+    data <- dat_list[['data']]
+    data_daily <- dat_list[['data_daily']]
 
     # model the data, splitting into overlapping 31.5-hr 'plys' for each date
     mle_all <- mm_model_by_ply(

@@ -11,7 +11,7 @@ get_params.metab_model <- function(
 
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    unitted_deprecate_warn("get_params(attach.units)")
+    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::get_params(attach.units)")
   } else {
     attach.units <- FALSE
   }
@@ -137,12 +137,6 @@ get_params.metab_model <- function(
     messages <- pars[c('date','warnings','errors') %>% { .[. %in% names(pars)] }]
     pretty_print_ddat
     params <- left_join(params, messages, by='date', copy=TRUE)
-  }
-
-  # attach units if requested and available in mm_data
-  if(attach.units) {
-    param.units <- get_units(mm_data())[names(params)]
-    params <- u(params, param.units)
   }
 
   # return

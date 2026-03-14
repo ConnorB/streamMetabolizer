@@ -18,7 +18,6 @@
 #' plot_metab_preds(mm)
 #' }
 #' @import dplyr
-#' @importFrom unitted v
 #' @export
 plot_metab_preds <- function(metab_preds, y_var=c('GPP','ER'), 
                           style=c('ggplot2'),
@@ -52,7 +51,7 @@ plot_metab_preds <- function(metab_preds, y_var=c('GPP','ER'),
         stop("call install.packages('ggplot2') before plotting with style='ggplot2'")
       
       . <- fit <- upr <- lwr <- date <- col1 <- col2 <- '.ggplot.var'
-      preds_ggplot <- v(metab_preds_all) %>%
+      preds_ggplot <- metab_preds_all %>%
         filter(as %in% y_var) %>%
         group_by(as) %>%
         do({ if(all(is.na(.$fit))) .[FALSE,] else . }) %>%

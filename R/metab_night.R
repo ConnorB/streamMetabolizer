@@ -39,8 +39,8 @@ metab_night <- function(
   fitting_time <- system.time({
     # Check data for correct column names & units
     dat_list <- mm_validate_data(if(missing(data)) NULL else data, if(missing(data_daily)) NULL else data_daily, "metab_night")
-    data <- v(dat_list[['data']])
-    data_daily <- v(dat_list[['data_daily']])
+    data <- dat_list[['data']]
+    data_daily <- dat_list[['data_daily']]
 
     # model the data, splitting into potentially overlapping 'plys' for each date
     night_all <- mm_model_by_ply(
@@ -106,7 +106,7 @@ nightreg_1ply <- function(
     tryCatch({
       # subset to times of darkness. require that these are all consecutive -
       # it'd be meaningless to look at the diff from 1 night to the next 2 nights
-      which_night <- which(v(data_ply$light) < v(u(0.1, "umol m^-2 s^-1")))
+      which_night <- which(data_ply$light < 0.1)
       if(length(which_night) == 0) stop("no nighttime rows in data_ply")
       if(any(diff(which_night) > 1))
         stop_strs <- c(stop_strs, "need exactly one night per data_ply")
@@ -125,7 +125,7 @@ nightreg_1ply <- function(
       # for the full_day test, let the twilight hours define a narrower required
       # window than day_start, day_end did (if the twilight hours can be
       # determined from the data_ply)
-      date_start <- as.POSIXct(paste0(as.character(ply_date), " 00:00:00"), tz=lubridate::tz(v(data_ply$solar.time)))
+      date_start <- as.POSIXct(paste0(as.character(ply_date), " 00:00:00"), tz=lubridate::tz(data_ply$solar.time))
       night_hours <- as.numeric(data_ply[which_twilight+c(1,-1),'solar.time'] - date_start, units='hours')
       night_start <- if(has_sunset) max(day_start, night_hours[1]) else day_start
       night_end <- if(has_sunrise) min(day_end, night_hours[2]) else day_end
@@ -141,26 +141,25 @@ nightreg_1ply <- function(
       if(length(stop_strs) > 0) stop("")
 
       # smooth DO data
-      night_dat$DO.obs.smooth <- u(c(stats::filter(night_dat$DO.obs, rep(1/3, 3), sides=2)), get_units(night_dat$DO.obs))
+      night_dat$DO.obs.smooth <- c(stats::filter(night_dat$DO.obs, rep(1/3, 3), sides=2))
 
       # calculate dDO/dt
-      dDO <- u(diff(v(night_dat$DO.obs.smooth)), get_units(night_dat$DO.obs.smooth))
-      dt <- u(as.numeric(diff(v(night_dat$solar.time)), units='days'), 'd')
+      dDO <- diff(night_dat$DO.obs.smooth)
+      dt <- as.numeric(diff(night_dat$solar.time), units='days')
       night_dat$dDO.dt <- (dDO / dt)[c(NA, 1:length(dDO))]
 
       # calculate saturation deficit
       night_dat$DO.sat.def <- night_dat$DO.sat - night_dat$DO.obs.smooth
 
       # fit model & extract the important stuff (see Chapra & DiToro 1991)
-      lm_dDOdt <- lm(dDO.dt ~ DO.sat.def, data=v(night_dat))
-      KO2_units <- get_units(night_dat$dDO.dt[1] / night_dat$DO.sat.def[1])
+      lm_dDOdt <- lm(dDO.dt ~ DO.sat.def, data=night_dat)
       out <- list(
         row.first = which_night[1],
         row.last = which_night[length(which_night)],
-        KO2 = u(coef(lm_dDOdt)[["DO.sat.def"]], KO2_units),
-        KO2.sd = u(summary(lm_dDOdt)$coefficients[["DO.sat.def","Std. Error"]], KO2_units),
-        ER.vol = u(coef(lm_dDOdt)[["(Intercept)"]], get_units(night_dat$dDO.dt)),
-        ER.vol.sd = u(summary(lm_dDOdt)$coefficients[["(Intercept)","Std. Error"]], get_units(night_dat$dDO.dt)),
+        KO2 = coef(lm_dDOdt)[["DO.sat.def"]],
+        KO2.sd = summary(lm_dDOdt)$coefficients[["DO.sat.def","Std. Error"]],
+        ER.vol = coef(lm_dDOdt)[["(Intercept)"]],
+        ER.vol.sd = summary(lm_dDOdt)$coefficients[["(Intercept)","Std. Error"]],
         r.squared = summary(lm_dDOdt)$r.squared,
         p.value = summary(lm_dDOdt)$coefficients[["DO.sat.def","Pr(>|t|)"]]
       )
@@ -182,13 +181,12 @@ nightreg_1ply <- function(
       # 2012, which is probably the newer source. the sd conversion works
       # because the conversion is linear in KO2.
       out <- c(out, list(
-        K600.daily = convert_kGAS_to_k600(kGAS=out$KO2, temperature=u(mean(night_dat$temp.water), 'degC'), gas="O2"),
-        K600.daily.sd = convert_kGAS_to_k600(kGAS=out$KO2.sd, temperature=u(mean(night_dat$temp.water), 'degC'), gas="O2")
+        K600.daily = convert_kGAS_to_k600(kGAS=out$KO2, temperature=mean(night_dat$temp.water), gas="O2"),
+        K600.daily.sd = convert_kGAS_to_k600(kGAS=out$KO2.sd, temperature=mean(night_dat$temp.water), gas="O2")
       ))
 
-      # return everything. remove units since we can't fully support them
-      # elsewhere yet
-      lapply(out, v)
+      # return everything
+      out
 
     }, error=function(err) {
       # on error: give up, remembering error
@@ -249,7 +247,6 @@ predict_DO.metab_night <- function(metab_model, date_start=NA, date_end=NA, ...,
 
   # get the DO, temperature, etc. data; filter if requested
   data <- get_data(metab_model) %>%
-    v() %>%
     mm_filter_dates(date_start=date_start, date_end=date_end, day_start=day_start, day_end=day_end)
 
   # if allowed and available, use previously stored values for DO.mod rather than re-predicting them now

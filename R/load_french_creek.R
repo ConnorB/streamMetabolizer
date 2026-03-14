@@ -1,7 +1,6 @@
 #' Load a short dataset from French Creek
 #'
 #' @import dplyr
-#' @importFrom unitted u
 #' @importFrom lifecycle deprecated is_present
 #' @importFrom utils read.csv
 #' @importFrom lubridate with_tz
@@ -13,10 +12,9 @@ load_french_creek <- function(attach.units=deprecated()) {
   # check arguments
   if (lifecycle::is_present(attach.units)) {
     # only warn if it's TRUE
-    if(isTRUE(attach.units)) unitted_deprecate_warn("load_french_creek(attach.units)")
-  } else {
-    attach.units <- TRUE
+    if(isTRUE(attach.units)) lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::load_french_creek(attach.units)")
   }
+  attach.units <- FALSE
 
   # load the file
   file.name <- system.file("extdata", "french.csv", package="streamMetabolizer") # data from French Creek, Hotchkiss and Hall, In press, Ecology
@@ -56,13 +54,6 @@ load_french_creek <- function(attach.units=deprecated()) {
   # set columns
   french <- french %>%
     select(c(solar.time, DO.obs, DO.sat, depth, temp.water, light))
-
-  # add units if requested
-  if (attach.units) {
-    french <- unitted::u(
-      french,
-      c(solar.time="", DO.obs="mgO2 L^-1", DO.sat="mgO2 L^-1", depth="m", temp.water="degC", light="umol m^-2 s^-1"))
-  }
 
   return(french)
 }

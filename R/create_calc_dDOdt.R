@@ -47,7 +47,6 @@
 #'   parameters should be included in this list, create \code{dDOdt} with this
 #'   function and then call \code{environment(dDOdt)$metab.needs})
 #' @import dplyr
-#' @importFrom unitted v
 #' @importFrom stats approxfun
 #' @export
 #' @examples
@@ -208,7 +207,7 @@ create_calc_dDOdt <- function(data, ode_method, GPP_fun, ER_fun, deficit_src, er
     KO2.conv <- approxfun(data$t, data$KO2.conv, rule=2)
     err.proc <- if(all(err.proc == 0)) function(t) 0 else approxfun(data$t, data$err.proc, rule=2)
   }
-  timestep.days <- suppressWarnings(mean(as.numeric(diff(unitted::v(data$solar.time)), units="days"), na.rm=TRUE))
+  timestep.days <- suppressWarnings(mean(as.numeric(diff(data$solar.time), units="days"), na.rm=TRUE))
 
   # collect the required metab.pars parameter names in a vector called metab.needs
   metab.needs <- c()

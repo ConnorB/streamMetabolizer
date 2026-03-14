@@ -48,7 +48,6 @@ zz_tabular <- function(df, bold_headers=TRUE, code=FALSE, ...) {
 #'
 #' Results get written to man-roxygen/metab_data.R
 #'
-#' @importFrom unitted v
 #' @keywords internal
 zz_build_docs <- function() {
 
@@ -67,7 +66,7 @@ zz_build_docs <- function() {
         zz_tabular(metab_inputs('mle', 'data')),
         "",
         "\\strong{Example}:",
-        zz_tabular(v(eval(formals(metab_mle)$data)), bold_headers=FALSE, code=TRUE)
+        zz_tabular(eval(formals(metab_mle)$data), bold_headers=FALSE, code=TRUE)
       )),
       "  }"),
     do.call(c, lapply(c('bayes','Kmodel','sim'), function(type) {
@@ -76,7 +75,7 @@ zz_build_docs <- function() {
           zz_tabular(metab_inputs(type, 'data')),
           "",
           "\\strong{Example}:",
-          zz_tabular(v(eval(formals(paste0("metab_",type))$data)), bold_headers=FALSE, code=TRUE)
+          zz_tabular(eval(formals(paste0("metab_",type))$data), bold_headers=FALSE, code=TRUE)
         )),
         "  }")
     })),
@@ -100,7 +99,7 @@ zz_build_docs <- function() {
           zz_tabular(metab_inputs(type, 'data_daily')),
           "",
           "\\strong{Example}:",
-          zz_tabular(v(eval(formals(paste0("metab_",type))$data_daily)), bold_headers=FALSE, code=TRUE)
+          zz_tabular(eval(formals(paste0("metab_",type))$data_daily), bold_headers=FALSE, code=TRUE)
         )),
         "  }")
     })),

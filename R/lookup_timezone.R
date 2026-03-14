@@ -51,7 +51,7 @@ lookup_timezone <- function(latitude, longitude) {
 #' @export
 lookup_google_timezone <- function(
   latitude, longitude,
-  timestamp=if(unitted::v(latitude) >= 0) as.POSIXct("2015-01-01 00:00:00", tz="UTC") else as.POSIXct("2015-07-01 00:00:00", tz="UTC")) {
+  timestamp=if(latitude >= 0) as.POSIXct("2015-01-01 00:00:00", tz="UTC") else as.POSIXct("2015-07-01 00:00:00", tz="UTC")) {
 
   called_as_internal <- all(c(':::','streamMetabolizer') %in% as.character(sys.call()[[1]])) ||
     any(sapply(sys.calls()[-sys.nframe()], function(sc) if(class(sc[[1]]) == 'name') tail(as.character(sc[[1]]), 1) else NA) %in%
@@ -79,7 +79,7 @@ lookup_google_timezone <- function(
   out.parsed <- XML::xmlParse(api.out)
   return(list(
     tz = out.parsed[["string(//time_zone_id)"]],
-    dst_offset = u(as.numeric(out.parsed[["string(//dst_offset)"]])/3600, "hours"),
-    std_offset = u(as.numeric(out.parsed[["string(//raw_offset)"]])/3600, "hours")
+    dst_offset = as.numeric(out.parsed[["string(//dst_offset)"]])/3600,
+    std_offset = as.numeric(out.parsed[["string(//raw_offset)"]])/3600
   ))
 }

@@ -31,7 +31,7 @@ mm_validate_data <- function(
     if('all' %in% optional.data) optional.data <- c('all', names(expected.data))
     
     # quick return if dat is NULL
-    if(is.null(v(dat))) {
+    if(is.null(dat)) {
       if('all' %in% optional.data) {
         return(dat)
       } else {
@@ -77,18 +77,7 @@ mm_validate_data <- function(
     dat <- dat[keeper.columns]
     expected.data <- expected.data[keeper.columns]
     
-    # check for units mismatches. column names will already match exactly.
-    if('units' %in% data_tests) {
-      mismatched.units <- which(get_units(expected.data) != get_units(dat))
-      if(length(mismatched.units) > 0) {
-        data.units <- get_units(dat)[mismatched.units]
-        expected.units <- get_units(expected.data)[mismatched.units]
-        stop(paste0("unexpected units in ", data_type, ": ", paste0(
-          "(", 1:length(mismatched.units), ") ", 
-          names(data.units), " = ", data.units, ", expected ", expected.units,
-          collapse="; ")), call.=FALSE)
-      }
-    }
+    # units checking removed (unitted package dependency removed)
     
     # return the data, whose columns may be reordered/filtered
     dat

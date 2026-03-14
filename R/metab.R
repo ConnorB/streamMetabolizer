@@ -48,7 +48,7 @@
 #' plot_DO_preds(predict_DO(mm), y_var='pctsat', style='dygraphs')
 #' }
 #' @export
-metab <- function(specs=specs(mm_name()), data=v(mm_data(NULL)), data_daily=v(mm_data(NULL)), info=NULL) {
+metab <- function(specs=specs(mm_name()), data=mm_data(NULL), data_daily=mm_data(NULL), info=NULL) {
   
   if(missing(specs)) {
     # if specs is left to the default, it gets confused about whether specs() is

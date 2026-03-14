@@ -32,20 +32,19 @@
 #'   mm_model_by_ply, through mm_model_by_ply, and finally to this function.
 #' @import dplyr
 #' @import tibble
-#' @importFrom unitted v
 #' @examples
 #' mm_model_by_ply_prototype()
 #' mm_model_by_ply_prototype(extra_arg=7:12)
 #' @export
 mm_model_by_ply_prototype <- function(
-  data_ply=v(mm_data(NULL)), data_daily_ply=v(mm_data(NULL)), 
+  data_ply=mm_data(NULL), data_daily_ply=mm_data(NULL), 
   day_start=NA, day_end=NA, ply_date=NA, ply_validity=NA, timestep_days=NA, 
   ...
 ) {
-  c(list(data_ply_start=if(!is.null(v(data_ply))) data_ply[1,'solar.time'] else NA,
-         data_ply_end=if(!is.null(v(data_ply))) data_ply[nrow(data_ply),'solar.time'] else NA,
-         data_ply_nrow=if(!is.null(v(data_ply))) nrow(data_ply) else 0, 
-         data_daily_ply_date=paste0(if(!is.null(v(data_daily_ply))) unique(data_daily_ply$date), collapse=';'), 
+  c(list(data_ply_start=if(!is.null(data_ply)) data_ply[1,'solar.time'] else NA,
+         data_ply_end=if(!is.null(data_ply)) data_ply[nrow(data_ply),'solar.time'] else NA,
+         data_ply_nrow=if(!is.null(data_ply)) nrow(data_ply) else 0, 
+         data_daily_ply_date=paste0(if(!is.null(data_daily_ply)) unique(data_daily_ply$date), collapse=';'), 
          day_start=day_start, 
          day_end=day_end, 
          ply_date=ply_date, 
