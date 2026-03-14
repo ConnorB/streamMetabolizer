@@ -14,25 +14,31 @@
 #'   params_in=c(params_in,'my_new_param'), my_new_param=4)
 revise <- function(specs, ..., delete) {
   # evaluate ... in the context of specs
-  args <- {
-    # R CMD check gives a note about attach(); I think I've followed the
-    # recommended best practices of using a distinctive name and immediately
-    # following attach() with on.exit(detach())
-    attach(specs, warn.conflicts=FALSE, name='revisespecstemp')
-    on.exit(detach('revisespecstemp'))
-    list(...)
-  }
+  # args <- {
+  #   # R CMD check gives a note about attach(); I think I've followed the
+  #   # recommended best practices of using a distinctive name and immediately
+  #   # following attach() with on.exit(detach())
+  #   attach(specs, warn.conflicts=FALSE, name='revisespecstemp')
+  #   on.exit(detach('revisespecstemp'))
+  #   list(...)
+  # }
+  dots <- as.list(substitute(list(...)))[-1]
+  eval_env <- list2env(specs, parent = parent.frame())
 
+  args <- setNames(
+    lapply(dots, eval, envir = eval_env),
+    names(dots)
+  )
   # require names
-  if(is.null(names(args)) || any(names(args) == '')) {
+  if (is.null(names(args)) || any(names(args) == '')) {
     stop("all arguments in ... must be named")
   }
   # add/change specs
-  for(a in names(args)) {
+  for (a in names(args)) {
     specs[[a]] <- args[[a]]
   }
   # delete specs
-  if(!missing(delete)) {
+  if (!missing(delete)) {
     specs[delete] <- NULL
   }
   # return

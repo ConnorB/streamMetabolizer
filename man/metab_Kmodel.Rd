@@ -47,26 +47,26 @@ that only predicts daily K, nothing else.
 \details{
 Possible approaches:
 
-\itemize{
+\describe{
 
-\item{"mean"}{Predict K as the mean of all K values}
+\item{mean}{Predict K as the mean of all K values}
 
-\item{"weighted mean"}{Predict K as the mean of all K values, weighted by the
+\item{weighted mean}{Predict K as the mean of all K values, weighted by the
 inverse of the confidence intervals in the input K values}
 
-\item{"KvQ"}{Regress K versus Q, tending toward overall mean in ranges of Q
+\item{KvQ}{Regress K versus Q, tending toward overall mean in ranges of Q
 with sparse data}
 
-\item{"weighted KvQ"}{Regress K versus Q, tending toward overall mean in
+\item{weighted KvQ}{Regress K versus Q, tending toward overall mean in
 ranges of Q with sparse data, weighting high-confidence K values more
 heavily}
 
-\item{"T smoother"}{Predict K using a loess or spline smoother over time}
+\item{T smoother}{Predict K using a loess or spline smoother over time}
 
-\item{"Q smoother"}{Predict K using a loess or spline smoother over
+\item{Q smoother}{Predict K using a loess or spline smoother over
 discharge.daily}
 
-\item{"TQ smoother"}{Predict K using a loess or spline smoother over both
+\item{TQ smoother}{Predict K using a loess or spline smoother over both
 time and discharge.daily}
 
 }

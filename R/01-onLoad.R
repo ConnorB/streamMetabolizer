@@ -15,12 +15,11 @@
     "For issues specific to this fork, please open them at:\n",
     "  https://github.com/ConnorB/streamMetabolizer/issues"
   )
-  
-  
+
   # Load deSolve because otherwise after a few model runs we're likely to get
   # the following error. (It's possible this has been resolved by moving deSolve
   # from Suggests to Imports)
-  requireNamespace('deSolve', quietly=TRUE)
+  requireNamespace('deSolve', quietly = TRUE)
   ## Error in .Call("call_rkFixed", as.double(y), as.double(times), Func, Initfunc,  :
   ##   "call_rkFixed" not resolved from current namespace (deSolve)
   ## Error in .C("unlock_solver") :
@@ -39,15 +38,60 @@ define_pkg_env <- function() {
   pkg.env <- new.env()
   pkg.env$tz_lookups <- list(
     # populate with values that are used in test-convert.R and load_french_creek.R
-    "51.5000000000,-120.0000000000"=list(tz="America/Vancouver", dst_offset=0, std_offset=8, retry=0),
-    "51.4800000000,-0.0000000000"=list(tz="Europe/London", dst_offset=0, std_offset=0, retry=0),
-    "41.0000000000,105.3000000000"=list(tz="Asia/Shanghai", dst_offset=0, std_offset=8, retry=0),
-    "37.0000000000,-105.3000000000"=list(tz="America/Denver", dst_offset=0, std_offset=-7, retry=0),
-    "34.0000000000,-80.0000000000"=list(tz="America/New_York", dst_offset=0, std_offset=-5, retry=0),
-    "44.3625940000,-106.7530990000"=list(tz="America/Denver", dst_offset=0, std_offset=-7, retry=0),
-    "41.3300000000,-106.3000000000"=list(tz="America/Denver", dst_offset=0, std_offset=-7, retry=0), # French Creek
-    "40.0000000000,-105.3000000000"=list(tz="America/Denver", dst_offset=0, std_offset=-7, retry=0),
-    "40.0000000000,105.3000000000"=list(tz="Asia/Shanghai", dst_offset=0, std_offset=8, retry=0)
+    "51.5000000000,-120.0000000000" = list(
+      tz = "America/Vancouver",
+      dst_offset = 0,
+      std_offset = 8,
+      retry = 0
+    ),
+    "51.4800000000,-0.0000000000" = list(
+      tz = "Europe/London",
+      dst_offset = 0,
+      std_offset = 0,
+      retry = 0
+    ),
+    "41.0000000000,105.3000000000" = list(
+      tz = "Asia/Shanghai",
+      dst_offset = 0,
+      std_offset = 8,
+      retry = 0
+    ),
+    "37.0000000000,-105.3000000000" = list(
+      tz = "America/Denver",
+      dst_offset = 0,
+      std_offset = -7,
+      retry = 0
+    ),
+    "34.0000000000,-80.0000000000" = list(
+      tz = "America/New_York",
+      dst_offset = 0,
+      std_offset = -5,
+      retry = 0
+    ),
+    "44.3625940000,-106.7530990000" = list(
+      tz = "America/Denver",
+      dst_offset = 0,
+      std_offset = -7,
+      retry = 0
+    ),
+    "41.3300000000,-106.3000000000" = list(
+      tz = "America/Denver",
+      dst_offset = 0,
+      std_offset = -7,
+      retry = 0
+    ), # French Creek
+    "40.0000000000,-105.3000000000" = list(
+      tz = "America/Denver",
+      dst_offset = 0,
+      std_offset = -7,
+      retry = 0
+    ),
+    "40.0000000000,105.3000000000" = list(
+      tz = "Asia/Shanghai",
+      dst_offset = 0,
+      std_offset = 8,
+      retry = 0
+    )
   )
   return(pkg.env)
 }

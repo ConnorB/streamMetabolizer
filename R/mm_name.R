@@ -126,10 +126,10 @@
 #'   \code{type='Kmodel'}, for which ER is not estimated }
 #' @param deficit_src character. From what DO estimate (observed or modeled)
 #'   should the DO deficit be computed? Options: \itemize{ \item \code{DO_mod}:
-#'   the DO deficit at time t will be {(DO.sat(t) - DO_mod(t))}, the difference
+#'   the DO deficit at time t will be \eqn{(DO.sat(t) - DO_mod(t))}, the difference
 #'   between the equilibrium-saturation value and the current best estimate of
 #'   the true DO concentration at that time \item \code{DO_obs}: the DO deficit
-#'   at time t will be {(DO.sat(t) - DO.obs(t))}, the difference between the
+#'   at time t will be \eqn{(DO.sat(t) - DO.obs(t))}, the difference between the
 #'   equilibrium-saturation value and the measured DO concentration at that time
 #'   \item \code{DO_obs_filter}: applicable only to \code{type='night'}: a
 #'   smoothing filter is applied over the measured DO.obs values before applying
@@ -155,101 +155,199 @@
 #' mm_name('sim', err_proc_acor=TRUE)
 #' mm_name('bayes', pool_K600='binned')
 mm_name <- function(
-  type=c('mle','bayes','night','Kmodel','sim'), 
+  type = c('mle', 'bayes', 'night', 'Kmodel', 'sim'),
   #pool_GPP='none', pool_ER='none', pool_eoi='alldays', pool_epc='alldays', pool_epi='alldays',
-  pool_K600=c('none',
-              'normal','normal_sdzero','normal_sdfixed',
-              'linear','linear_sdzero','linear_sdfixed',
-              'binned','binned_sdzero','binned_sdfixed',
-              'complete'),
-  err_obs_iid=c(TRUE, FALSE),
-  err_proc_acor=c(FALSE, TRUE),
-  err_proc_iid=c(FALSE, TRUE),
-  err_proc_GPP=c(FALSE, TRUE),
-  ode_method=c('trapezoid','euler','rk2','lsoda','lsode','lsodes','lsodar','vode','daspk',
-               'rk4','ode23','ode45','radau','bdf','bdf_d','adams','impAdams','impAdams_d',
-               'Euler','pairmeans','NA'),
-  GPP_fun=c('linlight','satlight','satlightq10temp','NA'),
-  ER_fun=c('constant','q10temp','NA'),
-  deficit_src=c('DO_mod','DO_obs','DO_obs_filter','NA'),
-  engine=c('stan','nlm','lm','mean','loess','rnorm'),
-  check_validity=TRUE) {
-  
+  pool_K600 = c(
+    'none',
+    'normal',
+    'normal_sdzero',
+    'normal_sdfixed',
+    'linear',
+    'linear_sdzero',
+    'linear_sdfixed',
+    'binned',
+    'binned_sdzero',
+    'binned_sdfixed',
+    'complete'
+  ),
+  err_obs_iid = c(TRUE, FALSE),
+  err_proc_acor = c(FALSE, TRUE),
+  err_proc_iid = c(FALSE, TRUE),
+  err_proc_GPP = c(FALSE, TRUE),
+  ode_method = c(
+    'trapezoid',
+    'euler',
+    'rk2',
+    'lsoda',
+    'lsode',
+    'lsodes',
+    'lsodar',
+    'vode',
+    'daspk',
+    'rk4',
+    'ode23',
+    'ode45',
+    'radau',
+    'bdf',
+    'bdf_d',
+    'adams',
+    'impAdams',
+    'impAdams_d',
+    'Euler',
+    'pairmeans',
+    'NA'
+  ),
+  GPP_fun = c('linlight', 'satlight', 'satlightq10temp', 'NA'),
+  ER_fun = c('constant', 'q10temp', 'NA'),
+  deficit_src = c('DO_mod', 'DO_obs', 'DO_obs_filter', 'NA'),
+  engine = c('stan', 'nlm', 'lm', 'mean', 'loess', 'rnorm'),
+  check_validity = TRUE
+) {
   # determine type
   type <- match.arg(type)
-  
+
   # set type-specific defaults where values weren't specified
   . <- '.dplyr.var'
-  if(type != 'Kmodel') {
-    relevant_args <- names(formals(mm_name)) %>% .[!(. %in% c('type','check_validity'))]
+  if (type != 'Kmodel') {
+    relevant_args <- names(formals(mm_name)) %>%
+      .[!(. %in% c('type', 'check_validity'))]
   } else {
     # only one argument allowed for Kmodel
-    relevant_args <- 'engine' 
+    relevant_args <- 'engine'
     # directly specify all the rest
-    pool_K600='complete'
-    pool_all='complete'
-    err_obs_iid=FALSE
-    err_proc_acor=FALSE
-    err_proc_iid=FALSE
-    err_proc_GPP=FALSE
-    ode_method='NA'
-    GPP_fun='NA'
-    ER_fun='NA'
-    deficit_src='NA'
+    pool_K600 = 'complete'
+    pool_all = 'complete'
+    err_obs_iid = FALSE
+    err_proc_acor = FALSE
+    err_proc_iid = FALSE
+    err_proc_GPP = FALSE
+    ode_method = 'NA'
+    GPP_fun = 'NA'
+    ER_fun = 'NA'
+    deficit_src = 'NA'
   }
   given_args <- names(match.call()[-1])
   missing_args <- relevant_args[!(relevant_args %in% given_args)]
-  if(length(missing_args) > 0) {
+  if (length(missing_args) > 0) {
     default_args <- mm_parse_name(mm_valid_names(type)[1])
-    for(ms in missing_args) {
+    for (ms in missing_args) {
       assign(ms, default_args[[ms]])
     }
   }
-  
-  # check arguments and throw errors as needed. these checks define the names 
-  # that are possible to create; will be supplemented by call to mm_valid_names 
+
+  # check arguments and throw errors as needed. these checks define the names
+  # that are possible to create; will be supplemented by call to mm_valid_names
   # to see if a specific arg combo is actually implemented
-  if(type != 'Kmodel') {
+  if (type != 'Kmodel') {
     pool_K600 <- match.arg(pool_K600)
-    pool_all <- if(pool_K600 == 'none') 'none' else 'partial'
-    if(!is.logical(err_obs_iid) || length(err_obs_iid) != 1) stop("need err_obs_iid to be a logical of length 1")
-    if(!is.logical(err_proc_acor) || length(err_proc_acor) != 1) stop("need err_proc_acor to be a logical of length 1")
-    if(!is.logical(err_proc_iid) || length(err_proc_iid) != 1) stop("need err_proc_iid to be a logical of length 1")
-    if(!is.logical(err_proc_GPP) || length(err_proc_GPP) != 1) stop("need err_proc_GPP to be a logical of length 1")
+    pool_all <- if (pool_K600 == 'none') 'none' else 'partial'
+    if (!is.logical(err_obs_iid) || length(err_obs_iid) != 1) {
+      stop("need err_obs_iid to be a logical of length 1")
+    }
+    if (!is.logical(err_proc_acor) || length(err_proc_acor) != 1) {
+      stop("need err_proc_acor to be a logical of length 1")
+    }
+    if (!is.logical(err_proc_iid) || length(err_proc_iid) != 1) {
+      stop("need err_proc_iid to be a logical of length 1")
+    }
+    if (!is.logical(err_proc_GPP) || length(err_proc_GPP) != 1) {
+      stop("need err_proc_GPP to be a logical of length 1")
+    }
     ode_method <- match.arg(ode_method)
-    if(ode_method %in% c('Euler','pairmeans'))
-      warning("for ode_method, 'Euler' and 'pairmeans' are deprecated in favor of 'euler' and 'trapezoid'")
+    if (ode_method %in% c('Euler', 'pairmeans')) {
+      warning(
+        "for ode_method, 'Euler' and 'pairmeans' are deprecated in favor of 'euler' and 'trapezoid'"
+      )
+    }
     GPP_fun <- match.arg(GPP_fun)
     ER_fun <- match.arg(ER_fun)
     deficit_src <- match.arg(deficit_src)
   } else {
-    if(any(!(given_args %in% c('type','engine','check_validity'))))
-       stop("for Kmodel, only type, engine, and check_validity may be specified")
+    if (any(!(given_args %in% c('type', 'engine', 'check_validity')))) {
+      stop("for Kmodel, only type, engine, and check_validity may be specified")
+    }
   }
   engine <- match.arg(engine)
-  if(!(engine %in% list(bayes='stan', mle='nlm', night='lm', Kmodel=c('mean','lm','loess'), sim='rnorm')[[type]]))
-    stop("mismatch between type (",type,") and engine (",engine,")")
-  
+  if (
+    !(engine %in%
+      list(
+        bayes = 'stan',
+        mle = 'nlm',
+        night = 'lm',
+        Kmodel = c('mean', 'lm', 'loess'),
+        sim = 'rnorm'
+      )[[type]])
+  ) {
+    stop("mismatch between type (", type, ") and engine (", engine, ")")
+  }
+
   # make the name
   mmname <- paste0(
-    c(bayes='b', mle='m', night='n', Kmodel='K', sim='s')[[type]], '_',
-    c(none='', normal='Kn', linear='Kl', binned='Kb', complete='Kc')[[strsplit(pool_K600, '_')[[1]][[1]]]],
-    c(none_or_fitted='', sdzero='0', sdfixed='x')[[tryCatch(strsplit(pool_K600, '_')[[1]][[2]], error=function(e) 'none_or_fitted')]],
-    c(none='np', partial='', complete='')[[pool_all]], '_',
-    if(err_obs_iid) 'oi', if(err_proc_acor) 'pc', if(err_proc_iid) 'pi', if(err_proc_GPP) 'pp', '_',
-    c(Euler='Eu', pairmeans='pm', trapezoid='tr', rk2='r2', 
-      lsoda='o1', lsode='o2', lsodes='o3', lsodar='o4', vode='o5', daspk='o6', euler='eu', rk4='o8', 
-      ode23='o9', ode45='o10', radau='o11', bdf='o12', bdf_d='o13', adams='o14', impAdams='o15', impAdams_d='o16',
-      'NA'='')[[ode_method]], '_',
-    c(linlight='pl', satlight='ps', satlightq10temp='pq', 'NA'='')[[GPP_fun]],
-    c(constant='rc', q10temp='rq', 'NA'='')[[ER_fun]],
-    c(DO_mod='km', DO_obs='ko', DO_obs_filter='kf', 'NA'='')[[deficit_src]], 
-    '.', engine)
-  
+    c(bayes = 'b', mle = 'm', night = 'n', Kmodel = 'K', sim = 's')[[type]],
+    '_',
+    c(
+      none = '',
+      normal = 'Kn',
+      linear = 'Kl',
+      binned = 'Kb',
+      complete = 'Kc'
+    )[[strsplit(pool_K600, '_')[[1]][[1]]]],
+    c(none_or_fitted = '', sdzero = '0', sdfixed = 'x')[[tryCatch(
+      strsplit(pool_K600, '_')[[1]][[2]],
+      error = function(e) 'none_or_fitted'
+    )]],
+    c(none = 'np', partial = '', complete = '')[[pool_all]],
+    '_',
+    if (err_obs_iid) 'oi',
+    if (err_proc_acor) 'pc',
+    if (err_proc_iid) 'pi',
+    if (err_proc_GPP) 'pp',
+    '_',
+    c(
+      Euler = 'Eu',
+      pairmeans = 'pm',
+      trapezoid = 'tr',
+      rk2 = 'r2',
+      lsoda = 'o1',
+      lsode = 'o2',
+      lsodes = 'o3',
+      lsodar = 'o4',
+      vode = 'o5',
+      daspk = 'o6',
+      euler = 'eu',
+      rk4 = 'o8',
+      ode23 = 'o9',
+      ode45 = 'o10',
+      radau = 'o11',
+      bdf = 'o12',
+      bdf_d = 'o13',
+      adams = 'o14',
+      impAdams = 'o15',
+      impAdams_d = 'o16',
+      'NA' = ''
+    )[[ode_method]],
+    '_',
+    c(linlight = 'pl', satlight = 'ps', satlightq10temp = 'pq', 'NA' = '')[[
+      GPP_fun
+    ]],
+    c(constant = 'rc', q10temp = 'rq', 'NA' = '')[[ER_fun]],
+    c(DO_mod = 'km', DO_obs = 'ko', DO_obs_filter = 'kf', 'NA' = '')[[
+      deficit_src
+    ]],
+    '.',
+    engine
+  )
+
   # check validity if requested
-  check_validity <- if(!is.logical(check_validity)) stop("need check_validity to be a logical of length 1") else check_validity[1]
-  if(isTRUE(check_validity)) mm_validate_name(mmname)
-  
+  check_validity <- if (!is.logical(check_validity)) {
+    stop("need check_validity to be a logical of length 1")
+  } else {
+    check_validity[1]
+  }
+  if (isTRUE(check_validity)) {
+    mm_validate_name(mmname)
+  }
+
   # return
   mmname
 }

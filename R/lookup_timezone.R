@@ -16,14 +16,14 @@ lookup_timezone <- function(latitude, longitude) {
   lookup_key <- sprintf("%.10f,%.10f", latitude, longitude)
   tz_info <- pkg.env$tz_lookups[[lookup_key]]
 
-  if(is.null(tz_info)) {
+  if (is.null(tz_info)) {
     tz_name <- lutz::tz_lookup_coords(latitude, longitude, method = "accurate")
-    if(is.na(tz_name) || tz_name == "") {
+    if (is.na(tz_name) || tz_name == "") {
       stop("sorry, could not find time zone for specified lat/long")
     }
 
     # compute standard UTC offset using a non-DST reference date
-    ref_time <- if(latitude >= 0) {
+    ref_time <- if (latitude >= 0) {
       as.POSIXct("2015-01-01 12:00:00", tz = "UTC")
     } else {
       as.POSIXct("2015-07-01 12:00:00", tz = "UTC")
@@ -31,7 +31,12 @@ lookup_timezone <- function(latitude, longitude) {
     local <- as.POSIXlt(ref_time, tz = tz_name)
     std_offset <- local$gmtoff / 3600
 
-    tz_info <- list(tz = tz_name, dst_offset = 0, std_offset = std_offset, retry = 0)
+    tz_info <- list(
+      tz = tz_name,
+      dst_offset = 0,
+      std_offset = std_offset,
+      retry = 0
+    )
     pkg.env$tz_lookups[[lookup_key]] <- tz_info
   }
 

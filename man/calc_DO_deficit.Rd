@@ -8,17 +8,13 @@ calc_DO_deficit(DO.obs, temp.water, pressure.air, salinity.water = 0, ...)
 }
 \arguments{
 \item{DO.obs}{a numeric vector of dissolved oxygen concentration
-observations, mgO2 L^-1, or a \linkS4class{unitted} object of dissolved
-oxygen concentrations.}
+observations, mgO2 L^-1.}
 
-\item{temp.water}{a numeric vector of water temperature in degrees Celsius,
-or a \linkS4class{unitted} object of water temperatures.}
+\item{temp.water}{a numeric vector of water temperature in degrees Celsius.}
 
-\item{pressure.air}{barometric pressure in millibars, or a
-\linkS4class{unitted} object of barometric pressure.}
+\item{pressure.air}{barometric pressure in millibars.}
 
-\item{salinity.water}{a numeric vector of salinity in PSU, or a
-\linkS4class{unitted} object of salinity. Defaults to zero. Length must be
+\item{salinity.water}{a numeric vector of salinity in PSU. Defaults to zero. Length must be
 one or equal to length of \code{temp.water}.}
 
 \item{...}{additional parameters passed to

@@ -108,10 +108,10 @@ temperature-normalized base rate. \cr \code{ER(t) = ER20 * 1.045 ^
 
 \item{deficit_src}{character. From what DO estimate (observed or modeled)
 should the DO deficit be computed? Options: \itemize{ \item \code{DO_mod}:
-the DO deficit at time t will be {(DO.sat(t) - DO_mod(t))}, the difference
+the DO deficit at time t will be \eqn{(DO.sat(t) - DO_mod(t))}, the difference
 between the equilibrium-saturation value and the current best estimate of
 the true DO concentration at that time \item \code{DO_obs}: the DO deficit
-at time t will be {(DO.sat(t) - DO.obs(t))}, the difference between the
+at time t will be \eqn{(DO.sat(t) - DO.obs(t))}, the difference between the
 equilibrium-saturation value and the measured DO concentration at that time
 \item \code{DO_obs_filter}: applicable only to \code{type='night'}: a
 smoothing filter is applied over the measured DO.obs values before applying
