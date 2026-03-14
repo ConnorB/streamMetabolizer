@@ -1,85 +1,54 @@
 #' Determine the local time zone from the coordinates
 #'
-#' Uses the Google API (and/or the package cache) to determine the local
-#' timezone name, offset, and DST offset of a site
+#' Uses the \code{lutz} package to determine the local timezone name, standard
+#' offset, and DST offset of a site from its coordinates.
 #'
 #' @param latitude degrees latitude (positive for north) of the location to look
 #'   up.
 #' @param longitude degrees longitude (positive for east) of the location to
 #'   look up.
+#' @importFrom lutz tz_lookup_coords
 #' @export
 #' @examples
 #' lookup_timezone(41.33, -106.3)
 lookup_timezone <- function(latitude, longitude) {
-  # ask the cache for a time offset. The Google API limits requests to 5/sec, so
-  # caching helps limit the number of requests we have to make
+  # check the cache first
   lookup_key <- sprintf("%.10f,%.10f", latitude, longitude)
   tz_info <- pkg.env$tz_lookups[[lookup_key]]
 
-  # if it's not in the cache, go to Google. give lookup another chance if it
-  # didn't come out right and we haven't tried too many times already
-  if(is.null(tz_info) || tz_info$retry > 0) {
-    warning("Google timezone lookup now requires an API key; see http://g.co/dev/maps-no-account or provide the timezone")
-    retry <- if(is.null(tz_info)) 3 else tz_info$retry # set/extract the retry info
-    tz_info <- tryCatch(
-      lookup_google_timezone(latitude, longitude),
-      error=function(e) list(tz="", dst_offset=NA, std_offset=NA))
-    failure <- tz_info$tz == "" || is.na(tz_info$std_offset)
-    tz_info$retry <- if(failure) retry - 1 else 0 # check the output for validity
-    pkg.env$tz_lookups[[lookup_key]] <- tz_info # update tz_lookups
+  if(is.null(tz_info)) {
+    tz_name <- lutz::tz_lookup_coords(latitude, longitude, method = "accurate")
+    if(is.na(tz_name) || tz_name == "") {
+      stop("sorry, could not find time zone for specified lat/long")
+    }
+
+    # compute standard UTC offset using a non-DST reference date
+    ref_time <- if(latitude >= 0) {
+      as.POSIXct("2015-01-01 12:00:00", tz = "UTC")
+    } else {
+      as.POSIXct("2015-07-01 12:00:00", tz = "UTC")
+    }
+    local <- as.POSIXlt(ref_time, tz = tz_name)
+    std_offset <- local$gmtoff / 3600
+
+    tz_info <- list(tz = tz_name, dst_offset = 0, std_offset = std_offset, retry = 0)
+    pkg.env$tz_lookups[[lookup_key]] <- tz_info
   }
-  # fails here if we've failed this time or given up completely
-  if(tz_info$tz == "") stop("sorry, could not find time zone for specified lat/long")
+
   tz_info
 }
 
 #' Use Google API to determine local time zone
 #'
-#' This function uses two packages, \code{RCurl} and \code{XML}, that are not
-#' required for the \code{streamMetabolizer} package as a whole. If these are
-#' not already installed, run \code{install.packages(c('RCurl','XML'))} before
-#' calling \code{lookup_google_timezone}.
+#' @description
+#' `r lifecycle::badge("defunct")`
 #'
-#' Some parameter definitions below are copied directly from the API webpage.
+#' This function has been replaced by \code{\link{lookup_timezone}}, which uses
+#' the \code{lutz} package for offline timezone lookup instead of the Google API.
 #'
 #' @inheritParams lookup_timezone
-#' @param timestamp POSIXct representation of a time - determines daylight
-#'   savings offset, if any. the default is Jan 1 for northern latitudes and
-#'   July 1 for southern latitudes, i.e., a time surely not during daylight
-#'   savings time.
-#' @references https://developers.google.com/maps/documentation/timezone/
-#' @export
-lookup_google_timezone <- function(
-  latitude, longitude,
-  timestamp=if(latitude >= 0) as.POSIXct("2015-01-01 00:00:00", tz="UTC") else as.POSIXct("2015-07-01 00:00:00", tz="UTC")) {
-
-  called_as_internal <- all(c(':::','streamMetabolizer') %in% as.character(sys.call()[[1]])) ||
-    any(sapply(sys.calls()[-sys.nframe()], function(sc) if(class(sc[[1]]) == 'name') tail(as.character(sc[[1]]), 1) else NA) %in%
-          ls(envir = asNamespace("streamMetabolizer")))
-  if(!called_as_internal) {
-    .Deprecated('lookup_timezone') # deprecation plan is to make this internal. everybody can and should use the lookup_timezone instead
-  }
-
-
-  # check for required packages specific to this function
-  if(!requireNamespace("RCurl", quietly = TRUE)) {
-    stop("the RCurl package must be installed to use this function")
-  }
-  if(!requireNamespace("XML", quietly = TRUE)) {
-    stop("the XML package must be installed to use this function")
-  }
-
-  # ask google
-  api.url <- sprintf("https://maps.googleapis.com/maps/api/timezone/xml?location=%s,%s&timestamp=%d",
-                     # &sensor=false - "The Google Maps API previously required that you include the sensor parameter to indicate whether your application used a sensor to determine the user's location. This parameter is no longer required."
-                     latitude,
-                     longitude,
-                     as.numeric(as.POSIXct(timestamp, origin="1970-01-01 00:00:00 UTC")))
-  api.out <- RCurl::getURL(api.url, .opts = list(ssl.verifypeer = FALSE))
-  out.parsed <- XML::xmlParse(api.out)
-  return(list(
-    tz = out.parsed[["string(//time_zone_id)"]],
-    dst_offset = as.numeric(out.parsed[["string(//dst_offset)"]])/3600,
-    std_offset = as.numeric(out.parsed[["string(//raw_offset)"]])/3600
-  ))
+#' @param timestamp Ignored. Kept for backward compatibility.
+#' @keywords internal
+lookup_google_timezone <- function(latitude, longitude, timestamp = NULL) {
+  .Defunct("lookup_timezone")
 }

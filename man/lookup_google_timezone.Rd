@@ -4,12 +4,7 @@
 \alias{lookup_google_timezone}
 \title{Use Google API to determine local time zone}
 \usage{
-lookup_google_timezone(
-  latitude,
-  longitude,
-  timestamp = if (latitude >= 0) as.POSIXct("2015-01-01 00:00:00", tz = "UTC") else
-    as.POSIXct("2015-07-01 00:00:00", tz = "UTC")
-)
+lookup_google_timezone(latitude, longitude, timestamp = NULL)
 }
 \arguments{
 \item{latitude}{degrees latitude (positive for north) of the location to look
@@ -18,20 +13,12 @@ up.}
 \item{longitude}{degrees longitude (positive for east) of the location to
 look up.}
 
-\item{timestamp}{POSIXct representation of a time - determines daylight
-savings offset, if any. the default is Jan 1 for northern latitudes and
-July 1 for southern latitudes, i.e., a time surely not during daylight
-savings time.}
+\item{timestamp}{Ignored. Kept for backward compatibility.}
 }
 \description{
-This function uses two packages, \code{RCurl} and \code{XML}, that are not
-required for the \code{streamMetabolizer} package as a whole. If these are
-not already installed, run \code{install.packages(c('RCurl','XML'))} before
-calling \code{lookup_google_timezone}.
+`r lifecycle::badge("defunct")`
+
+This function has been replaced by \code{\link{lookup_timezone}}, which uses
+the \code{lutz} package for offline timezone lookup instead of the Google API.
 }
-\details{
-Some parameter definitions below are copied directly from the API webpage.
-}
-\references{
-https://developers.google.com/maps/documentation/timezone/
-}
+\keyword{internal}

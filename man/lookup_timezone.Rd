@@ -14,8 +14,8 @@ up.}
 look up.}
 }
 \description{
-Uses the Google API (and/or the package cache) to determine the local
-timezone name, offset, and DST offset of a site
+Uses the \code{lutz} package to determine the local timezone name, standard
+offset, and DST offset of a site from its coordinates.
 }
 \examples{
 lookup_timezone(41.33, -106.3)

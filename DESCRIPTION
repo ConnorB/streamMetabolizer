@@ -39,6 +39,7 @@ Imports:
     lazyeval,
     lifecycle,
     lubridate,
+    lutz,
     methods,
     stats,
     tibble (>= 1.1.0),
