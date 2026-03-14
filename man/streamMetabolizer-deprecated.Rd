@@ -16,12 +16,17 @@ release.
   \item \code{\link{calc_sun_rise_set}} - if you like and want this function, submit a GitHub issue to keep it
 }
 
-These functions will are currently exported but will soon be internal-only.
+These functions are defunct and will error when called:
+
+\itemize{
+  \item \code{lookup_google_timezone} - use \code{\link{lookup_timezone}} instead
+}
+
+These functions are currently exported but will soon be internal-only.
 You are encouraged not to use these.
 
 \itemize{
   \item \code{\link{convert_date_to_doyhr}}
   \item \code{\link{convert_doyhr_to_date}}
-  \item \code{\link{lookup_google_timezone}} - use \code{\link{lookup_timezone}} instead
 }
 }
