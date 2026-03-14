@@ -16,3 +16,9 @@ temp
 ^\.github$
 ^\.claude$
 ^\.conductor$
+^CODE_OF_CONDUCT\.md$
+^CONTRIBUTING\.md$
+^DISCLAIMER\.md$
+^LICENSE\.md$
+^README\.Rmd$
+^code\.json$
