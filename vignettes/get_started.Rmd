@@ -88,7 +88,7 @@ At this point we can alter some of the specifications if desired.
 # one way to alter specifications: call specs() again
 bayes_specs <- specs(bayes_name, burnin_steps=100, saved_steps=200, n_cores=1, GPP_daily_mu=3, GPP_daily_sigma=2)
 # another way: use revise()
-bayes_specs <- revise(bayes_specs, burnin_steps=100, saved_steps=200, n_cores=1, GPP_daily_mu=3, GPP_daily_sigma=2)
+bayes_specs <- revise(bayes_specs, burnin_steps=100, saved_steps=200, n_cores=1, GPP_daily_mu=3, GPP_daily_sigma=2, stan_engine = "cmdstanr")
 ```
 
 Here I've used a very small number of `burnin_steps` and `saved_steps` because I don't want to 
@@ -154,7 +154,9 @@ returns a Stan model object that can be inspected using the `rstan` or `cmdstanr
 should strive for better in your final models.)
 ```{r, fig.width=5, fig.height=5}
 mcmc <- get_mcmc(mm)
-rstan::traceplot(mcmc, pars='K600_daily', nrow=3)
+bayesplot::mcmc_trace(mcmc$draws("K600_daily"), n_warmup = 0) +
+  ggplot2::facet_wrap(~ parameter, nrow = 3)
+#rstan::traceplot(mcmc, pars='K600_daily', nrow=3)
 ```
 
 The `get_fit()` function returns a list of data.frames, one per temporal
