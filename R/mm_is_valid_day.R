@@ -78,7 +78,7 @@ mm_is_valid_day <- function(
   if('full_day' %in% day_tests & is.finite(timestep.days)) {
     # date_counts <- table(format(data_ply$solar.time, "%Y-%m-%d"))
     # ply_date <- names(date_counts)[which.max(date_counts)]
-    date_start <- as.POSIXct(paste0(as.character(ply_date), " 00:00:00"), tz=lubridate::tz(v(data_ply$solar.time)))
+    date_start <- as.POSIXct(paste0(as.character(ply_date), " 00:00:00"), tz=lubridate::tz(data_ply$solar.time))
     similar_time <- function(a, b, tol) {
       abs(as.numeric(a, units="days") - as.numeric(b, units="days")) < as.numeric(tol, units="days")
     }
@@ -120,14 +120,14 @@ mm_is_valid_day <- function(
   # Require discharge (if present) to be positive at all times
   if('pos_discharge' %in% day_tests) {
     if('discharge' %in% names(data_ply) && any(!is.na(data_ply$discharge))) {
-      if(any(unitted::v(data_ply$discharge[which(!is.na(data_ply$discharge))]) <= 0)) 
+      if(any(data_ply$discharge[which(!is.na(data_ply$discharge))] <= 0)) 
         stop_strs <- c(stop_strs, "discharge <= 0")
     }
   }
   
   # Require depth to be positive at all times. Models break on 0 depth and misbehave on negative depth
   if('pos_depth' %in% day_tests) {
-    if(any(unitted::v(data_ply$depth[which(!is.na(data_ply$depth))]) <= 0)) 
+    if(any(data_ply$depth[which(!is.na(data_ply$depth))] <= 0)) 
       stop_strs <- c(stop_strs, "depth <= 0")
   }
   

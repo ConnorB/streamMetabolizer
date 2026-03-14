@@ -42,8 +42,7 @@ Imports:
     methods,
     stats,
     tibble (>= 1.1.0),
-    tidyr,
-    unitted (>= 0.2.8)
+    tidyr
 Suggests:
     chron,
     devtools,
@@ -60,8 +59,6 @@ Suggests:
     XML,
     xts,
     rmarkdown
-Remotes:
-    github::appling/unitted
 Collate:
     '01-onLoad.R'
     'calc_DO_deficit.R'

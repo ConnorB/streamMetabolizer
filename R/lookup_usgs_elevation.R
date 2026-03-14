@@ -15,7 +15,6 @@
 #' @param units character, one of Meters or Feet, specifying the units in which
 #'   to return the elevation
 #' @references https://nationalmap.gov/epqs/
-#' @importFrom unitted u
 #' @export
 lookup_usgs_elevation <- function(
   latitude, longitude, units=c("Meters","Feet")) {
@@ -42,6 +41,6 @@ lookup_usgs_elevation <- function(
     "Meters"="m")
   return(list(
     data_source = out.parsed[["string(//Data_Source)"]],
-    elevation = u(as.numeric(out.parsed[["string(//Elevation)"]]), out.units)
+    elevation = as.numeric(out.parsed[["string(//Elevation)"]])
   ))
 }

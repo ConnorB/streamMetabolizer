@@ -7,12 +7,12 @@ test_that("French Creek data are similar for streamMetabolizer & Bob Hall's code
   fy <- streamMetabolizer:::load_french_creek_std()# %>% arrange(solar.time)
   expect_equal(dim(fx), dim(fy))
   expect_equal(names(fx), names(fy))
-  expect_equal(sapply(unitted::v(fx), class), sapply(fy, class))
-  expect_equal(unitted::v(fx$DO.obs), fy$DO.obs)
-  expect_equal(unitted::v(fx$solar.time), fy$solar.time)
+  expect_equal(sapply(fx, class), sapply(fy, class))
+  expect_equal(fx$DO.obs, fy$DO.obs)
+  expect_equal(fx$solar.time, fy$solar.time)
 
   # combine for further comparison
-  fxy <- dplyr::full_join(unitted::v(fx), fy, by="solar.time")
+  fxy <- dplyr::full_join(fx, fy, by="solar.time")
   expect_equal(nrow(fx), nrow(fxy))
   expect_equal(fxy$solar.time.x, fxy$solar.time.y)
 

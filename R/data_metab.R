@@ -12,7 +12,6 @@
 #'   or empty (\code{c()}) for no flaws. default is no flaws.
 #' @inheritParams mm_model_by_ply
 #' @inheritParams load_french_creek
-#' @importFrom unitted u v get_units
 #' @importFrom lifecycle deprecated is_present
 #' @examples
 #' head(data_metab())
@@ -30,19 +29,11 @@ data_metab <- function(
   flaws <- if(missing(flaws)) c() else match.arg(flaws, several.ok=TRUE)
   if (lifecycle::is_present(attach.units)) {
     # only warn if it's TRUE
-    if(isTRUE(attach.units)) unitted_deprecate_warn("data_metab(attach.units)")
-  } else {
-    attach.units <- FALSE
+    if(isTRUE(attach.units)) lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::data_metab(attach.units)")
   }
 
   # load the french creek data
-  french <- load_french_creek(attach.units = attach.units)
-
-  # take off units temporarily, if present, to make it easier to manipulate datetimes
-  if(attach.units) {
-    french_units <- unitted::get_units(french)
-    french <- unitted::v(french)
-  }
+  french <- load_french_creek()
 
   # fill in holes in the part of the data we'll be using
   french <- french[c(1:6352, rep(6353, 3), 6354:7772, rep(7773, 2), 7774:nrow(french)),]
@@ -116,11 +107,6 @@ data_metab <- function(
   # subset by resolution
   sub_times <- orig_times[seq(1, length(orig_times), by=res/5)]
   french <- french[french$solar.time %in% sub_times, ]
-
-  # add back units if requested
-  if(attach.units) {
-    french <- unitted::u(french, french_units)
-  }
 
   # return
   french

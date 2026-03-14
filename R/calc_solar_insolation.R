@@ -2,28 +2,16 @@
 #'
 #' @param degrees angle in degrees
 #' @return angle in radians
-#' @importFrom unitted u is.unitted verify_units
 to_radians <- function(degrees) {
-  if(is.unitted(degrees)) {
-    verify_units(degrees, "deg")
-    degrees * u(pi / 180, "rad deg^-1")
-  } else {
-    degrees * pi / 180
-  }
+  degrees * pi / 180
 }
 
 #' Convert radians to degrees
 #'
 #' @param radians angle in radians
 #' @return angle in degrees
-#' @importFrom unitted u is.unitted verify_units
 to_degrees <- function(radians) {
-  if(is.unitted(radians)) {
-    verify_units(radians, "rad")
-    radians * u(180 / pi, "deg rad^-1")
-  } else {
-    radians * 180 / pi
-  }
+  radians * 180 / pi
 }
 
 #' Calculate declination angle as in Yard et al. (2005)
@@ -35,13 +23,12 @@ to_degrees <- function(radians) {
 #' @return numeric value or vector, in the units specified by \code{format},
 #'   indicating the declination angle corresponding to each value supplied in
 #'   \code{jday}.
-#' @importFrom unitted u is.unitted
 #' @examples
 #' decdf <- data.frame(jday=1:366,
 #'   dec=streamMetabolizer:::calc_declination_angle(1:366))
 #' \dontrun{
 #' library(ggplot2)
-#' ggplot(unitted::v(decdf), aes(x=jday, y=dec)) + geom_line()
+#' ggplot(decdf, aes(x=jday, y=dec)) + geom_line()
 #' }
 #' @references Yard, Michael D., Glenn E. Bennett, Steve N. Mietz, Lewis G.
 #'   Coggins Jr., Lawrence E. Stevens, Susan Hueftle, and Dean W. Blinn.
@@ -50,11 +37,10 @@ to_degrees <- function(radians) {
 #'   (April 25, 2005): 157-72. doi:10.1016/j.ecolmodel.2004.07.027.
 calc_declination_angle <- function(jday, format=c("degrees", "radians")) {
   format <- match.arg(format)
-  declination.angle <- u(23.439,"deg")*sin(to_radians((360/365)*(283+v(jday))))
+  declination.angle <- 23.439 * sin(to_radians((360/365)*(283+jday)))
   if(format == "radians") {
     declination.angle <- to_radians(declination.angle)
   }
-  if(is.unitted(jday)) declination.angle <- u(declination.angle, substr(format, 1, 3))
   declination.angle
 }
 
@@ -70,7 +56,6 @@ calc_declination_angle <- function(jday, format=c("degrees", "radians")) {
 #'   or "radians".
 #' @return numeric value or vector, in the units specified by \code{format},
 #'   indicating the angle corresponding to each value supplied in \code{hour}.
-#' @importFrom unitted u is.unitted
 #' @examples
 #' hourdf <- data.frame(hour=c(0:12,12.5:23.5),
 #'   hragl=streamMetabolizer:::calc_hour_angle(c(0:12,12.5:23.5)))
@@ -82,9 +67,7 @@ calc_declination_angle <- function(jday, format=c("degrees", "radians")) {
 calc_hour_angle <- function(hour, format=c("degrees", "radians")) {
   format <- match.arg(format)
   hour.angle <- (360/24)*(hour-12)
-  if(is.unitted(hour)) hour.angle <- u(hour.angle, "deg")
   if(format=="radians") hour.angle <- to_radians(hour.angle)
-  if(is.unitted(hour)) hour.angle <- u(hour.angle, substr(format, 1, 3))
   hour.angle
 }
 
@@ -99,7 +82,6 @@ calc_hour_angle <- function(hour, format=c("degrees", "radians")) {
 #' @param hour.angle numeric value or vector, in the units specified by
 #'   \code{format}, indicating the angle.
 #' @param format The format of both the output. May be "degrees" or "radians".
-#' @importFrom unitted u is.unitted get_units
 #' @examples
 #' zendf <- data.frame(
 #'   lat=rep(c(0,20,40,60), each=24*4),
@@ -112,21 +94,12 @@ calc_hour_angle <- function(hour, format=c("degrees", "radians")) {
 #'   zen=streamMetabolizer:::calc_zenith_angle(lat, dec, hragl))
 #' \dontrun{
 #' library(ggplot2)
-#' ggplot(unitted::v(zendf), aes(x=hour, y=zen, color=jday, group=jday)) +
+#' ggplot(zendf, aes(x=hour, y=zen, color=jday, group=jday)) +
 #'   geom_line() + facet_wrap(~lat) +
 #'   ggtitle('zenith angles by latitude (panels) and day of year (colors)')
 #' }
 calc_zenith_angle <- function(latitude, declination.angle, hour.angle, format=c("degrees", "radians")) {
   format <- match.arg(format)
-  if(is.unitted(latitude)) {
-    # convert latitude units to plain 'deg' as needed
-    latitude <-
-      switch(
-        get_units(latitude),
-        "deg"=latitude,
-        "degN"=u(latitude, "deg"),
-        "degS"=u(-latitude, "deg"))
-  }
   latitude <- to_radians(latitude)
   if(format == "degrees") {
     declination.angle <- to_radians(declination.angle)
@@ -145,7 +118,6 @@ calc_zenith_angle <- function(latitude, declination.angle, hour.angle, format=c(
 #' Model solar insolation on a horizontal surface (W/m2 == J/s/m2) as in
 #' http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html
 #'
-#' @importFrom unitted u
 #' @importFrom lifecycle deprecated is_present
 #' @param app.solar.time POSIXct vector of date-time values in apparent solar
 #'   time, e.g., as returned by \code{convert_UTC_to_solartime(...,
@@ -178,16 +150,9 @@ calc_solar_insolation <- function(
   app.solar.time, latitude, max.insolation=convert_PAR_to_SW(2326),
   format=c("degrees", "radians"), attach.units=deprecated()) {
 
-  # check units-related arguments. old default was attach.units=is.unitted(app.solar.time)
+  # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    # only warn if it's TRUE
-    if(isTRUE(attach.units)) unitted_deprecate_warn("calc_solar_insolation(attach.units)")
-  } else if (is.unitted(app.solar.time)) {
-    unitted_deprecate_warn("calc_solar_insolation(app.solar.time.unitted)")
-    message('in calc_solar_insolation, setting attach.units=TRUE because is.unitted(app.solar.time)')
-    attach.units <- TRUE
-  } else {
-    attach.units <- FALSE
+    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::calc_solar_insolation(attach.units)")
   }
 
   format <- match.arg(format)
@@ -198,11 +163,5 @@ calc_solar_insolation <- function(
   zenith.angle <- calc_zenith_angle(latitude, declination.angle, hour.angle, format=format)
   if(format=="degrees") zenith.angle <- to_radians(zenith.angle)
   insolation <- max.insolation * cos(zenith.angle)
-  insolation <- u(pmax(v(insolation), 0), get_units(insolation))
-
-  if(attach.units) {
-    u(insolation, "W m^-2")
-  } else {
-    v(insolation)
-  }
+  pmax(insolation, 0)
 }

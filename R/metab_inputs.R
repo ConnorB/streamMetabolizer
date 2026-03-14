@@ -3,7 +3,6 @@
 #' @param type the type of model you want to fit
 #' @param input the name of an argument to pass into metab()
 #' @import dplyr
-#' @importFrom unitted v u get_units
 #' @examples 
 #' metab_inputs('night','specs')
 #' metab_inputs('bayes','data')
@@ -23,7 +22,7 @@ metab_inputs <- function(type=c('bayes','mle','night','Kmodel','sim'), input=c('
     mfun <- paste0('metab_',type)
     eg <- eval(formals(mfun)[[input]])
     # reformat so there's a row each for units, format, example, and optional-T/F
-    if(is.null(v(eg))) {
+    if(is.null(eg)) {
       'NULL'
     } else {
       . <- 'dplyr.var'
@@ -32,12 +31,9 @@ metab_inputs <- function(type=c('bayes','mle','night','Kmodel','sim'), input=c('
           names(eg)
         }, 
         class = {
-          sapply(unname(v(eg)), function(col) paste0(class(col), collapse=','))
+          sapply(unname(eg), function(col) paste0(class(col), collapse=','))
         },
-        units = {
-          get_units(eg) %>%
-            unname()
-        },
+        units = rep(NA_character_, ncol(eg)),
         need = {
           opt <- attr(eg, 'optional')
           opt_vec <- if(opt[1]=='all') {

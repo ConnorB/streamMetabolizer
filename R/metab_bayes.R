@@ -78,38 +78,20 @@ metab_bayes <- function(
         data.frame(discharge.daily = if(isTRUE(ply_validity[1])) mean(data_ply$discharge) else NA)
       }
       dischdaily <- mm_model_by_ply(
-        model_fun=dailymean, data=v(dat_list$data), day_start=specs$day_start, day_end=specs$day_end,
+        model_fun=dailymean, data=dat_list$data, day_start=specs$day_start, day_end=specs$day_end,
         day_tests=specs$day_tests, required_timestep=specs$required_timestep)
 
-      # add units if either of the input dfs were unitted
-      if(is.unitted(dat_list$data) || is.unitted(dat_list$data_daily)) {
-        dischdaily_units <- get_units(mm_data(date, discharge.daily))
-        if(is.unitted(dat_list$data)) {
-          if(dischdaily_units['discharge.daily'] != get_units(dat_list$data$discharge))
-            stop('mismatch between discharge units in data (',get_units(dat_list$data$discharge),
-                 ') and requirement for data_daily (', dischdaily_units['discharge.daily'] ,')')
-        }
-        dischdaily <- u(dischdaily, dischdaily_units)
-      }
-
       # merge with any existing dat_list$data_daily
-      if(is.null(v(dat_list$data_daily))) {
+      if(is.null(dat_list$data_daily)) {
         dat_list$data_daily <- dischdaily
       } else {
-        # need both or neither dfs to be unitted for the full_join. if
-        # data_daily was unitted then dischdaily will already also be unitted
-        # (see add units chunk above), so just check/fix the case where
-        # data_daily lacks units but data & therefore dischdaily has them
-        if(is.unitted(dischdaily) && !is.unitted(dat_list$data_daily)) {
-          dat_list$data_daily <- u(dat_list$data_daily, get_units(mm_data()[names(dat_list$data_daily)]))
-        }
         dat_list$data_daily <- full_join(dat_list$data_daily, dischdaily, by='date')
       }
     }
     # If we have discharge.daily, then we need logged discharge.daily. compute
     # and store it now
     if('discharge.daily' %in% names(dat_list$data_daily)) {
-      dat_list$data_daily$lnQ.daily <- log(v(dat_list$data_daily$discharge.daily))
+      dat_list$data_daily$lnQ.daily <- log(dat_list$data_daily$discharge.daily)
     }
     # If we need discharge bins, compute & store those now, as well
     if(pool_K600_type %in% c('binned')) {
@@ -129,9 +111,8 @@ metab_bayes <- function(
         lnQ.bin2.weight = 1-weights)
     }
 
-    # Use de-unitted version until we pack up the model to return
-    data <- v(dat_list$data)
-    data_daily <- v(dat_list$data_daily)
+    data <- dat_list$data
+    data_daily <- dat_list$data_daily
 
     # Check and parse model file path
     specs$model_path <- mm_locate_filename(specs$model_name)
@@ -450,16 +431,13 @@ bayes_allply <- function(
 #' @inheritParams mm_model_by_ply_prototype
 #' @inheritParams metab
 #' @return list of data for input to runstan_bayes
-#' @importFrom unitted v
 #' @keywords internal
 prepdata_bayes <- function(
   data, data_daily, ply_date=NA, # inheritParams mm_model_by_ply_prototype
   specs # inheritParams metab (for hierarchical priors, model_name)
 ) {
 
-  # remove units if present
-  data <- v(data)
-  data_daily <- v(data_daily)
+  # (formerly removed units here, no longer needed)
   if(length(ply_date) != 1) stop("ply_date must have length 1")
   if(!is.na(ply_date)) data$date <- as.Date(ply_date)
 
@@ -1021,7 +999,6 @@ print.logs_metab <- function(x, ...) {
 #'   models run faster and use less RAM.
 #' @export
 #' @import dplyr
-#' @importFrom unitted get_units u
 #' @importFrom lifecycle deprecated is_present
 predict_metab.metab_bayes <- function(metab_model, date_start=NA, date_end=NA, ..., attach.units=deprecated()) {
   # with Bayesian models, the daily mean metabolism values of GPP, ER, and D
@@ -1088,11 +1065,7 @@ predict_metab.metab_bayes <- function(metab_model, date_start=NA, date_end=NA, .
     warnings=if(length(metab_model@fit$errors) > 0) NA else '',
     errors=if(length(metab_model@fit$errors) > 0) NA else '')
 
-  # attach.units if requested
-  if(attach.units) {
-    pred.units <- get_units(mm_data())[sapply(names(preds), function(x) strsplit(x, '\\.')[[1]][1], USE.NAMES=FALSE)]
-    preds <- u(preds, pred.units)
-  }
+
   preds
 }
 
@@ -1107,7 +1080,7 @@ get_params.metab_bayes <- function(
 
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    unitted_deprecate_warn("get_params(attach.units)")
+    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::get_params(attach.units)")
   } else {
     attach.units <- FALSE
   }

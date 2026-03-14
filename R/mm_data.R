@@ -1,7 +1,7 @@
 #' Return the data types that may be used by metab_models using the
 #' metab_model_interface.
 #'
-#' @description Produces a unitted data.frame with the column names, units, and
+#' @description Produces a data.frame with the column names and
 #'   data format to be used by metab_models that comply strictly with the
 #'   metab_model_interface. These are the columns that may be included:
 #'
@@ -80,7 +80,6 @@
 #' @return data data.frame with columns as in the description
 #'
 #' @export
-#' @importFrom unitted u v get_units
 #' @importFrom lazyeval lazy_dots
 #' @import dplyr
 #' @examples
@@ -93,52 +92,52 @@
 #' # columns typical of daily data
 #' mm_data(date, K600.daily, discharge.daily, velocity.daily)
 mm_data <- function(..., optional='none') {
-  dat <- list(
-    solar.time = u(as.POSIXct("2050-03-14 15:10:00", tz="UTC"), NA),
-    DO.obs =     u(10.1,"mgO2 L^-1"),
-    DO.sat =     u(14.2,"mgO2 L^-1"),
-    depth =      u(0.5,"m"),
-    temp.water = u(21.8,"degC"),
-    light =      u(300.9,"umol m^-2 s^-1"),
-    discharge =  u(9,"m^3 s^-1"),
-    velocity =   u(2,"m s^-1"),
-    date =       u(as.Date("2050-03-14", tz="UTC"), NA),
-    DO.mod.1 =   u(7.5,"mgO2 L^-1"),
-    err.obs.sigma = u(0.01,"mgO2 L^-1"),
-    err.obs.phi = u(0, NA),
-    err.proc.sigma = u(5,"gO2 m^-2 d^-1"),
-    err.proc.phi = u(0, NA),
-    GPP.daily =  u(5,"gO2 m^-2 d^-1"),
-    Pmax =       u(10,"gO2 m^-2 d^-1"),
-    alpha =      u(0.0001, "gO2 s d^-1 umol^-1"),
-    ER.daily =   u(-10,"gO2 m^-2 d^-1"),
-    ER20 =       u(-10,"gO2 m^-2 d^-1"),
-    K600.daily = u(10,"d^-1"),
-    K600.daily.lower = u(4.5,"d^-1"),
-    K600.daily.upper = u(15.6,"d^-1"),
-    init.GPP.daily =  u(5,"gO2 m^-2 d^-1"),
-    init.Pmax =       u(10,"gO2 m^-2 d^-1"),
-    init.alpha =      u(0.0001, "gO2 s d^-1 umol^-1"),
-    init.ER.daily =   u(-10,"gO2 m^-2 d^-1"),
-    init.ER20 =       u(-10,"gO2 m^-2 d^-1"),
-    init.K600.daily = u(10,"d^-1"),
-    discharge.daily = u(9,"m^3 s^-1"),
-    velocity.daily =  u(2,"m s^-1"),
-    GPP =       u(5,"gO2 m^-2 d^-1"),
-    GPP.lower = u(4,"gO2 m^-2 d^-1"),
-    GPP.upper = u(6,"gO2 m^-2 d^-1"),
-    ER =        u(-5,"gO2 m^-2 d^-1"),
-    ER.lower =  u(-6,"gO2 m^-2 d^-1"),
-    ER.upper =  u(-4,"gO2 m^-2 d^-1"),
-    D =         u(5,"gO2 m^-3 d^-1"),
-    D.lower =   u(5,"gO2 m^-3 d^-1"),
-    D.upper =   u(5,"gO2 m^-3 d^-1")
+  dat <- data.frame(
+    solar.time = as.POSIXct("2050-03-14 15:10:00", tz="UTC"),
+    DO.obs =     10.1,
+    DO.sat =     14.2,
+    depth =      0.5,
+    temp.water = 21.8,
+    light =      300.9,
+    discharge =  9,
+    velocity =   2,
+    date =       as.Date("2050-03-14"),
+    DO.mod.1 =   7.5,
+    err.obs.sigma = 0.01,
+    err.obs.phi = 0,
+    err.proc.sigma = 5,
+    err.proc.phi = 0,
+    GPP.daily =  5,
+    Pmax =       10,
+    alpha =      0.0001,
+    ER.daily =   -10,
+    ER20 =       -10,
+    K600.daily = 10,
+    K600.daily.lower = 4.5,
+    K600.daily.upper = 15.6,
+    init.GPP.daily =  5,
+    init.Pmax =       10,
+    init.alpha =      0.0001,
+    init.ER.daily =   -10,
+    init.ER20 =       -10,
+    init.K600.daily = 10,
+    discharge.daily = 9,
+    velocity.daily =  2,
+    GPP =       5,
+    GPP.lower = 4,
+    GPP.upper = 6,
+    ER =        -5,
+    ER.lower =  -6,
+    ER.upper =  -4,
+    D =         5,
+    D.lower =   5,
+    D.upper =   5,
+    stringsAsFactors = FALSE
   )
-  dat <- u(as.data.frame(lapply(dat, v)), sapply(dat, get_units))
   .dots <- lazy_dots(...)
   .nulldot <- length(.dots) == 1 && is.null(.dots[[1]]$expr)
   dat <- if(isTRUE(.nulldot)) {
-    u(NULL)
+    NULL
   } else if(length(.dots) == 0) {
     dat
   } else {

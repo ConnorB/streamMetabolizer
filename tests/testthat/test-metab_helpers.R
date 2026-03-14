@@ -3,7 +3,7 @@ context("metab_model_helpers")
 test_that("mm_data works", {
 
   # runs and can be used to select columns
-  expect_is(mm_data(), "unitted_data.frame")
+  expect_is(mm_data(), "data.frame")
   expect_equal(nrow(mm_data()), 1)
   expect_equivalent(mm_data(solar.time), mm_data()["solar.time"])
   expect_equivalent(mm_data(depth, temp.water, solar.time), mm_data()[c("depth","temp.water","solar.time")])
@@ -40,14 +40,13 @@ test_that("mm_validate_data works", {
   expect_is(val_out[[1]], 'data.frame')
 
   # notices missing, extra, badly unitted columns in data; accepts non-unitted data
-  library(unitted)
   ok_data <- eval(formals(metab_mle)$data)
   expect_error(mm_validate_data(NULL, NULL, "metab_mle"), "data is NULL but required")
   expect_error(mm_validate_data(data.frame(), NULL, "metab_mle"), "data is missing these columns: solar.time, DO.obs, DO.sat, depth, temp.water, light")
   expect_error(mm_validate_data(ok_data[names(ok_data) != 'temp.water'], NULL, "metab_mle"), "data is missing these columns: temp.water")
   expect_error(mm_validate_data(dplyr::mutate(ok_data,temp.air=9), mm_data('temp.air'), "metab_mle"), "data should omit these extra columns: temp.air")
   expect_error(mm_validate_data(dplyr::mutate(ok_data,temp.water=u(temp.water, "degF"), DO.obs=u(DO.obs, "mgO L^-1")), NULL, "metab_mle"), "unexpected units in data:")
-  expect_is(mm_validate_data(unitted::v(ok_data), NULL, "metab_mle"), 'list')
+  expect_is(mm_validate_data(ok_data, NULL, "metab_mle"), 'list')
 
   # notices missing, extra, badly unitted columns in data_daily
   ok_data_daily <- eval(formals(metab_mle)$data_daily)
@@ -55,23 +54,22 @@ test_that("mm_validate_data works", {
   expect_error(mm_validate_data(ok_data, data.frame(), "metab_mle"), "found 0 possible timestamp columns")
   expect_error(mm_validate_data(ok_data, dplyr::mutate(ok_data_daily, temp.air=9), "metab_mle"), "data_daily should omit these extra columns: temp.air")
   expect_error(mm_validate_data(ok_data, dplyr::mutate(ok_data_daily, init.K600.daily=u(init.K600.daily, "mgO L^-1")), "metab_mle"), "unexpected units in data_daily:")
-  expect_is(mm_validate_data(ok_data, unitted::v(ok_data_daily), "metab_mle"), 'list') # should we accept units for one but not other? for now, we do.
+  expect_is(mm_validate_data(ok_data, ok_data_daily, "metab_mle"), 'list')
 
 })
 
 test_that("mm_is_valid_day works", {
 
   # use a subset of data from Bob
-  library(unitted)
   french <- streamMetabolizer:::load_french_creek()
 
-  good_day <- u(dplyr::filter(v(french), solar.time >= as.POSIXct("2012-08-24 22:30:00", tz="UTC"),
-                              solar.time <= as.POSIXct("2012-08-26 06:00:00", tz="UTC")), get_units(french))
+  good_day <- dplyr::filter(french, solar.time >= as.POSIXct("2012-08-24 22:30:00", tz="UTC"),
+                            solar.time <= as.POSIXct("2012-08-26 06:00:00", tz="UTC"))
   bad_day <- dplyr::mutate(
     good_day,
-    DO.obs=replace(DO.obs, 40, u(NA, get_units(DO.obs))),
-    DO.sat=replace(DO.sat, 51, u(NA, get_units(DO.sat))),
-    temp.water=replace(temp.water, 20:42, u(NA, get_units(temp.water))))
+    DO.obs=replace(DO.obs, 40, NA),
+    DO.sat=replace(DO.sat, 51, NA),
+    temp.water=replace(temp.water, 20:42, NA))
 
   # test and pass
   expect_true(mm_is_valid_day(good_day, day_start=-1.5, day_end=30))
@@ -104,7 +102,7 @@ test_that("mm_is_valid_day works", {
 
 test_that("mm_filter_valid_days works", {
 
-  library(dplyr); library(unitted)
+  library(dplyr)
 
   # catch missorted data
   french <- data_metab('10', res='30', flaws='missorted', day_start=6, day_end=14)

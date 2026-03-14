@@ -10,7 +10,6 @@
 #' those in 'stream_metab_usa/starter_files/One station metab code.R'
 #'
 #' @import dplyr
-#' @importFrom unitted u
 #' @importFrom utils read.csv
 #' @importFrom lubridate with_tz
 #' @importFrom lifecycle deprecated is_present
@@ -22,10 +21,9 @@ load_french_creek_std <- function(attach.units=deprecated()) {
   # check units arguments
   if (lifecycle::is_present(attach.units)) {
     # only warn if it's TRUE
-    if(isTRUE(attach.units)) unitted_deprecate_warn("load_french_creek_std(attach.units)")
-  } else {
-    attach.units <- TRUE
+    if(isTRUE(attach.units)) lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::load_french_creek_std(attach.units)")
   }
+  attach.units <- FALSE
 
   # load the file
   file.name <- system.file("extdata", "french.csv", package="streamMetabolizer") # L10 data from French Creek, Hotchkiss and Hall, In press, Ecology
@@ -117,7 +115,6 @@ load_french_creek_std <- function(attach.units=deprecated()) {
 #'   The vector should have 2 elements, dates and times, to pass to chron()
 #' @param plot logical - should plots be produced?
 #' @import dplyr
-#' @importFrom unitted u v
 #' @importFrom graphics abline plot points
 load_french_creek_std_mle <- function(french, K=35, estimate=c('PRK','K','PR'),
                                       start=c(dates="08/23/12", times="22:00:00"),
@@ -140,7 +137,6 @@ load_french_creek_std_mle <- function(french, K=35, estimate=c('PRK','K','PR'),
     end <- do.call(chron::chron, as.list(end))
 
   # reformat, subset the data to just the requested day
-  french <- v(french)
   french$dtime <- chron::chron(format(french$solar.time, "%m/%d/%y"), times=format(french$solar.time, "%H:%M:%S"))
   o2file <- french[french$dtime>=as.numeric(start) & french$dtime<=as.numeric(end), ]
 

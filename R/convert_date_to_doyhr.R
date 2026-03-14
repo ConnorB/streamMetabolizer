@@ -22,9 +22,8 @@ convert_date_to_doyhr <- function(date) {
     warning("submit a GitHub issue if you want convert_date_to_doyhr() to stick around", call.=FALSE)
   }
   
-  year <- as.POSIXct(format(v(date), "%Y-01-01 00:00:00"), tz=lubridate::tz(v(date)))
-  out <- as.numeric(v(date) - year, units="days") + 1 # days_since_dec31
-  if(is.unitted(date)) out <- u(out, get_units(date))
+  year <- as.POSIXct(format(date, "%Y-01-01 00:00:00"), tz=lubridate::tz(date))
+  out <- as.numeric(date - year, units="days") + 1 # days_since_dec31
   out
 }
 
@@ -52,8 +51,7 @@ convert_doyhr_to_date <- function(doyhr, year, tz="UTC", origin=as.POSIXct("1970
     warning("submit a GitHub issue if you want convert_doyhr_to_date() to stick around", call.=FALSE)
   }
   
-  secs_since_jan1 <- (v(doyhr)-1)*24*60*60
-  out <- as.POSIXct(sprintf("%d-01-01 00:00:00",v(year)), format="%Y-%m-%d %H:%M:%S", tz=tz, origin=origin, ...) + secs_since_jan1
-  if(is.unitted(doyhr)) out <- u(out, get_units(doyhr))
+  secs_since_jan1 <- (doyhr-1)*24*60*60
+  out <- as.POSIXct(sprintf("%d-01-01 00:00:00", year), format="%Y-%m-%d %H:%M:%S", tz=tz, origin=origin, ...) + secs_since_jan1
   out
 }

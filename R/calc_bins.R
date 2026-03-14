@@ -13,7 +13,6 @@
 #' @param \dots other arguments (e.g. \code{n}, \code{width}) passed to the 
 #'   ggplot function corresponding to the value of cuts, if cuts is a character 
 #'   (otherwise ignored)
-#' @importFrom unitted v
 #' @export
 #' @examples
 #' ln.disch <- log(rlnorm(100))
@@ -66,9 +65,9 @@ calc_bins <- function(vec, method=c('bounds','interval','number','width'), ..., 
     # run once with high dig.lab to parse the breaks from levels(cutvals) as numeric
     cutvals <- switch(
       method,
-      interval = ggplot2::cut_interval(v(vec), ..., dig.lab=20),
-      number = ggplot2::cut_number(v(vec), ..., dig.lab=20),
-      width = ggplot2::cut_width(v(vec), ...)) # dig.lab is unavailable for width
+      interval = ggplot2::cut_interval(vec, ..., dig.lab=20),
+      number = ggplot2::cut_number(vec, ..., dig.lab=20),
+      width = ggplot2::cut_width(vec, ...)) # dig.lab is unavailable for width
     bounds <- levels(cutvals) %>%
       strsplit('\\[|\\(|\\]|,') %>%
       lapply(function(lev) as.numeric(lev[2:3])) %>%

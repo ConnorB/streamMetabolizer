@@ -15,7 +15,6 @@ NULL
 #' @inheritParams metab
 #' @return A metab_sim object containing the fitted model. This object can be
 #'   inspected with the functions in the \code{\link{metab_model_interface}}.
-#' @importFrom unitted v
 #' @examples
 #' ## simulations with variation all at sub-daily scale
 #' # prepare input data (DO used only to pick first DO of each day)
@@ -191,7 +190,6 @@ setClass(
 #'   they were described with evaluatable expressions in \code{\link{specs}}, or
 #'   returns the fixed values for daily parameters if they were set in
 #'   \code{data_daily}
-#' @importFrom unitted v
 #' @importFrom lifecycle deprecated is_present
 #' @import dplyr
 #' @export
@@ -202,7 +200,7 @@ get_params.metab_sim <- function(
 
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    unitted_deprecate_warn("get_params(attach.units)")
+    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::get_params(attach.units)")
   } else {
     attach.units <- FALSE
   }

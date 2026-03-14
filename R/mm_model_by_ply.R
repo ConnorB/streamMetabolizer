@@ -87,26 +87,26 @@ mm_model_by_ply <- function(
   # Identify the data plys that will let us use a user-specified-hr window for
   # each date (day_start to day_end, which may be != 24). store this labeling in
   # two additional columns (odd.- and even.- date.groups)
-  data.plys <- as.data.frame(v(data))
+  data.plys <- as.data.frame(data)
   if(!('solar.time' %in% names(data.plys))) stop("data must contain a 'solar.time' column")
   if(any(is.na(data.plys$solar.time))) stop("no values in solar.time may be NA")
   min_timestep <- mm_get_timestep(data$solar.time, format='unique')[1]
   if(length(min_timestep) == 1 && !is.na(min_timestep)[1] && min_timestep <= 0) {
-    timesteps <- as.numeric(diff(v(data$solar.time)), units="days")
+    timesteps <- as.numeric(diff(data$solar.time), units="days")
     timegoof <- which.min(timesteps) + c(0,1)
     stop("min timestep is <= 0: ", format(min_timestep, digits=3), " days from ",
-         v(data$solar.time)[timegoof[1]], " (row ", timegoof[1], ") to ",
-         v(data$solar.time)[timegoof[2]], " (row ", timegoof[2], ")")
+         data$solar.time[timegoof[1]], " (row ", timegoof[1], ") to ",
+         data$solar.time[timegoof[2]], " (row ", timegoof[2], ")"),
   }
   if(!is.null(data_daily)) {
     if(!('date' %in% names(data_daily))) stop("data_daily must contain a 'date' column")
     min_datestep <- mm_get_timestep(data_daily$date, format='unique')
     if(length(min_datestep) > 0 && !is.na(min_datestep)[1] && min_datestep[1] <= 0) {
-      timesteps <- as.numeric(diff(v(data_daily$date)), units="days")
+      timesteps <- as.numeric(diff(data_daily$date), units="days")
       timegoof <- which.min(timesteps) + c(0,1)
       stop("min datestep is <= 0: ", min_datestep, " days from ",
-           v(data_daily$date)[timegoof[1]], " (row ", timegoof[1], ") to ",
-           v(data_daily$date)[timegoof[2]], " (row ", timegoof[2], ")")
+           data_daily$date[timegoof[1]], " (row ", timegoof[1], ") to ",
+           data_daily$date[timegoof[2]], " (row ", timegoof[2], ")"),
     }
   }
   doyhr <- convert_date_to_doyhr(data.plys$solar.time)

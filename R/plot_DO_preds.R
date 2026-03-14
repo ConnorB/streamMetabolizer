@@ -22,7 +22,6 @@
 #' plot_DO_preds(mm, style='dygraphs', y_var='pctsat')
 #' }
 #' @import dplyr
-#' @importFrom unitted v
 #' @export
 plot_DO_preds <- function(
   DO_preds, y_var=c('conc','pctsat','ddodt'), 
@@ -82,7 +81,7 @@ plot_DO_preds <- function(
         stop("call install.packages('ggplot2') before plotting with style='ggplot2'")
       
       . <- solar.time <- pure <- mod <- date <- col.pure <- col.mod <- col.obs <- obs <- '.ggplot.var'
-      preds_ggplot <- v(DO_preds_all) %>%
+      preds_ggplot <- DO_preds_all %>%
         filter(as %in% y_var)
       if('conc' %in% names(y_lim)) {
         lim <- y_lim[['conc']][1]; if(!is.na(lim)) preds_ggplot <- filter(preds_ggplot, as != 'conc' | (pure >= lim & mod >= lim & obs >= lim))
@@ -113,7 +112,7 @@ plot_DO_preds <- function(
         stop("call install.packages('xts') before plotting with style='dygraphs'")
       
       . <- '.dplyr.var'
-      preds_xts <- v(DO_preds_all) %>%
+      preds_xts <- DO_preds_all %>%
         filter(as %in% y_var) %>%
         arrange(solar.time) %>%
         group_by(date) %>%

@@ -6,7 +6,6 @@ NULL
 #' @export
 #' @importFrom stats qnorm setNames
 #' @import dplyr
-#' @importFrom unitted u v get_units
 #' @importFrom lifecycle deprecated is_present
 predict_metab.metab_model <- function(
   metab_model, date_start=NA, date_end=NA,
@@ -15,7 +14,7 @@ predict_metab.metab_model <- function(
 
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    unitted_deprecate_warn("predict_metab(attach.units)")
+    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::predict_metab(attach.units)")
   } else {
     attach.units <- FALSE
   }
@@ -105,9 +104,5 @@ predict_metab.metab_model <- function(
     preds <- select(preds, all_of(preds.cols))
   }
 
-  if(attach.units) {
-    pred.units <- get_units(mm_data())[sapply(names(preds), function(x) strsplit(x, '\\.')[[1]][1], USE.NAMES=FALSE)]
-    preds <- u(preds, pred.units)
-  }
   preds
 }
