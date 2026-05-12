@@ -15,11 +15,11 @@ plot_DO_preds(
 )
 }
 \arguments{
-\item{DO_preds}{a data.frame of predictions such as that returned by 
+\item{DO_preds}{a data.frame of predictions such as that returned by
 predict_DO()}
 
-\item{y_var}{character. Should the plot display predicted & observed values 
-in concentration (conc) or as percent of saturation (pctsat)? The default 
+\item{y_var}{character. Should the plot display predicted & observed values
+in concentration (conc) or as percent of saturation (pctsat)? The default
 is to plot both.}
 
 \item{style}{character indicating which graphics package to use}

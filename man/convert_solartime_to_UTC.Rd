@@ -11,28 +11,28 @@ convert_solartime_to_UTC(
 )
 }
 \arguments{
-\item{any.solar.time}{either apparent or mean solar time (specified by 
+\item{any.solar.time}{either apparent or mean solar time (specified by
 time.type); date-time values in POSIXct format. Timezone must be UTC.}
 
-\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or 
-"degW") or with sign indicating direction (positive = East), describing 
+\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or
+"degW") or with sign indicating direction (positive = East), describing
 location of the site}
 
-\item{time.type}{character indicating whether any.solar.time values are in 
-apparent or mean solar time. "apparent solar", i.e. true solar time, is 
-noon when the sun is at its zenith. "mean solar" approximates apparent 
+\item{time.type}{character indicating whether any.solar.time values are in
+apparent or mean solar time. "apparent solar", i.e. true solar time, is
+noon when the sun is at its zenith. "mean solar" approximates apparent
 solar time but with noons exactly 24 hours apart.}
 }
 \value{
 a POSIXct object in UTC
 }
 \description{
-Convert DateTime to UTC from local solar time, which may be either apparent 
+Convert DateTime to UTC from local solar time, which may be either apparent
 solar (perfect match between noon and solar zenith) or mean solar (exactly 24
 hours between solar noons).
 }
 \references{
 Yard, Bennett, Mietz, Coggins, Stevens, Hueftle, and Blinn. 2005.
-  Influence of topographic complexity on solar insolation estimates for the 
+  Influence of topographic complexity on solar insolation estimates for the
   Colorado River, Grand Canyon, AZ. Ecological Modelling.
 }

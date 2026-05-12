@@ -71,32 +71,58 @@ NULL
 #' @export
 #' @family metab_model
 metab_sim <- function(
-  specs=specs(mm_name('sim')),
-  data=mm_data(solar.time, DO.obs, DO.sat, depth, temp.water, light, optional='DO.obs'),
-  data_daily=mm_data(date, discharge.daily, DO.mod.1, K600.daily, GPP.daily, Pmax, alpha, ER.daily, ER20,
-                     err.obs.sigma, err.obs.phi, err.proc.sigma, err.proc.phi, optional='all'),
-  info=NULL
+  specs = specs(mm_name('sim')),
+  data = mm_data(
+    solar.time,
+    DO.obs,
+    DO.sat,
+    depth,
+    temp.water,
+    light,
+    optional = 'DO.obs'
+  ),
+  data_daily = mm_data(
+    date,
+    discharge.daily,
+    DO.mod.1,
+    K600.daily,
+    GPP.daily,
+    Pmax,
+    alpha,
+    ER.daily,
+    ER20,
+    err.obs.sigma,
+    err.obs.phi,
+    err.proc.sigma,
+    err.proc.phi,
+    optional = 'all'
+  ),
+  info = NULL
 ) {
-
-  if(missing(specs)) {
+  if (missing(specs)) {
     # if specs is left to the default, it gets confused about whether specs() is
     # the argument or the function. tell it which:
     specs <- streamMetabolizer::specs(mm_name('sim'))
   }
   fitting_time <- system.time({
     # Check data for correct column names & units
-    dat_list <- mm_validate_data(if(missing(data)) NULL else data, if(missing(data_daily)) NULL else data_daily, "metab_sim")
+    dat_list <- mm_validate_data(
+      if (missing(data)) NULL else data,
+      if (missing(data_daily)) NULL else data_daily,
+      "metab_sim"
+    )
   })
 
   # Package and return results
   metab_model(
-    model_class="metab_sim",
-    info=info,
-    fit=NULL,
-    fitting_time=fitting_time,
-    specs=specs,
-    data=dat_list[['data']],
-    data_daily=dat_list[['data_daily']])
+    model_class = "metab_sim",
+    info = info,
+    fit = NULL,
+    fitting_time = fitting_time,
+    specs = specs,
+    data = dat_list[['data']],
+    data_daily = dat_list[['data_daily']]
+  )
 }
 
 
@@ -125,24 +151,30 @@ metab_sim <- function(
 #'   \code{data_daily}, and \code{combo} according to the source of the numbers
 #'   in each vector.
 #' @keywords internal
-sim_get_par <- function(par.name, specs, data_daily, eval_env, required=TRUE) {
+sim_get_par <- function(
+  par.name,
+  specs,
+  data_daily,
+  eval_env,
+  required = TRUE
+) {
   # get param from data_daily, which uses period-separated names
   ddvals <- data_daily[[par.name]]
 
   # get param from specs, which uses underscore-separated names
   par_name <- gsub("\\.", "_", par.name)
   parsp <- specs[[par_name]]
-  if(is.null(parsp)) {
+  if (is.null(parsp)) {
     # option a: spec can be NULL iff there are values in data_daily instead
     fitvals <- NULL
-  } else if(is.numeric(parsp)) {
+  } else if (is.numeric(parsp)) {
     # option b: spec is numeric; return as-is or replicated to length n
-    if(length(parsp) == 1) {
+    if (length(parsp) == 1) {
       fitvals <- rep(parsp, eval_env$n)
     } else {
       fitvals <- parsp
     }
-  } else if(is.function(parsp)) {
+  } else if (is.function(parsp)) {
     # option d: spec is function; return output from call
     fitvals <- do.call(parsp, as.list(eval_env))
   } else {
@@ -151,25 +183,40 @@ sim_get_par <- function(par.name, specs, data_daily, eval_env, required=TRUE) {
 
   # determine whether data will come from data_daily and/or specs; set combovals
   # and/or give error about missing result
-  if(!is.null(fitvals) &&  is.null(ddvals)) combovals <- fitvals
-  if( is.null(fitvals) && !is.null(ddvals)) combovals <- ddvals
-  if(!is.null(fitvals) && !is.null(ddvals)) {
+  if (!is.null(fitvals) && is.null(ddvals)) {
+    combovals <- fitvals
+  }
+  if (is.null(fitvals) && !is.null(ddvals)) {
+    combovals <- ddvals
+  }
+  if (!is.null(fitvals) && !is.null(ddvals)) {
     # competing data coming from both data_daily and specs; tell the user what
     # will happen, find the final coalesced values, and set fitvals to only
     # contain numbers on dates when data_daily doesn't supply a number
-    message(paste0('non-NA values for data_daily$', par.name, ' will override numbers from specs$', par_name))
+    message(paste0(
+      'non-NA values for data_daily$',
+      par.name,
+      ' will override numbers from specs$',
+      par_name
+    ))
     combovals <- coalesce(as.numeric(ddvals), as.numeric(fitvals))
     fitvals[!is.na(ddvals)] <- NA
   }
-  if( is.null(fitvals) &&  is.null(ddvals)) {
-    if(required) {
-      stop(paste0("need column '", par.name, "' in data_daily or parameter '", par_name, "' in specs"))
+  if (is.null(fitvals) && is.null(ddvals)) {
+    if (required) {
+      stop(paste0(
+        "need column '",
+        par.name,
+        "' in data_daily or parameter '",
+        par_name,
+        "' in specs"
+      ))
     } else {
       combovals <- NULL
     }
   }
 
-  list(specs=fitvals, data_daily=ddvals, combo=combovals)
+  list(specs = fitvals, data_daily = ddvals, combo = combovals)
 }
 
 #### metab_sim class ####
@@ -183,7 +230,7 @@ sim_get_par <- function(par.name, specs, data_daily, eval_env, required=TRUE) {
 #' @family metab.model.classes
 setClass(
   "metab_sim",
-  contains="metab_model"
+  contains = "metab_model"
 )
 
 #' @describeIn get_params Generates new simulated values for daily parameters if
@@ -194,13 +241,21 @@ setClass(
 #' @import dplyr
 #' @export
 get_params.metab_sim <- function(
-  metab_model, date_start=NA, date_end=NA,
-  uncertainty=c('sd','ci','none'), messages=TRUE, fixed=c('none','columns','stars'),
-  ..., attach.units=deprecated()) {
-
+  metab_model,
+  date_start = NA,
+  date_end = NA,
+  uncertainty = c('sd', 'ci', 'none'),
+  messages = TRUE,
+  fixed = c('none', 'columns', 'stars'),
+  ...,
+  attach.units = deprecated()
+) {
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::get_params(attach.units)")
+    lifecycle::deprecate_warn(
+      "0.12.0",
+      "streamMetabolizer::get_params(attach.units)"
+    )
   } else {
     attach.units <- FALSE
   }
@@ -209,17 +264,23 @@ get_params.metab_sim <- function(
   specs <- get_specs(metab_model)
   features <- mm_parse_name(specs$model_name)
   data_daily <-
-    if(!is.null(get_data_daily(metab_model))) {
+    if (!is.null(get_data_daily(metab_model))) {
       get_data_daily(metab_model)
     } else {
       # data_daily wasn't given; create a data.frame of dates only based on data
-      gimmedates <- function(...) tibble::tibble(ignore=NA) # has to be separate to avoid tripping up deprecation check in convert_date_to_doyhr
       mm_model_by_ply(
-        gimmedates, data=get_data(metab_model),
-        day_start=specs$day_start, day_end=specs$day_end, day_tests=specs$day_tests, required_timestep=specs$required_timestep,
-        timestep_days=FALSE)[1]
+        function(...) tibble::tibble(ignore = NA),
+        data = get_data(metab_model),
+        day_start = specs$day_start,
+        day_end = specs$day_end,
+        day_tests = specs$day_tests,
+        required_timestep = specs$required_timestep,
+        timestep_days = FALSE
+      )[1]
     }
-  if(!is.na(specs$sim_seed)) set.seed(specs$sim_seed)
+  if (!is.na(specs$sim_seed)) {
+    set.seed(specs$sim_seed)
+  }
 
   # define a controlled environment for evaluation of text to generate
   # parameters. this environment will include the 'combo' results from
@@ -231,31 +292,70 @@ get_params.metab_sim <- function(
 
   # add self (a reference to the entire metab_model object) and n (the nrow of
   # fit and data_daily)
-  assign('self', metab_model, envir=pars_so_far)
-  assign('n', nrow(fit), envir=pars_so_far)
+  assign('self', metab_model, envir = pars_so_far)
+  assign('n', nrow(fit), envir = pars_so_far)
 
   # get daily parameter needs
-  needs <- unlist(get_param_names(metab_model)[c('optional','required')]) # element names tell us which are required
-  names(needs[which(needs=='discharge.daily')]) <- if(features$pool_K600 %in% c('linear','binned')) 'requiredQ' else 'optionalQ'
+  needs <- unlist(get_param_names(metab_model)[c('optional', 'required')]) # element names tell us which are required
+  names(needs[which(needs == 'discharge.daily')]) <- if (
+    features$pool_K600 %in% c('linear', 'binned')
+  ) {
+    'requiredQ'
+  } else {
+    'optionalQ'
+  }
 
   # add columns to fit and pars_so_far for each recognized need
-  for(needname in names(needs)) {
+  for (needname in names(needs)) {
     need <- needs[needname]
-    parvals <- sim_get_par(need, specs, data_daily, eval_env=pars_so_far, required=grepl('^required', needname))
-    if(!is.null(parvals$specs)) fit[need] <- parvals$specs
-    if(!is.null(parvals$combo)) assign(need, parvals$combo, envir=pars_so_far)
+    parvals <- sim_get_par(
+      need,
+      specs,
+      data_daily,
+      eval_env = pars_so_far,
+      required = grepl('^required', needname)
+    )
+    if (!is.null(parvals$specs)) {
+      fit[need] <- parvals$specs
+    }
+    if (!is.null(parvals$combo)) {
+      assign(need, parvals$combo, envir = pars_so_far)
+    }
 
     # support hierarchical simulation if requested
-    if(need == 'discharge.daily' && features$pool_K600 == 'binned') {
-      kpars <- c('K600_lnQ_nodes_centers', 'K600_lnQ_cnode_meanlog', 'K600_lnQ_cnode_sdlog',
-                 'K600_lnQ_nodediffs_meanlog', 'K600_lnQ_nodediffs_sdlog', 'lnK600_lnQ_nodes')
-      for(kpar in kpars) {
-        parvals <- sim_get_par(kpar, specs, data_daily, eval_env=pars_so_far, required=TRUE)
-        assign(kpar, parvals$combo, envir=pars_so_far)
+    if (need == 'discharge.daily' && features$pool_K600 == 'binned') {
+      kpars <- c(
+        'K600_lnQ_nodes_centers',
+        'K600_lnQ_cnode_meanlog',
+        'K600_lnQ_cnode_sdlog',
+        'K600_lnQ_nodediffs_meanlog',
+        'K600_lnQ_nodediffs_sdlog',
+        'lnK600_lnQ_nodes'
+      )
+      for (kpar in kpars) {
+        parvals <- sim_get_par(
+          kpar,
+          specs,
+          data_daily,
+          eval_env = pars_so_far,
+          required = TRUE
+        )
+        assign(kpar, parvals$combo, envir = pars_so_far)
       }
-      assign('K600_daily_predlog', envir=pars_so_far,
-             sim_pred_Kb(pars_so_far$K600_lnQ_nodes_centers, pars_so_far$lnK600_lnQ_nodes, log(pars_so_far$discharge.daily)))
-      assign('K600_eqn', as.list(pars_so_far)[c(kpars, 'K600_daily_predlog')], envir=pars_so_far)
+      assign(
+        'K600_daily_predlog',
+        envir = pars_so_far,
+        sim_pred_Kb(
+          pars_so_far$K600_lnQ_nodes_centers,
+          pars_so_far$lnK600_lnQ_nodes,
+          log(pars_so_far$discharge.daily)
+        )
+      )
+      assign(
+        'K600_eqn',
+        as.list(pars_so_far)[c(kpars, 'K600_daily_predlog')],
+        envir = pars_so_far
+      )
     }
   }
 
@@ -264,7 +364,9 @@ get_params.metab_sim <- function(
 
   # use default get_params() to package output more nicely
   pars <- NextMethod()
-  if(exists('K600_eqn', envir=pars_so_far)) attr(pars, 'K600_eqn') <- get('K600_eqn', envir=pars_so_far)
+  if (exists('K600_eqn', envir = pars_so_far)) {
+    attr(pars, 'K600_eqn') <- get('K600_eqn', envir = pars_so_far)
+  }
   pars
 }
 
@@ -272,18 +374,26 @@ get_params.metab_sim <- function(
 #'   observation error), DO.mod (with process error only), and DO.pure (with no
 #'   error). The errors are randomly generated on every new call to predict_DO.
 #' @export
-predict_DO.metab_sim <- function(metab_model, date_start=NA, date_end=NA, ...) {
-
+predict_DO.metab_sim <- function(
+  metab_model,
+  date_start = NA,
+  date_end = NA,
+  ...
+) {
   # fix the seed if requested
   specs <- get_specs(metab_model)
-  if(!is.na(specs$sim_seed)) set.seed(specs$sim_seed)
+  if (!is.na(specs$sim_seed)) {
+    set.seed(specs$sim_seed)
+  }
 
   # call the generic, which calls get_params to simulate daily values and then
   # handles the various combos of err.obs and err.proc within mm_predict_DO_1ply
-  preds <- NextMethod(use_saved=FALSE)
+  preds <- NextMethod(use_saved = FALSE)
 
   # add additional observation error in the form of DO rounding if requested
-  if(!is.na(specs$err_round)) preds$DO.obs <- round(preds$DO.obs, digits=specs$err_round)
+  if (!is.na(specs$err_round)) {
+    preds$DO.obs <- round(preds$DO.obs, digits = specs$err_round)
+  }
 
   # return
   preds
@@ -296,24 +406,44 @@ predict_DO.metab_sim <- function(metab_model, date_start=NA, date_end=NA, ...) {
 #'
 #' @inheritParams specs
 #' @export
-sim_Kb <- function(K600_lnQ_nodes_centers, K600_lnQ_cnode_meanlog, K600_lnQ_cnode_sdlog, K600_lnQ_nodediffs_meanlog, K600_lnQ_nodediffs_sdlog) {
-
+sim_Kb <- function(
+  K600_lnQ_nodes_centers,
+  K600_lnQ_cnode_meanlog,
+  K600_lnQ_cnode_sdlog,
+  K600_lnQ_nodediffs_meanlog,
+  K600_lnQ_nodediffs_sdlog
+) {
   # check Q bins
-  if(!is.numeric(K600_lnQ_nodes_centers))
+  if (!is.numeric(K600_lnQ_nodes_centers)) {
     stop("K600_lnQ_nodes_centers must be numeric")
+  }
 
   # simulate piecewise (binned) relationship for lnK600 ~ lnQ
   lnK600_lnQ_nodes <- numeric(length(K600_lnQ_nodes_centers)) # initialize vector
   cnode <- ceiling(length(K600_lnQ_nodes_centers) / 2) # central node, or node 0.5 past center
-  lnK600_lnQ_nodes[cnode] <- rnorm(1, K600_lnQ_cnode_meanlog, K600_lnQ_cnode_sdlog)
-  if(cnode > 1)
-    for(i in rev(seq_len(cnode-1))) {
-      lnK600_lnQ_nodes[i] <- rnorm(1, lnK600_lnQ_nodes[i+1] - K600_lnQ_nodediffs_meanlog, K600_lnQ_nodediffs_sdlog)
+  lnK600_lnQ_nodes[cnode] <- rnorm(
+    1,
+    K600_lnQ_cnode_meanlog,
+    K600_lnQ_cnode_sdlog
+  )
+  if (cnode > 1) {
+    for (i in rev(seq_len(cnode - 1))) {
+      lnK600_lnQ_nodes[i] <- rnorm(
+        1,
+        lnK600_lnQ_nodes[i + 1] - K600_lnQ_nodediffs_meanlog,
+        K600_lnQ_nodediffs_sdlog
+      )
     }
-  if(length(K600_lnQ_nodes_centers) > cnode)
-    for(i in (cnode+1):length(K600_lnQ_nodes_centers)) {
-      lnK600_lnQ_nodes[i] <- rnorm(1, lnK600_lnQ_nodes[i-1] + K600_lnQ_nodediffs_meanlog, K600_lnQ_nodediffs_sdlog)
+  }
+  if (length(K600_lnQ_nodes_centers) > cnode) {
+    for (i in (cnode + 1):length(K600_lnQ_nodes_centers)) {
+      lnK600_lnQ_nodes[i] <- rnorm(
+        1,
+        lnK600_lnQ_nodes[i - 1] + K600_lnQ_nodediffs_meanlog,
+        K600_lnQ_nodediffs_sdlog
+      )
     }
+  }
   lnK600_lnQ_nodes
 }
 
@@ -328,23 +458,30 @@ sim_Kb <- function(K600_lnQ_nodes_centers, K600_lnQ_cnode_meanlog, K600_lnQ_cnod
 #'   e.g., \code{log(data_daily$discharge.daily)}
 #' @export
 sim_pred_Kb <- function(K600_lnQ_nodes_centers, lnK600_lnQ_nodes, lnQ.daily) {
-
   # this function is HIGHLY REDUNDANT with metab_bayes.R. See GH#236
 
   # Convert lnQ.daily to bins and bin weights suitable for linear interpolation
   # from node to node, horizontal at the edges
   bounds <- c(-Inf, K600_lnQ_nodes_centers, Inf)
-  cuts <- cut(lnQ.daily, breaks=bounds, ordered_result=TRUE)
+  cuts <- cut(lnQ.daily, breaks = bounds, ordered_result = TRUE)
   widths <- diff(bounds)[cuts]
-  bins <- rbind(pmax(1, as.numeric(cuts) - 1), pmin(length(K600_lnQ_nodes_centers), as.numeric(cuts)))
-  weights <- ifelse(is.infinite(widths), 1, (bounds[as.numeric(cuts)+1] - lnQ.daily)/widths)
+  bins <- rbind(
+    pmax(1, as.numeric(cuts) - 1),
+    pmin(length(K600_lnQ_nodes_centers), as.numeric(cuts))
+  )
+  weights <- ifelse(
+    is.infinite(widths),
+    1,
+    (bounds[as.numeric(cuts) + 1] - lnQ.daily) / widths
+  )
   # package info
-  lnQ.bin1 = bins[1,]
-  lnQ.bin2 = bins[2,]
+  lnQ.bin1 = bins[1, ]
+  lnQ.bin2 = bins[2, ]
   lnQ.bin1.weight = weights
-  lnQ.bin2.weight = 1-weights
+  lnQ.bin2.weight = 1 - weights
 
   # Predict K600_daily_predlog (ln(K600) for each value of discharge.daily)
-  lnK600_lnQ_nodes[lnQ.bin1] * lnQ.bin1.weight + lnK600_lnQ_nodes[lnQ.bin2] * lnQ.bin2.weight
+  lnK600_lnQ_nodes[lnQ.bin1] *
+    lnQ.bin1.weight +
+    lnK600_lnQ_nodes[lnQ.bin2] * lnQ.bin2.weight
 }
-

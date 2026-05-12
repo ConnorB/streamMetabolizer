@@ -8,28 +8,8 @@
 #'   at 00:01 is ~1.01)
 #' @examples
 #' streamMetabolizer:::convert_date_to_doyhr(as.POSIXct("2015-02-03 12:01:00 UTC"))
-#' @export
+#' @keywords internal
 convert_date_to_doyhr <- function(date) {
-  # plan for deprecation is to make this internal (stop exporting) - it's used
-  # by mm_model_by_ply and convert_UTC_to_solartime, but external use should be
-  # limited
-  called_as_internal <- all(
-    c(':::', 'streamMetabolizer') %in% as.character(sys.call()[[1]])
-  ) ||
-    any(
-      sapply(sys.calls()[-sys.nframe()], function(sc) {
-        if (inherits(sc[[1]], "name")) tail(as.character(sc[[1]]), 1) else NA
-      }) %in%
-        ls(envir = asNamespace("streamMetabolizer"))
-    )
-  if (!called_as_internal) {
-    .Deprecated()
-    warning(
-      "submit a GitHub issue if you want convert_date_to_doyhr() to stick around",
-      call. = FALSE
-    )
-  }
-
   year <- as.POSIXct(
     format(date, "%Y-01-01 00:00:00"),
     tz = lubridate::tz(date)
@@ -49,7 +29,7 @@ convert_date_to_doyhr <- function(date) {
 #' @return A datetime object as POSIXct
 #' @examples
 #' streamMetabolizer:::convert_doyhr_to_date(34.500695, 2015)
-#' @export
+#' @keywords internal
 convert_doyhr_to_date <- function(
   doyhr,
   year,
@@ -57,25 +37,6 @@ convert_doyhr_to_date <- function(
   origin = as.POSIXct("1970-01-01 00:00:00", tz = "UTC"),
   ...
 ) {
-  # plan for deprecation is to make this internal (stop exporting) - it's used
-  # to test convert_date_to_doyhr, but external use should be limited
-  called_as_internal <- all(
-    c(':::', 'streamMetabolizer') %in% as.character(sys.call()[[1]])
-  ) ||
-    any(
-      sapply(sys.calls()[-sys.nframe()], function(sc) {
-        if (inherits(sc[[1]], "name")) tail(as.character(sc[[1]]), 1) else NA
-      }) %in%
-        ls(envir = asNamespace("streamMetabolizer"))
-    )
-  if (!called_as_internal) {
-    .Deprecated()
-    warning(
-      "submit a GitHub issue if you want convert_doyhr_to_date() to stick around",
-      call. = FALSE
-    )
-  }
-
   secs_since_jan1 <- (doyhr - 1) * 24 * 60 * 60
   out <- as.POSIXct(
     sprintf("%d-01-01 00:00:00", year),

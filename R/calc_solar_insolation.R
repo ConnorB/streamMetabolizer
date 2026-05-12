@@ -35,10 +35,10 @@ to_degrees <- function(radians) {
 #'   \emph{Influence of Topographic Complexity on Solar Insolation Estimates for
 #'   the Colorado River, Grand Canyon, AZ.} Ecological Modelling 183, no. 2-3
 #'   (April 25, 2005): 157-72. doi:10.1016/j.ecolmodel.2004.07.027.
-calc_declination_angle <- function(jday, format=c("degrees", "radians")) {
+calc_declination_angle <- function(jday, format = c("degrees", "radians")) {
   format <- match.arg(format)
-  declination.angle <- 23.439 * sin(to_radians((360/365)*(283+jday)))
-  if(format == "radians") {
+  declination.angle <- 23.439 * sin(to_radians((360 / 365) * (283 + jday)))
+  if (format == "radians") {
     declination.angle <- to_radians(declination.angle)
   }
   declination.angle
@@ -64,10 +64,12 @@ calc_declination_angle <- function(jday, format=c("degrees", "radians")) {
 #' ggplot(hourdf, aes(x=hour, y=hragl)) +
 #'   geom_hline(yintercept=0, color="gold") + geom_line()
 #' }
-calc_hour_angle <- function(hour, format=c("degrees", "radians")) {
+calc_hour_angle <- function(hour, format = c("degrees", "radians")) {
   format <- match.arg(format)
-  hour.angle <- (360/24)*(hour-12)
-  if(format=="radians") hour.angle <- to_radians(hour.angle)
+  hour.angle <- (360 / 24) * (hour - 12)
+  if (format == "radians") {
+    hour.angle <- to_radians(hour.angle)
+  }
   hour.angle
 }
 
@@ -98,17 +100,25 @@ calc_hour_angle <- function(hour, format=c("degrees", "radians")) {
 #'   geom_line() + facet_wrap(~lat) +
 #'   ggtitle('zenith angles by latitude (panels) and day of year (colors)')
 #' }
-calc_zenith_angle <- function(latitude, declination.angle, hour.angle, format=c("degrees", "radians")) {
+calc_zenith_angle <- function(
+  latitude,
+  declination.angle,
+  hour.angle,
+  format = c("degrees", "radians")
+) {
   format <- match.arg(format)
   latitude <- to_radians(latitude)
-  if(format == "degrees") {
+  if (format == "degrees") {
     declination.angle <- to_radians(declination.angle)
     hour.angle <- to_radians(hour.angle)
   }
   zenith.angle <-
-    acos(sin(latitude) * sin(declination.angle) +
-           cos(latitude) * cos(declination.angle) * cos(hour.angle))
-  if(format == "degrees") {
+    acos(
+      sin(latitude) *
+        sin(declination.angle) +
+        cos(latitude) * cos(declination.angle) * cos(hour.angle)
+    )
+  if (format == "degrees") {
     zenith.angle <- to_degrees(zenith.angle)
   }
   zenith.angle
@@ -147,21 +157,34 @@ calc_zenith_angle <- function(latitude, declination.angle, hour.angle, format=c(
 #' }
 #' @export
 calc_solar_insolation <- function(
-  app.solar.time, latitude, max.insolation=convert_PAR_to_SW(2326),
-  format=c("degrees", "radians"), attach.units=deprecated()) {
-
+  app.solar.time,
+  latitude,
+  max.insolation = convert_PAR_to_SW(2326),
+  format = c("degrees", "radians"),
+  attach.units = deprecated()
+) {
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::calc_solar_insolation(attach.units)")
+    lifecycle::deprecate_warn(
+      "0.12.0",
+      "streamMetabolizer::calc_solar_insolation(attach.units)"
+    )
   }
 
   format <- match.arg(format)
   jday <- floor(convert_date_to_doyhr(app.solar.time)) - 1
   hour <- (convert_date_to_doyhr(app.solar.time) %% 1) * 24
-  declination.angle <- calc_declination_angle(jday, format=format)
-  hour.angle <- calc_hour_angle(hour, format=format)
-  zenith.angle <- calc_zenith_angle(latitude, declination.angle, hour.angle, format=format)
-  if(format=="degrees") zenith.angle <- to_radians(zenith.angle)
+  declination.angle <- calc_declination_angle(jday, format = format)
+  hour.angle <- calc_hour_angle(hour, format = format)
+  zenith.angle <- calc_zenith_angle(
+    latitude,
+    declination.angle,
+    hour.angle,
+    format = format
+  )
+  if (format == "degrees") {
+    zenith.angle <- to_radians(zenith.angle)
+  }
   insolation <- max.insolation * cos(zenith.angle)
   pmax(insolation, 0)
 }

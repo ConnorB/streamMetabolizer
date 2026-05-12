@@ -61,63 +61,131 @@
 #'   data=dat, day_start=2, day_end=28)
 #' @export
 mm_model_by_ply <- function(
-  model_fun, data, data_daily=NULL, day_start, day_end,
-  day_tests=c('full_day', 'even_timesteps', 'complete_data', 'pos_discharge', 'pos_depth'), required_timestep=NA,
-  timestep_days=TRUE, ...
+  model_fun,
+  data,
+  data_daily = NULL,
+  day_start,
+  day_end,
+  day_tests = c(
+    'full_day',
+    'even_timesteps',
+    'complete_data',
+    'pos_discharge',
+    'pos_depth'
+  ),
+  required_timestep = NA,
+  timestep_days = TRUE,
+  ...
 ) {
-
   # avoid some ugly edge cases
-  if(missing(day_start) || is.null(day_start)) stop('day_start must be specified')
-  if(missing(day_end) || is.null(day_end)) stop('day_end must be specified')
-  if(day_end < day_start) stop("day_end must be greater than or equal to day_start")
-  if(day_end - day_start > 48) stop("day_end - day_start must not be > 48") # would break our odd/even algorithm
-  if(-24 >= day_start || day_start >= 24) stop("day_start must be in (-24,24)")
-  if(0 >= day_end || day_end >= 48) stop("day_end must be in (0,48)")
-  
+  if (missing(day_start) || is.null(day_start)) {
+    stop('day_start must be specified')
+  }
+  if (missing(day_end) || is.null(day_end)) {
+    stop('day_end must be specified')
+  }
+  if (day_end < day_start) {
+    stop("day_end must be greater than or equal to day_start")
+  }
+  if (day_end - day_start > 48) {
+    stop("day_end - day_start must not be > 48")
+  } # would break our odd/even algorithm
+  if (-24 >= day_start || day_start >= 24) {
+    stop("day_start must be in (-24,24)")
+  }
+  if (0 >= day_end || day_end >= 48) {
+    stop("day_end must be in (0,48)")
+  }
+
   #### Order data and daily data by solar.time/date, if not getting error
   #### min datestep is <= 0 in mm_model_by_ply
   #### maybe a problem w/ data but unsure, so order by date and move on??
-  if (!is.null(data) && nrow(data) > 1 && "solar.time" %in% names(data) && all(!is.na(data$solar.time))) {
+  if (
+    !is.null(data) &&
+      nrow(data) > 1 &&
+      "solar.time" %in% names(data) &&
+      all(!is.na(data$solar.time))
+  ) {
     data <- data[order(data$solar.time), ]
   }
-  if (!is.null(data_daily) && nrow(data_daily) > 1 && "date" %in% names(data_daily) && all(!is.na(data_daily$date))) {
+  if (
+    !is.null(data_daily) &&
+      nrow(data_daily) > 1 &&
+      "date" %in% names(data_daily) &&
+      all(!is.na(data_daily$date))
+  ) {
     data_daily <- data_daily[order(data_daily$date), ]
   }
-  
+
   # Identify the data plys that will let us use a user-specified-hr window for
   # each date (day_start to day_end, which may be != 24). store this labeling in
   # two additional columns (odd.- and even.- date.groups)
   data.plys <- as.data.frame(data)
-  if(!('solar.time' %in% names(data.plys))) stop("data must contain a 'solar.time' column")
-  if(any(is.na(data.plys$solar.time))) stop("no values in solar.time may be NA")
-  min_timestep <- mm_get_timestep(data$solar.time, format='unique')[1]
-  if(length(min_timestep) == 1 && !is.na(min_timestep)[1] && min_timestep <= 0) {
-    timesteps <- as.numeric(diff(data$solar.time), units="days")
-    timegoof <- which.min(timesteps) + c(0,1)
-    stop("min timestep is <= 0: ", format(min_timestep, digits=3), " days from ",
-         data$solar.time[timegoof[1]], " (row ", timegoof[1], ") to ",
-         data$solar.time[timegoof[2]], " (row ", timegoof[2], ")")
+  if (!('solar.time' %in% names(data.plys))) {
+    stop("data must contain a 'solar.time' column")
   }
-  if(!is.null(data_daily)) {
-    if(!('date' %in% names(data_daily))) stop("data_daily must contain a 'date' column")
-    min_datestep <- mm_get_timestep(data_daily$date, format='unique')
-    if(length(min_datestep) > 0 && !is.na(min_datestep)[1] && min_datestep[1] <= 0) {
-      timesteps <- as.numeric(diff(data_daily$date), units="days")
-      timegoof <- which.min(timesteps) + c(0,1)
-      stop("min datestep is <= 0: ", min_datestep, " days from ",
-           data_daily$date[timegoof[1]], " (row ", timegoof[1], ") to ",
-           data_daily$date[timegoof[2]], " (row ", timegoof[2], ")")
+  if (any(is.na(data.plys$solar.time))) {
+    stop("no values in solar.time may be NA")
+  }
+  min_timestep <- mm_get_timestep(data$solar.time, format = 'unique')[1]
+  if (
+    length(min_timestep) == 1 && !is.na(min_timestep)[1] && min_timestep <= 0
+  ) {
+    timesteps <- as.numeric(diff(data$solar.time), units = "days")
+    timegoof <- which.min(timesteps) + c(0, 1)
+    stop(
+      "min timestep is <= 0: ",
+      format(min_timestep, digits = 3),
+      " days from ",
+      data$solar.time[timegoof[1]],
+      " (row ",
+      timegoof[1],
+      ") to ",
+      data$solar.time[timegoof[2]],
+      " (row ",
+      timegoof[2],
+      ")"
+    )
+  }
+  if (!is.null(data_daily)) {
+    if (!('date' %in% names(data_daily))) {
+      stop("data_daily must contain a 'date' column")
+    }
+    min_datestep <- mm_get_timestep(data_daily$date, format = 'unique')
+    if (
+      length(min_datestep) > 0 &&
+        !is.na(min_datestep)[1] &&
+        min_datestep[1] <= 0
+    ) {
+      timesteps <- as.numeric(diff(data_daily$date), units = "days")
+      timegoof <- which.min(timesteps) + c(0, 1)
+      stop(
+        "min datestep is <= 0: ",
+        min_datestep,
+        " days from ",
+        data_daily$date[timegoof[1]],
+        " (row ",
+        timegoof[1],
+        ") to ",
+        data_daily$date[timegoof[2]],
+        " (row ",
+        timegoof[2],
+        ")"
+      )
     }
   }
   doyhr <- convert_date_to_doyhr(data.plys$solar.time)
-  data.plys$date <- as.character(as.Date(lubridate::floor_date(data.plys$solar.time, 'year')) + as.difftime(floor(doyhr)-1, units='days'))
-  data.plys$hour <- 24*(doyhr %% 1)
+  data.plys$date <- as.character(
+    as.Date(lubridate::floor_date(data.plys$solar.time, 'year')) +
+      as.difftime(floor(doyhr) - 1, units = 'days')
+  )
+  data.plys$hour <- 24 * (doyhr %% 1)
 
   # subtract a tiny fudge factor (one second) to the start and end bounds so we
   # don't exclude times that are essentially equal to day_start, and so we do
   # exclude times that are essentially equal to day_end
-  day_start_fudge <- day_start - 1/(60*60*24)
-  day_end_fudge <- day_end - 1/(60*60*24)
+  day_start_fudge <- day_start - 1 / (60 * 60 * 24)
+  day_end_fudge <- day_end - 1 / (60 * 60 * 24)
 
   # This function speeds things up in both of the next two loops. 'runs' refers
   # to sequential runs of values in date.group that have the same value.
@@ -127,53 +195,77 @@ mm_model_by_ply <- function(
       rle() %>%
       unclass %>%
       as_tibble %>%
-      mutate(end=cumsum(lengths), start=c(1, 1+end[-n()])) %>%
+      mutate(end = cumsum(lengths), start = c(1, 1 + end[-n()])) %>%
       filter(values != '') %>%
-      select(date=values, start, end)
+      select(date = values, start, end)
   }
   # Determine which rows go with which date, and label dates as either odd or
   # even (no relation to the actual value of the date)
   date_rows <- get_runs(data.plys$date)
-  odd.dates <- date_rows[which(seq_len(nrow(date_rows)) %% 2 == 1),]$date
-  even.dates <- date_rows[which(seq_len(nrow(date_rows)) %% 2 == 0),]$date
+  odd.dates <- date_rows[which(seq_len(nrow(date_rows)) %% 2 == 1), ]$date
+  even.dates <- date_rows[which(seq_len(nrow(date_rows)) %% 2 == 0), ]$date
 
   # Assign each data row to one or two date plys. Because date plys can overlap,
   # there are two columns so that one row can belong to two dates if needed.
   dt.NA <- as.character(NA)
-  if(nrow(data.plys) == 0) {
+  if (nrow(data.plys) == 0) {
     data.plys <- bind_cols(
       data.plys,
-      tibble::tibble(odd.date.group=dt.NA, even.date.group=dt.NA)[c(),])
+      tibble::tibble(odd.date.group = dt.NA, even.date.group = dt.NA)[c(), ]
+    )
     out_list <- list()
   } else {
     data.plys <- bind_cols(
       data.plys,
       bind_rows(lapply(seq_len(nrow(date_rows)), function(dt) {
-        run <- date_rows[dt,]
+        run <- date_rows[dt, ]
         dt.today <- run$date
-        dt.yesterday <- if(dt>1) date_rows[[dt-1,'date']] else dt.NA
-        dt.tomorrow <- if(dt<nrow(date_rows)) date_rows[[dt+1,'date']] else dt.NA
+        dt.yesterday <- if (dt > 1) date_rows[[dt - 1, 'date']] else dt.NA
+        dt.tomorrow <- if (dt < nrow(date_rows)) {
+          date_rows[[dt + 1, 'date']]
+        } else {
+          dt.NA
+        }
         data.plys.rows <- run$start:run$end
         hr <- data.plys[data.plys.rows, 'hour']
-        primary.date <- c(dt.today, dt.NA)[ifelse(hr >= day_start_fudge & hr < day_end_fudge, 1, 2)]
-        secondary.date <- c(dt.yesterday, dt.NA, dt.tomorrow)[ifelse(hr <= (day_end_fudge - 24), 1, ifelse(hr < (24 + day_start_fudge), 2, 3))]
-        if(dt.today %in% odd.dates) {
-          tibble(odd.date.group=primary.date, even.date.group=secondary.date)
+        primary.date <- c(dt.today, dt.NA)[ifelse(
+          hr >= day_start_fudge & hr < day_end_fudge,
+          1,
+          2
+        )]
+        secondary.date <- c(dt.yesterday, dt.NA, dt.tomorrow)[ifelse(
+          hr <= (day_end_fudge - 24),
+          1,
+          ifelse(hr < (24 + day_start_fudge), 2, 3)
+        )]
+        if (dt.today %in% odd.dates) {
+          tibble(
+            odd.date.group = primary.date,
+            even.date.group = secondary.date
+          )
           #data.plys[data.plys.rows, c('odd.date.group','even.date.group')] <- c(primary.date, secondary.date)
-        } else { # dt.today %in% even.dates
-          tibble(odd.date.group=secondary.date, even.date.group=primary.date)
+        } else {
+          # dt.today %in% even.dates
+          tibble(
+            odd.date.group = secondary.date,
+            even.date.group = primary.date
+          )
           #data.plys[data.plys.rows, c('odd.date.group','even.date.group')] <- c(secondary.date, primary.date)
         }
-      }))) %>%
-      as.data.frame(stringsAsFactors=FALSE)
+      }))
+    ) %>%
+      as.data.frame(stringsAsFactors = FALSE)
 
     # filter out dates that don't ever appear on their own - this especially weeds
     # out first and last dates that were probably meant just to be part of the
     # second or penultimate dates when the date range is >24
-    date.pairings <- setNames(unique(data.plys[, c('odd.date.group','even.date.group')]), c('a','b'))
-    date.pairings <- rbind(date.pairings, setNames(date.pairings, c('b','a')))
-    date.pairings <- date.pairings[!is.na(date.pairings$a),]
-    solo.dates <- date.pairings[is.na(date.pairings$b),]$a
+    date.pairings <- setNames(
+      unique(data.plys[, c('odd.date.group', 'even.date.group')]),
+      c('a', 'b')
+    )
+    date.pairings <- rbind(date.pairings, setNames(date.pairings, c('b', 'a')))
+    date.pairings <- date.pairings[!is.na(date.pairings$a), ]
+    solo.dates <- date.pairings[is.na(date.pairings$b), ]$a
     tbl.dates <- table(date.pairings$a)
     double.dates <- names(tbl.dates)[tbl.dates > 1]
     unique.dates <- sort(unique(c(solo.dates, double.dates)))
@@ -182,20 +274,21 @@ mm_model_by_ply <- function(
     # cover both the odd and even groupings in date order
     runs <- bind_rows(
       get_runs(data.plys$odd.date.group),
-      get_runs(data.plys$even.date.group)) %>%
+      get_runs(data.plys$even.date.group)
+    ) %>%
       filter(date %in% unique.dates) %>%
       arrange(date) %>%
-      mutate(date=as.Date(date, tz=tz(data$solar.time)))
+      mutate(date = as.Date(date, tz = tz(data$solar.time)))
     hour <- odd.date.group <- even.date.group <- '.dplyr.var'
     data_plys <- data.plys %>%
       select(-date, -hour, -odd.date.group, -even.date.group)
     out_list <- lapply(seq_along(runs$date), function(dt) {
       # pick out the inst & daily plys for this date
-      run <- runs[dt,]
-      data_ply <- data_plys[run$start:run$end,]
+      run <- runs[dt, ]
+      data_ply <- data_plys[run$start:run$end, ]
       data_daily_ply <-
-        if(!is.null(data_daily)) {
-          data_daily[match(run$date, data_daily$date),]
+        if (!is.null(data_daily)) {
+          data_daily[match(run$date, data_daily$date), ]
         } else {
           NULL
         }
@@ -204,42 +297,69 @@ mm_model_by_ply <- function(
       # compute timestep and run validity checks if requested. if timestep_days is
       # FALSE or NA, it will be passed as NA to the model_fun and only computed
       # there if needed for specific tests
-      if(length(timestep_days) > 1) stop("expecting no more than 1 value in timestep_days")
-      timestep_days <- if(isTRUE(timestep_days)) {
-        mm_get_timestep(data_ply$solar.time, format='mean')
-      } else if(is.na(timestep_days) || is.null(timestep_days) || timestep_days==FALSE) {
+      if (length(timestep_days) > 1) {
+        stop("expecting no more than 1 value in timestep_days")
+      }
+      timestep_days <- if (isTRUE(timestep_days)) {
+        mm_get_timestep(data_ply$solar.time, format = 'mean')
+      } else if (
+        is.na(timestep_days) || is.null(timestep_days) || timestep_days == FALSE
+      ) {
         NA
-      } else timestep_days
+      } else {
+        timestep_days
+      }
       ply_validity <- mm_is_valid_day(
-        data_ply=data_ply, day_start=day_start, day_end=day_end, day_tests=day_tests, required_timestep=required_timestep,
-        ply_date=ply_date, timestep_days=timestep_days)
+        data_ply = data_ply,
+        day_start = day_start,
+        day_end = day_end,
+        day_tests = day_tests,
+        required_timestep = required_timestep,
+        ply_date = ply_date,
+        timestep_days = timestep_days
+      )
 
       # run the user's model_fun
       out <- model_fun(
-        data_ply=data_ply, data_daily_ply=data_daily_ply,
-        day_start=day_start, day_end=day_end, ply_date=ply_date,
-        ply_validity=ply_validity, timestep_days=timestep_days,
-        ...)
+        data_ply = data_ply,
+        data_daily_ply = data_daily_ply,
+        day_start = day_start,
+        day_end = day_end,
+        ply_date = ply_date,
+        ply_validity = ply_validity,
+        timestep_days = timestep_days,
+        ...
+      )
       # attach a date column if anything was returned
-      if(is.null(out) || nrow(out)==0) NULL else data.frame(date=ply_date, out)
+      if (is.null(out) || nrow(out) == 0) {
+        NULL
+      } else {
+        data.frame(date = ply_date, out)
+      }
     })
   }
 
   # if out_list came back with nothing, give the model_fun one more chance to
   # suggest column names
-  if(length(out_list) == 0 || all(sapply(out_list, is.null))) {
+  if (length(out_list) == 0 || all(sapply(out_list, is.null))) {
     out_list <- tryCatch(
       list(
         model_fun(
-          data_ply=data[c(),], data_daily_ply=data_daily[c(),],
-          day_start=day_start, day_end=day_end, ply_date=as.Date(NA),
-          ply_validity=NA, timestep_days=NA,
-          ...) %>%
-          mutate(date=as.Date(NA)) %>%
-          select(date, everything())),
-      error=function(e) {
+          data_ply = data[c(), ],
+          data_daily_ply = data_daily[c(), ],
+          day_start = day_start,
+          day_end = day_end,
+          ply_date = as.Date(NA),
+          ply_validity = NA,
+          timestep_days = NA,
+          ...
+        ) %>%
+          mutate(date = as.Date(NA)) %>%
+          select(date, everything())
+      ),
+      error = function(e) {
         # and if it REALLY doesn't work, just return an empty 1-column df
-        data.frame(date=as.Date(NA))[c(),]
+        data.frame(date = as.Date(NA))[c(), ]
       }
     )
   }
@@ -248,13 +368,13 @@ mm_model_by_ply <- function(
   # the dfs with the most columns to keep the column ordering consistent across
   # runs. dplyr::bind_rows should take care of any missing columns, since these
   # are matched by name, and missing columns are filled with NAs
-  if(length(out_list) == 0) {
-
-  } else {
+  if (length(out_list) == 0) {} else {
     example_choice <-
-      sapply(out_list, function(out) { if(is.null(out)) 0 else ncol(out) }) %>%
+      sapply(out_list, function(out) {
+        if (is.null(out)) 0 else ncol(out)
+      }) %>%
       which.max()
-    out_example <- out_list[[example_choice]][FALSE,]
+    out_example <- out_list[[example_choice]][FALSE, ]
     bind_rows(c(list(out_example), out_list)) %>% as.data.frame()
   }
 }

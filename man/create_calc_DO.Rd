@@ -28,13 +28,13 @@ accepted by \code{\link[deSolve]{ode}} in the \code{deSolve} package
 context of \code{streamMetabolizer} models) }}
 
 \item{err.obs}{optional numerical vector of length nrow(data) in units of gO2
-m^3. Appropriate for simulation, when this vector of observation errors 
-will be added to the calculated DO values to simulate observation error. 
-But usually (for MLE or prediction from a fitted MLE/Bayesian/nighttime 
+m^3. Appropriate for simulation, when this vector of observation errors
+will be added to the calculated DO values to simulate observation error.
+But usually (for MLE or prediction from a fitted MLE/Bayesian/nighttime
 regression model) \code{err.obs} should be missing or 0}
 }
 \value{
-a function that will return a negative log likelihood of the data 
+a function that will return a negative log likelihood of the data
   given a set of metab.pars
 }
 \description{

@@ -12,12 +12,12 @@ metab(
 )
 }
 \arguments{
-\item{specs}{a list of model specifications and parameters for a model. 
+\item{specs}{a list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link{specs}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
-\code{model_name} argument to \code{specs}. The help file for 
-\code{\link{specs}} lists the necessary parameters, describes them in 
+\code{model_name} argument to \code{specs}. The help file for
+\code{\link{specs}} lists the necessary parameters, describes them in
 detail, and gives default values.}
 
 \item{data}{data.frame (not a tbl_df) of input data at the temporal
@@ -27,19 +27,19 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 \strong{'Formatting \code{data}'} section below for a full description.}
 
 \item{data_daily}{data.frame containing inputs with a daily timestep. See the
-\strong{'Formatting \code{data_daily}'} section below for a full 
+\strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{info}{any information, in any format, that you would like to store 
+\item{info}{any information, in any format, that you would like to store
 within the metab_model object}
 }
 \value{
-An object inheriting from metab_model and containing the fitted 
-  model. This object can be inspected with the functions in the 
+An object inheriting from metab_model and containing the fitted
+  model. This object can be inspected with the functions in the
   \code{\link{metab_model_interface}}.
 }
 \description{
-Runs the metabolism model specified by the \code{specs} argument. Returns a 
+Runs the metabolism model specified by the \code{specs} argument. Returns a
 fitted model.
 }
 \section{Formatting \code{data}}{

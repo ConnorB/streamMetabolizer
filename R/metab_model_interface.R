@@ -48,7 +48,6 @@ NULL
 #### show ####
 # show() is already a generic S4 function.
 
-
 #### S3 generics ####
 
 #' Extract the user-supplied metadata about a metabolism model.
@@ -189,10 +188,15 @@ get_version <- function(metab_model) {
 #' @family metab_model_interface
 #' @seealso \code{\link{predict_metab}} for daily average rates of GPP and ER
 get_params <- function(
-  metab_model, date_start=NA, date_end=NA,
-  uncertainty=c('sd','ci','none'), messages=TRUE, fixed=c('none','columns','stars'),
-  ..., attach.units=deprecated()) {
-
+  metab_model,
+  date_start = NA,
+  date_end = NA,
+  uncertainty = c('sd', 'ci', 'none'),
+  messages = TRUE,
+  fixed = c('none', 'columns', 'stars'),
+  ...,
+  attach.units = deprecated()
+) {
   UseMethod("get_params")
 }
 
@@ -263,10 +267,15 @@ get_param_names <- function(metab_model, ...) {
 #' @export
 #' @family metab_model_interface
 predict_metab <- function(
-  metab_model, date_start=NA, date_end=NA,
-  day_start=get_specs(metab_model)$day_start, day_end=min(day_start+24, get_specs(metab_model)$day_end),
-  ..., attach.units=deprecated(), use_saved=TRUE) {
-
+  metab_model,
+  date_start = NA,
+  date_end = NA,
+  day_start = get_specs(metab_model)$day_start,
+  day_end = min(day_start + 24, get_specs(metab_model)$day_end),
+  ...,
+  attach.units = deprecated(),
+  use_saved = TRUE
+) {
   UseMethod("predict_metab")
 }
 
@@ -300,8 +309,13 @@ predict_metab <- function(
 #' head(preds)
 #' @export
 #' @family metab_model_interface
-predict_DO <- function(metab_model, date_start=NA, date_end=NA,
-                       ..., attach.units=deprecated(), use_saved=TRUE) {
-
+predict_DO <- function(
+  metab_model,
+  date_start = NA,
+  date_end = NA,
+  ...,
+  attach.units = deprecated(),
+  use_saved = TRUE
+) {
   UseMethod("predict_DO")
 }

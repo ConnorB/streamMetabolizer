@@ -12,7 +12,7 @@ plot_metab_preds(
 )
 }
 \arguments{
-\item{metab_preds}{a data.frame of predictions such as that returned by 
+\item{metab_preds}{a data.frame of predictions such as that returned by
 predict_metab()}
 
 \item{y_var}{character. Should the plot display predicted values of GPP
@@ -21,8 +21,8 @@ and/or ER? The default is to plot both.}
 \item{style}{character indicating which graphics package to use}
 
 \item{y_lim}{list of named vectors, each of which has length 2 and is numeric
-and has a name in the possible values of y_var. NA within a vector 
-indicates that the data range should be used. for ggplot2, y_lim is only 
+and has a name in the possible values of y_var. NA within a vector
+indicates that the data range should be used. for ggplot2, y_lim is only
 used to exclude values outside that range and is ignored if the data span a
 narrower range}
 }

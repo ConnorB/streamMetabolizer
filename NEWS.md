@@ -1,3 +1,7 @@
+# 0.12.1.9000
+
+* `convert_date_to_doyhr()` and `convert_doyhr_to_date()` are no longer exported; they are now package internals. This also fixes a spurious deprecation warning that `convert_UTC_to_solartime()` could emit when called via `streamMetabolizer::`.
+
 # 0.12.1
 
 * updated README.md, code.json, and other package metadata files

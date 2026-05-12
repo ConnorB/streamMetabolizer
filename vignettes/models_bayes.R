@@ -6,7 +6,6 @@ knitr::opts_chunk$set(echo = TRUE)
 # select(get_params(mm), warnings, errors)
 # get_fit(mm)$warnings
 # get_fit(mm)$errors
-# 
+#
 # # and prediction messages
 # select(predict_metab(mm), warnings, errors)
-

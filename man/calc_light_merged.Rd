@@ -26,8 +26,8 @@ modeled and merged with the values in PAR.obs}
 decimal degrees (never radians or deg-min-sec, no matter what \code{format}
 is) between -90 (South Pole) and 90 (North Pole).}
 
-\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or 
-"degW") or with sign indicating direction (positive = East), describing 
+\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or
+"degW") or with sign indicating direction (positive = East), describing
 location of the site}
 
 \item{max.PAR}{the maximum PAR, as in calc_light. if NA, this function does

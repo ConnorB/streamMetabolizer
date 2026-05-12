@@ -11,7 +11,7 @@ convert_localtime_to_UTC(local.time)
 specified by the tz attribute}
 }
 \description{
-Convert time from local time (either standard or with daylight savings) to 
+Convert time from local time (either standard or with daylight savings) to
 UTC.
 }
 \references{

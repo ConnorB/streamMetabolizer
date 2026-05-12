@@ -9,7 +9,7 @@ calc_sun_rise_set(date, latitude)
 \arguments{
 \item{date}{Vector of dates in \code{Date} format.}
 
-\item{latitude}{Single latitude value of site. South should be negative, 
+\item{latitude}{Single latitude value of site. South should be negative,
 North positive}
 }
 \value{
@@ -19,7 +19,7 @@ data.frame of sunrise and sunset (apparent solar time, nominally UTC)
 Calculates the time of sunrise and sunset based on latitude and date.
 }
 \examples{
-calc_sun_rise_set(latitude=40.75, 
+calc_sun_rise_set(latitude=40.75,
   date=as.POSIXlt(c('2013-03-31', '2017-07-01')))
 }
 \seealso{

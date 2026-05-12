@@ -17,38 +17,38 @@ nightreg_1ply(
 }
 \arguments{
 \item{data_ply}{a data.frame containing all relevant, validated modeling data
-for a single ply of data. (1 ply ~= 1 date, although the day length has 
+for a single ply of data. (1 ply ~= 1 date, although the day length has
 been specified by day_start and day_end and may not be exactly 24 hours)}
 
-\item{data_daily_ply}{NULL or a data.frame containing inputs with a daily 
+\item{data_daily_ply}{NULL or a data.frame containing inputs with a daily
 timestep.}
 
-\item{day_start}{start time (inclusive) of a day's data in number of hours 
-from the midnight that begins the date. For example, day_start=-1.5 
-indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at 
+\item{day_start}{start time (inclusive) of a day's data in number of hours
+from the midnight that begins the date. For example, day_start=-1.5
+indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
 fall exactly on an observation time.}
 
-\item{day_end}{end time (exclusive) of a day's data in number of hours from 
-the midnight that begins the date. For example, day_end=30 indicates that 
-data describing 2006-06-26 end at the last observation time that occurs 
+\item{day_end}{end time (exclusive) of a day's data in number of hours from
+the midnight that begins the date. For example, day_end=30 indicates that
+data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00.}
 
-\item{ply_date}{the modal date of this ply of data and data_daily, and the 
+\item{ply_date}{the modal date of this ply of data and data_daily, and the
 date by which this ply should be referred topresent.}
 
-\item{...}{other args that were passed untouched from the function calling 
+\item{...}{other args that were passed untouched from the function calling
 mm_model_by_ply, through mm_model_by_ply, and finally to this function.}
 
 \item{night_tests}{character vector of validity tests to conduct on the data
 after subsetting to just nighttime}
 
-\item{specs}{a list of model specifications and parameters for a model. 
+\item{specs}{a list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link{specs}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
-\code{model_name} argument to \code{specs}. The help file for 
-\code{\link{specs}} lists the necessary parameters, describes them in 
+\code{model_name} argument to \code{specs}. The help file for
+\code{\link{specs}} lists the necessary parameters, describes them in
 detail, and gives default values.}
 }
 \value{

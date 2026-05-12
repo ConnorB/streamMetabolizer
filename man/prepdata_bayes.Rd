@@ -14,18 +14,18 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 \strong{'Formatting \code{data}'} section below for a full description.}
 
 \item{data_daily}{data.frame containing inputs with a daily timestep. See the
-\strong{'Formatting \code{data_daily}'} section below for a full 
+\strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{ply_date}{the modal date of this ply of data and data_daily, and the 
+\item{ply_date}{the modal date of this ply of data and data_daily, and the
 date by which this ply should be referred topresent.}
 
-\item{specs}{a list of model specifications and parameters for a model. 
+\item{specs}{a list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link{specs}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
-\code{model_name} argument to \code{specs}. The help file for 
-\code{\link{specs}} lists the necessary parameters, describes them in 
+\code{model_name} argument to \code{specs}. The help file for
+\code{\link{specs}} lists the necessary parameters, describes them in
 detail, and gives default values.}
 }
 \value{

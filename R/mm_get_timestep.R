@@ -1,15 +1,15 @@
 #' Return the average timestep in days
-#' 
-#' @param datetimes a vector of date-times in POSIXct format from which to 
+#'
+#' @param datetimes a vector of date-times in POSIXct format from which to
 #'   compute the average timestep
-#' @param format the format in which to return the timestep. 'mean' always 
-#'   returns one value; 'unique' may return more than one depending on the 
+#' @param format the format in which to return the timestep. 'mean' always
+#'   returns one value; 'unique' may return more than one depending on the
 #'   variation in timesteps and the value of \code{digits}.
 #' @param require_unique logical. should it be required that there is exactly
 #'   one unique timestep (within the given tolerance \code{tol})?
-#' @param tol if \code{format == 'unique'}, unique values are first calculated 
-#'   to machine precision, but then subsetted to those that differ from one 
-#'   another by at least tol, where tol is a time difference in units of days 
+#' @param tol if \code{format == 'unique'}, unique values are first calculated
+#'   to machine precision, but then subsetted to those that differ from one
+#'   another by at least tol, where tol is a time difference in units of days
 #'   (and thus 1/(24*60*60) is one second).
 #' @importFrom stats approx
 #' @examples {
@@ -35,44 +35,77 @@
 #' }
 #' }
 #' @export
-mm_get_timestep <- function(datetimes, format=c('mean','unique','modal'), require_unique=FALSE, tol=60/(24*60*60)) {
-  if(length(datetimes) < 2) {
-    if(require_unique) stop('!=1 unique timestep') else return(NA)
+mm_get_timestep <- function(
+  datetimes,
+  format = c('mean', 'unique', 'modal'),
+  require_unique = FALSE,
+  tol = 60 / (24 * 60 * 60)
+) {
+  if (length(datetimes) < 2) {
+    if (require_unique) stop('!=1 unique timestep') else return(NA)
   }
-  timesteps <- as.numeric(diff(datetimes), units="days")
+  timesteps <- as.numeric(diff(datetimes), units = "days")
   timestep <- switch(
     match.arg(format),
     mean = {
-      if(require_unique == TRUE)
-        mm_get_timestep(datetimes, format='unique', require_unique=TRUE, tol=tol)
-      else 
-        mean(timesteps, na.rm=TRUE)
+      if (require_unique == TRUE) {
+        mm_get_timestep(
+          datetimes,
+          format = 'unique',
+          require_unique = TRUE,
+          tol = tol
+        )
+      } else {
+        mean(timesteps, na.rm = TRUE)
+      }
     },
     unique = {
       all_unique <- sort(unique(timesteps))
       sufficiently_unique <- c()
-      while(length(all_unique) > 0) {
+      while (length(all_unique) > 0) {
         sufficiently_unique <- c(sufficiently_unique, all_unique[1])
-        all_unique <- all_unique[which(all_unique > tail(sufficiently_unique, 1) + tol)]
+        all_unique <- all_unique[which(
+          all_unique > tail(sufficiently_unique, 1) + tol
+        )]
       }
-      if(require_unique == TRUE && length(sufficiently_unique) != 1)
+      if (require_unique == TRUE && length(sufficiently_unique) != 1) {
         stop('!=1 unique timestep')
+      }
       sufficiently_unique
     },
     modal = {
       all_unique <- sort(unique(timesteps))
-      tbl_unique <- sapply(all_unique, function(tstep) sum(timesteps == tstep), USE.NAMES=FALSE)
+      tbl_unique <- sapply(
+        all_unique,
+        function(tstep) sum(timesteps == tstep),
+        USE.NAMES = FALSE
+      )
       sufficiently_unique <- mm_get_timestep(
-        datetimes=cumsum(c(0,all_unique)), format='unique', require_unique=require_unique, tol=tol)
-      if(length(sufficiently_unique) == 0) return(c())
-      round_unique <- approx(sufficiently_unique, sufficiently_unique, xout=all_unique, method='constant', rule=2)$y
-      tbl_suff_unique <- sapply(sufficiently_unique, function(ru) sum(tbl_unique[which(round_unique == ru)]))
+        datetimes = cumsum(c(0, all_unique)),
+        format = 'unique',
+        require_unique = require_unique,
+        tol = tol
+      )
+      if (length(sufficiently_unique) == 0) {
+        return(c())
+      }
+      round_unique <- approx(
+        sufficiently_unique,
+        sufficiently_unique,
+        xout = all_unique,
+        method = 'constant',
+        rule = 2
+      )$y
+      tbl_suff_unique <- sapply(sufficiently_unique, function(ru) {
+        sum(tbl_unique[which(round_unique == ru)])
+      })
       all_suff_unique <- sapply(sufficiently_unique, function(ru) {
         matches <- which(round_unique == ru)
         best_match <- matches[which.max(tbl_unique[matches])]
         all_unique[best_match]
       })
       all_suff_unique[which.max(tbl_suff_unique)]
-    })
+    }
+  )
   timestep
 }

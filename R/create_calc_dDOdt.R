@@ -163,30 +163,49 @@
 #'   times=1:nrow(data), func=dDOdt.err2, method='rk4')[,'DO.mod']
 #' lines(x=data$solar.time, y=DO.mod.err2, type='l', col='black', lty=2)
 #' }
-create_calc_dDOdt <- function(data, ode_method, GPP_fun, ER_fun, deficit_src, err.proc=0) {
-
+create_calc_dDOdt <- function(
+  data,
+  ode_method,
+  GPP_fun,
+  ER_fun,
+  deficit_src,
+  err.proc = 0
+) {
   # simplify time indexing. we've guaranteed in mm_model_by_ply that the
   # timesteps are regular
   data$t <- seq_len(nrow(data))
 
   # define the forcing (temp.water, light, DO.sat, etc.) interpolations and
   # other inputs to include in the dDOdt() closure.
-  integer.t <- isTRUE(ode_method %in% c('euler','trapezoid','Euler','pairmeans'))
-  data$KO2.conv <- suppressWarnings(convert_k600_to_kGAS(k600=1, temperature=data$temp.water, gas='O2'))
-  if(any(is.nan(data$KO2.conv))) {
+  integer.t <- isTRUE(
+    ode_method %in% c('euler', 'trapezoid', 'Euler', 'pairmeans')
+  )
+  data$KO2.conv <- suppressWarnings(convert_k600_to_kGAS(
+    k600 = 1,
+    temperature = data$temp.water,
+    gas = 'O2'
+  ))
+  if (any(is.nan(data$KO2.conv))) {
     bad_rows <- which(is.nan(data$KO2.conv))
     show_rows <- bad_rows[seq_len(min(length(bad_rows), 3))]
-    more_rows <- if(length(bad_rows) > 3) length(bad_rows) - 3 else NA
+    more_rows <- if (length(bad_rows) > 3) length(bad_rows) - 3 else NA
     bad_times <- data$solar.time[show_rows]
     bad_temps <- data$temp.water[show_rows]
     warning(sprintf(
       'NaNs in KO2-K600 conversion at %s%s',
-      paste0(sprintf('%s (temp.water=%0.2f)', format(bad_times, '%Y-%m-%d %H:%M:%S'), bad_temps), collapse=', '),
-      if(!is.na(more_rows)) sprintf(', and %d more rows', more_rows) else ''
+      paste0(
+        sprintf(
+          '%s (temp.water=%0.2f)',
+          format(bad_times, '%Y-%m-%d %H:%M:%S'),
+          bad_temps
+        ),
+        collapse = ', '
+      ),
+      if (!is.na(more_rows)) sprintf(', and %d more rows', more_rows) else ''
     ))
   }
   data$err.proc <- err.proc # get replication if needed
-  if(integer.t) {
+  if (integer.t) {
     # for indexing, converting df columns to vectors speeds things up by 40x
     DO.obs <- data$DO.obs
     DO.sat <- data$DO.sat
@@ -199,15 +218,22 @@ create_calc_dDOdt <- function(data, ode_method, GPP_fun, ER_fun, deficit_src, er
     # other methods require functions that can be applied at non-integer
     # values of t. approxfun is pretty darn fast and ever-so-slightly faster
     # with data$x than with independent vectors of t and a variable
-    DO.obs <- approxfun(data$t, data$DO.obs, rule=2)
-    DO.sat <- approxfun(data$t, data$DO.sat, rule=2)
-    depth <- approxfun(data$t, data$depth, rule=2)
-    temp.water <- approxfun(data$t, data$temp.water, rule=2)
-    light <- approxfun(data$t, data$light, rule=2)
-    KO2.conv <- approxfun(data$t, data$KO2.conv, rule=2)
-    err.proc <- if(all(err.proc == 0)) function(t) 0 else approxfun(data$t, data$err.proc, rule=2)
+    DO.obs <- approxfun(data$t, data$DO.obs, rule = 2)
+    DO.sat <- approxfun(data$t, data$DO.sat, rule = 2)
+    depth <- approxfun(data$t, data$depth, rule = 2)
+    temp.water <- approxfun(data$t, data$temp.water, rule = 2)
+    light <- approxfun(data$t, data$light, rule = 2)
+    KO2.conv <- approxfun(data$t, data$KO2.conv, rule = 2)
+    err.proc <- if (all(err.proc == 0)) {
+      function(t) 0
+    } else {
+      approxfun(data$t, data$err.proc, rule = 2)
+    }
   }
-  timestep.days <- suppressWarnings(mean(as.numeric(diff(data$solar.time), units="days"), na.rm=TRUE))
+  timestep.days <- suppressWarnings(mean(
+    as.numeric(diff(data$solar.time), units = "days"),
+    na.rm = TRUE
+  ))
 
   # collect the required metab.pars parameter names in a vector called metab.needs
   metab.needs <- c()
@@ -215,36 +241,62 @@ create_calc_dDOdt <- function(data, ode_method, GPP_fun, ER_fun, deficit_src, er
   # GPP: instantaneous gross primary production at time t in gO2 m^-2 d^-1
   GPP <- switch(
     GPP_fun,
-    'NA'=(function(){
+    'NA' = (function() {
       function(t, metab.pars) 0
     })(),
-    linlight=(function(){
+    linlight = (function() {
       # normalize light by the sum of light in the first 24 hours of the time window
       mean.light <- with(
-        list(in.solar.day = data$solar.time < (data$solar.time[1] + as.difftime(1, units='days'))),
-        mean(data$light[in.solar.day]))
-      if(mean.light == 0) mean.light <- 1
+        list(
+          in.solar.day = data$solar.time <
+            (data$solar.time[1] + as.difftime(1, units = 'days'))
+        ),
+        mean(data$light[in.solar.day])
+      )
+      if (mean.light == 0) {
+        mean.light <- 1
+      }
       metab.needs <<- c(metab.needs, 'GPP.daily')
-      if(integer.t) function(t, metab.pars) {
-        metab.pars[['GPP.daily']] * light[t] / mean.light
-      } else function(t, metab.pars) {
-        metab.pars[['GPP.daily']] * light(t) / mean.light
+      if (integer.t) {
+        function(t, metab.pars) {
+          metab.pars[['GPP.daily']] * light[t] / mean.light
+        }
+      } else {
+        function(t, metab.pars) {
+          metab.pars[['GPP.daily']] * light(t) / mean.light
+        }
       }
     })(),
-    satlight=(function(){
-      metab.needs <<- c(metab.needs, c('Pmax','alpha'))
-      if(integer.t) function(t, metab.pars) {
-        Pmax <- metab.pars[['Pmax']]; Pmax * tanh(metab.pars[['alpha']] * light[t] / Pmax)
-      } else function(t, metab.pars) {
-        Pmax <- metab.pars[['Pmax']]; Pmax * tanh(metab.pars[['alpha']] * light(t) / Pmax)
+    satlight = (function() {
+      metab.needs <<- c(metab.needs, c('Pmax', 'alpha'))
+      if (integer.t) {
+        function(t, metab.pars) {
+          Pmax <- metab.pars[['Pmax']]
+          Pmax * tanh(metab.pars[['alpha']] * light[t] / Pmax)
+        }
+      } else {
+        function(t, metab.pars) {
+          Pmax <- metab.pars[['Pmax']]
+          Pmax * tanh(metab.pars[['alpha']] * light(t) / Pmax)
+        }
       }
     })(),
-    satlightq10temp=(function(){
-      metab.needs <<- c(metab.needs, c('Pmax','alpha'))
-      if(integer.t) function(t, metab.pars) {
-        Pmax <- metab.pars[['Pmax']]; Pmax * tanh(metab.pars[['alpha']] * light[t] / Pmax) * 1.036 ^ (temp.water[t] - 20)
-      } else function(t, metab.pars) {
-        Pmax <- metab.pars[['Pmax']]; Pmax * tanh(metab.pars[['alpha']] * light(t) / Pmax) * 1.036 ^ (temp.water(t) - 20)
+    satlightq10temp = (function() {
+      metab.needs <<- c(metab.needs, c('Pmax', 'alpha'))
+      if (integer.t) {
+        function(t, metab.pars) {
+          Pmax <- metab.pars[['Pmax']]
+          Pmax *
+            tanh(metab.pars[['alpha']] * light[t] / Pmax) *
+            1.036^(temp.water[t] - 20)
+        }
+      } else {
+        function(t, metab.pars) {
+          Pmax <- metab.pars[['Pmax']]
+          Pmax *
+            tanh(metab.pars[['alpha']] * light(t) / Pmax) *
+            1.036^(temp.water(t) - 20)
+        }
       }
     })(),
     stop('unrecognized GPP_fun')
@@ -253,19 +305,23 @@ create_calc_dDOdt <- function(data, ode_method, GPP_fun, ER_fun, deficit_src, er
   # ER: instantaneous ecosystem respiration at time t in d^-1
   ER <- switch(
     ER_fun,
-    constant=(function(){
+    constant = (function() {
       metab.needs <<- c(metab.needs, 'ER.daily')
       function(t, metab.pars) {
         metab.pars[['ER.daily']]
       }
     })(),
-    q10temp=(function(){
+    q10temp = (function() {
       # song_methods_2016 cite Gulliver & Stefan 1984; Parkhill & Gulliver 1999
       metab.needs <<- c(metab.needs, 'ER20')
-      if(integer.t) function(t, metab.pars) {
-        metab.pars[['ER20']] * 1.045 ^ (temp.water[t] - 20)
-      } else function(t, metab.pars) {
-        metab.pars[['ER20']] * 1.045 ^ (temp.water(t) - 20)
+      if (integer.t) {
+        function(t, metab.pars) {
+          metab.pars[['ER20']] * 1.045^(temp.water[t] - 20)
+        }
+      } else {
+        function(t, metab.pars) {
+          metab.pars[['ER20']] * 1.045^(temp.water(t) - 20)
+        }
       }
     })(),
     stop('unrecognized ER_fun')
@@ -274,21 +330,29 @@ create_calc_dDOdt <- function(data, ode_method, GPP_fun, ER_fun, deficit_src, er
   # D: instantaneous reaeration rate at time t in gO2 m^-3 d^-1
   D <- switch(
     deficit_src,
-    DO_obs=(function(){
+    DO_obs = (function() {
       metab.needs <<- c(metab.needs, 'K600.daily')
-      if(integer.t) function(t, metab.pars, DO.mod.t) {
-        metab.pars[['K600.daily']] * KO2.conv[t] * (DO.sat[t] - DO.obs[t])
-      } else function(t, metab.pars, DO.mod.t) {
-        metab.pars[['K600.daily']] * KO2.conv(t) * (DO.sat(t) - DO.obs(t))
+      if (integer.t) {
+        function(t, metab.pars, DO.mod.t) {
+          metab.pars[['K600.daily']] * KO2.conv[t] * (DO.sat[t] - DO.obs[t])
+        }
+      } else {
+        function(t, metab.pars, DO.mod.t) {
+          metab.pars[['K600.daily']] * KO2.conv(t) * (DO.sat(t) - DO.obs(t))
+        }
       }
     })(),
-    DO_obs_filter=,
-    DO_mod=(function(){
+    DO_obs_filter = ,
+    DO_mod = (function() {
       metab.needs <<- c(metab.needs, 'K600.daily')
-      if(integer.t) function(t, metab.pars, DO.mod.t) {
-        metab.pars[['K600.daily']] * KO2.conv[t] * (DO.sat[t] - DO.mod.t)
-      } else function(t, metab.pars, DO.mod.t) {
-        metab.pars[['K600.daily']] * KO2.conv(t) * (DO.sat(t) - DO.mod.t)
+      if (integer.t) {
+        function(t, metab.pars, DO.mod.t) {
+          metab.pars[['K600.daily']] * KO2.conv[t] * (DO.sat[t] - DO.mod.t)
+        }
+      } else {
+        function(t, metab.pars, DO.mod.t) {
+          metab.pars[['K600.daily']] * KO2.conv(t) * (DO.sat(t) - DO.mod.t)
+        }
       }
     })(),
     stop('unrecognized deficit_src')
@@ -302,41 +366,104 @@ create_calc_dDOdt <- function(data, ode_method, GPP_fun, ER_fun, deficit_src, er
     # https://github.com/USGS-R/streamMetabolizer/issues/252. remember we're
     # treating err.proc as a rate in gO2/m2/d, just like GPP & ER. no need to
     # switch on integer.t because trapezoid and pairmeans are always integer.t
-    trapezoid=, pairmeans={
-      if(deficit_src == 'DO_obs') function(t, state, metab.pars) {
-        list(
-          dDOdt={
-            {GPP(t, metab.pars) + ER(t, metab.pars) + err.proc[t]}/depth[t] + # same for either deficit_src
-            {GPP(t+1, metab.pars) + ER(t+1, metab.pars) + err.proc[t+1]}/depth[t+1] + # same for either deficit_src
-            {metab.pars[['K600.daily']] * {KO2.conv[t]*DO.sat[t] + KO2.conv[t+1]*DO.sat[t+1] - # '-' MUST be on this line. same for either deficit_src
-              {KO2.conv[t]*DO.obs[t] + KO2.conv[t+1]*DO.obs[t+1]}}} # - (jv + kw)
-          } * timestep.days / 2 # /2
-        )
-      } else function(t, state, metab.pars) {
-        list(
-          dDOdt={
-            {GPP(t, metab.pars) + ER(t, metab.pars) + err.proc[t]}/depth[t] + # same for either deficit_src
-            {GPP(t+1, metab.pars) + ER(t+1, metab.pars) + err.proc[t+1]}/depth[t+1] + # same for either deficit_src
-            {metab.pars[['K600.daily']] * {KO2.conv[t]*DO.sat[t] + KO2.conv[t+1]*DO.sat[t+1] - # '-' MUST be on this line. same for either deficit_src
-              {KO2.conv[t] + KO2.conv[t+1]} * state[['DO.mod']]}} # - (jx + kx)
-          } * timestep.days / {2 + metab.pars[['K600.daily']] * KO2.conv[t+1] * timestep.days} # /(2 + ks)
-        )
+    trapezoid = ,
+    pairmeans = {
+      if (deficit_src == 'DO_obs') {
+        function(t, state, metab.pars) {
+          list(
+            dDOdt = {
+              {
+                GPP(t, metab.pars) + ER(t, metab.pars) + err.proc[t]
+              } /
+                depth[t] + # same for either deficit_src
+                {
+                  GPP(t + 1, metab.pars) +
+                    ER(t + 1, metab.pars) +
+                    err.proc[t + 1]
+                } /
+                  depth[t + 1] + # same for either deficit_src
+                {
+                  metab.pars[['K600.daily']] *
+                    {
+                      KO2.conv[t] *
+                        DO.sat[t] +
+                        KO2.conv[t + 1] * DO.sat[t + 1] - # '-' MUST be on this line. same for either deficit_src
+                        {
+                          KO2.conv[t] *
+                            DO.obs[t] +
+                            KO2.conv[t + 1] * DO.obs[t + 1]
+                        }
+                    }
+                } # - (jv + kw)
+            } *
+              timestep.days /
+              2 # /2
+          )
+        }
+      } else {
+        function(t, state, metab.pars) {
+          list(
+            dDOdt = {
+              {
+                GPP(t, metab.pars) + ER(t, metab.pars) + err.proc[t]
+              } /
+                depth[t] + # same for either deficit_src
+                {
+                  GPP(t + 1, metab.pars) +
+                    ER(t + 1, metab.pars) +
+                    err.proc[t + 1]
+                } /
+                  depth[t + 1] + # same for either deficit_src
+                {
+                  metab.pars[['K600.daily']] *
+                    {
+                      KO2.conv[t] *
+                        DO.sat[t] +
+                        KO2.conv[t + 1] * DO.sat[t + 1] - # '-' MUST be on this line. same for either deficit_src
+                        {
+                          KO2.conv[t] + KO2.conv[t + 1]
+                        } *
+                          state[['DO.mod']]
+                    }
+                } # - (jx + kx)
+            } *
+              timestep.days /
+              {
+                2 + metab.pars[['K600.daily']] * KO2.conv[t + 1] * timestep.days
+              } # /(2 + ks)
+          )
+        }
       }
     },
     # all other methods use a straightforward calculation of dDOdt at values of
     # t and DO.mod.t as requested by the ODE solver
-    if(integer.t) function(t, state, metab.pars) { # Euler and euler, b/c trapezoid and pairmeans are covered above
-      list(
-        dDOdt={
-          {GPP(t, metab.pars) + ER(t, metab.pars) + err.proc[t]} / depth[t] +
-            D(t, metab.pars, state[['DO.mod']])} *
-          timestep.days)
-    } else function(t, state, metab.pars) {
-      list(
-        dDOdt={
-          {GPP(t, metab.pars) + ER(t, metab.pars) + err.proc(t)} / depth(t) +
-            D(t, metab.pars, state[['DO.mod']])} *
-          timestep.days)
+    if (integer.t) {
+      function(t, state, metab.pars) {
+        # Euler and euler, b/c trapezoid and pairmeans are covered above
+        list(
+          dDOdt = {
+            {
+              GPP(t, metab.pars) + ER(t, metab.pars) + err.proc[t]
+            } /
+              depth[t] +
+              D(t, metab.pars, state[['DO.mod']])
+          } *
+            timestep.days
+        )
+      }
+    } else {
+      function(t, state, metab.pars) {
+        list(
+          dDOdt = {
+            {
+              GPP(t, metab.pars) + ER(t, metab.pars) + err.proc(t)
+            } /
+              depth(t) +
+              D(t, metab.pars, state[['DO.mod']])
+          } *
+            timestep.days
+        )
+      }
     }
   )
 

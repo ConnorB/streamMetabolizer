@@ -20,3 +20,4 @@ Inspired by / copied from LakeMetabolizer date2doy
 \examples{
 streamMetabolizer:::convert_date_to_doyhr(as.POSIXct("2015-02-03 12:01:00 UTC"))
 }
+\keyword{internal}

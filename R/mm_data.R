@@ -91,54 +91,54 @@
 #'
 #' # columns typical of daily data
 #' mm_data(date, K600.daily, discharge.daily, velocity.daily)
-mm_data <- function(..., optional='none') {
+mm_data <- function(..., optional = 'none') {
   dat <- data.frame(
-    solar.time = as.POSIXct("2050-03-14 15:10:00", tz="UTC"),
-    DO.obs =     10.1,
-    DO.sat =     14.2,
-    depth =      0.5,
+    solar.time = as.POSIXct("2050-03-14 15:10:00", tz = "UTC"),
+    DO.obs = 10.1,
+    DO.sat = 14.2,
+    depth = 0.5,
     temp.water = 21.8,
-    light =      300.9,
-    discharge =  9,
-    velocity =   2,
-    date =       as.Date("2050-03-14"),
-    DO.mod.1 =   7.5,
+    light = 300.9,
+    discharge = 9,
+    velocity = 2,
+    date = as.Date("2050-03-14"),
+    DO.mod.1 = 7.5,
     err.obs.sigma = 0.01,
     err.obs.phi = 0,
     err.proc.sigma = 5,
     err.proc.phi = 0,
-    GPP.daily =  5,
-    Pmax =       10,
-    alpha =      0.0001,
-    ER.daily =   -10,
-    ER20 =       -10,
+    GPP.daily = 5,
+    Pmax = 10,
+    alpha = 0.0001,
+    ER.daily = -10,
+    ER20 = -10,
     K600.daily = 10,
     K600.daily.lower = 4.5,
     K600.daily.upper = 15.6,
-    init.GPP.daily =  5,
-    init.Pmax =       10,
-    init.alpha =      0.0001,
-    init.ER.daily =   -10,
-    init.ER20 =       -10,
+    init.GPP.daily = 5,
+    init.Pmax = 10,
+    init.alpha = 0.0001,
+    init.ER.daily = -10,
+    init.ER20 = -10,
     init.K600.daily = 10,
     discharge.daily = 9,
-    velocity.daily =  2,
-    GPP =       5,
+    velocity.daily = 2,
+    GPP = 5,
     GPP.lower = 4,
     GPP.upper = 6,
-    ER =        -5,
-    ER.lower =  -6,
-    ER.upper =  -4,
-    D =         5,
-    D.lower =   5,
-    D.upper =   5,
+    ER = -5,
+    ER.lower = -6,
+    ER.upper = -4,
+    D = 5,
+    D.lower = 5,
+    D.upper = 5,
     stringsAsFactors = FALSE
   )
   .dots <- lazy_dots(...)
   .nulldot <- length(.dots) == 1 && is.null(.dots[[1]]$expr)
-  dat <- if(isTRUE(.nulldot)) {
+  dat <- if (isTRUE(.nulldot)) {
     NULL
-  } else if(length(.dots) == 0) {
+  } else if (length(.dots) == 0) {
     dat
   } else {
     .dotnames <- sapply(.dots, function(dot) as.character(dot$expr))
@@ -146,21 +146,29 @@ mm_data <- function(..., optional='none') {
   }
 
   # if dat is NULL (from passing NULL as ...), return NULL immediately
-  if(is.null(dat)) return(NULL)
+  if (is.null(dat)) {
+    return(NULL)
+  }
 
   # add information about which columns, if any, are optional.
-  optional <- if(missing(optional)) {
-    if(isTRUE(.nulldot)) {
+  optional <- if (missing(optional)) {
+    if (isTRUE(.nulldot)) {
       'all'
     } else {
       'none'
     }
   } else {
-    opt <- match.arg(optional, choices=c('all','none',names(dat)), several.ok=TRUE)
-    if(any(c('all','none') %in% optional) && length(optional) != 1)
+    opt <- match.arg(
+      optional,
+      choices = c('all', 'none', names(dat)),
+      several.ok = TRUE
+    )
+    if (any(c('all', 'none') %in% optional) && length(optional) != 1) {
       stop("if optional is 'all' or 'none', it should be length 1")
-    if(all(names(dat) %in% opt))
+    }
+    if (all(names(dat) %in% opt)) {
       opt <- 'all'
+    }
     opt
   }
   attr(dat, 'optional') <- optional

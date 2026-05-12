@@ -17,8 +17,8 @@ calc_depth(Q, c = 0.409, f = 0.294)
 d, stream depth, in the same units as c
 }
 \description{
-Uses the relationship \eqn{d=c*Q^f} (parameter names and definitions as in 
-Leopold and Maddock, 1953; default values for c and f as in Raymond et al. 
+Uses the relationship \eqn{d=c*Q^f} (parameter names and definitions as in
+Leopold and Maddock, 1953; default values for c and f as in Raymond et al.
 2012)
 }
 \examples{
@@ -27,12 +27,12 @@ calc_depth(Q=Qs)
 calc_depth(Q=Qs, f=0.4)
 }
 \references{
-Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. 
-  Bott, Jody Potter, Patrick Mulholland, Andrew E. Laursen, William H. 
-  McDowell, and Denis Newbold. \emph{Scaling the gas transfer velocity and 
-  hydraulic geometry in streams and small rivers}. Limnology & Oceanography: 
+Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L.
+  Bott, Jody Potter, Patrick Mulholland, Andrew E. Laursen, William H.
+  McDowell, and Denis Newbold. \emph{Scaling the gas transfer velocity and
+  hydraulic geometry in streams and small rivers}. Limnology & Oceanography:
   Fluids & Environments 2 (2012): 41-53.
-  
+
   Leopold, L.B., and Thomas Maddock Jr. \emph{The Hydraulic Geometry of
   Stream Channels and Some Physiographic Implications}. Report. Professional
   Paper, 1953. USGS Publications Warehouse.

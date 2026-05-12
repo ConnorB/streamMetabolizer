@@ -14,19 +14,19 @@ convert_UTC_to_localtime(
 \arguments{
 \item{date.time}{POSIXct object the date and time in UTC}
 
-\item{latitude}{numeric, in degrees, either positive and unitted ("degN" or 
+\item{latitude}{numeric, in degrees, either positive and unitted ("degN" or
 "degS") or with sign indicating direction (positive = North)}
 
-\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or 
+\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or
 "degW") or with sign indicating direction (positive = East)}
 
-\item{time.type}{character. The type of time zone desired - either standard 
-time without any daylight savings time or daylight time where daylight 
+\item{time.type}{character. The type of time zone desired - either standard
+time without any daylight savings time or daylight time where daylight
 savings is on during the appropriate days}
 }
 \description{
-Convert time from UTC to local time, either standard or with daylight 
-savings. Recommended for post-analysis visualization only; most functions in 
+Convert time from UTC to local time, either standard or with daylight
+savings. Recommended for post-analysis visualization only; most functions in
 streamMetabolizer use times in UTC. If you know the timezone code for your
 local site, use \code{\link[lubridate]{with_tz}} instead.
 }

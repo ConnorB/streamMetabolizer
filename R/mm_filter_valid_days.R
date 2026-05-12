@@ -18,18 +18,29 @@
 #' c(nrow(dat), nrow(datfilt$data))
 #' @export
 mm_filter_valid_days <- function(
-  data, data_daily=NULL, # redefine from metab
-  day_start=4, day_end=27.99, day_tests=c('full_day', 'even_timesteps', 'complete_data', 'pos_discharge'), required_timestep=NA, # inheritParams mm_model_by_ply
-  timestep_days=TRUE
+  data,
+  data_daily = NULL, # redefine from metab
+  day_start = 4,
+  day_end = 27.99,
+  day_tests = c('full_day', 'even_timesteps', 'complete_data', 'pos_discharge'),
+  required_timestep = NA, # inheritParams mm_model_by_ply
+  timestep_days = TRUE
 ) {
-
   # function to filter the instantaneous data using validity, record dates that
   # are removed and the reasons for removal in a parent variable named removed
   filter_fun <- function(data_ply, ply_date, ply_validity, ...) {
-    if(isTRUE(ply_validity)) { # day is valid
+    if (isTRUE(ply_validity)) {
+      # day is valid
       data_ply
     } else {
-      removed <<- c(removed, list(data.frame(date=ply_date, errors=paste0(ply_validity, collapse="; "), stringsAsFactors=FALSE)))
+      removed <<- c(
+        removed,
+        list(data.frame(
+          date = ply_date,
+          errors = paste0(ply_validity, collapse = "; "),
+          stringsAsFactors = FALSE
+        ))
+      )
       NULL
     }
   }
@@ -37,28 +48,46 @@ mm_filter_valid_days <- function(
   # run the filtering function over all days, recording days that were removed
   removed <- list()
   data_filtered <- mm_model_by_ply(
-    model_fun=filter_fun, data=data, data_daily=data_daily,
-    day_start=day_start, day_end=day_end, day_tests=day_tests, required_timestep=required_timestep)
+    model_fun = filter_fun,
+    data = data,
+    data_daily = data_daily,
+    day_start = day_start,
+    day_end = day_end,
+    day_tests = day_tests,
+    required_timestep = required_timestep
+  )
   # removed has now been populated by <<- calls within filter_fun
-  removed <- if(length(removed) > 0) bind_rows(removed) else tibble::tibble(date=as.Date(NA), errors='')[c(),]
+  removed <- if (length(removed) > 0) {
+    bind_rows(removed)
+  } else {
+    tibble::tibble(date = as.Date(NA), errors = '')[c(), ]
+  }
 
   # filter the daily data to match & return
-  if(!is.null(data_daily)) {
+  if (!is.null(data_daily)) {
     daily_unmatched <- as.Date(setdiff(
       as.character(data_daily$date),
-      c(unique(format(data$solar.time, "%Y-%m-%d")), as.character(removed$date))))
+      c(unique(format(data$solar.time, "%Y-%m-%d")), as.character(removed$date))
+    ))
     daily_removed <- data.frame(
-      date=daily_unmatched,
-      errors=rep("date in data_daily but not data", length(daily_unmatched)),
-      stringsAsFactors=FALSE)
+      date = daily_unmatched,
+      errors = rep("date in data_daily but not data", length(daily_unmatched)),
+      stringsAsFactors = FALSE
+    )
     removed <- bind_rows(removed, daily_removed) %>%
       arrange(date)
     rownames(removed) <- NULL
-    data_daily_filtered <- data_daily[data_daily$date %in% unique(data_filtered$date),]
+    data_daily_filtered <- data_daily[
+      data_daily$date %in% unique(data_filtered$date),
+    ]
   } else {
     data_daily_filtered <- NULL
   }
 
   # return
-  list(data=data_filtered, data_daily=data_daily_filtered, removed=removed)
+  list(
+    data = data_filtered,
+    data_daily = data_daily_filtered,
+    removed = removed
+  )
 }

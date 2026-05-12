@@ -18,18 +18,18 @@ mm_is_valid_day(
 }
 \arguments{
 \item{data_ply}{a data.frame containing all relevant, validated modeling data
-for a single ply of data. (1 ply ~= 1 date, although the day length has 
+for a single ply of data. (1 ply ~= 1 date, although the day length has
 been specified by day_start and day_end and may not be exactly 24 hours)}
 
-\item{day_start}{start time (inclusive) of a day's data in number of hours 
-from the midnight that begins the date. For example, day_start=-1.5 
-indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at 
+\item{day_start}{start time (inclusive) of a day's data in number of hours
+from the midnight that begins the date. For example, day_start=-1.5
+indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
 fall exactly on an observation time.}
 
-\item{day_end}{end time (exclusive) of a day's data in number of hours from 
-the midnight that begins the date. For example, day_end=30 indicates that 
-data describing 2006-06-26 end at the last observation time that occurs 
+\item{day_end}{end time (exclusive) of a day's data in number of hours from
+the midnight that begins the date. For example, day_end=30 indicates that
+data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00.}
 
 \item{day_tests}{list of tests to conduct to determine whether each date

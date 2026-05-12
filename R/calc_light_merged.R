@@ -45,10 +45,14 @@
 #' }
 #' @export
 calc_light_merged <- function(
-  PAR.obs=mm_data(solar.time, light),
-  solar.time, latitude, longitude, max.PAR=NA,
-  max.gap=as.difftime(3, units="hours"), attach.units=deprecated()) {
-
+  PAR.obs = mm_data(solar.time, light),
+  solar.time,
+  latitude,
+  longitude,
+  max.PAR = NA,
+  max.gap = as.difftime(3, units = "hours"),
+  attach.units = deprecated()
+) {
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
     unitted_deprecate_warn("calc_light_merged(attach.units)")
@@ -57,7 +61,7 @@ calc_light_merged <- function(
   . <- is.mod <- obs <- mod <- resid.abs.int <- resid.prop.int <- merged <- '.dplyr.var'
 
   # set smart default for max.PAR to make the ts pretty
-  if(is.na(max.PAR)) {
+  if (is.na(max.PAR)) {
     # figure out what & when the max insolation is in the input data
     date.max.obs <- PAR.obs[which.max(PAR.obs$light), 'solar.time'] # this is mean solar time; will also need apparent solar
     max.obs <- PAR.obs[which.max(PAR.obs$light), 'light']
@@ -75,25 +79,42 @@ calc_light_merged <- function(
   }
 
   # join the tses, noting which solar.times apply to which ts
-  PAR.merged <- data.frame(solar.time, is.mod=TRUE, is.obs=NA) %>%
-    full_join(rename(PAR.obs, obs=light), by='solar.time') %>%
-    {.[order(.$solar.time),]} %>%
+  PAR.merged <- data.frame(solar.time, is.mod = TRUE, is.obs = NA) %>%
+    full_join(rename(PAR.obs, obs = light), by = 'solar.time') %>%
+    {
+      .[order(.$solar.time), ]
+    } %>%
     mutate(
       is.mod = ifelse(is.na(is.mod), FALSE, is.mod),
-      is.obs = !is.na(obs))
+      is.obs = !is.na(obs)
+    )
 
   # if requested, remove rows with no supporting observations nearby in time
-  if(!is.na(max.gap)) {
+  if (!is.na(max.gap)) {
     # calculate distance from nearest observation and remove 'mod' rows that are
     # too far from an obs
     # figure out what the time gap is between a given x datetime and the
     # nearest y datetime
     x_date_num <- as.numeric(PAR.merged$solar.time)
     y_date_num <- as.numeric(PAR.merged$solar.time[PAR.merged$is.obs])
-    prev_y <- approx(x=y_date_num, y=y_date_num, xout=x_date_num, method="constant", f=0, rule=2)
-    next_y <- approx(x=y_date_num, y=y_date_num, xout=x_date_num, method="constant", f=1, rule=2)
-    min_gap <- pmin(abs(prev_y$y-prev_y$x), abs(next_y$y-next_y$x))
-    PAR.merged <- PAR.merged[min_gap <= as.numeric(max.gap, units="secs"), ]
+    prev_y <- approx(
+      x = y_date_num,
+      y = y_date_num,
+      xout = x_date_num,
+      method = "constant",
+      f = 0,
+      rule = 2
+    )
+    next_y <- approx(
+      x = y_date_num,
+      y = y_date_num,
+      xout = x_date_num,
+      method = "constant",
+      f = 1,
+      rule = 2
+    )
+    min_gap <- pmin(abs(prev_y$y - prev_y$x), abs(next_y$y - next_y$x))
+    PAR.merged <- PAR.merged[min_gap <= as.numeric(max.gap, units = "secs"), ]
   }
 
   # create a 'merged' time series where modeled values are adjusted to flow
@@ -105,25 +126,39 @@ calc_light_merged <- function(
     mutate(
       mod = calc_light(solar.time, latitude, longitude, max.PAR),
       resid.abs = obs - mod,
-      resid.prop = ifelse(mod==0, NA, obs / mod))
+      resid.prop = ifelse(mod == 0, NA, obs / mod)
+    )
 
   # interpolate the residuals to match up with every modeled light value. pipes
   # fail with this approx call, so use boring notation
   PAR.obsonly <- PAR.merged[!is.na(PAR.merged$obs), ]
-  PAR.merged$resid.abs.int <- approx(x=PAR.obsonly$solar.time, y=PAR.obsonly$resid.abs, xout=PAR.merged$solar.time, rule=2)$y
-  PAR.merged$resid.prop.int <- approx(x=PAR.obsonly$solar.time, y=PAR.obsonly$resid.prop, xout=PAR.merged$solar.time, rule=2)$y
+  PAR.merged$resid.abs.int <- approx(
+    x = PAR.obsonly$solar.time,
+    y = PAR.obsonly$resid.abs,
+    xout = PAR.merged$solar.time,
+    rule = 2
+  )$y
+  PAR.merged$resid.prop.int <- approx(
+    x = PAR.obsonly$solar.time,
+    y = PAR.obsonly$resid.prop,
+    xout = PAR.merged$solar.time,
+    rule = 2
+  )$y
 
   # do the correction from mod scale to obs scale
   PAR.merged <- PAR.merged %>%
     mutate(
-      merged = ifelse(resid.prop.int <= 1, mod * resid.prop.int, pmax(0, mod + resid.abs.int)))
+      merged = ifelse(
+        resid.prop.int <= 1,
+        mod * resid.prop.int,
+        pmax(0, mod + resid.abs.int)
+      )
+    )
 
   # collect just the rows and cols we want
   PAR.merged <- PAR.merged %>%
     subset(is.mod) %>%
-    select(solar.time, light=merged)
-
-
+    select(solar.time, light = merged)
 
   # return
   PAR.merged

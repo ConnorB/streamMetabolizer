@@ -134,16 +134,16 @@ get_params(mm, date_start=get_fit(mm)$date[2])
 \seealso{
 \code{\link{predict_metab}} for daily average rates of GPP and ER
 
-Other metab_model_interface: 
-\code{\link{get_data}()},
-\code{\link{get_data_daily}()},
-\code{\link{get_fit}()},
-\code{\link{get_fitting_time}()},
-\code{\link{get_info}()},
-\code{\link{get_param_names}()},
-\code{\link{get_specs}()},
-\code{\link{get_version}()},
-\code{\link{predict_DO}()},
-\code{\link{predict_metab}()}
+Other metab_model_interface:
+\code{\link[=get_data]{get_data()}},
+\code{\link[=get_data_daily]{get_data_daily()}},
+\code{\link[=get_fit]{get_fit()}},
+\code{\link[=get_fitting_time]{get_fitting_time()}},
+\code{\link[=get_info]{get_info()}},
+\code{\link[=get_param_names]{get_param_names()}},
+\code{\link[=get_specs]{get_specs()}},
+\code{\link[=get_version]{get_version()}},
+\code{\link[=predict_DO]{predict_DO()}},
+\code{\link[=predict_metab]{predict_metab()}}
 }
 \concept{metab_model_interface}

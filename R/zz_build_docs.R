@@ -7,30 +7,37 @@ NULL
 #'
 #' @import tibble
 #' @keywords internal
-zz_tabular <- function(df, bold_headers=TRUE, code=FALSE, ...) {
+zz_tabular <- function(df, bold_headers = TRUE, code = FALSE, ...) {
   align <- function(x) if (is.numeric(x)) "r" else "l"
   col_align <- vapply(df, align, character(1))
 
   cols <-
     mapply(
       function(colname, colvec) {
-        c(if(bold_headers) paste0("\\strong{", colname, "}") else colname,
+        c(
+          if (bold_headers) paste0("\\strong{", colname, "}") else colname,
           #paste(rep('-', nchar(colname)), collapse=''),
-          as.character(colvec))
-      }, colname=as.list(names(df)), colvec=df) %>%
+          as.character(colvec)
+        )
+      },
+      colname = as.list(names(df)),
+      colvec = df
+    ) %>%
     as.data.frame() %>%
     lapply(format, ...)
 
-  if(code) {
-    cols <- lapply(cols, function(col)
-      paste0("\\code{", col, "}"))
+  if (code) {
+    cols <- lapply(cols, function(col) {
+      paste0("\\code{", col, "}")
+    })
   }
 
   cols <- as_tibble(cols)
 
   contents <- do.call(
     "paste",
-    c(cols, list(sep = " \\tab ", collapse = "\\cr\n  ")))
+    c(cols, list(sep = " \\tab ", collapse = "\\cr\n  "))
+  )
 
   . <- 'dplyr.var'
   paste(
@@ -39,7 +46,8 @@ zz_tabular <- function(df, bold_headers=TRUE, code=FALSE, ...) {
     "}{\n  ",
     contents,
     "\n}\n",
-    sep = "") %>%
+    sep = ""
+  ) %>%
     strsplit('\n') %>%
     .[[1]]
 }
@@ -50,35 +58,58 @@ zz_tabular <- function(df, bold_headers=TRUE, code=FALSE, ...) {
 #'
 #' @keywords internal
 zz_build_docs <- function() {
-
-  if(!dir.exists('man-roxygen')) dir.create('man-roxygen')
+  if (!dir.exists('man-roxygen')) {
+    dir.create('man-roxygen')
+  }
 
   . <- 'dplyr.var'
-  c("@section Formatting \\code{data}:",
+  c(
+    "@section Formatting \\code{data}:",
     "Unit-value model inputs passed via the \\code{data} argument should",
     "be formatted as a data.frame with column names and values that",
     "depend on the model \\code{type}, as follows.",
     "(If all columns are optional, \\code{data} may equal \\code{NULL}.)",
     "",
     "\\describe{",
-    c(paste0("  \\item{\\code{mle} or \\code{night}}{"),
-      paste0("    ", c(
-        zz_tabular(metab_inputs('mle', 'data')),
-        "",
-        "\\strong{Example}:",
-        zz_tabular(eval(formals(metab_mle)$data), bold_headers=FALSE, code=TRUE)
-      )),
-      "  }"),
-    do.call(c, lapply(c('bayes','Kmodel','sim'), function(type) {
-      c(paste0("  \\item{\\code{",type,"}}{"),
-        paste0("    ", c(
-          zz_tabular(metab_inputs(type, 'data')),
+    c(
+      paste0("  \\item{\\code{mle} or \\code{night}}{"),
+      paste0(
+        "    ",
+        c(
+          zz_tabular(metab_inputs('mle', 'data')),
           "",
           "\\strong{Example}:",
-          zz_tabular(eval(formals(paste0("metab_",type))$data), bold_headers=FALSE, code=TRUE)
-        )),
-        "  }")
-    })),
+          zz_tabular(
+            eval(formals(metab_mle)$data),
+            bold_headers = FALSE,
+            code = TRUE
+          )
+        )
+      ),
+      "  }"
+    ),
+    do.call(
+      c,
+      lapply(c('bayes', 'Kmodel', 'sim'), function(type) {
+        c(
+          paste0("  \\item{\\code{", type, "}}{"),
+          paste0(
+            "    ",
+            c(
+              zz_tabular(metab_inputs(type, 'data')),
+              "",
+              "\\strong{Example}:",
+              zz_tabular(
+                eval(formals(paste0("metab_", type))$data),
+                bold_headers = FALSE,
+                code = TRUE
+              )
+            )
+          ),
+          "  }"
+        )
+      })
+    ),
     "}",
 
     "@section Formatting \\code{data_daily}:",
@@ -88,21 +119,33 @@ zz_build_docs <- function() {
     "(If all columns are optional, \\code{data_daily} may equal \\code{NULL}.)",
     "",
     "\\describe{",
-    c(paste0("  \\item{\\code{night}}{"),
-      paste0("    ", "\\code{",
-             metab_inputs('night', 'data_daily'),
-             "}"),
-      "  }"),
-    do.call(c, lapply(c('mle','bayes','Kmodel','sim'), function(type) {
-      c(paste0("  \\item{\\code{",type,"}}{"),
-        paste0("    ", c(
-          zz_tabular(metab_inputs(type, 'data_daily')),
-          "",
-          "\\strong{Example}:",
-          zz_tabular(eval(formals(paste0("metab_",type))$data_daily), bold_headers=FALSE, code=TRUE)
-        )),
-        "  }")
-    })),
+    c(
+      paste0("  \\item{\\code{night}}{"),
+      paste0("    ", "\\code{", metab_inputs('night', 'data_daily'), "}"),
+      "  }"
+    ),
+    do.call(
+      c,
+      lapply(c('mle', 'bayes', 'Kmodel', 'sim'), function(type) {
+        c(
+          paste0("  \\item{\\code{", type, "}}{"),
+          paste0(
+            "    ",
+            c(
+              zz_tabular(metab_inputs(type, 'data_daily')),
+              "",
+              "\\strong{Example}:",
+              zz_tabular(
+                eval(formals(paste0("metab_", type))$data_daily),
+                bold_headers = FALSE,
+                code = TRUE
+              )
+            )
+          ),
+          "  }"
+        )
+      })
+    ),
     "}"
   ) %>%
     paste0("#' ", .) %>%

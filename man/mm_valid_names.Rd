@@ -19,9 +19,9 @@ estimation of K alone (by MLE or nighttime regression), K vs discharge
 'data' for testing other models (see also \code{\link{metab_sim}}) }}
 }
 \description{
-Returns a vector of the \code{model_name}s for the type[s] indicated. If 
-\code{type} is not supplied, all model types will be included. After being 
-returned from this function, model names may be translated to something 
+Returns a vector of the \code{model_name}s for the type[s] indicated. If
+\code{type} is not supplied, all model types will be included. After being
+returned from this function, model names may be translated to something
 slightly more readable with \code{\link{mm_parse_name}} if desired.
 }
 \examples{

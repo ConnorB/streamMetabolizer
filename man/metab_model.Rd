@@ -19,7 +19,7 @@ metab_model(
 )
 }
 \arguments{
-\item{model_class}{character name of a class inheriting from metab_model - 
+\item{model_class}{character name of a class inheriting from metab_model -
 the type of object to create}
 
 \item{info}{User-supplied metadata of any form.}
@@ -29,7 +29,7 @@ the fit.}
 
 \item{fit}{An internal representation of a fitted model.}
 
-\item{fitting_time}{A proc_time object giving the time taken to fit the 
+\item{fitting_time}{A proc_time object giving the time taken to fit the
 model.}
 
 \item{specs}{A list of model specifications that were supplied to the fitting
@@ -37,10 +37,10 @@ function.}
 
 \item{data}{The data that were used to fit the model.}
 
-\item{data_daily}{The data_daily that were used to fit the model. May be 
+\item{data_daily}{The data_daily that were used to fit the model. May be
 NULL.}
 
-\item{pkg_version}{A string indicating the package version used to create 
+\item{pkg_version}{A string indicating the package version used to create
 this metab_model object. The default should almost always be appropriate.}
 
 \item{...}{other arguments passed to new() for this particular model_class}
@@ -52,6 +52,6 @@ A metab_model object.
 Generates a new model of class metab_model (\code{\link{metab_model-class}}).
 }
 \examples{
-metab_model() 
+metab_model()
 metab_model("metab_mle", fit=1:5, specs=list(length=5))
 }

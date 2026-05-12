@@ -17,23 +17,38 @@
 #' calc_light(solar.time, 40, -120)
 #' @export
 calc_light <- function(
-  solar.time, latitude, longitude, max.PAR=2326,
-  attach.units=deprecated()) {
-
+  solar.time,
+  latitude,
+  longitude,
+  max.PAR = 2326,
+  attach.units = deprecated()
+) {
   # check units-related arguments
   if (lifecycle::is_present(attach.units)) {
-    lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::calc_light(attach.units)")
+    lifecycle::deprecate_warn(
+      "0.12.0",
+      "streamMetabolizer::calc_light(attach.units)"
+    )
   }
 
   coef.SW.to.PAR <- formals(convert_SW_to_PAR)$coef # shouldn't really matter what is b/c we convert out and back
   app.solar.time <- solar.time %>%
-    convert_solartime_to_UTC(longitude=longitude, time.type='mean solar') %>%
-    convert_UTC_to_solartime(longitude=longitude, time.type='apparent solar')
+    convert_solartime_to_UTC(
+      longitude = longitude,
+      time.type = 'mean solar'
+    ) %>%
+    convert_UTC_to_solartime(
+      longitude = longitude,
+      time.type = 'apparent solar'
+    )
   sw <- calc_solar_insolation(
-    app.solar.time, latitude=latitude,
-    max.insolation=convert_PAR_to_SW(max.PAR, coef=1/coef.SW.to.PAR),
-    format=c("degrees", "radians"), attach.units=attach.units)
-  par <- convert_SW_to_PAR(sw, coef=coef.SW.to.PAR)
+    app.solar.time,
+    latitude = latitude,
+    max.insolation = convert_PAR_to_SW(max.PAR, coef = 1 / coef.SW.to.PAR),
+    format = c("degrees", "radians"),
+    attach.units = attach.units
+  )
+  par <- convert_SW_to_PAR(sw, coef = coef.SW.to.PAR)
 
   par
 }

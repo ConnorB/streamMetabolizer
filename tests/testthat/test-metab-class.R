@@ -1,18 +1,35 @@
 context("metab_model class and inheriting classes")
 
 test_that("metab_model objects can be created and accessed", {
-  
   # basic structure of metab_model parent class
   mm <- metab_model()
-  expect_output(print(slot(mm, "fit")), "generic metab_model class; no actual fit")
-  expect_true(all(names(formals(metab)) %in% names(getSlots('metab_model'))), info="slots should match args to metab()")
-  expect_is(slot(mm, "fitting_time"), "proc_time", info="time should be recorded")
-  expect_is(slot(mm, "data"), "data.frame", info="default should populate with example data")
-  expect_is(slot(mm, "pkg_version"), "character", info="pkg version should be autopopulated")
+  expect_output(
+    print(slot(mm, "fit")),
+    "generic metab_model class; no actual fit"
+  )
+  expect_true(
+    all(names(formals(metab)) %in% names(getSlots('metab_model'))),
+    info = "slots should match args to metab()"
+  )
+  expect_is(
+    slot(mm, "fitting_time"),
+    "proc_time",
+    info = "time should be recorded"
+  )
+  expect_is(
+    slot(mm, "data"),
+    "data.frame",
+    info = "default should populate with example data"
+  )
+  expect_is(
+    slot(mm, "pkg_version"),
+    "character",
+    info = "pkg version should be autopopulated"
+  )
 
   # display
-  expect_output(print(mm), "metab_model", info="model type should be shown")
-  
+  expect_output(print(mm), "metab_model", info = "model type should be shown")
+
   # accessors
   expect_equal(slot(mm, "fit"), get_fit(mm))
   expect_equal(slot(mm, "specs"), get_specs(mm))
@@ -22,28 +39,27 @@ test_that("metab_model objects can be created and accessed", {
 })
 
 test_that("metab_models have default predict_metab and predict_DO methods", {
-  
   mm <- metab_model()
   expect_null(get_params(mm))
   expect_null(predict_metab(mm))
   expect_null(predict_DO(mm))
-  
 })
 
 # slow, therefore manual
 manual_test <- function() {
   test_that("metab_models can be saved & reloaded (see helper-save_load.R)", {
-    
     # save and reload
     mm <- metab_model()
-    
+
     # see if saveRDS with gzfile, compression=9 works well
-    rdstimes <- save_load_timing(mm, reps=1) # autoloaded b/c script begins with 'helper' and is in this directory
-    expect_true('gz6' %in% rdstimes$typelevel[1:3], info="gz6 is reasonably efficient for saveRDS")
+    rdstimes <- save_load_timing(mm, reps = 1) # autoloaded b/c script begins with 'helper' and is in this directory
+    expect_true(
+      'gz6' %in% rdstimes$typelevel[1:3],
+      info = "gz6 is reasonably efficient for saveRDS"
+    )
     plot_save_load_timing(rdstimes)
-    
+
     # save and load the mm, make sure it stays the same
     test_save_load_recovery(mm)
-    
   })
 }

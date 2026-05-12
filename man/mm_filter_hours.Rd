@@ -14,7 +14,7 @@ mm_filter_hours(data, day_start, day_end)
 \item{day_end}{the end time of each day, exclusive, in hours}
 }
 \description{
-Within each date (as labeled by the 'date' column of \code{data}, select the 
+Within each date (as labeled by the 'date' column of \code{data}, select the
 values of solar.time that are within the time range specified by day_start
 and day_end). This function only removes rows and cannot add them; to add
 overlap starting from a continuous time series, see

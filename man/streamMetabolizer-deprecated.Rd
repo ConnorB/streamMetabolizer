@@ -4,8 +4,8 @@
 \alias{streamMetabolizer-deprecated}
 \title{Deprecated Functions in package streamMetabolizer}
 \description{
-These functions are provided for compatibility with older versions of 
-\code{streamMetabolizer} only, and may be defunct as soon as the next 
+These functions are provided for compatibility with older versions of
+\code{streamMetabolizer} only, and may be defunct as soon as the next
 release.
 }
 \details{
@@ -20,13 +20,5 @@ These functions are defunct and will error when called:
 
 \itemize{
   \item \code{lookup_google_timezone} - use \code{\link{lookup_timezone}} instead
-}
-
-These functions are currently exported but will soon be internal-only.
-You are encouraged not to use these.
-
-\itemize{
-  \item \code{\link{convert_date_to_doyhr}}
-  \item \code{\link{convert_doyhr_to_date}}
 }
 }

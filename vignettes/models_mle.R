@@ -6,10 +6,10 @@ library(streamMetabolizer)
 library(dplyr)
 
 ## ----data---------------------------------------------------------------------
-dat <- data_metab(num_days='3', res='15', day_start=4, day_end=28)
+dat <- data_metab(num_days = '3', res = '15', day_start = 4, day_end = 28)
 
 ## ----mle_name-----------------------------------------------------------------
-mle_name <- mm_name(type='mle')
+mle_name <- mm_name(type = 'mle')
 mle_name
 
 ## ----mle_specs----------------------------------------------------------------
@@ -17,10 +17,19 @@ mle_specs <- specs(mle_name)
 mle_specs
 
 ## ----specs_details------------------------------------------------------------
-mle_specs <- specs(mle_name, init.GPP.daily=2, init.ER.daily=-1, init.K600.daily=3)
+mle_specs <- specs(
+  mle_name,
+  init.GPP.daily = 2,
+  init.ER.daily = -1,
+  init.K600.daily = 3
+)
 
 ## ----mle_fit, warning=FALSE---------------------------------------------------
-mm <- metab(mle_specs, data=dat, info=c(site='French Creek, WY', source='Bob Hall'))
+mm <- metab(
+  mle_specs,
+  data = dat,
+  info = c(site = 'French Creek, WY', source = 'Bob Hall')
+)
 
 ## ----show---------------------------------------------------------------------
 mm
@@ -43,4 +52,3 @@ plot_DO_preds(mm)
 ## ----pred_dfs-----------------------------------------------------------------
 predict_metab(mm)
 head(predict_DO(mm))
-

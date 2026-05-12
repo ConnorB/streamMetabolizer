@@ -81,8 +81,10 @@ specs(
  },
   discharge_daily = function(n, ...) rnorm(n, 20, 3),
   DO_mod_1 = NULL,
-  K600_daily = function(n, K600_daily_predlog = log(10), ...) pmax(0, rnorm(n,
-    K600_daily_predlog, 4)),
+  K600_daily = function(n, K600_daily_predlog = log(10), ...) {
+     pmax(0, rnorm(n,
+    K600_daily_predlog, 4))
+ },
   GPP_daily = function(n, ...) pmax(0, rnorm(n, 8, 4)),
   Pmax = function(n, ...) pmax(0, rnorm(n, 10, 2)),
   alpha = function(n, ...) pmax(0, rnorm(n, 1e-04, 2e-05)),

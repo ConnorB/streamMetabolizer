@@ -12,19 +12,19 @@ mm_get_timestep(
 )
 }
 \arguments{
-\item{datetimes}{a vector of date-times in POSIXct format from which to 
+\item{datetimes}{a vector of date-times in POSIXct format from which to
 compute the average timestep}
 
-\item{format}{the format in which to return the timestep. 'mean' always 
-returns one value; 'unique' may return more than one depending on the 
+\item{format}{the format in which to return the timestep. 'mean' always
+returns one value; 'unique' may return more than one depending on the
 variation in timesteps and the value of \code{digits}.}
 
 \item{require_unique}{logical. should it be required that there is exactly
 one unique timestep (within the given tolerance \code{tol})?}
 
-\item{tol}{if \code{format == 'unique'}, unique values are first calculated 
-to machine precision, but then subsetted to those that differ from one 
-another by at least tol, where tol is a time difference in units of days 
+\item{tol}{if \code{format == 'unique'}, unique values are first calculated
+to machine precision, but then subsetted to those that differ from one
+another by at least tol, where tol is a time difference in units of days
 (and thus 1/(24*60*60) is one second).}
 }
 \description{

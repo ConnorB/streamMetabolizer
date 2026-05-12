@@ -7,7 +7,7 @@
 #' graphical reports of model outputs. Several time-honored methods are
 #' implemented along with many promising new variants that produce more accurate
 #' and precise metabolism estimates.
-#' 
+#'
 #' See http://usgs-r.github.io/streamMetabolizer for vignettes on the web.
 #'
 #' @section Calculate new input variables:
@@ -25,8 +25,6 @@
 #' @section Convert existing input variables:
 #'
 #'   \itemize{
-#'
-#'   \item \code{\link{convert_date_to_doyhr}}
 #'
 #'   \item \code{\link{convert_localtime_to_UTC}}
 #'
@@ -91,4 +89,3 @@
 #'
 #' @keywords internal
 "_PACKAGE"
-

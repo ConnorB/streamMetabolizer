@@ -7,14 +7,14 @@
 mm_sd_to_ci(data, alpha = 0.05)
 }
 \arguments{
-\item{data}{a data.frame with 1+ pairs of columns named var and var.sd 
+\item{data}{a data.frame with 1+ pairs of columns named var and var.sd
 (where var can be anything)}
 
-\item{alpha}{the desired significance level described by the confidence 
+\item{alpha}{the desired significance level described by the confidence
 interval}
 }
 \description{
-Convert data with var and var.sd columns into data with var, var.lower, and 
+Convert data with var and var.sd columns into data with var, var.lower, and
 var.upper columns
 }
 \keyword{internal}

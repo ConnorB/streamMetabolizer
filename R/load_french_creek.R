@@ -8,17 +8,26 @@
 #'   default TRUE for backward compatibility. Should units be attached to the
 #'   data.frame?
 #' @return a data.frame, unitted if attach.units==TRUE
-load_french_creek <- function(attach.units=deprecated()) {
+load_french_creek <- function(attach.units = deprecated()) {
   # check arguments
   if (lifecycle::is_present(attach.units)) {
     # only warn if it's TRUE
-    if(isTRUE(attach.units)) lifecycle::deprecate_warn("0.12.0", "streamMetabolizer::load_french_creek(attach.units)")
+    if (isTRUE(attach.units)) {
+      lifecycle::deprecate_warn(
+        "0.12.0",
+        "streamMetabolizer::load_french_creek(attach.units)"
+      )
+    }
   }
   attach.units <- FALSE
 
   # load the file
-  file.name <- system.file("extdata", "french.csv", package="streamMetabolizer") # data from French Creek, Hotchkiss and Hall, In press, Ecology
-  french <- read.csv(file.name, stringsAsFactors=FALSE, header=TRUE)
+  file.name <- system.file(
+    "extdata",
+    "french.csv",
+    package = "streamMetabolizer"
+  ) # data from French Creek, Hotchkiss and Hall, In press, Ecology
+  french <- read.csv(file.name, stringsAsFactors = FALSE, header = TRUE)
 
   . <- oxy <- temp <- station <- solar.time <- '.dplyr.var'
 
@@ -30,25 +39,52 @@ load_french_creek <- function(attach.units=deprecated()) {
     arrange(solar.time)
 
   # rename DO.obs, temp.water
-  french <- rename(french, DO.obs=oxy, temp.water=temp)
+  french <- rename(french, DO.obs = oxy, temp.water = temp)
 
   # datetime
-  tz_french <- lubridate::tz(convert_UTC_to_localtime(as.POSIXct("2012-09-10 00:00:00", tz="UTC"), latitude=41.33, longitude=-106.3, time.type="standard"))
-  french$local.time <- lubridate::with_tz(as.POSIXct(paste(french$date, french$time), format="%m/%d/%Y %H:%M:%S", tz="America/Denver"), tz_french) # original is in MDT
+  tz_french <- lubridate::tz(convert_UTC_to_localtime(
+    as.POSIXct("2012-09-10 00:00:00", tz = "UTC"),
+    latitude = 41.33,
+    longitude = -106.3,
+    time.type = "standard"
+  ))
+  french$local.time <- lubridate::with_tz(
+    as.POSIXct(
+      paste(french$date, french$time),
+      format = "%m/%d/%Y %H:%M:%S",
+      tz = "America/Denver"
+    ),
+    tz_french
+  ) # original is in MDT
   french$utc.time <- convert_localtime_to_UTC(french$local.time)
-  french$solar.time <- convert_UTC_to_solartime(french$utc.time, longitude=-106.3, time.type='mean solar')
+  french$solar.time <- convert_UTC_to_solartime(
+    french$utc.time,
+    longitude = -106.3,
+    time.type = 'mean solar'
+  )
 
   # DO at sat
   pressure_air_mb <- 523 * 1.33322368 # 523 mmHg * 1.33322368 mb mmHg^-1 -> 697.27 mb, applicable at ~10000 ft
-  french$DO.sat <- calc_DO_sat(temp.water=french$temp.water, pressure.air=pressure_air_mb)
+  french$DO.sat <- calc_DO_sat(
+    temp.water = french$temp.water,
+    pressure.air = pressure_air_mb
+  )
 
   # depth
   french$depth <- 0.16 # meters
 
   # light
-  french$app.solar.time <- convert_UTC_to_solartime(french$utc.time, longitude=-106.3, time.type='apparent solar')
+  french$app.solar.time <- convert_UTC_to_solartime(
+    french$utc.time,
+    longitude = -106.3,
+    time.type = 'apparent solar'
+  )
   french$light <- convert_PAR_to_SW(2326) %>%
-    calc_solar_insolation(app.solar.time=french$app.solar.time, latitude=41.33, max.insolation=.) %>%
+    calc_solar_insolation(
+      app.solar.time = french$app.solar.time,
+      latitude = 41.33,
+      max.insolation = .
+    ) %>%
     convert_SW_to_PAR()
 
   # set columns

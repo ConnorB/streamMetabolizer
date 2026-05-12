@@ -7,15 +7,15 @@
 mm_locate_filename(model_name)
 }
 \arguments{
-\item{model_name}{a model file in the 'models' folder of the 
-streamMetabolizer package or a relative or absolute file path of a model 
+\item{model_name}{a model file in the 'models' folder of the
+streamMetabolizer package or a relative or absolute file path of a model
 file}
 }
 \value{
 a file path if the file exists or an error otherwise
 }
 \description{
-Looks first in the models folder of the streamMetabolizer package, second 
+Looks first in the models folder of the streamMetabolizer package, second
 along the relative or absolute file path given by model_name
 }
 \keyword{internal}

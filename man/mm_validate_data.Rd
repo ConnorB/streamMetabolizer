@@ -19,7 +19,7 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 \strong{'Formatting \code{data}'} section below for a full description.}
 
 \item{data_daily}{data.frame containing inputs with a daily timestep. See the
-\strong{'Formatting \code{data_daily}'} section below for a full 
+\strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
 \item{metab_class}{character the class name of the metab_model constructor}

@@ -38,8 +38,6 @@ See http://usgs-r.github.io/streamMetabolizer for vignettes on the web.
 
   \itemize{
 
-  \item \code{\link{convert_date_to_doyhr}}
-
   \item \code{\link{convert_localtime_to_UTC}}
 
   \item \code{\link{convert_UTC_to_solartime}}
@@ -109,13 +107,6 @@ See http://usgs-r.github.io/streamMetabolizer for vignettes on the web.
 }
 
 \seealso{
-Useful links:
-\itemize{
-  \item \url{https://github.com/ConnorB/streamMetabolizer}
-  \item Report bugs at \url{https://github.com/ConnorB/streamMetabolizer/issues}
-}
-
-
 Useful links:
 \itemize{
   \item \url{https://github.com/ConnorB/streamMetabolizer}
