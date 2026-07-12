@@ -1,16 +1,14 @@
-context("metab_night")
-
 test_that("metab_night models can be created", {
   mm <- metab_night(
     data = data_metab('1', res = '30', day_start = 12, day_end = 36)
   )
 
   # check basic metab_night
-  expect_is(mm, "metab_night")
-  expect_is(slot(mm, "fit"), "data.frame")
-  expect_is(slot(mm, "specs"), "list")
-  expect_is(slot(mm, "data"), "data.frame")
-  expect_is(slot(mm, "pkg_version"), "character")
+  expect_s4_class(mm, "metab_night")
+  expect_s3_class(slot(mm, "fit"), "data.frame")
+  expect_type(slot(mm, "specs"), "list")
+  expect_s3_class(slot(mm, "data"), "data.frame")
+  expect_type(slot(mm, "pkg_version"), "character")
 })
 
 test_that("metab_night predictions (predict_metab, predict_DO) make sense", {

@@ -1,6 +1,10 @@
 # 0.12.1.9000
 
+* `calc_DO_at_sat()`, `calc_DO_deficit()`, `calc_is_daytime()`, and `calc_sun_rise_set()` now use lifecycle deprecation warnings.
+
 * improved package maintenance with writable Stan-cache fallbacks, modernized dependencies, concise startup output, and automated R CMD check coverage
+
+* `lookup_usgs_elevation()` now uses the current USGS Elevation Point Query Service API, returns the numeric elevation directly, and no longer requires the legacy RCurl and XML packages.
 
 * improved RStan support with safe persistent compilation caching outside the
 installed package, cache validation and read-only-directory fallback,

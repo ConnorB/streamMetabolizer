@@ -1,5 +1,3 @@
-context("metab_Kmodel")
-
 library(dplyr)
 
 test_that("metab_Kmodel predictions (predict_metab, predict_DO) make sense", {

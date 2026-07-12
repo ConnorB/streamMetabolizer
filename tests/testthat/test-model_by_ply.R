@@ -1,5 +1,3 @@
-context("model_by_ply")
-
 test_that("mm_model_by_ply creates intuitive ply_dates from day_start and day_end", {
   dat <- data_metab('10', res = '30')
   known_dates <- mm_model_by_ply(

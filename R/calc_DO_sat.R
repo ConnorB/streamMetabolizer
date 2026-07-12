@@ -1,6 +1,11 @@
 #' Calculates the equilibrium saturation concentration of oxygen in water at the
 #' supplied conditions
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' The `calc_DO_at_sat()` alias is deprecated. Use `calc_DO_sat()` instead.
+#'
 #' @md
 #' @param temp.water a numeric vector of water temperature in degrees Celsius.
 #' @param pressure.air barometric pressure in millibars.
@@ -13,6 +18,7 @@
 #'   concentrations, in mg/L.
 #'
 #' @importFrom LakeMetabolizer o2.at.sat.base
+#' @aliases calc_DO_at_sat
 #' @examples
 #' calc_DO_sat(temp=21, press=1000.1, sal=0)
 #' @export
@@ -24,7 +30,7 @@ calc_DO_sat <- calc_DO_at_sat <- function(
   ...
 ) {
   if (as.character(sys.call()[[1]]) == 'calc_DO_at_sat') {
-    .Deprecated('calc_DO_sat')
+    lifecycle::deprecate_warn("0.13.0", "calc_DO_at_sat()", "calc_DO_sat()")
   }
 
   LakeMetabolizer::o2.at.sat.base(

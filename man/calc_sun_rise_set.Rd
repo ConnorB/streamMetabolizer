@@ -16,6 +16,10 @@ North positive}
 data.frame of sunrise and sunset (apparent solar time, nominally UTC)
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{calc_sun_rise_set()} is deprecated.
+
 Calculates the time of sunrise and sunset based on latitude and date.
 }
 \examples{

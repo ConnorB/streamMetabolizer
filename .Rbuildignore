@@ -17,5 +17,6 @@
 ^doc$
 ^Meta$
 ^\.claude$
+^\.agents$
 ^\.conductor$
 ^\.positai$

@@ -1,5 +1,3 @@
-context('mm_name')
-
 test_that("mm_name can generate names", {
   # missing args OK
   expect_equal(mm_name(), "m_np_oi_tr_plrckm.nlm")
@@ -45,7 +43,7 @@ test_that("mm_name can generate names", {
 
 test_that("mm_parse_name can parse names", {
   # parse a name
-  expect_is(mm_parse_name("m_np_oi_tr_km.nlm"), "data.frame")
+  expect_s3_class(mm_parse_name("m_np_oi_tr_km.nlm"), "data.frame")
   expect_equal(dim(mm_parse_name("m_np_oi_tr_km.nlm")), c(1, 12))
   expect_equal(mm_parse_name("n_np_pi_eu_rckf.lm")$ode_method, "euler")
   expect_equal(mm_parse_name("s_np_oipcpi_eu_plrckm.rnorm")$pool_K600, "none")
@@ -74,10 +72,9 @@ test_that("mm_valid_names and mm_validate_names check model names", {
   # the models given by mm_valid_names() are all valid by mm_validate_name().
   # this is too slow to check completely now, so just pick a random sample
   nms <- sample(mm_valid_names(), size = 10)
-  expect_is(
+  expect_type(
     sapply(nms, mm_validate_name),
-    'character',
-    info = paste0('validating ', paste(nms, collapse = ', '))
+    'character'
   )
 
   # should also work for model filepaths

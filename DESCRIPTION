@@ -36,6 +36,7 @@ Depends:
 Imports:
     deSolve,
     dplyr (>= 1.0.0),
+    jsonlite,
     LakeMetabolizer (>= 1.4.1),
     lifecycle,
     lubridate,
@@ -55,13 +56,13 @@ Suggests:
     knitr,
     microbenchmark,
     posterior,
-    RCurl,
     rmarkdown,
     rstan,
     sf,
     testthat (>= 3.0.0),
-    XML,
+    withr,
     xts
+Config/testthat/edition: 3
 Collate:
     '01-onLoad.R'
     'calc_DO_deficit.R'

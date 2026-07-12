@@ -1,5 +1,3 @@
-context("metab_bayes")
-
 test_that("AR process-error models prepare normalized light fractions", {
   dat <- data_metab('1', '30')
   dat$date <- as.Date(dat$solar.time - lubridate::hours(4))
@@ -819,7 +817,7 @@ useful_code <- function() {
     expect_silent(DO_preds <- predict_DO(mm))
     expect_lt(rmse_DO(DO_preds), 0.3) #, info=mfile)
   }
-  expect_is(get_fitting_time(mm), "proc_time")
+  expect_s3_class(get_fitting_time(mm), "proc_time")
   expect_equal(names(mm@mcmc)[2], "2012-08-24")
   expect_accurate(mm)
   expect_equal(predict_metab(mm)$GPP.lower, get_fit(mm)$GPP_daily_2.5pct)
@@ -830,6 +828,6 @@ useful_code <- function() {
   ## Code you can run after fitting any Stan model
   rstan::traceplot(get_mcmc(mm)[[1]])
   rstan::traceplot(get_mcmc(mm)[[1]], inc_warmup = TRUE)
-  expect_is(get_mcmc(mm)[[2]], "stanfit")
+  expect_s4_class(get_mcmc(mm)[[2]], "stanfit")
   get_fit(mm)[grep("Rhat", names(get_fit(mm)))]
 }

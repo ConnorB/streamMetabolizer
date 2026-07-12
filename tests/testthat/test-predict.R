@@ -1,5 +1,3 @@
-context('predict')
-
 test_that('predict_DO works as expected', {
   # empty model
   mm <- metab_model()

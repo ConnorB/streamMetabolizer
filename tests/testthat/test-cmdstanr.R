@@ -1,5 +1,3 @@
-context('cmdstanr')
-
 test_that('Stan model lookup uses the selected backend version', {
   testthat::local_mocked_bindings(
     stan_version_for_engine = function(stan_engine) {

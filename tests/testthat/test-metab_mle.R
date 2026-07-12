@@ -1,14 +1,12 @@
-context("metab_mle")
-
 test_that("metab_mle models can be created", {
   mm <- metab_mle(data = data_metab('1', res = '30'))
 
   # check basic structure
-  expect_is(mm, "metab_mle")
-  expect_is(slot(mm, "fit"), "data.frame")
-  expect_is(slot(mm, "specs"), "list")
-  expect_is(slot(mm, "data"), "data.frame")
-  expect_is(slot(mm, "pkg_version"), "character")
+  expect_s4_class(mm, "metab_mle")
+  expect_s3_class(slot(mm, "fit"), "data.frame")
+  expect_type(slot(mm, "specs"), "list")
+  expect_s3_class(slot(mm, "data"), "data.frame")
+  expect_type(slot(mm, "pkg_version"), "character")
 
   # should work when data is a tibble, too
   mmt <- metab_mle(data = tibble::as_tibble(data_metab('1', res = '30')))
@@ -105,10 +103,14 @@ test_that("metab_mle outputs look like Bob's", {
     start = c(dates = "09/17/12", times = "22:00:00"),
     end = c(dates = "09/19/12", times = "06:00:00")
   )
-  expect_equal(predict_metab(mms)[1, "GPP"], mmb[1, "GPP"], tol = 0.001) # we handle light slightly differently. i prefer the sM way
-  expect_equal(predict_metab(mms)[1, "ER"], mmb[1, "ER"], tol = 0.0001)
-  expect_equal(get_params(mms)[1, "K600.daily"], mmb[1, "K"], tol = 0.0001)
-  expect_equal(get_fit(mms)[1, "minimum"], mmb[1, "lik"], tol = 0.00001)
+  expect_equal(predict_metab(mms)[1, "GPP"], mmb[1, "GPP"], tolerance = 0.001) # we handle light slightly differently. i prefer the sM way
+  expect_equal(predict_metab(mms)[1, "ER"], mmb[1, "ER"], tolerance = 0.0001)
+  expect_equal(
+    get_params(mms)[1, "K600.daily"],
+    mmb[1, "K"],
+    tolerance = 0.0001
+  )
+  expect_equal(get_fit(mms)[1, "minimum"], mmb[1, "lik"], tolerance = 0.00001)
 
   # PR
   mms <- metab_mle(
@@ -123,10 +125,14 @@ test_that("metab_mle outputs look like Bob's", {
     start = c(dates = "09/17/12", times = "22:00:00"),
     end = c(dates = "09/19/12", times = "06:00:00")
   )
-  expect_equal(predict_metab(mms)[1, "GPP"], mmb[1, "GPP"], tol = 0.001) # we handle light slightly differently. i prefer the sM way
-  expect_equal(predict_metab(mms)[1, "ER"], mmb[1, "ER"], tol = 0.00001)
-  expect_equal(get_params(mms)[1, "K600.daily"], mmb[1, "K"], tol = 0.00001)
-  expect_equal(get_fit(mms)[1, "minimum"], mmb[1, "lik"], tol = 0.00001)
+  expect_equal(predict_metab(mms)[1, "GPP"], mmb[1, "GPP"], tolerance = 0.001) # we handle light slightly differently. i prefer the sM way
+  expect_equal(predict_metab(mms)[1, "ER"], mmb[1, "ER"], tolerance = 0.00001)
+  expect_equal(
+    get_params(mms)[1, "K600.daily"],
+    mmb[1, "K"],
+    tolerance = 0.00001
+  )
+  expect_equal(get_fit(mms)[1, "minimum"], mmb[1, "lik"], tolerance = 0.00001)
 })
 
 test_that("metab_models can be saved & reloaded efficiently (see helper-save_load.R)", {

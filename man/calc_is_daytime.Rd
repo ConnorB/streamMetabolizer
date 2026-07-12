@@ -16,8 +16,9 @@ calc_is_daytime(datetimes, lat)
 a boolean vector of same length as \code{datetimes}
 }
 \description{
-Determines if specified datetime is during the daytime
-Returns T/F indicating whether a datetime occurs during the daytime (sunlight hours)
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{calc_is_daytime()} is deprecated.
 }
 \examples{
 \dontrun{

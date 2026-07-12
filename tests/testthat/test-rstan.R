@@ -1,5 +1,3 @@
-context('rstan')
-
 test_that('RStan draw selection handles vectors and arrays', {
   scalar <- seq_len(8)
   vector <- matrix(seq_len(24), nrow = 8, ncol = 3)
@@ -106,14 +104,14 @@ test_that('RStan caches models and retained fits survive serialization', {
     )
   )
 
-  expect_is(result$mcmcfit, 'stanfit')
-  expect_is(readRDS(cache_file), 'stanmodel')
+  expect_s4_class(result$mcmcfit, 'stanfit')
+  expect_s4_class(readRDS(cache_file), 'stanmodel')
   expect_true(any(grepl('^err_obs_iid_sigma_', names(result$overall))))
   expect_false(any(grepl('^extra_', names(result$overall))))
   expect_false('extra' %in% result$mcmcfit@sim$pars_oi)
 
   cached <- load_rstan_model(stan_file)
-  expect_is(cached$model, 'stanmodel')
+  expect_s4_class(cached$model, 'stanmodel')
   expect_null(cached$compile_log)
 
   saved_fit <- tempfile(fileext = '.rds')

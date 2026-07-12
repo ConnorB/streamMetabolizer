@@ -17,14 +17,30 @@ look up.}
 \item{units}{character, one of Meters or Feet, specifying the units in which
 to return the elevation}
 }
+\value{
+The numeric elevation in the requested units.
+}
 \description{
 This is meant to supply an APPROXIMATE elevation, with no guarantees on
-precision or on the lifetime of the API service used by the function. This
-function uses two packages, \code{RCurl} and \code{XML}, that are not
-required for the \code{streamMetabolizer} package as a whole. If these are
-not already installed, run \code{install.packages(c('RCurl','XML'))} before
-calling \code{lookup_usgs_elevation}.
+precision or on the lifetime of the API service used by the function. The
+lookup uses the JSON response from the service.
+}
+\examples{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+elevation_m <- lookup_usgs_elevation(
+  latitude = 39.102075,
+  longitude = -96.594689
+)
+elevation_m
+
+elevation_ft <- lookup_usgs_elevation(
+  latitude = 39.102075,
+  longitude = -96.594689,
+  units = "Feet"
+)
+elevation_ft
+\dontshow{\}) # examplesIf}
 }
 \references{
-https://nationalmap.gov/epqs/
+https://epqs.nationalmap.gov/v1/docs
 }

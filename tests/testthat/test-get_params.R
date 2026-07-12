@@ -1,5 +1,3 @@
-context('get_params')
-
 dat <- data_metab('3', '15')
 mm <- metab_mle(specs("m_np_oi_tr_plrckm.nlm"), data = dat)
 dat_daily <- data.frame(
