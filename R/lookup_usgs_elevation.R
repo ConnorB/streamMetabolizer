@@ -3,10 +3,10 @@
 #'
 #' This is meant to supply an APPROXIMATE elevation, with no guarantees on
 #' precision or on the lifetime of the API service used by the function. This
-#' function uses two packages, \code{RCurl} and \code{XML}, that are not
-#' required for the \code{streamMetabolizer} package as a whole. If these are
-#' not already installed, run \code{install.packages(c('RCurl','XML'))} before
-#' calling \code{lookup_usgs_elevation}.
+#' function uses two packages, `RCurl` and `XML`, that are not
+#' required for the `streamMetabolizer` package as a whole. If these are
+#' not already installed, run `install.packages(c('RCurl','XML'))` before
+#' calling `lookup_usgs_elevation`.
 #'
 #' @param latitude degrees latitude (positive for north) of the location to look
 #'   up.

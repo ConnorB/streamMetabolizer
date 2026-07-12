@@ -105,7 +105,7 @@ manual_tests2 <- function() {
     mname <- get_specs(mm)$model_name
     pars <- get_params(mm, unc = 'ci')
     fit <- get_fit(mm)
-    min.K.lower = min(c(
+    min.K.lower <- min(c(
       pars$K600.daily.lower[pars$K600.daily.lower > 0],
       pars$K600.daily[pars$K600.daily > 0]
     )) /

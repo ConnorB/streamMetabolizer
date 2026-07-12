@@ -1,7 +1,7 @@
 #' A prototype for the model_fun argument to mm_model_by_ply
 #'
 #' This function does nothing but has the proper form for a model_fun passed to
-#' \code{\link{mm_model_by_ply}} Other functions to be used as model_fun may
+#' [mm_model_by_ply()] Other functions to be used as model_fun may
 #' call inheritParams to use the parameter definitions given here.
 #'
 #' @param data_ply a data.frame containing all relevant, validated modeling data
@@ -21,10 +21,10 @@
 #' @param ply_date the modal date of this ply of data and data_daily, and the
 #'   date by which this ply should be referred topresent.
 #' @param timestep_days numeric length of the mean timestep for this day, if
-#'   requested by setting \code{timestep_days} to \code{TRUE} or a numeric value
-#'   in the call to \code{\link{mm_model_by_ply}}
-#' @param ply_validity the output of \code{mm_is_valid_day} as applied to this
-#'   data_ply for those tests specified in \code{day_tests}. Those tests will
+#'   requested by setting `timestep_days` to `TRUE` or a numeric value
+#'   in the call to [mm_model_by_ply()]
+#' @param ply_validity the output of `mm_is_valid_day` as applied to this
+#'   data_ply for those tests specified in `day_tests`. Those tests will
 #'   have been run before this function is called. The result is TRUE if the ply
 #'   is entirely valid, or a character vector containing one or more error
 #'   messages if any tests failed.

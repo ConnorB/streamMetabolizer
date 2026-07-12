@@ -1,6 +1,6 @@
 #' Determine the local time zone from the coordinates
 #'
-#' Uses the \code{lutz} package to determine the local timezone name, standard
+#' Uses the `lutz` package to determine the local timezone name, standard
 #' offset, and DST offset of a site from its coordinates.
 #'
 #' @param latitude degrees latitude (positive for north) of the location to look
@@ -46,14 +46,23 @@ lookup_timezone <- function(latitude, longitude) {
 #' Use Google API to determine local time zone
 #'
 #' @description
-#' `r lifecycle::badge("defunct")`
+#' `r lifecycle::badge("deprecated")`
 #'
-#' This function has been replaced by \code{\link{lookup_timezone}}, which uses
-#' the \code{lutz} package for offline timezone lookup instead of the Google API.
+#' This function has been replaced by [lookup_timezone()], which uses
+#' the `lutz` package for offline timezone lookup instead of the Google API.
 #'
 #' @inheritParams lookup_timezone
 #' @param timestamp Ignored. Kept for backward compatibility.
 #' @keywords internal
 lookup_google_timezone <- function(latitude, longitude, timestamp = NULL) {
-  .Defunct("lookup_timezone")
+  lifecycle::deprecate_stop(
+    when = "0.13",
+    what = "lookup_google_timezone()",
+    with = "lookup_timezone()",
+    details = paste(
+      "This function has been replaced by lookup_timezone(),",
+      "which uses the lutz package for offline timezone lookup",
+      "instead of the Google API."
+    )
+  )
 }

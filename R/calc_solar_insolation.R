@@ -20,9 +20,9 @@ to_degrees <- function(radians) {
 #'   OK for leap year)
 #' @param format The format of both the input and the output. May be "degrees"
 #'   or "radians".
-#' @return numeric value or vector, in the units specified by \code{format},
+#' @return numeric value or vector, in the units specified by `format`,
 #'   indicating the declination angle corresponding to each value supplied in
-#'   \code{jday}.
+#'   `jday`.
 #' @examples
 #' decdf <- data.frame(jday=1:366,
 #'   dec=streamMetabolizer:::calc_declination_angle(1:366))
@@ -32,8 +32,8 @@ to_degrees <- function(radians) {
 #' }
 #' @references Yard, Michael D., Glenn E. Bennett, Steve N. Mietz, Lewis G.
 #'   Coggins Jr., Lawrence E. Stevens, Susan Hueftle, and Dean W. Blinn.
-#'   \emph{Influence of Topographic Complexity on Solar Insolation Estimates for
-#'   the Colorado River, Grand Canyon, AZ.} Ecological Modelling 183, no. 2-3
+#'   *Influence of Topographic Complexity on Solar Insolation Estimates for
+#'   the Colorado River, Grand Canyon, AZ.* Ecological Modelling 183, no. 2-3
 #'   (April 25, 2005): 157-72. doi:10.1016/j.ecolmodel.2004.07.027.
 calc_declination_angle <- function(jday, format = c("degrees", "radians")) {
   format <- match.arg(format)
@@ -50,12 +50,12 @@ calc_declination_angle <- function(jday, format = c("degrees", "radians")) {
 #' This is an approximation when hour is in clock time; should actually be given
 #' in solar time
 #'
-#' @param hour numeric value or vector. hour since [solar] midnight as number
+#' @param hour numeric value or vector. hour since solar midnight as number
 #'   between 0 and 23.999
 #' @param format The format of both the input and the output. May be "degrees"
 #'   or "radians".
-#' @return numeric value or vector, in the units specified by \code{format},
-#'   indicating the angle corresponding to each value supplied in \code{hour}.
+#' @return numeric value or vector, in the units specified by `format`,
+#'   indicating the angle corresponding to each value supplied in `hour`.
 #' @examples
 #' hourdf <- data.frame(hour=c(0:12,12.5:23.5),
 #'   hragl=streamMetabolizer:::calc_hour_angle(c(0:12,12.5:23.5)))
@@ -77,12 +77,12 @@ calc_hour_angle <- function(hour, format = c("degrees", "radians")) {
 #' http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html
 #'
 #' @param latitude numeric value or vector indicating the site latitude in
-#'   decimal degrees (never radians or deg-min-sec, no matter what \code{format}
+#'   decimal degrees (never radians or deg-min-sec, no matter what `format`
 #'   is) between -90 (South Pole) and 90 (North Pole).
 #' @param declination.angle numeric value or vector, in the units specified by
-#'   \code{format}, indicating the declination angle.
+#'   `format`, indicating the declination angle.
 #' @param hour.angle numeric value or vector, in the units specified by
-#'   \code{format}, indicating the angle.
+#'   `format`, indicating the angle.
 #' @param format The format of both the output. May be "degrees" or "radians".
 #' @examples
 #' zendf <- data.frame(
@@ -130,8 +130,8 @@ calc_zenith_angle <- function(
 #'
 #' @importFrom lifecycle deprecated is_present
 #' @param app.solar.time POSIXct vector of date-time values in apparent solar
-#'   time, e.g., as returned by \code{convert_UTC_to_solartime(...,
-#'   time.type="apparent solar")}
+#'   time, e.g., as returned by `convert_UTC_to_solartime(...,
+#'   time.type="apparent solar")`
 #' @inheritParams calc_declination_angle
 #' @inheritParams calc_hour_angle
 #' @inheritParams calc_zenith_angle

@@ -16,7 +16,7 @@ interpreting the model structure.}
 }
 \description{
 Returns a data.frame with one column per model structure detail and one row
-per `model_name` supplied to this function. See \code{?\link{mm_name}} for a
+per \code{model_name} supplied to this function. See \verb{?[mm_name]} for a
 description of each of the data.frame columns that is returned.
 }
 \details{
@@ -30,5 +30,5 @@ mm_parse_name(c(mm_name('mle'), mm_name('night'), mm_name('bayes')))
 mm_parse_name(c(mm_name('mle'), mm_name('night'), mm_name('bayes')), expand=TRUE)
 }
 \seealso{
-The converse of this function is \code{\link{mm_name}}.
+The converse of this function is \code{\link[=mm_name]{mm_name()}}.
 }

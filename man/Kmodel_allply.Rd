@@ -25,7 +25,7 @@ process (see http://mc-stan.org/). For types in
 functions; these need not be named here but will be noted in the suffix of
 the model name, e.g., \code{"m_np_oi_tr_plrckm.nlm"} uses \code{nlm()} for
 model fitting). For type='Kmodel', the name of an interpolation or
-regression method relating K to the predictor[s] of choice. One of
+regression method relating K to the predictor(s) of choice. One of
 \code{c("mean", "lm", "loess")}.}
 
 \item{weights}{For Kmodel, character vector indicating the type of weighting

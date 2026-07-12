@@ -60,7 +60,7 @@ numeric as a specifically expected timestep length in days; for example, a
 }
 \value{
 list of data and data_daily with same structure as inputs but with
-  invalid days removed, plus a third data.frame of dates that were removed
+invalid days removed, plus a third data.frame of dates that were removed
 }
 \description{
 Filter out any data rows that don't pass the specified tests for completeness

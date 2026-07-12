@@ -7,7 +7,7 @@
 #'
 #' @importFrom LakeMetabolizer k600.2.kGAS.base
 #' @export
-convert_k600_to_kGAS = function(k600, temperature, gas = "O2") {
+convert_k600_to_kGAS <- function(k600, temperature, gas = "O2") {
   # suppressing "In getSchmidt(temperature, gas) : temperature out of range" b/c it's way too common
   out <- suppressWarnings(LakeMetabolizer::k600.2.kGAS.base(
     k600,
@@ -35,7 +35,7 @@ convert_k600_to_kGAS = function(k600, temperature, gas = "O2") {
 #'
 #' @importFrom LakeMetabolizer k600.2.kGAS.base
 #' @export
-convert_kGAS_to_k600 = function(kGAS, temperature, gas = "O2") {
+convert_kGAS_to_k600 <- function(kGAS, temperature, gas = "O2") {
   # suppressing "In getSchmidt(temperature, gas) : temperature out of range" b/c it's way too common
   conversion <- 1 /
     suppressWarnings(LakeMetabolizer::k600.2.kGAS.base(1, temperature, gas))

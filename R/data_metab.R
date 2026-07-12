@@ -9,7 +9,7 @@
 #' @param res character specifying the desired resolution of the data in minutes
 #'   (character; see defaults in Usage for the accepted options)
 #' @param flaws character specifying one or more flaws to include in the data,
-#'   or empty (\code{c()}) for no flaws. default is no flaws.
+#'   or empty (`c()`) for no flaws. default is no flaws.
 #' @inheritParams mm_model_by_ply
 #' @inheritParams load_french_creek
 #' @importFrom lifecycle deprecated is_present

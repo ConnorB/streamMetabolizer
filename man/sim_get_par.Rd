@@ -26,8 +26,8 @@ will be thrown.}
 }
 \value{
 list containing up to three vectors (or NULLs) named \code{specs},
-  \code{data_daily}, and \code{combo} according to the source of the numbers
-  in each vector.
+\code{data_daily}, and \code{combo} according to the source of the numbers
+in each vector.
 }
 \description{
 Used in get_params.metab_sim. Looks in both data_daily and specs for a daily

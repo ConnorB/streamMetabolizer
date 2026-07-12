@@ -8,7 +8,7 @@ Returns T/F indicating whether a datetime occurs during the daytime (sunlight ho
 calc_is_daytime(datetimes, lat)
 }
 \arguments{
-\item{datetimes}{Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format, but in SOLAR time}
+\item{datetimes}{Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link[=DateTimeClasses]{DateTimeClasses()}}) format, but in SOLAR time}
 
 \item{lat}{Single latitude value of site. South should be negative, north positive}
 }

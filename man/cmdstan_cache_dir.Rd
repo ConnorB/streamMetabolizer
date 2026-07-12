@@ -13,7 +13,7 @@ cmdstan_cache_dir(model_path, cmdstan_version)
 }
 \value{
 A writable cache directory unique to the model contents and CmdStan
-  version.
+version.
 }
 \description{
 Locate the persistent compilation cache for a CmdStan model

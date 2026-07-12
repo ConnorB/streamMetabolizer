@@ -2,7 +2,7 @@
 % Please edit documentation in R/zz_build_docs.R
 \name{zz_build_docs}
 \alias{zz_build_docs}
-\title{Generate doc text for the `metab()` documentation}
+\title{Generate doc text for the \code{metab()} documentation}
 \usage{
 zz_build_docs()
 }

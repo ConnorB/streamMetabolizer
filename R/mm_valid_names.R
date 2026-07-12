@@ -1,9 +1,9 @@
 #' Get the valid names for a given model type or types
 #'
-#' Returns a vector of the \code{model_name}s for the type[s] indicated. If
-#' \code{type} is not supplied, all model types will be included. After being
+#' Returns a vector of the `model_name`s for the type(s) indicated. If
+#' `type` is not supplied, all model types will be included. After being
 #' returned from this function, model names may be translated to something
-#' slightly more readable with \code{\link{mm_parse_name}} if desired.
+#' slightly more readable with [mm_parse_name()] if desired.
 #'
 #' @inheritParams mm_name
 #' @import dplyr

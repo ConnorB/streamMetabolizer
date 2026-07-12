@@ -4,12 +4,13 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![USGS
-Status](https://img.shields.io/badge/USGS-Research-blue.svg)](https://owi.usgs.gov/R/packages.html#research)
+[![R-CMD-check](https://github.com/ConnorB/streamMetabolizer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ConnorB/streamMetabolizer/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This is a fork of the original
-[`streamMetabolizer`](https://github.com/DOI-USGS/streamMetabolizer)
+This is an actively maintained fork of the original
+[`streamMetabolizer`](https://github.com/DOI-USGS/streamMetabolizer).
+Report issues with this fork at
+<https://github.com/ConnorB/streamMetabolizer/issues>.
 
 The `streamMetabolizer` R package uses inverse modeling to estimate
 aquatic photosynthesis and respiration (collectively, metabolism) from
@@ -127,12 +128,19 @@ for more information.
 For technical details on how to contribute, see
 [CONTRIBUTING.md](https://github.com/ConnorB/streamMetabolizer/blob/main/CONTRIBUTING.md)
 
-### Development History
+### Project history and maintenance
 
 `streamMetabolizer` was developed 2015-2018 with support from the USGS
 Powell Center (through a working group on Continental Patterns of Stream
 Metabolism), the USGS National Water Quality Program, and the USGS
 Office of Water Information.
+
+The original USGS project is archived and its project funding has ended.
+Its source and historical documentation remain available from the
+[`DOI-USGS/streamMetabolizer`](https://github.com/DOI-USGS/streamMetabolizer)
+repository. This fork contains subsequent enhancements and bug fixes and
+is maintained independently at
+[`ConnorB/streamMetabolizer`](https://github.com/ConnorB/streamMetabolizer).
 
 ## Disclaimer
 

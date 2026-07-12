@@ -49,7 +49,7 @@ this metab_model object. The default should almost always be appropriate.}
 A metab_model object.
 }
 \description{
-Generates a new model of class metab_model (\code{\link{metab_model-class}}).
+Generates a new model of class metab_model (\code{\link[=metab_model-class]{metab_model-class()}}).
 }
 \examples{
 metab_model()

@@ -8,21 +8,21 @@ mm_valid_names(type = c("bayes", "mle", "night", "Kmodel", "sim"))
 }
 \arguments{
 \item{type}{character. The model type. Options: \itemize{ \item \code{mle}:
-maximum likelihood estimation (see also \code{\link{metab_mle}}) \item
-\code{bayes}: bayesian hierarchical models \code{\link{metab_bayes}} \item
-\code{night}: nighttime regression (see also \code{\link{metab_night}})
+maximum likelihood estimation (see also \code{\link[=metab_mle]{metab_mle()}}) \item
+\code{bayes}: bayesian hierarchical models \code{\link[=metab_bayes]{metab_bayes()}} \item
+\code{night}: nighttime regression (see also \code{\link[=metab_night]{metab_night()}})
 \item \code{Kmodel}: regression of \emph{daily} estimates of
 \code{K600.daily} versus discharge, time, etc., usually for 3-phase
 estimation of K alone (by MLE or nighttime regression), K vs discharge
 (using this model), and then GPP and ER with fixed K (by MLE) (see also
-\code{\link{metab_Kmodel}}) \item \code{sim}: simulation of \code{DO.obs}
-'data' for testing other models (see also \code{\link{metab_sim}}) }}
+\code{\link[=metab_Kmodel]{metab_Kmodel()}}) \item \code{sim}: simulation of \code{DO.obs}
+'data' for testing other models (see also \code{\link[=metab_sim]{metab_sim()}}) }}
 }
 \description{
-Returns a vector of the \code{model_name}s for the type[s] indicated. If
+Returns a vector of the \code{model_name}s for the type(s) indicated. If
 \code{type} is not supplied, all model types will be included. After being
 returned from this function, model names may be translated to something
-slightly more readable with \code{\link{mm_parse_name}} if desired.
+slightly more readable with \code{\link[=mm_parse_name]{mm_parse_name()}} if desired.
 }
 \examples{
 mm_valid_names('mle')

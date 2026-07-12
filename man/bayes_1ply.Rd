@@ -28,10 +28,10 @@ mm_model_by_ply, through mm_model_by_ply, and finally to this function.}
 
 \item{specs}{a list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
-and safer to use \code{\link{specs}} to generate the list, because the set
+and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
 \code{model_name} argument to \code{specs}. The help file for
-\code{\link{specs}} lists the necessary parameters, describes them in
+\code{\link[=specs]{specs()}} lists the necessary parameters, describes them in
 detail, and gives default values.}
 }
 \value{

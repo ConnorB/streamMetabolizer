@@ -15,10 +15,10 @@ metab_bayes(
 \arguments{
 \item{specs}{a list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
-and safer to use \code{\link{specs}} to generate the list, because the set
+and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
 \code{model_name} argument to \code{specs}. The help file for
-\code{\link{specs}} lists the necessary parameters, describes them in
+\code{\link[=specs]{specs()}} lists the necessary parameters, describes them in
 detail, and gives default values.}
 
 \item{data}{data.frame (not a tbl_df) of input data at the temporal
@@ -36,22 +36,17 @@ within the metab_model object}
 }
 \value{
 A metab_bayes object containing the fitted model. This object can be
-  inspected with the functions in the \code{\link{metab_model_interface}} and
-  also \code{\link{get_mcmc}}.
+inspected with the functions in the \code{\link[=metab_model_interface]{metab_model_interface()}} and
+also \code{\link[=get_mcmc]{get_mcmc()}}.
 }
 \description{
 Fits a Bayesian model to estimate GPP and ER from input data on DO,
-temperature, light, etc. See \code{\link{mm_name}} to choose a Bayesian model
-and \code{\link{specs}} for relevant options for the \code{specs} argument.
+temperature, light, etc. See \code{\link[=mm_name]{mm_name()}} to choose a Bayesian model
+and \code{\link[=specs]{specs()}} for relevant options for the \code{specs} argument.
 }
 \details{
 As of summer and fall 2016, a new compilation of any Stan model gives
-deprecation warnings including \code{typedef 'size_type' locally defined but
-not used [-Wunused-local-typedefs]}, \code{typedef 'index_range' locally
-defined but not used [-Wunused-local-typedefs]}, \code{typedef 'index'
-locally defined but not used [-Wunused-local-typedefs]}, and \code{'void
-stan::math::set_zero_all_adjoints()' defined but not used
-[-Wunused-function]}. THESE ARE OKAY. Subsequent runs of the compiled Stan
+deprecation warnings including \verb{typedef 'size_type' locally defined but not used [-Wunused-local-typedefs]}, \verb{typedef 'index_range' locally defined but not used [-Wunused-local-typedefs]}, \verb{typedef 'index' locally defined but not used [-Wunused-local-typedefs]}, and \verb{'void stan::math::set_zero_all_adjoints()' defined but not used [-Wunused-function]}. THESE ARE OKAY. Subsequent runs of the compiled Stan
 model will be quieter, and the model will work.
 }
 \examples{

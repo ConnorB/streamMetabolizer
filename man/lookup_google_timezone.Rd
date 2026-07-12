@@ -16,9 +16,9 @@ look up.}
 \item{timestamp}{Ignored. Kept for backward compatibility.}
 }
 \description{
-`r lifecycle::badge("defunct")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-This function has been replaced by \code{\link{lookup_timezone}}, which uses
+This function has been replaced by \code{\link[=lookup_timezone]{lookup_timezone()}}, which uses
 the \code{lutz} package for offline timezone lookup instead of the Google API.
 }
 \keyword{internal}

@@ -7,7 +7,7 @@
 select_cmdstan_draws(draws_array, parname, index = TRUE)
 }
 \arguments{
-\item{draws_array}{A CmdStanR `draws_array`.}
+\item{draws_array}{A CmdStanR \code{draws_array}.}
 
 \item{parname}{The base parameter name.}
 
@@ -21,7 +21,7 @@ the parameter.}
 }
 \value{
 A list containing a numeric vector of draws and a logical indicating
-  whether the parameter is indexed.
+whether the parameter is indexed.
 }
 \description{
 Select scalar or indexed CmdStan draws for a distribution plot

@@ -7,9 +7,9 @@
 create_calc_dDOdt(data, ode_method, GPP_fun, ER_fun, deficit_src, err.proc = 0)
 }
 \arguments{
-\item{data}{data.frame as in \code{\link{metab}}, except that data must
+\item{data}{data.frame as in \code{\link[=metab]{metab()}}, except that data must
 contain exactly one date worth of inputs (~24 hours according to
-\code{\link{specs}$day_start} and \code{\link{specs}$day_end}).}
+\verb{[specs]$day_start} and \verb{[specs]$day_end}).}
 
 \item{ode_method}{character. The method to use in solving the ordinary
 differential equation for DO. Options: \itemize{ \item \code{euler},
@@ -18,7 +18,7 @@ function of GPP, ER, DO, etc. at t=1 \item \code{trapezoid}, formerly
 \code{pairmeans}: the final change in DO from t=1 to t=2 is a function of
 the mean values of GPP, ER, etc. across t=1 and t=2. \item for
 \code{type='mle'}, options also include \code{rk2} and any character method
-accepted by \code{\link[deSolve]{ode}} in the \code{deSolve} package
+accepted by \code{\link[deSolve:ode]{deSolve::ode()}} in the \code{deSolve} package
 (\code{lsoda}, \code{lsode}, \code{lsodes}, \code{lsodar}, \code{vode},
 \code{daspk}, \code{rk4}, \code{ode23}, \code{ode45}, \code{radau},
 \code{bdf}, \code{bdf_d}, \code{adams}, \code{impAdams}, and
@@ -33,13 +33,11 @@ varies by day. \cr \code{GPP(t) = GPP.daily * light(t) / mean.light}
 into timestep-specific rates according to the fraction of that day's
 average light that occurs at each timestep (specifically, \code{mean.light}
 is the mean of the first 24 hours of the date's data window) } \item
-\code{satlight}: GPP is a saturating function of light. \cr \code{GPP(t) =
-Pmax * tanh(alpha * light(t) / Pmax)} \itemize{ \item \code{Pmax}: the
+\code{satlight}: GPP is a saturating function of light. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax)} \itemize{ \item \code{Pmax}: the
 maximum possible GPP \item \code{alpha}: a descriptor of the rate of
 increase of GPP as a function of light } \item \code{satlightq10temp}: GPP
 is a saturating function of light and an exponential function of
-temperature. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax) *
-1.036 ^ (temp.water(t) - 20)} \itemize{ \item \code{Pmax}: the maximum
+temperature. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax) * 1.036 ^ (temp.water(t) - 20)} \itemize{ \item \code{Pmax}: the maximum
 possible GPP \item \code{alpha}: a descriptor of the rate of increase of
 GPP as a function of light } \item \code{NA}: applicable only to
 \code{type='Kmodel'}, for which GPP is not estimated }}
@@ -50,8 +48,7 @@ constant over every timestep of the day. \cr \code{ER(t) = ER.daily}
 \itemize{ \item \code{ER.daily}: the daily mean ER, which is equal to
 instantaneous ER at all times } \item \code{q10temp}: ER at each timestep
 is an exponential function of the water temperature and a
-temperature-normalized base rate. \cr \code{ER(t) = ER20 * 1.045 ^
-(temp.water(t) - 20)} \itemize{ \item \code{ER20}: the value of ER when
+temperature-normalized base rate. \cr \code{ER(t) = ER20 * 1.045 ^ (temp.water(t) - 20)} \itemize{ \item \code{ER20}: the value of ER when
 \code{temp.water} is 20 degrees C } \item \code{NA}: applicable only to
 \code{type='Kmodel'}, for which ER is not estimated }}
 
@@ -77,10 +74,10 @@ model) \code{err.proc} should be missing or 0}
 }
 \value{
 a function that accepts args \code{t} (the time in 0:(n-1) where n is
-  the number of timesteps), \code{DO.mod.t} (the value of DO.mod at time t in
-  gO2 m^-3), and \code{metab} (a list of metabolism parameters; to see which
-  parameters should be included in this list, create \code{dDOdt} with this
-  function and then call \code{environment(dDOdt)$metab.needs})
+the number of timesteps), \code{DO.mod.t} (the value of DO.mod at time t in
+gO2 m^-3), and \code{metab} (a list of metabolism parameters; to see which
+parameters should be included in this list, create \code{dDOdt} with this
+function and then call \code{environment(dDOdt)$metab.needs})
 }
 \description{
 Creates a closure that bundles data and helper functions into a single
@@ -91,18 +88,19 @@ function that returns dDOdt in gO2 m^-3 timestep^-1 for any given time t.
 
 'pairmeans' and 'trapezoid' are identical. They are the analytical
 solution to a trapezoid rule with this starting point:
-\code{
- DO.mod[t+1] =
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ DO.mod[t+1] =
   DO.mod[t] +
    (((GPP[t]+GPP[t+1])/2) / (depth[t]+depth[t+1])/2
    + ((ER[t]+ER[t+1])/2) / (depth[t]+depth[t+1])/2
    + (k.O2[t](DO.sat[t] - DO.mod[t]) + k.O2[t+1](DO.sat[t+1] - DO.mod[t+1]))/2
    + ((err.proc[t]+err.proc[t+1])/2) / (depth[t]+depth[t+1])/2
    ) * timestep
-}
+}\if{html}{\out{</div>}}
+
 and this solution:
-\code{
-DO.mod[t+1] - DO.mod[t] =
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{DO.mod[t+1] - DO.mod[t] =
  (- DO.mod[t] * (k.O2[t]+k.O2[t+1])/2
    + (GPP[t]+GPP[t+1] +
       ER[t]+ER[t+1] +
@@ -110,7 +108,8 @@ DO.mod[t+1] - DO.mod[t] =
      ) / (depth[t]+depth[t+1])
    + (k.O2[t]*DO.sat[t] + k.O2[t+1]*DO.sat[t+1])/2
  ) * timestep / (1 + timestep*k.O2[t+1]/2)
-}
+}\if{html}{\out{</div>}}
+
 where we're treating err.proc as a rate in gO2/m2/d, just like GPP & ER, and
 err.proc=0 for model fitting.
 }

@@ -37,7 +37,7 @@ NULL
 #'
 #' @inheritParams metab
 #' @return A metab_Kmodel object containing the fitted model. This object can be
-#'   inspected with the functions in the \code{\link{metab_model_interface}}.
+#'   inspected with the functions in the [metab_model_interface()].
 #' @import dplyr
 #'
 #' @examples
@@ -384,12 +384,12 @@ Kmodel_aggregate_day <- function(
 #' @param transforms For Kmodel, a named character vector of names of functions
 #'   (probably 'log' or NA) to apply to K600.daily and/or the predictors. K600.daily should
 #'   probably be logged. The vector names must match the values of
-#'   \code{predictors}, although not all elements of \code{predictors} must be
-#'   included in \code{transforms}. Recommended transforms include
-#'   \code{c(K600.daily='log', date=NA, velocity.daily="log", discharge.daily="log")}
+#'   `predictors`, although not all elements of `predictors` must be
+#'   included in `transforms`. Recommended transforms include
+#'   `c(K600.daily='log', date=NA, velocity.daily="log", discharge.daily="log")`
 #' @param other_args Other arguments passed to the fitting function given by
-#'   \code{specs$engine}. \code{na.rm=TRUE} is already passed to
-#'   \code{mean} (which is actually implemented as \code{sum}, anyway).
+#'   `specs$engine`. `na.rm=TRUE` is already passed to
+#'   `mean` (which is actually implemented as `sum`, anyway).
 #' @inheritParams metab_Kmodel
 #' @inheritParams specs
 #' @importFrom stats sd formula loess
@@ -504,7 +504,7 @@ Kmodel_allply <- function(
 
 #' Interpolation model of daily K for metabolism
 #'
-#' \code{metab_Kmodel} models use initial daily estimates of K, along with
+#' `metab_Kmodel` models use initial daily estimates of K, along with
 #' predictors such as Q (discharge.daily) or U (velocity.daily) or T (time) to leverage all
 #' available data to reach better, less variable daily estimates of K
 #'
@@ -655,7 +655,7 @@ predict_metab.metab_Kmodel <- function(
 }
 
 #' @describeIn predict_DO Throws an error because models of type 'Kmodel' can't
-#'   predict DO. \code{metab_Kmodel} predicts K at daily timesteps and usually
+#'   predict DO. `metab_Kmodel` predicts K at daily timesteps and usually
 #'   knows nothing about GPP or ER. So it's not possible to predict DO from this
 #'   model. Try passing the output to metab_mle and THEN predicting DO.
 #' @export

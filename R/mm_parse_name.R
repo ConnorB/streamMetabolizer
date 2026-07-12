@@ -1,7 +1,7 @@
 #' Parse a model name into its features
 #'
 #' Returns a data.frame with one column per model structure detail and one row
-#' per `model_name` supplied to this function. See \code{?\link{mm_name}} for a
+#' per `model_name` supplied to this function. See `?[mm_name]` for a
 #' description of each of the data.frame columns that is returned.
 #'
 #' Custom model files (for MCMC) may have additional characters after an
@@ -9,7 +9,7 @@
 #' 'b_np_pcpi_eu_ko.stan' and 'b_np_pcpi_eu_ko_v2.stan' are parsed the same; the
 #' _v2 is ignored by this function.
 #'
-#' @seealso The converse of this function is \code{\link{mm_name}}.
+#' @seealso The converse of this function is [mm_name()].
 #'
 #' @param model_name character: the model name
 #' @param expand logical: should additional columns such as model_name and

@@ -32,10 +32,10 @@ test_that('CmdStan draw selection respects indexed parameters', {
   scalar <- select_cmdstan_draws(draws, 'sigma', 1)
 
   expect_true(pooled$indexed)
-  expect_equal(pooled$draws, as.vector(draws[, , 1:2, drop = FALSE]))
-  expect_equal(second$draws, as.vector(draws[, , 2, drop = FALSE]))
+  expect_equal(pooled$draws, as.vector(draws[,, 1:2, drop = FALSE]))
+  expect_equal(second$draws, as.vector(draws[,, 2, drop = FALSE]))
   expect_false(scalar$indexed)
-  expect_equal(scalar$draws, as.vector(draws[, , 3, drop = FALSE]))
+  expect_equal(scalar$draws, as.vector(draws[,, 3, drop = FALSE]))
   expect_error(
     select_cmdstan_draws(draws, 'theta', 3),
     'index does not select a valid element'
@@ -59,6 +59,17 @@ test_that('CmdStan cache keys include the compiler and model contents', {
   expect_false(identical(first, other_version))
   expect_false(identical(first, changed))
   expect_true(all(dir.exists(c(first, other_version, changed))))
+})
+
+test_that('the default CmdStan cache always resolves to a writable directory', {
+  stan_file <- tempfile(fileext = '.stan')
+  writeLines('parameters { real y; } model { y ~ normal(0, 1); }', stan_file)
+  old_options <- options(streamMetabolizer.cmdstan_cache_dir = NULL)
+  on.exit(options(old_options), add = TRUE)
+
+  cache_dir <- cmdstan_cache_dir(stan_file, '2.39.0')
+  expect_equal(dir.exists(cache_dir), TRUE)
+  expect_equal(unname(file.access(cache_dir, mode = 2)), 0)
 })
 
 test_that('CmdStan syntax checking is available without C++ compilation', {

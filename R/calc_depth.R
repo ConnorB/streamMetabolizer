@@ -14,12 +14,12 @@
 #' calc_depth(Q=Qs, f=0.4)
 #' @references Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L.
 #'   Bott, Jody Potter, Patrick Mulholland, Andrew E. Laursen, William H.
-#'   McDowell, and Denis Newbold. \emph{Scaling the gas transfer velocity and
-#'   hydraulic geometry in streams and small rivers}. Limnology & Oceanography:
+#'   McDowell, and Denis Newbold. *Scaling the gas transfer velocity and
+#'   hydraulic geometry in streams and small rivers*. Limnology & Oceanography:
 #'   Fluids & Environments 2 (2012): 41-53.
 #'
-#'   Leopold, L.B., and Thomas Maddock Jr. \emph{The Hydraulic Geometry of
-#'   Stream Channels and Some Physiographic Implications}. Report. Professional
+#'   Leopold, L.B., and Thomas Maddock Jr. *The Hydraulic Geometry of
+#'   Stream Channels and Some Physiographic Implications*. Report. Professional
 #'   Paper, 1953. USGS Publications Warehouse.
 #'   https://pubs.er.usgs.gov/publication/pp252.
 #'

@@ -75,15 +75,15 @@ the model?}
 }
 \value{
 A data.frame of daily metabolism estimates. Columns include:
-  \describe{
+\describe{
 
-  \item{GPP}{numeric estimate of Gross Primary Production, positive when
-  realistic, \eqn{g O_2 m^{-2} d^{-1}}{g O2 / m^2 / d}}
+\item{GPP}{numeric estimate of Gross Primary Production, positive when
+realistic, \eqn{g O_2 m^{-2} d^{-1}}{g O2 / m^2 / d}}
 
-  \item{ER}{numeric estimate of Ecosystem Respiration, negative when
-  realistic, \eqn{g O_2 m^{-2} d^{-1}}{g O2 / m^2 / d}}
+\item{ER}{numeric estimate of Ecosystem Respiration, negative when
+realistic, \eqn{g O_2 m^{-2} d^{-1}}{g O2 / m^2 / d}}
 
-  \item{K600}{numeric estimate of the reaeration rate \eqn{d^{-1}}{1 / d}} }
+\item{K600}{numeric estimate of the reaeration rate \eqn{d^{-1}}{1 / d}} }
 }
 \description{
 A function in the metab_model_interface. Returns predictions (estimates) of
@@ -93,7 +93,7 @@ GPP, ER, and K600.
 \itemize{
 \item \code{predict_metab(metab_bayes)}: Pulls daily metabolism estimates out of the Stan
 model results; looks for \code{GPP} or \code{GPP_daily} and for \code{ER}
-or \code{ER_daily} among the \code{params_out} (see \code{\link{specs}}),
+or \code{ER_daily} among the \code{params_out} (see \code{\link[=specs]{specs()}}),
 which means you can save just one (or both) of those sets of daily
 parameters when running the Stan model. Saving fewer parameters can help
 models run faster and use less RAM.

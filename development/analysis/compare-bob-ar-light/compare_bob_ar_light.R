@@ -1,71 +1,19 @@
----
-title: "Comparing Bob Hall's AR(1) light-varying model with streamMetabolizer"
-subtitle: "metab_pi_ar_light_2.stan vs. streamMetabolizer's AR(1), light-varying process-error model"
-author: "Connor Brown"
-date: today
-format:
-  html:
-    toc: true
-    toc-depth: 3
-    code-fold: show
-    code-tools: true
-    embed-resources: true
-    fig-width: 10
-    fig-height: 6
-    df-print: paged
-execute:
-  warning: false
-  message: false
-  echo: true
-params:
-  metab_proc_err_dir: "/Users/connor/GitHub/metab_proc_err"
-  bob_stan_file: ""          # defaults to metab_pi_ar_light_2_modern.stan in metab_proc_err_dir
-  bob_proc_stan_file: ""     # defaults to metab_pi_2_modern.stan in metab_proc_err_dir
-  output_dir: ""             # defaults to comparison_bob_ar_light_output next to this document
-  chains: 4
-  iter: 2000
-  warmup: 1000
-  seed: 20260711
-  save_fits: false
-  write_outputs: true        # also write the CSV/PNG/PDF artifacts the original script produced
----
+# Standalone comparison of Bob Hall"s metab_pi_ar_light_2.stan model with
+# streamMetabolizer"s AR(1), light-varying process-error model.
+#
+# Run from the streamMetabolizer repository root:
+#   Rscript development/analysis/compare-bob-ar-light/compare_bob_ar_light.R
+#
+# Optional environment variables:
+#   METAB_PROC_ERR_DIR=/path/to/metab_proc_err
+#   BOB_STAN_FILE=/path/to/modernized/metab_pi_ar_light_2.stan
+#   COMPARISON_OUTPUT_DIR=/path/to/output
+#   CHAINS=4 ITER=2000 WARMUP=1000 SEED=20260711
+#   SAVE_FITS=true
+#
+# This is deliberately a standalone analysis script. It is not sourced by the
+# package and is not part of the package test suite.
 
-This document is the literate version of `compare_bob_ar_light.R`. It fits Bob
-Hall's `metab_pi_ar_light_2.stan` model and streamMetabolizer's AR(1),
-light-varying process-error model to the same Gallatin River data, then compares
-their daily metabolism estimates, overall parameters, process residuals, fit
-metrics, and sampler diagnostics. It repeats the exercise for the simpler IID
-process-error models (`metab_pi_2.stan` vs. streamMetabolizer's IID model).
-
-It is a standalone analysis: it is not sourced by the package and is not part of
-the package test suite.
-
-**Rendering.** Render from the repository root so the working-tree package code
-is loaded:
-
-```bash
-quarto render compare_bob_ar_light.qmd
-```
-
-Settings such as the location of the `metab_proc_err` checkout, the Stan files,
-the output directory, and the sampler configuration are exposed as Quarto
-`params` in the YAML header above. Override them at render time, e.g.:
-
-```bash
-quarto render compare_bob_ar_light.qmd \
-  -P chains:2 -P iter:1000 -P warmup:500 \
-  -P metab_proc_err_dir:/path/to/metab_proc_err
-```
-
-## Setup
-
-We require **devtools**, **ggplot2**, **lubridate**, and **rstan**. The
-working tree is loaded with `devtools::load_all()` when a `DESCRIPTION` is
-present so the analysis exercises the local model code; otherwise the installed
-package is used.
-
-```{r}
-#| label: packages
 required_packages <- c("devtools", "ggplot2", "lubridate", "rstan")
 missing_packages <- required_packages[
   !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
@@ -74,45 +22,33 @@ if (length(missing_packages) > 0) {
   stop("Install required packages: ", paste(missing_packages, collapse = ", "))
 }
 
-# Load the working tree so this document exercises the new, local model code.
-if (file.exists("DESCRIPTION")) {
-  devtools::load_all(".", quiet = TRUE)
+# Load the working tree so this script exercises the new, local model code.
+repo_root <- if (file.exists("DESCRIPTION")) {
+  normalizePath(".")
+} else if (file.exists(file.path("..", "..", "..", "DESCRIPTION"))) {
+  normalizePath(file.path("..", "..", ".."))
+} else {
+  NA_character_
+}
+if (!is.na(repo_root)) {
+  devtools::load_all(repo_root, quiet = TRUE)
 } else {
   if (!requireNamespace("streamMetabolizer", quietly = TRUE)) {
-    stop("Render from the repository root or install streamMetabolizer")
+    stop("Run from the repository root or install streamMetabolizer")
   }
   library(streamMetabolizer)
 }
 
-# Cache the expensive model fits, and track cross-chunk dependencies so cached
-# fits invalidate when their inputs change.
-knitr::opts_chunk$set(autodep = TRUE)
-```
-
-Resolve the input files and the output directory from the parameters, and check
-that the required inputs exist.
-
-```{r}
-#| label: paths
-metab_proc_err_dir <- params$metab_proc_err_dir
+metab_proc_err_dir <- Sys.getenv(
+  "METAB_PROC_ERR_DIR",
+  unset = "/Users/connor/GitHub/metab_proc_err"
+)
 data_file <- file.path(metab_proc_err_dir, "GallatinTestDownstream.csv")
-
-bob_stan_file <- if (nzchar(params$bob_stan_file)) {
-  params$bob_stan_file
-} else {
-  file.path(metab_proc_err_dir, "metab_pi_ar_light_2_modern.stan")
-}
-bob_proc_stan_file <- if (nzchar(params$bob_proc_stan_file)) {
-  params$bob_proc_stan_file
-} else {
-  file.path(metab_proc_err_dir, "metab_pi_2_modern.stan")
-}
-
-output_dir <- if (nzchar(params$output_dir)) {
-  params$output_dir
-} else {
-  file.path(getwd(), "comparison_bob_ar_light_output")
-}
+bob_stan_file <- file.path(
+  metab_proc_err_dir,
+  "metab_pi_ar_light_2_modern.stan"
+)
+bob_proc_stan_file <- file.path(metab_proc_err_dir, "metab_pi_2_modern.stan")
 
 if (!file.exists(data_file)) {
   stop("Data file not found: ", data_file)
@@ -124,31 +60,24 @@ if (!file.exists(bob_proc_stan_file)) {
   stop("Bob process-error Stan file not found: ", bob_proc_stan_file)
 }
 
-if (params$write_outputs) {
-  dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+analysis_dir <- if (!is.na(repo_root)) {
+  file.path(repo_root, "development", "analysis", "compare-bob-ar-light")
+} else {
+  getwd()
 }
+output_dir <- Sys.getenv(
+  "COMPARISON_OUTPUT_DIR",
+  unset = file.path(analysis_dir, "comparison_bob_ar_light_output")
+)
+dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
-# Helper: write a CSV artifact only when write_outputs is TRUE, and always
-# return the data frame so it can be displayed inline.
-write_output_csv <- function(x, name) {
-  if (params$write_outputs) {
-    utils::write.csv(x, file.path(output_dir, name), row.names = FALSE)
-  }
-  invisible(x)
-}
-```
-
-Sampler configuration. `cores` is capped at the number of detected cores.
-
-```{r}
-#| label: sampler-config
-chains <- as.integer(params$chains)
-iter <- as.integer(params$iter)
-warmup <- as.integer(params$warmup)
-seed <- as.integer(params$seed)
-save_fits <- isTRUE(params$save_fits)
+chains <- as.integer(Sys.getenv("CHAINS", unset = "4"))
+iter <- as.integer(Sys.getenv("ITER", unset = "2000"))
+warmup <- as.integer(Sys.getenv("WARMUP", unset = "1000"))
+seed <- as.integer(Sys.getenv("SEED", unset = "20260711"))
+save_fits <- tolower(Sys.getenv("SAVE_FITS", unset = "false")) == "true"
 if (warmup >= iter) {
-  stop("warmup must be less than iter")
+  stop("WARMUP must be less than ITER")
 }
 detected_cores <- parallel::detectCores()
 if (is.na(detected_cores)) {
@@ -156,17 +85,8 @@ if (is.na(detected_cores)) {
 }
 cores <- min(chains, detected_cores)
 options(mc.cores = cores)
-```
 
-### Constants and helper functions
-
-Constants used by Bob's `example_data.R`, plus his barometric-pressure and
-temperature-correction helpers. `bpcalc_atm()` converts a standard sea-level
-pressure to the site altitude, and `Kcor()` applies Bob's temperature
-correction from `K600` to `KO2`.
-
-```{r}
-#| label: constants
+# Constants used by Bob's example_data.R.
 latitude <- 45.5
 longitude <- -111.2
 altitude_m <- 5400 / 3.28
@@ -189,15 +109,8 @@ Kcor <- function(temp, K600) {
   K600 /
     (600 / (1800.6 - temp * 120.1 + 3.7818 * temp^2 - 0.047608 * temp^3))^-0.5
 }
-```
 
-## Data preparation
-
-Read the Gallatin downstream data, derive solar time, modeled light, DO
-saturation, and Bob's `KO2` conversion factor.
-
-```{r}
-#| label: prepare-data
+message("Preparing Gallatin data")
 gallatin <- utils::read.csv(data_file)
 gallatin$time <- lubridate::as_datetime(gallatin$unixtime, tz = "UTC")
 gallatin$solar.time <- convert_UTC_to_solartime(
@@ -216,15 +129,9 @@ gallatin$DO.sat <- calc_DO_sat(
   pressure.air = bpcalc_atm(standard_pressure_mb, altitude_m)
 )
 gallatin$Kc_bob <- Kcor(gallatin$temp, 1)
-```
 
-Match the exact window in Bob's example: 30 solar days, each from 04:00 to
-04:00, with 10-minute observations from 04:05 through 03:55. The script checks
-that the selected data contain a whole number of solar days and that there are
-exactly 144 observations per day across 30 days.
-
-```{r}
-#| label: window-and-days
+# Match the exact window in Bob's example: 30 solar days, each from 04:00 to
+# 04:00, with 10-minute observations from 04:05 through 03:55.
 window_start <- lubridate::ymd_hms("2024-09-01 04:00:00", tz = "UTC")
 window_end <- lubridate::ymd_hms("2024-10-01 04:00:00", tz = "UTC")
 gallatin <- gallatin[
@@ -247,14 +154,7 @@ gallatin$day <- rep(seq_len(nday), each = ntime)
 gallatin$date <- as.Date(
   gallatin$solar.time - lubridate::hours(day_start)
 )
-```
 
-Assemble the two input structures: `bob_data` is the list expected by Bob's
-Stan models, and `sm_data` is the data frame expected by
-`streamMetabolizer::metab()`.
-
-```{r}
-#| label: assemble-inputs
 bob_data <- list(
   T = nrow(gallatin),
   D = nday,
@@ -276,17 +176,8 @@ sm_data <- data.frame(
   temp.water = gallatin$temp,
   light = gallatin$light
 )
-```
 
-## AR(1) light-varying process-error model
-
-### Fit Bob's model
-
-Compile and sample `metab_pi_ar_light_2.stan`.
-
-```{r}
-#| label: fit-bob-ar
-#| cache: true
+message("Compiling and fitting Bob model: ", bob_stan_file)
 bob_stan_model <- rstan::stan_model(
   file = bob_stan_file,
   model_name = "bob_metab_pi_ar_light_2"
@@ -301,17 +192,7 @@ bob_fit <- rstan::sampling(
   cores = cores,
   refresh = max(1, floor((iter - warmup) / 10))
 )
-```
 
-### Fit the streamMetabolizer model
-
-Build the model name and specs. Priors are matched to Bob's shared priors. The
-baseline process-SD prior intentionally *cannot* be matched through `specs()`:
-Bob uses half-normal(0, 1), whereas the package model retains
-streamMetabolizer's half-Cauchy(0, 1) prior.
-
-```{r}
-#| label: sm-ar-specs
 new_model_name <- mm_name(
   type = "bayes",
   pool_K600 = "normal",
@@ -327,6 +208,9 @@ new_model_name <- mm_name(
   engine = "stan"
 )
 
+# Match Bob's shared priors. The baseline process-SD prior intentionally cannot
+# be matched through specs(): Bob uses half-normal(0, 1), whereas the package
+# model retains streamMetabolizer"s half-Cauchy(0, 1) prior.
 new_specs <- specs(
   new_model_name,
   day_start = day_start,
@@ -358,14 +242,8 @@ new_specs <- revise(
   new_specs,
   params_out = union(new_specs$params_out, "DO_mod")
 )
-new_model_name
-```
 
-Fit the model and extract the retained `stanfit` object.
-
-```{r}
-#| label: fit-sm-ar
-#| cache: true
+message("Fitting streamMetabolizer model: ", new_model_name)
 sm_fit <- metab(
   specs = new_specs,
   data = sm_data,
@@ -379,19 +257,10 @@ if (!inherits(sm_stan_fit, "stanfit")) {
   }
   sm_stan_fit <- stan_fits[[1]]
 }
-```
 
-## IID process-error model
-
-These are the models compared in Bob's `compare_streamMetabolizer.R`. The
-obsolete array declaration in `metab_pi_2.stan` is modernized in memory without
-changing Bob's source file.
-
-### Fit Bob's IID process-error model
-
-```{r}
-#| label: fit-bob-proc
-#| cache: true
+# Fit the IID process-error models compared in Bob's
+# compare_streamMetabolizer.R. Modernize the obsolete array declaration in
+# memory without changing Bob's source file.
 bob_proc_stan_code <- paste(
   readLines(bob_proc_stan_file, warn = FALSE),
   collapse = "\n"
@@ -404,6 +273,10 @@ bob_proc_stan_code <- sub(
 )
 bob_proc_stan_code <- gsub("<-", "=", bob_proc_stan_code, fixed = TRUE)
 
+message(
+  "Compiling and fitting Bob IID process-error model: ",
+  bob_proc_stan_file
+)
 bob_proc_stan_model <- rstan::stan_model(
   model_code = bob_proc_stan_code,
   model_name = "bob_metab_pi_2"
@@ -418,12 +291,7 @@ bob_proc_fit <- rstan::sampling(
   cores = cores,
   refresh = max(1, floor((iter - warmup) / 10))
 )
-```
 
-### Fit the streamMetabolizer IID process-error model
-
-```{r}
-#| label: sm-proc-specs
 sm_proc_model_name <- mm_name(
   type = "bayes",
   pool_K600 = "normal",
@@ -466,12 +334,11 @@ sm_proc_specs <- revise(
   sm_proc_specs,
   params_out = union(sm_proc_specs$params_out, "DO_mod_partial")
 )
-sm_proc_model_name
-```
 
-```{r}
-#| label: fit-sm-proc
-#| cache: true
+message(
+  "Fitting streamMetabolizer IID process-error model: ",
+  sm_proc_model_name
+)
 sm_proc_fit <- metab(
   specs = sm_proc_specs,
   data = sm_data,
@@ -488,16 +355,7 @@ if (!inherits(sm_proc_stan_fit, "stanfit")) {
   }
   sm_proc_stan_fit <- proc_stan_fits[[1]]
 }
-```
 
-## Parameter comparisons
-
-Two small helpers: `stan_summary()` pulls posterior summaries for a parameter,
-and `daily_parameter_comparison()` aligns Bob's and streamMetabolizer's daily
-parameters by date.
-
-```{r}
-#| label: comparison-helpers
 stan_summary <- function(fit, parameter) {
   out <- rstan::summary(
     fit,
@@ -544,25 +402,18 @@ daily_parameter_comparison <- function(
     sm_Rhat = sm$Rhat
   )
 }
-```
 
-### Daily GPP, ER, and K600 (AR(1) model)
-
-```{r}
-#| label: daily-comparison
 daily_comparison <- rbind(
   daily_parameter_comparison(bob_fit, sm_stan_fit, "GPP", "GPP_daily", "GPP"),
   daily_parameter_comparison(bob_fit, sm_stan_fit, "ER", "ER_daily", "ER"),
   daily_parameter_comparison(bob_fit, sm_stan_fit, "K", "K600_daily", "K600")
 )
-write_output_csv(daily_comparison, "daily_parameter_comparison.csv")
-knitr::kable(daily_comparison, digits = 3)
-```
+utils::write.csv(
+  daily_comparison,
+  file.path(output_dir, "daily_parameter_comparison.csv"),
+  row.names = FALSE
+)
 
-### Daily GPP, ER, and K600 (IID process-error model)
-
-```{r}
-#| label: proc-daily-comparison
 proc_daily_comparison <- rbind(
   daily_parameter_comparison(
     bob_proc_fit,
@@ -586,17 +437,12 @@ proc_daily_comparison <- rbind(
     "K600"
   )
 )
-write_output_csv(proc_daily_comparison, "proc_daily_parameter_comparison.csv")
-knitr::kable(proc_daily_comparison, digits = 3)
-```
+utils::write.csv(
+  proc_daily_comparison,
+  file.path(output_dir, "proc_daily_parameter_comparison.csv"),
+  row.names = FALSE
+)
 
-### Overall parameters (AR(1) model)
-
-Map Bob's overall parameter names to their streamMetabolizer counterparts and
-summarize both.
-
-```{r}
-#| label: overall-comparison
 overall_mapping <- data.frame(
   parameter = c("phi", "baseline_sigma", "light_alpha", "K_meanlog", "K_sdlog"),
   bob = c("phi", "sigproc", "alpha", "Kmean", "Ksd"),
@@ -621,18 +467,12 @@ overall_comparison <- do.call(
     )
   })
 )
-write_output_csv(overall_comparison, "overall_parameter_comparison.csv")
-knitr::kable(overall_comparison, digits = 3)
-```
+utils::write.csv(
+  overall_comparison,
+  file.path(output_dir, "overall_parameter_comparison.csv"),
+  row.names = FALSE
+)
 
-### Overall parameters (IID process-error model)
-
-For the IID comparison, note that Bob's `sigproc` is a per-timestep DO residual
-SD while streamMetabolizer's `err_proc_iid_sigma` is a process-rate SD, so the
-raw sigma values are not directly comparable.
-
-```{r}
-#| label: proc-overall-comparison
 proc_overall_mapping <- data.frame(
   parameter = c("baseline_sigma", "K_meanlog", "K_sdlog"),
   bob = c("sigproc", "Kmean", "Ksd"),
@@ -666,24 +506,19 @@ proc_overall_comparison$note <- ifelse(
   ),
   NA_character_
 )
-write_output_csv(proc_overall_comparison, "proc_overall_parameter_comparison.csv")
-knitr::kable(proc_overall_comparison, digits = 3)
-```
+utils::write.csv(
+  proc_overall_comparison,
+  file.path(output_dir, "proc_overall_parameter_comparison.csv"),
+  row.names = FALSE
+)
 
-## Process residuals
-
-`posterior_median()` returns the posterior-median surface for a parameter. Bob
-defines `eta` at all timestamps (with zero residuals at day starts), while
-streamMetabolizer defines 143 within-day transitions for each of 30 days.
-
-```{r}
-#| label: residuals
 posterior_median <- function(fit, parameter, margins) {
   draws <- rstan::extract(fit, pars = parameter, permuted = TRUE)[[parameter]]
   apply(draws, margins, stats::median)
 }
 
-# AR(1) model residuals.
+# Bob defines eta at all timestamps (with zero residuals at day starts), while
+# streamMetabolizer defines 143 within-day transitions for each of 30 days.
 bob_eta <- posterior_median(bob_fit, "eta", 2)
 bob_eta <- matrix(bob_eta, nrow = ntime, ncol = nday)[-1, , drop = FALSE]
 sm_eta <- posterior_median(sm_stan_fit, "err_proc_acor", c(2, 3))
@@ -692,7 +527,6 @@ bob_mu <- posterior_median(bob_fit, "mu", 2)
 sm_mu <- posterior_median(sm_stan_fit, "DO_mod", c(2, 3))
 bob_mu <- matrix(bob_mu, nrow = ntime, ncol = nday)
 
-# IID process-error model residuals.
 bob_proc_eta <- posterior_median(bob_proc_fit, "eta", 2)
 bob_proc_eta <- matrix(
   bob_proc_eta,
@@ -715,7 +549,11 @@ residual_comparison <- data.frame(
   bob_eta = as.vector(bob_eta),
   sm_eta = as.vector(sm_eta)
 )
-write_output_csv(residual_comparison, "process_residual_comparison.csv")
+utils::write.csv(
+  residual_comparison,
+  file.path(output_dir, "process_residual_comparison.csv"),
+  row.names = FALSE
+)
 
 proc_residual_comparison <- data.frame(
   date = rep(sort(unique(gallatin$date)), each = ntime - 1),
@@ -723,18 +561,12 @@ proc_residual_comparison <- data.frame(
   bob_eta = as.vector(bob_proc_eta),
   sm_eta = as.vector(sm_proc_eta)
 )
-write_output_csv(proc_residual_comparison, "proc_residual_comparison.csv")
+utils::write.csv(
+  proc_residual_comparison,
+  file.path(output_dir, "proc_residual_comparison.csv"),
+  row.names = FALSE
+)
 
-head(residual_comparison)
-```
-
-## Fit metrics
-
-One-step DO RMSE, the correlation between the two models' within-day residuals,
-and each model's lag-1 residual autocorrelation.
-
-```{r}
-#| label: fit-metrics
 rmse <- function(observed, predicted) {
   sqrt(mean((observed - predicted)^2, na.rm = TRUE))
 }
@@ -755,7 +587,11 @@ fit_metrics <- data.frame(
     unname(stats::acf(as.vector(sm_eta), plot = FALSE, lag.max = 1)$acf[2])
   )
 )
-write_output_csv(fit_metrics, "fit_metrics.csv")
+utils::write.csv(
+  fit_metrics,
+  file.path(output_dir, "fit_metrics.csv"),
+  row.names = FALSE
+)
 
 proc_fit_metrics <- data.frame(
   metric = c(
@@ -786,34 +622,12 @@ proc_fit_metrics <- data.frame(
     )
   )
 )
-write_output_csv(proc_fit_metrics, "proc_fit_metrics.csv")
-```
+utils::write.csv(
+  proc_fit_metrics,
+  file.path(output_dir, "proc_fit_metrics.csv"),
+  row.names = FALSE
+)
 
-::: {.panel-tabset}
-
-### AR(1) model
-
-```{r}
-#| label: fit-metrics-ar-table
-knitr::kable(fit_metrics, digits = 4)
-```
-
-### IID process-error model
-
-```{r}
-#| label: fit-metrics-proc-table
-knitr::kable(proc_fit_metrics, digits = 4)
-```
-
-:::
-
-## Sampler diagnostics
-
-Divergent transitions, the maximum `Rhat`, and the minimum effective sample size
-across the key parameters of each model.
-
-```{r}
-#| label: diagnostics
 sampler_diagnostics <- function(fit, model, parameters) {
   sampler <- rstan::get_sampler_params(fit, inc_warmup = FALSE)
   divergences <- sum(vapply(
@@ -851,7 +665,11 @@ diagnostics <- rbind(
     )
   )
 )
-write_output_csv(diagnostics, "sampler_diagnostics.csv")
+utils::write.csv(
+  diagnostics,
+  file.path(output_dir, "sampler_diagnostics.csv"),
+  row.names = FALSE
+)
 
 proc_diagnostics <- rbind(
   sampler_diagnostics(
@@ -865,35 +683,14 @@ proc_diagnostics <- rbind(
     c("GPP_daily", "ER_daily", "K600_daily", "err_proc_iid_sigma")
   )
 )
-write_output_csv(proc_diagnostics, "proc_sampler_diagnostics.csv")
-```
+utils::write.csv(
+  proc_diagnostics,
+  file.path(output_dir, "proc_sampler_diagnostics.csv"),
+  row.names = FALSE
+)
 
-::: {.panel-tabset}
-
-### AR(1) model
-
-```{r}
-#| label: diagnostics-ar-table
-knitr::kable(diagnostics, digits = 3)
-```
-
-### IID process-error model
-
-```{r}
-#| label: diagnostics-proc-table
-knitr::kable(proc_diagnostics, digits = 3)
-```
-
-:::
-
-## Figures
-
-Shared theme, colors, and the derived data frames used across the figures.
-These recreate the plots in `metab_proc_err/compare_streamMetabolizer.R` with
-ggplot2, then add the direct residual and AR diagnostics used by this analysis.
-
-```{r}
-#| label: plot-setup
+# Recreate the plots in metab_proc_err/compare_streamMetabolizer.R with
+# ggplot2, then add the direct residual and AR diagnostics used by this script.
 plot_theme <- ggplot2::theme_bw(base_size = 11) +
   ggplot2::theme(
     legend.position = "bottom",
@@ -960,6 +757,88 @@ proc_do_plot_data <- rbind(
   )
 )
 
+# Analog of plot_DO_preds(predict_DO(sm_fit)).
+plot_do_predictions <- ggplot2::ggplot(
+  do_plot_data,
+  ggplot2::aes(x = solar.time, y = DO, color = model)
+) +
+  ggplot2::geom_line(
+    data = do_plot_data[do_plot_data$model != "observed", ],
+    linewidth = 0.35
+  ) +
+  ggplot2::geom_point(
+    data = do_plot_data[do_plot_data$model == "observed", ],
+    size = 0.25,
+    alpha = 0.5
+  ) +
+  ggplot2::scale_color_manual(values = model_colors) +
+  ggplot2::labs(
+    title = "Dissolved oxygen observations and one-step predictions",
+    x = "Solar time",
+    y = expression(
+      DO ~ (mg ~ L^{
+        -1
+      })
+    ),
+    color = NULL
+  ) +
+  plot_theme
+
+metab_plot_data <- rbind(
+  data.frame(
+    date = daily_comparison$date,
+    parameter = daily_comparison$parameter,
+    model = "Bob",
+    estimate = daily_comparison$bob_median,
+    lower = daily_comparison$bob_lower,
+    upper = daily_comparison$bob_upper
+  ),
+  data.frame(
+    date = daily_comparison$date,
+    parameter = daily_comparison$parameter,
+    model = "streamMetabolizer",
+    estimate = daily_comparison$sm_median,
+    lower = daily_comparison$sm_lower,
+    upper = daily_comparison$sm_upper
+  )
+)
+metab_plot_data <- metab_plot_data[
+  metab_plot_data$parameter %in% c("GPP", "ER"),
+]
+
+# Analog of plot_metab_preds(predict_metab(sm_fit)).
+plot_metabolism_predictions <- ggplot2::ggplot(
+  metab_plot_data,
+  ggplot2::aes(
+    x = date,
+    y = estimate,
+    ymin = lower,
+    ymax = upper,
+    color = model,
+    fill = model
+  )
+) +
+  ggplot2::geom_ribbon(alpha = 0.12, color = NA) +
+  ggplot2::geom_line(linewidth = 0.55) +
+  ggplot2::geom_point(size = 0.8) +
+  ggplot2::facet_wrap(~parameter, ncol = 1, scales = "free_y") +
+  ggplot2::scale_color_manual(values = model_colors) +
+  ggplot2::scale_fill_manual(values = model_colors) +
+  ggplot2::labs(
+    title = "Daily metabolism estimates",
+    x = NULL,
+    y = expression(
+      g ~ O[2] ~ m^{
+        -2
+      } ~ d^{
+        -1
+      }
+    ),
+    color = NULL,
+    fill = NULL
+  ) +
+  plot_theme
+
 model_scatter_plot <- function(data, model, x, y, xlab, ylab, title) {
   ggplot2::ggplot(
     data,
@@ -973,6 +852,87 @@ model_scatter_plot <- function(data, model, x, y, xlab, ylab, title) {
     ggplot2::labs(title = title, x = xlab, y = ylab) +
     plot_theme
 }
+
+# Analogs of plot(params$GPP.daily, params$ER.daily) and the process-only
+# repetition of that plot.
+plot_stream_gpp_er <- model_scatter_plot(
+  daily_wide,
+  "streamMetabolizer",
+  "sm_GPP",
+  "sm_ER",
+  "GPP",
+  "ER",
+  "streamMetabolizer: daily GPP versus ER"
+)
+
+# Analogs of plot(params$K600.daily, params$ER.daily) for the stream model and
+# plot(K_est[,1], er_est[,1]) for Bob's model.
+plot_stream_k_er <- model_scatter_plot(
+  daily_wide,
+  "streamMetabolizer",
+  "sm_K600",
+  "sm_ER",
+  expression(
+    K[600] ~ (d^{
+      -1
+    })
+  ),
+  "ER",
+  expression(paste("streamMetabolizer: ", K[600], " versus ER"))
+)
+plot_bob_k_er <- model_scatter_plot(
+  daily_wide,
+  "Bob",
+  "bob_K600",
+  "bob_ER",
+  expression(
+    K[600] ~ (d^{
+      -1
+    })
+  ),
+  "ER",
+  expression(paste("Bob: ", K[600], " versus ER"))
+)
+
+plot_proc_stream_gpp_er <- model_scatter_plot(
+  proc_daily_wide,
+  "streamMetabolizer",
+  "sm_GPP",
+  "sm_ER",
+  "GPP",
+  "ER",
+  "IID process error: streamMetabolizer GPP versus ER"
+)
+plot_proc_stream_k_er <- model_scatter_plot(
+  proc_daily_wide,
+  "streamMetabolizer",
+  "sm_K600",
+  "sm_ER",
+  expression(
+    K[600] ~ (d^{
+      -1
+    })
+  ),
+  "ER",
+  expression(paste(
+    "IID process error, streamMetabolizer: ",
+    K[600],
+    " versus ER"
+  ))
+)
+plot_proc_bob_k_er <- model_scatter_plot(
+  proc_daily_wide,
+  "Bob",
+  "bob_K600",
+  "bob_ER",
+  expression(
+    K[600] ~ (d^{
+      -1
+    })
+  ),
+  "ER",
+  expression(paste("IID process error, Bob: ", K[600], " versus ER"))
+)
 
 parameter_comparison_plot <- function(
   comparison_data,
@@ -1002,142 +962,8 @@ parameter_comparison_plot <- function(
     ggplot2::labs(title = title, x = xlab, y = ylab) +
     plot_theme
 }
-```
 
-### AR(1) model figures
-
-Dissolved oxygen observations and one-step predictions — the analog of
-`plot_DO_preds(predict_DO(sm_fit))`.
-
-```{r}
-#| label: fig-do-predictions
-#| fig-cap: "Dissolved oxygen observations and one-step predictions."
-plot_do_predictions <- ggplot2::ggplot(
-  do_plot_data,
-  ggplot2::aes(x = solar.time, y = DO, color = model)
-) +
-  ggplot2::geom_line(
-    data = do_plot_data[do_plot_data$model != "observed", ],
-    linewidth = 0.35
-  ) +
-  ggplot2::geom_point(
-    data = do_plot_data[do_plot_data$model == "observed", ],
-    size = 0.25,
-    alpha = 0.5
-  ) +
-  ggplot2::scale_color_manual(values = model_colors) +
-  ggplot2::labs(
-    title = "Dissolved oxygen observations and one-step predictions",
-    x = "Solar time",
-    y = expression(DO ~ (mg ~ L^{-1})),
-    color = NULL
-  ) +
-  plot_theme
-plot_do_predictions
-```
-
-Daily metabolism estimates — the analog of
-`plot_metab_preds(predict_metab(sm_fit))`.
-
-```{r}
-#| label: fig-metabolism-predictions
-#| fig-cap: "Daily metabolism estimates (GPP and ER) with 95% intervals."
-metab_plot_data <- rbind(
-  data.frame(
-    date = daily_comparison$date,
-    parameter = daily_comparison$parameter,
-    model = "Bob",
-    estimate = daily_comparison$bob_median,
-    lower = daily_comparison$bob_lower,
-    upper = daily_comparison$bob_upper
-  ),
-  data.frame(
-    date = daily_comparison$date,
-    parameter = daily_comparison$parameter,
-    model = "streamMetabolizer",
-    estimate = daily_comparison$sm_median,
-    lower = daily_comparison$sm_lower,
-    upper = daily_comparison$sm_upper
-  )
-)
-metab_plot_data <- metab_plot_data[
-  metab_plot_data$parameter %in% c("GPP", "ER"),
-]
-
-plot_metabolism_predictions <- ggplot2::ggplot(
-  metab_plot_data,
-  ggplot2::aes(
-    x = date,
-    y = estimate,
-    ymin = lower,
-    ymax = upper,
-    color = model,
-    fill = model
-  )
-) +
-  ggplot2::geom_ribbon(alpha = 0.12, color = NA) +
-  ggplot2::geom_line(linewidth = 0.55) +
-  ggplot2::geom_point(size = 0.8) +
-  ggplot2::facet_wrap(~parameter, ncol = 1, scales = "free_y") +
-  ggplot2::scale_color_manual(values = model_colors) +
-  ggplot2::scale_fill_manual(values = model_colors) +
-  ggplot2::labs(
-    title = "Daily metabolism estimates",
-    x = NULL,
-    y = expression(g ~ O[2] ~ m^{-2} ~ d^{-1}),
-    color = NULL,
-    fill = NULL
-  ) +
-  plot_theme
-plot_metabolism_predictions
-```
-
-streamMetabolizer daily GPP versus ER, and K600 versus ER for both models —
-analogs of `plot(params$GPP.daily, params$ER.daily)`,
-`plot(params$K600.daily, params$ER.daily)`, and `plot(K_est[,1], er_est[,1])`.
-
-```{r}
-#| label: fig-scatter-ar
-#| fig-cap: "streamMetabolizer GPP vs. ER, and K600 vs. ER for each model."
-#| fig-height: 4
-plot_stream_gpp_er <- model_scatter_plot(
-  daily_wide,
-  "streamMetabolizer",
-  "sm_GPP",
-  "sm_ER",
-  "GPP",
-  "ER",
-  "streamMetabolizer: daily GPP versus ER"
-)
-plot_stream_k_er <- model_scatter_plot(
-  daily_wide,
-  "streamMetabolizer",
-  "sm_K600",
-  "sm_ER",
-  expression(K[600] ~ (d^{-1})),
-  "ER",
-  expression(paste("streamMetabolizer: ", K[600], " versus ER"))
-)
-plot_bob_k_er <- model_scatter_plot(
-  daily_wide,
-  "Bob",
-  "bob_K600",
-  "bob_ER",
-  expression(K[600] ~ (d^{-1})),
-  "ER",
-  expression(paste("Bob: ", K[600], " versus ER"))
-)
-plot_stream_gpp_er
-plot_stream_k_er
-plot_bob_k_er
-```
-
-Direct model-versus-model comparisons of daily GPP, K600, and ER.
-
-```{r}
-#| label: fig-param-comparison-ar
-#| fig-cap: "Daily GPP, K600, and ER: Bob vs. streamMetabolizer (dashed 1:1 line)."
-#| fig-height: 4
+# Analogs of the original streamMetabolizer-versus-Bob GPP and K plots.
 plot_gpp_comparison <- parameter_comparison_plot(
   daily_comparison,
   "GPP",
@@ -1152,6 +978,9 @@ plot_k_comparison <- parameter_comparison_plot(
   expression(paste("streamMetabolizer ", K[600])),
   expression(paste("Daily ", K[600], " comparison"))
 )
+
+# Additional direct comparisons retained from the earlier version of this
+# script, now also expressed as ggplot objects.
 plot_er_comparison <- parameter_comparison_plot(
   daily_comparison,
   "ER",
@@ -1159,23 +988,30 @@ plot_er_comparison <- parameter_comparison_plot(
   "streamMetabolizer ER",
   "Daily ER comparison"
 )
-plot_gpp_comparison
-plot_k_comparison
-plot_er_comparison
-```
-
-Within-day process residuals: the two models' residuals against each other, the
-first three days of one-step predictions, and the residual autocorrelation
-functions.
-
-```{r}
-#| label: fig-residuals-ar
-#| fig-cap: "Within-day process residuals, first-three-days predictions, and residual ACF."
+plot_proc_gpp_comparison <- parameter_comparison_plot(
+  proc_daily_comparison,
+  "GPP",
+  "Bob GPP",
+  "streamMetabolizer GPP",
+  "IID process error: daily GPP comparison"
+)
+plot_proc_k_comparison <- parameter_comparison_plot(
+  proc_daily_comparison,
+  "K600",
+  expression(paste("Bob ", K[600])),
+  expression(paste("streamMetabolizer ", K[600])),
+  expression(paste("IID process error: daily ", K[600], " comparison"))
+)
 plot_residual_comparison <- ggplot2::ggplot(
   residual_comparison,
   ggplot2::aes(x = bob_eta, y = sm_eta)
 ) +
-  ggplot2::geom_abline(slope = 1, intercept = 0, linetype = 2, color = "grey50") +
+  ggplot2::geom_abline(
+    slope = 1,
+    intercept = 0,
+    linetype = 2,
+    color = "grey50"
+  ) +
   ggplot2::geom_point(
     alpha = 0.18,
     size = 0.45,
@@ -1184,6 +1020,55 @@ plot_residual_comparison <- ggplot2::ggplot(
   ggplot2::coord_equal() +
   ggplot2::labs(
     title = "Within-day process residuals",
+    x = "Bob process residual",
+    y = "streamMetabolizer process residual"
+  ) +
+  plot_theme
+
+plot_proc_do_predictions <- ggplot2::ggplot(
+  proc_do_plot_data,
+  ggplot2::aes(x = solar.time, y = DO, color = model)
+) +
+  ggplot2::geom_line(
+    data = proc_do_plot_data[proc_do_plot_data$model != "observed", ],
+    linewidth = 0.35
+  ) +
+  ggplot2::geom_point(
+    data = proc_do_plot_data[proc_do_plot_data$model == "observed", ],
+    size = 0.25,
+    alpha = 0.5
+  ) +
+  ggplot2::scale_color_manual(values = model_colors) +
+  ggplot2::labs(
+    title = "IID process error: DO observations and one-step predictions",
+    x = "Solar time",
+    y = expression(
+      DO ~ (mg ~ L^{
+        -1
+      })
+    ),
+    color = NULL
+  ) +
+  plot_theme
+
+plot_proc_residual_comparison <- ggplot2::ggplot(
+  proc_residual_comparison,
+  ggplot2::aes(x = bob_eta, y = sm_eta)
+) +
+  ggplot2::geom_abline(
+    slope = 1,
+    intercept = 0,
+    linetype = 2,
+    color = "grey50"
+  ) +
+  ggplot2::geom_point(
+    alpha = 0.18,
+    size = 0.45,
+    color = model_colors[["streamMetabolizer"]]
+  ) +
+  ggplot2::coord_equal() +
+  ggplot2::labs(
+    title = "IID process error: within-day DO residuals",
     x = "Bob process residual",
     y = "streamMetabolizer process residual"
   ) +
@@ -1215,7 +1100,11 @@ plot_first_three_days <- ggplot2::ggplot(
   ggplot2::labs(
     title = "First three days: one-step posterior-median predictions",
     x = "Solar time",
-    y = expression(DO ~ (mg ~ L^{-1})),
+    y = expression(
+      DO ~ (mg ~ L^{
+        -1
+      })
+    ),
     color = NULL
   ) +
   plot_theme
@@ -1249,200 +1138,6 @@ plot_residual_acf <- ggplot2::ggplot(
   ) +
   plot_theme
 
-plot_residual_comparison
-plot_first_three_days
-plot_residual_acf
-```
-
-### IID process-error model figures
-
-```{r}
-#| label: fig-scatter-proc
-#| fig-cap: "IID process error: GPP vs. ER and K600 vs. ER."
-#| fig-height: 4
-plot_proc_stream_gpp_er <- model_scatter_plot(
-  proc_daily_wide,
-  "streamMetabolizer",
-  "sm_GPP",
-  "sm_ER",
-  "GPP",
-  "ER",
-  "IID process error: streamMetabolizer GPP versus ER"
-)
-plot_proc_stream_k_er <- model_scatter_plot(
-  proc_daily_wide,
-  "streamMetabolizer",
-  "sm_K600",
-  "sm_ER",
-  expression(K[600] ~ (d^{-1})),
-  "ER",
-  expression(paste("IID process error, streamMetabolizer: ", K[600], " versus ER"))
-)
-plot_proc_bob_k_er <- model_scatter_plot(
-  proc_daily_wide,
-  "Bob",
-  "bob_K600",
-  "bob_ER",
-  expression(K[600] ~ (d^{-1})),
-  "ER",
-  expression(paste("IID process error, Bob: ", K[600], " versus ER"))
-)
-plot_proc_stream_gpp_er
-plot_proc_stream_k_er
-plot_proc_bob_k_er
-```
-
-```{r}
-#| label: fig-param-comparison-proc
-#| fig-cap: "IID process error: daily GPP and K600, Bob vs. streamMetabolizer."
-#| fig-height: 4
-plot_proc_gpp_comparison <- parameter_comparison_plot(
-  proc_daily_comparison,
-  "GPP",
-  "Bob GPP",
-  "streamMetabolizer GPP",
-  "IID process error: daily GPP comparison"
-)
-plot_proc_k_comparison <- parameter_comparison_plot(
-  proc_daily_comparison,
-  "K600",
-  expression(paste("Bob ", K[600])),
-  expression(paste("streamMetabolizer ", K[600])),
-  expression(paste("IID process error: daily ", K[600], " comparison"))
-)
-plot_proc_gpp_comparison
-plot_proc_k_comparison
-```
-
-```{r}
-#| label: fig-residuals-proc
-#| fig-cap: "IID process error: DO predictions and within-day residuals."
-plot_proc_do_predictions <- ggplot2::ggplot(
-  proc_do_plot_data,
-  ggplot2::aes(x = solar.time, y = DO, color = model)
-) +
-  ggplot2::geom_line(
-    data = proc_do_plot_data[proc_do_plot_data$model != "observed", ],
-    linewidth = 0.35
-  ) +
-  ggplot2::geom_point(
-    data = proc_do_plot_data[proc_do_plot_data$model == "observed", ],
-    size = 0.25,
-    alpha = 0.5
-  ) +
-  ggplot2::scale_color_manual(values = model_colors) +
-  ggplot2::labs(
-    title = "IID process error: DO observations and one-step predictions",
-    x = "Solar time",
-    y = expression(DO ~ (mg ~ L^{-1})),
-    color = NULL
-  ) +
-  plot_theme
-
-plot_proc_residual_comparison <- ggplot2::ggplot(
-  proc_residual_comparison,
-  ggplot2::aes(x = bob_eta, y = sm_eta)
-) +
-  ggplot2::geom_abline(slope = 1, intercept = 0, linetype = 2, color = "grey50") +
-  ggplot2::geom_point(
-    alpha = 0.18,
-    size = 0.45,
-    color = model_colors[["streamMetabolizer"]]
-  ) +
-  ggplot2::coord_equal() +
-  ggplot2::labs(
-    title = "IID process error: within-day DO residuals",
-    x = "Bob process residual",
-    y = "streamMetabolizer process residual"
-  ) +
-  plot_theme
-
-plot_proc_do_predictions
-plot_proc_residual_comparison
-```
-
-## Data checks
-
-Confirm the data window and that Bob's `KO2` conversion matches
-streamMetabolizer's `convert_k600_to_kGAS()`.
-
-```{r}
-#| label: data-checks
-kc_stream <- convert_k600_to_kGAS(
-  k600 = 1,
-  temperature = gallatin$temp,
-  gas = "O2"
-)
-data_checks <- data.frame(
-  rows = nrow(gallatin),
-  days = nday,
-  observations_per_day = ntime,
-  timestep_days = timestep_days,
-  max_abs_KO2_conversion_difference = max(
-    abs(gallatin$Kc_bob - kc_stream),
-    na.rm = TRUE
-  )
-)
-write_output_csv(data_checks, "data_checks.csv")
-knitr::kable(data_checks)
-```
-
-## Comparison notes
-
-Key details that matter when reading the comparison above.
-
-```{r}
-#| label: notes
-#| echo: false
-#| output: asis
-notes <- c(
-  paste("- **Bob Stan file:**", normalizePath(bob_stan_file)),
-  paste("- **streamMetabolizer model:**", new_model_name),
-  paste("- **Bob IID process-error Stan file:**", normalizePath(bob_proc_stan_file)),
-  paste("- **streamMetabolizer IID process-error model:**", sm_proc_model_name),
-  paste0("- **Sampling:** chains = ", chains, ", iter = ", iter, ", warmup = ", warmup),
-  "",
-  "**Important comparison details:**",
-  "",
-  "1. Both models apply the AR likelihood across day boundaries, where the boundary residual is zero.",
-  "2. Bob uses half-normal(0, 1) for baseline process SD.",
-  "3. streamMetabolizer uses its existing half-Cauchy(0, 1) baseline process-SD prior.",
-  "4. Both use half-normal(0, 5) for the nonnegative light coefficient.",
-  "5. Bob indexes Euler process covariates at the incoming observation; streamMetabolizer indexes them at the start of each transition.",
-  "6. In the IID comparison, Bob's sigproc is a per-timestep DO residual SD, while streamMetabolizer's err_proc_iid_sigma is a process-rate SD. Compare their induced DO residuals rather than the raw sigma values."
-)
-cat(notes, sep = "\n")
-
-# Preserve the plain-text notes artifact from the original script.
-if (params$write_outputs) {
-  plain_notes <- c(
-    paste("Bob Stan file:", normalizePath(bob_stan_file)),
-    paste("streamMetabolizer model:", new_model_name),
-    paste("Bob IID process-error Stan file:", normalizePath(bob_proc_stan_file)),
-    paste("streamMetabolizer IID process-error model:", sm_proc_model_name),
-    paste("Sampling: chains =", chains, ", iter =", iter, ", warmup =", warmup),
-    "",
-    "Important comparison details:",
-    "1. Both models apply the AR likelihood across day boundaries, where the boundary residual is zero.",
-    "2. Bob uses half-normal(0, 1) for baseline process SD.",
-    "3. streamMetabolizer uses its existing half-Cauchy(0, 1) baseline process-SD prior.",
-    "4. Both use half-normal(0, 5) for the nonnegative light coefficient.",
-    "5. Bob indexes Euler process covariates at the incoming observation; streamMetabolizer indexes them at the start of each transition.",
-    "6. In the IID comparison, Bob's sigproc is a per-timestep DO residual SD, while streamMetabolizer's err_proc_iid_sigma is a process-rate SD. Compare their induced DO residuals rather than the raw sigma values."
-  )
-  writeLines(plain_notes, file.path(output_dir, "comparison_notes.txt"))
-}
-```
-
-## Save artifacts
-
-When `write_outputs` is `TRUE`, also write the figures to PNG and a combined PDF
-into the output directory, reproducing the file layout of the original script.
-When `save_fits` is `TRUE`, the fitted objects are saved as `.rds`.
-
-```{r}
-#| label: save-artifacts
-#| echo: true
 comparison_plots <- list(
   "01_do_predictions" = plot_do_predictions,
   "02_metabolism_predictions" = plot_metabolism_predictions,
@@ -1464,25 +1159,61 @@ comparison_plots <- list(
   "18_proc_residual_comparison" = plot_proc_residual_comparison
 )
 
-if (params$write_outputs) {
-  for (plot_name in names(comparison_plots)) {
-    ggplot2::ggsave(
-      filename = file.path(output_dir, paste0(plot_name, ".png")),
-      plot = comparison_plots[[plot_name]],
-      width = 10,
-      height = 6,
-      dpi = 300
-    )
-  }
-  grDevices::pdf(
-    file.path(output_dir, "comparison_plots.pdf"),
+for (plot_name in names(comparison_plots)) {
+  ggplot2::ggsave(
+    filename = file.path(output_dir, paste0(plot_name, ".png")),
+    plot = comparison_plots[[plot_name]],
     width = 10,
     height = 6,
-    onefile = TRUE
+    dpi = 300
   )
-  invisible(lapply(comparison_plots, print))
-  grDevices::dev.off()
 }
+grDevices::pdf(
+  file.path(output_dir, "comparison_plots.pdf"),
+  width = 10,
+  height = 6,
+  onefile = TRUE
+)
+invisible(lapply(comparison_plots, print))
+grDevices::dev.off()
+
+kc_stream <- convert_k600_to_kGAS(
+  k600 = 1,
+  temperature = gallatin$temp,
+  gas = "O2"
+)
+data_checks <- data.frame(
+  rows = nrow(gallatin),
+  days = nday,
+  observations_per_day = ntime,
+  timestep_days = timestep_days,
+  max_abs_KO2_conversion_difference = max(
+    abs(gallatin$Kc_bob - kc_stream),
+    na.rm = TRUE
+  )
+)
+utils::write.csv(
+  data_checks,
+  file.path(output_dir, "data_checks.csv"),
+  row.names = FALSE
+)
+
+notes <- c(
+  paste("Bob Stan file:", normalizePath(bob_stan_file)),
+  paste("streamMetabolizer model:", new_model_name),
+  paste("Bob IID process-error Stan file:", normalizePath(bob_proc_stan_file)),
+  paste("streamMetabolizer IID process-error model:", sm_proc_model_name),
+  paste("Sampling: chains =", chains, ", iter =", iter, ", warmup =", warmup),
+  "",
+  "Important comparison details:",
+  "1. Both models apply the AR likelihood across day boundaries, where the boundary residual is zero.",
+  "2. Bob uses half-normal(0, 1) for baseline process SD.",
+  "3. streamMetabolizer uses its existing half-Cauchy(0, 1) baseline process-SD prior.",
+  "4. Both use half-normal(0, 5) for the nonnegative light coefficient.",
+  "5. Bob indexes Euler process covariates at the incoming observation; streamMetabolizer indexes them at the start of each transition.",
+  "6. In the IID comparison, Bob's sigproc is a per-timestep DO residual SD, while streamMetabolizer's err_proc_iid_sigma is a process-rate SD. Compare their induced DO residuals rather than the raw sigma values."
+)
+writeLines(notes, file.path(output_dir, "comparison_notes.txt"))
 
 if (save_fits) {
   saveRDS(bob_fit, file.path(output_dir, "bob_fit.rds"), compress = FALSE)
@@ -1503,15 +1234,30 @@ if (save_fits) {
   )
 }
 
-if (params$write_outputs) {
-  message("Artifacts written to: ", normalizePath(output_dir))
-}
-```
+comparison <- list(
+  daily = daily_comparison,
+  overall = overall_comparison,
+  residuals = residual_comparison,
+  metrics = fit_metrics,
+  diagnostics = diagnostics,
+  data_checks = data_checks,
+  plots = comparison_plots,
+  bob_fit = bob_fit,
+  streamMetabolizer_fit = sm_fit,
+  proc = list(
+    daily = proc_daily_comparison,
+    overall = proc_overall_comparison,
+    residuals = proc_residual_comparison,
+    metrics = proc_fit_metrics,
+    diagnostics = proc_diagnostics,
+    bob_fit = bob_proc_fit,
+    streamMetabolizer_fit = sm_proc_fit
+  )
+)
 
-## Session information
-
-```{r}
-#| label: session-info
-#| echo: false
-sessionInfo()
-```
+message("Comparison complete. Results written to: ", normalizePath(output_dir))
+print(fit_metrics)
+print(diagnostics)
+print(proc_fit_metrics)
+print(proc_diagnostics)
+invisible(comparison)

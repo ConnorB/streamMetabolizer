@@ -9,7 +9,7 @@
 #' @param temp.water a numeric vector of water temperature in degrees Celsius.
 #' @param pressure.air barometric pressure in millibars.
 #' @param salinity.water a numeric vector of salinity in PSU. Defaults to zero. Length must be
-#'   one or equal to length of \code{temp.water}.
+#'   one or equal to length of `temp.water`.
 #' @param ... additional parameters passed to
 #'   `LakeMetabolizer::o2.at.sat.base`
 #' @return a vector of DO.deficit values

@@ -26,8 +26,8 @@ rather than to the DO measurements themselves.}
 }
 \value{
 a function that will return a negative log likelihood of the data
-  given a set of metab.pars. metab.pars is the first argument of the returned
-  function; its names are defined in \code{par.names}.
+given a set of metab.pars. metab.pars is the first argument of the returned
+function; its names are defined in \code{par.names}.
 }
 \description{
 Produces a function that can be given to nlm(). K600.daily may be passed to

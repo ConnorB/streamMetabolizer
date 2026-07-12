@@ -14,7 +14,7 @@ get_specs(metab_model)
 metab_model_interface, for which to return the specifications}
 }
 \value{
-The list of specifications that was passed to \code{\link{metab}()}
+The list of specifications that was passed to \code{\link[=metab]{metab()}}
 }
 \description{
 A function in the metab_model_interface. Returns the specifications that were

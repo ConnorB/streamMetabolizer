@@ -12,8 +12,8 @@ load_rstan_model(model_path, verbose = FALSE)
 \item{verbose}{logical. give status messages?}
 }
 \value{
-A list containing the `stanmodel`, compilation time, compilation
-  output, and cache file.
+A list containing the \code{stanmodel}, compilation time, compilation
+output, and cache file.
 }
 \description{
 Load or compile an RStan model using a persistent cache

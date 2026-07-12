@@ -3,17 +3,8 @@
 #' @keywords internal
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
-    "streamMetabolizer (fork) - based on the original USGS-R package:\n",
-    "  https://github.com/DOI-USGS/streamMetabolizer\n",
-    "This fork is maintained at:\n",
-    "  https://github.com/ConnorB/streamMetabolizer\n\n",
-    "The original package was a USGS Archive Research Package:\n",
-    "  https://owi.usgs.gov/R/packages.html#research\n",
-    "Original project funding has ended. For historical documentation,\n",
-    "see:\n",
-    "  https://github.com/DOI-USGS/streamMetabolizer\n\n",
-    "For issues specific to this fork, please open them at:\n",
-    "  https://github.com/ConnorB/streamMetabolizer/issues"
+    "streamMetabolizer fork maintained at ",
+    "https://github.com/ConnorB/streamMetabolizer"
   )
 
   # Load deSolve because otherwise after a few model runs we're likely to get
@@ -25,8 +16,6 @@
   ## Error in .C("unlock_solver") :
   ##   "unlock_solver" not resolved from current namespace (deSolve)
 }
-
-library(methods)
 
 #' Define a package environment for storing data specific to a project during an
 #' R session

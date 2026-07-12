@@ -1,38 +1,38 @@
-#' Functions implemented by any \code{streamMetabolizer}-compatible metabolism
+#' Functions implemented by any `streamMetabolizer`-compatible metabolism
 #' model.
 #'
-#' Metabolism models in the \code{streamMetabolizer} package all implement a
+#' Metabolism models in the `streamMetabolizer` package all implement a
 #' common set of core functions. These functions are conceptually packaged as
-#' the \code{metab_model_interface} defined here.
+#' the `metab_model_interface` defined here.
 #'
 #' @section Functions in the interface:
 #'
 #'   \itemize{
 #'
-#'   \item \code{\link{show}(metab_model) \{ display(metab_model) \}}
+#'   \item \code{[show](metab_model) \{ display(metab_model) \}}
 #'
-#'   \item \code{\link{get_params}(metab_model, ...) \{ return(data.frame) \}}
+#'   \item \code{[get_params](metab_model, ...) \{ return(data.frame) \}}
 #'
-#'   \item \code{\link{get_param_names}(metab_model, ...) \{ return(list) \}}
+#'   \item \code{[get_param_names](metab_model, ...) \{ return(list) \}}
 #'
-#'   \item \code{\link{predict_metab}(metab_model, ...) \{ return(data.frame)
+#'   \item \code{[predict_metab](metab_model, ...) \{ return(data.frame)
 #'   \}}
 #'
-#'   \item \code{\link{predict_DO}(metab_model, ...) \{ return(data.frame) \}}
+#'   \item \code{[predict_DO](metab_model, ...) \{ return(data.frame) \}}
 #'
-#'   \item \code{\link{get_fit}(metab_model) \{ return(fitted.model) \}}
+#'   \item \code{[get_fit](metab_model) \{ return(fitted.model) \}}
 #'
-#'   \item \code{\link{get_fitting_time}(metab_model) \{ return(proc_time) \}}
+#'   \item \code{[get_fitting_time](metab_model) \{ return(proc_time) \}}
 #'
-#'   \item \code{\link{get_info}(metab_model) \{ return(info) \}}
+#'   \item \code{[get_info](metab_model) \{ return(info) \}}
 #'
-#'   \item \code{\link{get_specs}(metab_model) \{ return(specs.list) \}}
+#'   \item \code{[get_specs](metab_model) \{ return(specs.list) \}}
 #'
-#'   \item \code{\link{get_data}(metab_model) \{ return(data.frame) \}}
+#'   \item \code{[get_data](metab_model) \{ return(data.frame) \}}
 #'
-#'   \item \code{\link{get_data_daily}(metab_model) \{ return(data.frame) \}}
+#'   \item \code{[get_data_daily](metab_model) \{ return(data.frame) \}}
 #'
-#'   \item \code{\link{get_version}(metab_model) \{ return(version.string) \}}
+#'   \item \code{[get_version](metab_model) \{ return(version.string) \}}
 #'
 #'   }
 #'
@@ -40,7 +40,7 @@
 #' @rdname metab_model_interface
 #' @docType data
 #' @format A collection of functions which any metabolism model in
-#'   \code{streamMetabolizer} should implement.
+#'   `streamMetabolizer` should implement.
 #' @examples
 #' methods(class="metab_model")
 NULL
@@ -80,7 +80,7 @@ get_fit <- function(metab_model) {
 #' Extract the amount of time that was required to fit the metabolism model.
 #'
 #' A function in the metab_model_interface. Returns the time that was taken to
-#' fit the model; see \code{\link{proc.time}} for details.
+#' fit the model; see [proc.time()] for details.
 #'
 #' @param metab_model A metabolism model, implementing the
 #'   metab_model_interface, for which to return the time
@@ -98,7 +98,7 @@ get_fitting_time <- function(metab_model) {
 #'
 #' @param metab_model A metabolism model, implementing the
 #'   metab_model_interface, for which to return the specifications
-#' @return The list of specifications that was passed to \code{\link{metab}()}
+#' @return The list of specifications that was passed to [metab()]
 #' @export
 #' @family metab_model_interface
 get_specs <- function(metab_model) {
@@ -173,7 +173,7 @@ get_version <- function(metab_model) {
 #'   column ending in '.fixed' ('columns'), converted to character and marked
 #'   with a leading asterisk ('stars')?
 #' @param ... Other arguments passed to class-specific implementations of
-#'   \code{get_params}
+#'   `get_params`
 #' @param attach.units (deprecated, effectively FALSE in future) logical. Should
 #'   units be attached to the output?
 #' @return A data.frame of the parameters needed to predict GPP, ER, D, and DO,
@@ -186,7 +186,7 @@ get_version <- function(metab_model) {
 #' get_params(mm, date_start=get_fit(mm)$date[2])
 #' @export
 #' @family metab_model_interface
-#' @seealso \code{\link{predict_metab}} for daily average rates of GPP and ER
+#' @seealso [predict_metab()] for daily average rates of GPP and ER
 get_params <- function(
   metab_model,
   date_start = NA,
@@ -243,7 +243,7 @@ get_param_names <- function(metab_model, ...) {
 #'   day_start should probably equal 24 so that each day's estimate is
 #'   representative of a 24-hour period.
 #' @param ... Other arguments passed to class-specific implementations of
-#'   \code{predict_metab}
+#'   `predict_metab`
 #' @param attach.units (deprecated, effectively FALSE in future) logical. Should
 #'   units be attached to the output?
 #' @param use_saved logical. Is it OK to use predictions that were saved with
@@ -294,7 +294,7 @@ predict_metab <- function(
 #'   (inclusive) for which to report DO predictions. If NA, no filtering is
 #'   done.
 #' @param ... Other arguments passed to class-specific implementations of
-#'   \code{predict_DO}
+#'   `predict_DO`
 #' @param attach.units (deprecated, effectively FALSE in future) logical. Should
 #'   units be attached to the output?
 #' @param use_saved logical. Is it OK to use predictions that were saved with

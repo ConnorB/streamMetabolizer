@@ -4,24 +4,24 @@ NULL
 #' Basic Bayesian metabolism model fitting function
 #'
 #' Fits a Bayesian model to estimate GPP and ER from input data on DO,
-#' temperature, light, etc. See \code{\link{mm_name}} to choose a Bayesian model
-#' and \code{\link{specs}} for relevant options for the \code{specs} argument.
+#' temperature, light, etc. See [mm_name()] to choose a Bayesian model
+#' and [specs()] for relevant options for the `specs` argument.
 #'
 #' As of summer and fall 2016, a new compilation of any Stan model gives
-#' deprecation warnings including \code{typedef 'size_type' locally defined but
-#' not used [-Wunused-local-typedefs]}, \code{typedef 'index_range' locally
-#' defined but not used [-Wunused-local-typedefs]}, \code{typedef 'index'
-#' locally defined but not used [-Wunused-local-typedefs]}, and \code{'void
+#' deprecation warnings including `typedef 'size_type' locally defined but
+#' not used [-Wunused-local-typedefs]`, `typedef 'index_range' locally
+#' defined but not used [-Wunused-local-typedefs]`, `typedef 'index'
+#' locally defined but not used [-Wunused-local-typedefs]`, and `'void
 #' stan::math::set_zero_all_adjoints()' defined but not used
-#' [-Wunused-function]}. THESE ARE OKAY. Subsequent runs of the compiled Stan
+#' [-Wunused-function]`. THESE ARE OKAY. Subsequent runs of the compiled Stan
 #' model will be quieter, and the model will work.
 #'
 #' @author Alison Appling, Bob Hall
 #'
 #' @inheritParams metab
 #' @return A metab_bayes object containing the fitted model. This object can be
-#'   inspected with the functions in the \code{\link{metab_model_interface}} and
-#'   also \code{\link{get_mcmc}}.
+#'   inspected with the functions in the [metab_model_interface()] and
+#'   also [get_mcmc()].
 #'
 #' @examples
 #' \dontrun{
@@ -453,8 +453,8 @@ bayes_1ply <- function(
 #'
 #' Called from metab_bayes().
 #'
-#' @param data_all data.frame of the form \code{mm_data(solar.time, DO.obs,
-#'   DO.sat, depth, temp.water, light)} and containing data for just one
+#' @param data_all data.frame of the form `mm_data(solar.time, DO.obs,
+#'   DO.sat, depth, temp.water, light)` and containing data for just one
 #'   estimation-day (this may be >24 hours but only yields estimates for one
 #'   24-hour period)
 #' @param data_daily_all data.frame of daily priors, if appropriate to the given
@@ -741,7 +741,7 @@ prepdata_bayes <- function(
   # Format the data for Stan. Stan disallows period-separated names, so
   # change all the input data to underscore-separated. parameters given in
   # specs are already underscore-separated for this reason
-  data_list = c(
+  data_list <- c(
     list(
       # Overall
       d = num_dates,
@@ -900,10 +900,9 @@ prepdata_bayes <- function(
 #'   platform, and model content in the user cache directory. Set the
 #'   `streamMetabolizer.rstan_cache_dir` or
 #'   `streamMetabolizer.cmdstan_cache_dir` option to use a different directory.
-#' @import parallel
 #' @import dplyr
 #' @import tibble
-#' @importFrom tidyr gather spread
+#' @importFrom tidyr pivot_longer pivot_wider
 #' @keywords internal
 runstan_bayes <- function(
   data_list,
@@ -922,7 +921,7 @@ runstan_bayes <- function(
   ...
 ) {
   # determine how many cores to use
-  tot_cores <- detectCores()
+  tot_cores <- parallel::detectCores()
   if (!is.finite(tot_cores)) {
     tot_cores <- 1
   }
@@ -954,10 +953,13 @@ runstan_bayes <- function(
       compile_log <- compiled$compile_log
     }
 
-    oldlogfiles <- normalizePath(file.path(
-      tempdir(),
-      grep("_StanProgress.txt", dir(tempdir()), value = TRUE)
-    ), mustWork = FALSE)
+    oldlogfiles <- normalizePath(
+      file.path(
+        tempdir(),
+        grep("_StanProgress.txt", dir(tempdir()), value = TRUE)
+      ),
+      mustWork = FALSE
+    )
 
     if (verbose) {
       message("sampling Stan model")
@@ -1236,30 +1238,31 @@ rstan_cache_file <- function(model_path) {
     character(1)
   )
   version_key <- paste0(
-    'rs-', utils::packageVersion('rstan'),
-    '_s-', rstan::stan_version(),
-    '_deps-', paste(unname(dependency_versions), collapse = '-'),
-    '_R-', getRversion(),
-    '_', R.version$platform
+    'rs-',
+    utils::packageVersion('rstan'),
+    '_s-',
+    rstan::stan_version(),
+    '_deps-',
+    paste(unname(dependency_versions), collapse = '-'),
+    '_R-',
+    getRversion(),
+    '_',
+    R.version$platform
   )
   version_key <- gsub('[^[:alnum:]_.-]', '-', version_key)
   cache_dir <- file.path(cache_root, 'rstan', version_key)
-  created <- dir.exists(cache_dir) || suppressWarnings(
-    dir.create(cache_dir, recursive = TRUE)
-  )
-  if (!created && use_default_cache) {
+  writable <- cache_dir_is_writable(cache_dir)
+  if (!writable && use_default_cache) {
     cache_dir <- file.path(
       tempdir(),
       'streamMetabolizer-cache',
       'rstan',
       version_key
     )
-    created <- dir.exists(cache_dir) || suppressWarnings(
-      dir.create(cache_dir, recursive = TRUE)
-    )
+    writable <- cache_dir_is_writable(cache_dir)
   }
-  if (!created) {
-    stop('could not create the RStan model cache at ', cache_dir)
+  if (!writable) {
+    stop('could not create a writable RStan model cache at ', cache_dir)
   }
   file.path(cache_dir, paste0(model_hash, '.rds'))
 }
@@ -1288,10 +1291,8 @@ cmdstan_cache_dir <- function(model_path, cmdstan_version) {
     paste0('v', cmdstan_version),
     model_hash
   )
-  created <- dir.exists(cache_dir) || suppressWarnings(
-    dir.create(cache_dir, recursive = TRUE)
-  )
-  if (!created && use_default_cache) {
+  writable <- cache_dir_is_writable(cache_dir)
+  if (!writable && use_default_cache) {
     cache_dir <- file.path(
       tempdir(),
       'streamMetabolizer-cache',
@@ -1299,14 +1300,19 @@ cmdstan_cache_dir <- function(model_path, cmdstan_version) {
       paste0('v', cmdstan_version),
       model_hash
     )
-    created <- dir.exists(cache_dir) || suppressWarnings(
-      dir.create(cache_dir, recursive = TRUE)
-    )
+    writable <- cache_dir_is_writable(cache_dir)
   }
-  if (!created) {
-    stop('could not create the CmdStan model cache at ', cache_dir)
+  if (!writable) {
+    stop('could not create a writable CmdStan model cache at ', cache_dir)
   }
   cache_dir
+}
+
+cache_dir_is_writable <- function(cache_dir) {
+  if (!dir.exists(cache_dir)) {
+    suppressWarnings(dir.create(cache_dir, recursive = TRUE))
+  }
+  dir.exists(cache_dir) && file.access(cache_dir, mode = 2) == 0
 }
 
 #' Format MCMC output into a one-row data.frame
@@ -1472,7 +1478,11 @@ format_mcmc_mat_nosplit <- function(
     tibble::as_tibble(mcmc_mat[dim_rows, , drop = FALSE]) %>%
       mutate(rowname = rownames(mcmc_mat[dim_rows, , drop = FALSE])) %>%
       select(rowname, everything()) %>%
-      gather(stat, value = val, 2:ncol(.)) %>%
+      tidyr::pivot_longer(
+        cols = -rowname,
+        names_to = 'stat',
+        values_to = 'val'
+      ) %>%
       mutate(
         variable = gsub("\\[[[:digit:]|,]+\\]", "", rowname),
         indexstr = if (1 %in% par_dims) {
@@ -1505,7 +1515,7 @@ format_mcmc_mat_nosplit <- function(
       ) %>%
       select(date_index, time_index, index, varstat, val) %>%
       arrange(date_index, time_index, index) %>%
-      spread(varstat, val)
+      tidyr::pivot_wider(names_from = varstat, values_from = val)
   })
 
   # add the model object as a list item if requested
@@ -1521,7 +1531,7 @@ format_mcmc_mat_nosplit <- function(
 
 #' Metabolism model fitted by Bayesian MCMC
 #'
-#' \code{metab_bayes} models use Bayesian MCMC methods to fit values of GPP, ER,
+#' `metab_bayes` models use Bayesian MCMC methods to fit values of GPP, ER,
 #' and K for a given DO curve.
 #'
 #' @exportClass metab_bayes
@@ -1561,8 +1571,8 @@ get_mcmc.metab_bayes <- function(metab_model) {
 #'
 #' A function specific to metab_bayes models. Returns data as formatted to run
 #' through the MCMC process or, for nopool models, a list of data lists. These
-#' lists are not saved by default; see \code{keep_mcmc_data} argument to
-#' \code{\link{specs}} for options.
+#' lists are not saved by default; see `keep_mcmc_data` argument to
+#' [specs()] for options.
 #'
 #' @param metab_model A Bayesian metabolism model (metab_bayes) from which to
 #'   return the data list that was passed to the MCMC
@@ -1635,8 +1645,8 @@ print.logs_metab <- function(x, ...) {
 }
 
 #' @describeIn predict_metab Pulls daily metabolism estimates out of the Stan
-#'   model results; looks for \code{GPP} or \code{GPP_daily} and for \code{ER}
-#'   or \code{ER_daily} among the \code{params_out} (see \code{\link{specs}}),
+#'   model results; looks for `GPP` or `GPP_daily` and for `ER`
+#'   or `ER_daily` among the `params_out` (see [specs()]),
 #'   which means you can save just one (or both) of those sets of daily
 #'   parameters when running the Stan model. Saving fewer parameters can help
 #'   models run faster and use less RAM.
@@ -1742,7 +1752,7 @@ predict_metab.metab_bayes <- function(
 
 #' @describeIn get_params Does a little formatting to convert from Stan output
 #'   to streamMetabolizer parameter names; otherwise the same as
-#'   \code{get_params.metab_model}
+#'   `get_params.metab_model`
 #' @importFrom lifecycle deprecated is_present
 #' @export
 get_params.metab_bayes <- function(

@@ -61,7 +61,7 @@ setClass(
 
 #' Create a metab_model object.
 #'
-#' Generates a new model of class metab_model (\code{\link{metab_model-class}}).
+#' Generates a new model of class metab_model ([metab_model-class()]).
 #'
 #' @param model_class character name of a class inheriting from metab_model -
 #'   the type of object to create

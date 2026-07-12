@@ -24,7 +24,7 @@ is apparent solar and "any.solar.time" is either.}
 }
 \value{
 a POSIXct object that says it's in tz="UTC" but that's actually in
-  solar time, with noon being very close to solar noon
+solar time, with noon being very close to solar noon
 }
 \description{
 Convert DateTime from UTC to local solar time, which may be either apparent
@@ -33,6 +33,6 @@ hours between solar noons).
 }
 \references{
 Yard, Bennett, Mietz, Coggins, Stevens, Hueftle, and Blinn. 2005.
-  Influence of topographic complexity on solar insolation estimates for the
-  Colorado River, Grand Canyon, AZ. Ecological Modelling.
+Influence of topographic complexity on solar insolation estimates for the
+Colorado River, Grand Canyon, AZ. Ecological Modelling.
 }

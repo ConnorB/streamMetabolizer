@@ -9,9 +9,9 @@ NULL
 #'
 #' @inheritParams metab
 #' @return A metab_mle object containing the fitted model. This object can be
-#'   inspected with the functions in the \code{\link{metab_model_interface}}.
-#'   The \code{code} column in \code{get_fit(mm)} is defined in the Value
-#'   subsection of \code{?nlm}.
+#'   inspected with the functions in the [metab_model_interface()].
+#'   The `code` column in `get_fit(mm)` is defined in the Value
+#'   subsection of `?nlm`.
 #' @examples
 #' dat <- data_metab('3','30')
 #' # PRK
@@ -125,7 +125,7 @@ metab_mle <- function(
 #'
 #' @inheritParams mm_model_by_ply_prototype
 #' @inheritParams metab
-#' @return data.frame of estimates and \code{\link[stats]{nlm}} model
+#' @return data.frame of estimates and [stats::nlm()] model
 #'   diagnostics
 #' @importFrom stats nlm
 #' @keywords internal
@@ -353,7 +353,7 @@ mle_1ply <- function(
 
 #' Metabolism model fitted by maximum likelihood estimation
 #'
-#' \code{metab_mle} models use non-linear minimization of the negative log
+#' `metab_mle` models use non-linear minimization of the negative log
 #' likelihood to fit values of GPP, ER, and K for a given DO curve.
 #'
 #' @exportClass metab_mle

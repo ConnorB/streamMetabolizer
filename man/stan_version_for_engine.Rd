@@ -8,12 +8,12 @@ stan_version_for_engine(stan_engine = NULL)
 }
 \arguments{
 \item{stan_engine}{The Stan interface whose compiler version should be used
-when choosing between current and deprecated model syntax. If `NULL`,
+when choosing between current and deprecated model syntax. If \code{NULL},
 CmdStanR is preferred when available, followed by RStan.}
 }
 \value{
-A numeric version, or `NA` when the requested interface is not
-  available and configured.
+A numeric version, or \code{NA} when the requested interface is not
+available and configured.
 }
 \description{
 Find the Stan compiler version used by an interface

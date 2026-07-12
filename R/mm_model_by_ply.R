@@ -1,23 +1,23 @@
 #' Split and label data into >=24-hr days for fitting daily metabolism
 #'
 #' Splits up to two data.frames, data and data_daily, into date-specific chunks.
-#' These are passed to model_fun. If \code{day_tests} is not empty, those
+#' These are passed to model_fun. If `day_tests` is not empty, those
 #' validity checks are run and the results are also passed to model_fun (in
-#' \code{validity}). The results of model_fun (which must be a data.frame) are
+#' `validity`). The results of model_fun (which must be a data.frame) are
 #' modified to include the data as a first column, then row-bound together into
 #' a single data.frame containing results from all days.
 #'
 #' @param model_fun the function to apply to each data ply. This function should
-#'   accept the arguments \code{c(data, data_daily, ..., day_start, day_end,
-#'   ply_date)} where \code{data_daily} is \code{NULL} when the
-#'   \code{data_daily} argument to \code{mm_model_by_ply} is missing or
-#'   \code{NULL}
+#'   accept the arguments `c(data, data_daily, ..., day_start, day_end,
+#'   ply_date)` where `data_daily` is `NULL` when the
+#'   `data_daily` argument to `mm_model_by_ply` is missing or
+#'   `NULL`
 #' @param data required. A data.frame to split into chunks by date, where a
 #'   'date' begins on the hour day_start and ends at the hour day_end. The
 #'   solar.time column must be present.
 #' @param data_daily optional. A data.frame containing inputs with a daily
 #'   timestep, each row of which will be passed to the corresponding date chunk
-#'   from \code{data}. The date column must be present.
+#'   from `data`. The date column must be present.
 #' @param day_start start time (inclusive) of a day's data in number of hours
 #'   from the midnight that begins the date. For example, day_start=-1.5
 #'   indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
@@ -36,18 +36,18 @@
 #'   before 2006-06-27 06:00. See day_start for recommended start and end times.
 #' @param day_tests list of tests to conduct to determine whether each date
 #'   worth of data is valid for modeling. The results of these tests will be
-#'   combined with the result of the test implied if \code{required_timestep} is
-#'   numeric and then will be passed to \code{model_fun} as the
-#'   \code{ply_validity} argument to that function.
+#'   combined with the result of the test implied if `required_timestep` is
+#'   numeric and then will be passed to `model_fun` as the
+#'   `ply_validity` argument to that function.
 #' @param required_timestep NA or numeric (length 1). If numeric, the timestep
 #'   length in days that a date must have to pass the validity check (to within
-#'   a tolerance of 0.2\% of the value of \code{required_timestep}). The result
+#'   a tolerance of 0.2% of the value of `required_timestep`). The result
 #'   of this test will be combined with the results of the tests listed in
-#'   \code{day_tests} and reported to \code{model_fun} as the
-#'   \code{ply_validity} argument to that function.
+#'   `day_tests` and reported to `model_fun` as the
+#'   `ply_validity` argument to that function.
 #' @param timestep_days TRUE if you would like the mean timestep length to be
-#'   calculated for each data ply and passed to \code{model_fun} as the
-#'   \code{timestep_days} argument to that function. Alternatively, this may be
+#'   calculated for each data ply and passed to `model_fun` as the
+#'   `timestep_days` argument to that function. Alternatively, this may be
 #'   numeric as a specifically expected timestep length in days; for example, a
 #'   1-hour timestep is 1/24 is 0.0416667.
 #' @param ... other args to be passed through mm_model_by_ply to model_fun

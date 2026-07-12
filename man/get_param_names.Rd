@@ -21,7 +21,7 @@ return the list of required and optional metabolism parameters.}
 }
 \value{
 Returns a list of two vectors, the names of the required and optional
-  daily metabolism parameters, respectively.
+daily metabolism parameters, respectively.
 }
 \description{
 A function in the metab_model_interface. Returns vectors of the required and

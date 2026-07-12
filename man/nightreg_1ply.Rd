@@ -45,27 +45,27 @@ after subsetting to just nighttime}
 
 \item{specs}{a list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
-and safer to use \code{\link{specs}} to generate the list, because the set
+and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
 \code{model_name} argument to \code{specs}. The help file for
-\code{\link{specs}} lists the necessary parameters, describes them in
+\code{\link[=specs]{specs()}} lists the necessary parameters, describes them in
 detail, and gives default values.}
 }
 \value{
-data.frame of estimates and \code{\link[stats]{lm}} model diagnostics
+data.frame of estimates and \code{\link[stats:lm]{stats::lm()}} model diagnostics
 }
 \description{
 Called from metab_night().
 }
 \references{
 Hornberger, George M., and Mahlon G. Kelly. Atmospheric
-  Reaeration in a River Using Productivity Analysis. Journal of the
-  Environmental Engineering Division 101, no. 5 (October 1975): 729-39.
+Reaeration in a River Using Productivity Analysis. Journal of the
+Environmental Engineering Division 101, no. 5 (October 1975): 729-39.
 
-  Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. Bott, Jody
-  Potter, Patrick Mulholland, Andrew E. Laursen, William H. McDowell, and
-  Denis Newbold. Scaling the gas transfer velocity and hydraulic geometry in
-  streams and small rivers. Limnology & Oceanography: Fluids & Environments 2
-  (2012); 41:53.
+Raymond, Peter A., Christopher J. Zappa, David Butman, Thomas L. Bott, Jody
+Potter, Patrick Mulholland, Andrew E. Laursen, William H. McDowell, and
+Denis Newbold. Scaling the gas transfer velocity and hydraulic geometry in
+streams and small rivers. Limnology & Oceanography: Fluids & Environments 2
+(2012); 41:53.
 }
 \keyword{internal}

@@ -6,22 +6,22 @@
 #' handle.
 #'
 #' Assumes that the data have already been validated as in
-#' \code{\link{mm_validate_data}}
+#' [mm_validate_data()]
 #'
 #' @inheritParams mm_model_by_ply_prototype
 #' @inheritParams mm_model_by_ply
 #' @param day_tests list of tests to conduct to determine whether each date
-#'   worth of data is valid for modeling. \code{full_day}: Do the data span the
+#'   worth of data is valid for modeling. `full_day`: Do the data span the
 #'   full expected period (e.g., from 10:30pm on preceding day to 6am on
-#'   following day)? \code{even_timesteps}: are all of the timesteps within the
-#'   day the same length, to within a tolerance of 0.2\% of the timestep length?
-#'   \code{complete_data}: are all columns of input data available at every
-#'   timestep? \code{pos_discharge}: is discharge greater than 0 at every
-#'   timestep? \code{pos_depth}: is depth greater than 0 at every timestep? A
-#'   further test is implied if \code{required_timestep} is a non-NA numeric.
+#'   following day)? `even_timesteps`: are all of the timesteps within the
+#'   day the same length, to within a tolerance of 0.2% of the timestep length?
+#'   `complete_data`: are all columns of input data available at every
+#'   timestep? `pos_discharge`: is discharge greater than 0 at every
+#'   timestep? `pos_depth`: is depth greater than 0 at every timestep? A
+#'   further test is implied if `required_timestep` is a non-NA numeric.
 #' @param required_timestep NA or numeric (length 1). If numeric, the timestep
 #'   length in days that a date must have to pass the validity check (to within
-#'   a tolerance of 0.2\% of the value of \code{required_timestep})
+#'   a tolerance of 0.2% of the value of `required_timestep`)
 #' @param ply_date the Date this data_ply is intended to match. May be NA
 #' @param timestep_days the expected timestep length in fraction of a day; for
 #'   example, a 1-hour timestep is 1/24 is 0.0416667. This is calculated within

@@ -39,7 +39,7 @@ date by which this ply should be referred topresent.}
 
 \item{timestep_days}{numeric length of the mean timestep for this day, if
 requested by setting \code{timestep_days} to \code{TRUE} or a numeric value
-in the call to \code{\link{mm_model_by_ply}}}
+in the call to \code{\link[=mm_model_by_ply]{mm_model_by_ply()}}}
 
 \item{...}{other args that were passed untouched from the function calling
 mm_model_by_ply, through mm_model_by_ply, and finally to this function.}

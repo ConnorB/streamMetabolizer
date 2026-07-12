@@ -13,7 +13,7 @@ NULL
 #'
 #' @inheritParams metab
 #' @return A metab_night object containing the fitted model. This object can be
-#'   inspected with the functions in the \code{\link{metab_model_interface}}.
+#'   inspected with the functions in the [metab_model_interface()].
 #'
 #' @examples
 #' dat <- data_metab('3', day_start=12, day_end=35)
@@ -99,7 +99,7 @@ metab_night <- function(
 #' @param night_tests character vector of validity tests to conduct on the data
 #'   after subsetting to just nighttime
 #' @inheritParams metab
-#' @return data.frame of estimates and \code{\link[stats]{lm}} model diagnostics
+#' @return data.frame of estimates and [stats::lm()] model diagnostics
 #' @keywords internal
 #' @references Hornberger, George M., and Mahlon G. Kelly. Atmospheric
 #'   Reaeration in a River Using Productivity Analysis. Journal of the
@@ -303,7 +303,7 @@ nightreg_1ply <- function(
 
 #' Reaeration model fitted by nighttime regression
 #'
-#' \code{metab_night} models use nighttime regression to fit values of K for a
+#' `metab_night` models use nighttime regression to fit values of K for a
 #' given DO time series.
 #'
 #' @exportClass metab_night
@@ -315,7 +315,7 @@ setClass(
 
 
 #' @describeIn predict_DO Generate nighttime dissolved oxygen predictions from a
-#'   nighttime regression model. \code{metab_night} only fits ER and K, and only
+#'   nighttime regression model. `metab_night` only fits ER and K, and only
 #'   for the darkness hours, so predictions are only generated for those hours.
 #' @export
 #' @import dplyr

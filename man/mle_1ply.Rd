@@ -33,22 +33,22 @@ messages if any tests failed.}
 
 \item{timestep_days}{numeric length of the mean timestep for this day, if
 requested by setting \code{timestep_days} to \code{TRUE} or a numeric value
-in the call to \code{\link{mm_model_by_ply}}}
+in the call to \code{\link[=mm_model_by_ply]{mm_model_by_ply()}}}
 
 \item{...}{other args that were passed untouched from the function calling
 mm_model_by_ply, through mm_model_by_ply, and finally to this function.}
 
 \item{specs}{a list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
-and safer to use \code{\link{specs}} to generate the list, because the set
+and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
 \code{model_name} argument to \code{specs}. The help file for
-\code{\link{specs}} lists the necessary parameters, describes them in
+\code{\link[=specs]{specs()}} lists the necessary parameters, describes them in
 detail, and gives default values.}
 }
 \value{
-data.frame of estimates and \code{\link[stats]{nlm}} model
-  diagnostics
+data.frame of estimates and \code{\link[stats:nlm]{stats::nlm()}} model
+diagnostics
 }
 \description{
 Called from metab_mle().

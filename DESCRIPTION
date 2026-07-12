@@ -2,7 +2,7 @@ Package: streamMetabolizer
 Type: Package
 Title: Models for Estimating Aquatic Photosynthesis and Respiration
 Version: 0.12.1.9000
-Date: 2025-06-29
+Date: 2026-07-12
 Authors@R: c(
     person("Alison P.", "Appling", , "aappling@usgs.gov", role = "aut"),
     person("Robert O.", "Hall", role = "aut"),
@@ -27,41 +27,41 @@ Copyright: This software is in the public domain because it contains materials
     the United States Department of Interior. For more information, see the
     official USGS copyright policy at
     https://www.usgs.gov/visual-id/credit_usgs.html#copyright
-URL: https://github.com/ConnorB/streamMetabolizer
+URL: https://connorb.github.io/streamMetabolizer/,
+    https://github.com/ConnorB/streamMetabolizer
 BugReports: https://github.com/ConnorB/streamMetabolizer/issues
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.0)
+    R (>= 4.1)
 Imports:
     deSolve,
-    dplyr (>= 0.5.0),
+    dplyr (>= 1.0.0),
     LakeMetabolizer (>= 1.4.1),
-    lazyeval,
     lifecycle,
     lubridate,
     lutz,
     methods,
+    parallel,
     stats,
-    tibble (>= 1.1.0),
-    tidyr
+    tibble (>= 3.0.0),
+    tidyr (>= 1.0.0)
 Suggests:
+    bayesplot,
     chron,
-    devtools,
+    cmdstanr,
     dygraphs,
     ggplot2,
     gridExtra,
     knitr,
     microbenchmark,
-    RCurl,
-    rstan,
     posterior,
-    cmdstanr,
-    bayesplot,
-    testthat,
-    XML,
-    xts,
+    RCurl,
+    rmarkdown,
+    rstan,
     sf,
-    rmarkdown
+    testthat (>= 3.0.0),
+    XML,
+    xts
 Collate:
     '01-onLoad.R'
     'calc_DO_deficit.R'
@@ -137,3 +137,4 @@ Collate:
     'zz_build_docs.R'
 Encoding: UTF-8
 Config/roxygen2/version: 8.0.0.9000
+Roxygen: list(markdown = TRUE)

@@ -28,7 +28,7 @@ savings is on during the appropriate days}
 Convert time from UTC to local time, either standard or with daylight
 savings. Recommended for post-analysis visualization only; most functions in
 streamMetabolizer use times in UTC. If you know the timezone code for your
-local site, use \code{\link[lubridate]{with_tz}} instead.
+local site, use \code{\link[lubridate:with_tz]{lubridate::with_tz()}} instead.
 }
 \references{
 https://stackoverflow.com/questions/23414340/convert-to-local-time-zone-using-latitude-and-longitude

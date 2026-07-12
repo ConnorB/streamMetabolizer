@@ -22,17 +22,17 @@ mm_generate_mcmc_file(
 }
 \arguments{
 \item{type}{character. The model type. Options: \itemize{ \item \code{mle}:
-maximum likelihood estimation (see also \code{\link{metab_mle}}) \item
-\code{bayes}: bayesian hierarchical models \code{\link{metab_bayes}} \item
-\code{night}: nighttime regression (see also \code{\link{metab_night}})
+maximum likelihood estimation (see also \code{\link[=metab_mle]{metab_mle()}}) \item
+\code{bayes}: bayesian hierarchical models \code{\link[=metab_bayes]{metab_bayes()}} \item
+\code{night}: nighttime regression (see also \code{\link[=metab_night]{metab_night()}})
 \item \code{Kmodel}: regression of \emph{daily} estimates of
 \code{K600.daily} versus discharge, time, etc., usually for 3-phase
 estimation of K alone (by MLE or nighttime regression), K vs discharge
 (using this model), and then GPP and ER with fixed K (by MLE) (see also
-\code{\link{metab_Kmodel}}) \item \code{sim}: simulation of \code{DO.obs}
-'data' for testing other models (see also \code{\link{metab_sim}}) }}
+\code{\link[=metab_Kmodel]{metab_Kmodel()}}) \item \code{sim}: simulation of \code{DO.obs}
+'data' for testing other models (see also \code{\link[=metab_sim]{metab_sim()}}) }}
 
-\item{pool_K600}{character. [How] should the model pool information among
+\item{pool_K600}{character. How should the model pool information among
 days to get more consistent daily estimates for K600? Options (see Details
 for more): \itemize{ \item \code{none}: no pooling of K600 \item
 \code{normal}: \eqn{K600 ~ N(mu, sigma)} \item \code{linear}: \eqn{K600 ~
@@ -72,7 +72,7 @@ function of GPP, ER, DO, etc. at t=1 \item \code{trapezoid}, formerly
 \code{pairmeans}: the final change in DO from t=1 to t=2 is a function of
 the mean values of GPP, ER, etc. across t=1 and t=2. \item for
 \code{type='mle'}, options also include \code{rk2} and any character method
-accepted by \code{\link[deSolve]{ode}} in the \code{deSolve} package
+accepted by \code{\link[deSolve:ode]{deSolve::ode()}} in the \code{deSolve} package
 (\code{lsoda}, \code{lsode}, \code{lsodes}, \code{lsodar}, \code{vode},
 \code{daspk}, \code{rk4}, \code{ode23}, \code{ode45}, \code{radau},
 \code{bdf}, \code{bdf_d}, \code{adams}, \code{impAdams}, and
@@ -87,13 +87,11 @@ varies by day. \cr \code{GPP(t) = GPP.daily * light(t) / mean.light}
 into timestep-specific rates according to the fraction of that day's
 average light that occurs at each timestep (specifically, \code{mean.light}
 is the mean of the first 24 hours of the date's data window) } \item
-\code{satlight}: GPP is a saturating function of light. \cr \code{GPP(t) =
-Pmax * tanh(alpha * light(t) / Pmax)} \itemize{ \item \code{Pmax}: the
+\code{satlight}: GPP is a saturating function of light. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax)} \itemize{ \item \code{Pmax}: the
 maximum possible GPP \item \code{alpha}: a descriptor of the rate of
 increase of GPP as a function of light } \item \code{satlightq10temp}: GPP
 is a saturating function of light and an exponential function of
-temperature. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax) *
-1.036 ^ (temp.water(t) - 20)} \itemize{ \item \code{Pmax}: the maximum
+temperature. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax) * 1.036 ^ (temp.water(t) - 20)} \itemize{ \item \code{Pmax}: the maximum
 possible GPP \item \code{alpha}: a descriptor of the rate of increase of
 GPP as a function of light } \item \code{NA}: applicable only to
 \code{type='Kmodel'}, for which GPP is not estimated }}
@@ -104,8 +102,7 @@ constant over every timestep of the day. \cr \code{ER(t) = ER.daily}
 \itemize{ \item \code{ER.daily}: the daily mean ER, which is equal to
 instantaneous ER at all times } \item \code{q10temp}: ER at each timestep
 is an exponential function of the water temperature and a
-temperature-normalized base rate. \cr \code{ER(t) = ER20 * 1.045 ^
-(temp.water(t) - 20)} \itemize{ \item \code{ER20}: the value of ER when
+temperature-normalized base rate. \cr \code{ER(t) = ER20 * 1.045 ^ (temp.water(t) - 20)} \itemize{ \item \code{ER20}: the value of ER when
 \code{temp.water} is 20 degrees C } \item \code{NA}: applicable only to
 \code{type='Kmodel'}, for which ER is not estimated }}
 

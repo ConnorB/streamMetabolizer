@@ -52,7 +52,7 @@ means save all steps.}
 Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
 behavior of the streamMetabolizer package. CmdStanR requires both the R
 package and a configured CmdStan installation; see
-[cmdstanr::install_cmdstan()].}
+\code{\link[cmdstanr:install_cmdstan]{cmdstanr::install_cmdstan()}}.}
 
 \item{verbose}{logical. give status messages?}
 
@@ -63,8 +63,8 @@ Run Stan on a formatted data ply
 }
 \details{
 Compiled Stan models are cached by interface/compiler version,
-  platform, and model content in the user cache directory. Set the
-  `streamMetabolizer.rstan_cache_dir` or
-  `streamMetabolizer.cmdstan_cache_dir` option to use a different directory.
+platform, and model content in the user cache directory. Set the
+\code{streamMetabolizer.rstan_cache_dir} or
+\code{streamMetabolizer.cmdstan_cache_dir} option to use a different directory.
 }
 \keyword{internal}

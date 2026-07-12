@@ -3,7 +3,7 @@
 #' Convert time from UTC to local time, either standard or with daylight
 #' savings. Recommended for post-analysis visualization only; most functions in
 #' streamMetabolizer use times in UTC. If you know the timezone code for your
-#' local site, use \code{\link[lubridate]{with_tz}} instead.
+#' local site, use [lubridate::with_tz()] instead.
 #'
 #' @param date.time POSIXct object the date and time in UTC
 #' @param latitude numeric, in degrees, either positive and unitted ("degN" or

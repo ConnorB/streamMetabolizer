@@ -8,7 +8,7 @@ select_rstan_draws(extracted_draws, parname, index = TRUE)
 }
 \arguments{
 \item{extracted_draws}{The result for one parameter returned by
-[rstan::extract()].}
+\code{\link[rstan:extract]{rstan::extract()}}.}
 
 \item{parname}{The base parameter name.}
 
@@ -22,7 +22,7 @@ the parameter.}
 }
 \value{
 A list containing a numeric vector of draws and a logical indicating
-  whether the parameter is indexed.
+whether the parameter is indexed.
 }
 \description{
 Select scalar or indexed RStan draws for a distribution plot

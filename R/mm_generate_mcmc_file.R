@@ -537,11 +537,15 @@ mm_generate_mcmc_file <- function(
       if (err_proc_acor) {
         sprintf(
           'array[%s] vector[d] err_proc_acor;',
-          if (acor_residual_model) 'n-1' else switch(
-            ode_method,
-            euler = 'n-1',
-            trapezoid = 'n'
-          )
+          if (acor_residual_model) {
+            'n-1'
+          } else {
+            switch(
+              ode_method,
+              euler = 'n-1',
+              trapezoid = 'n'
+            )
+          }
         )
       }
     ),

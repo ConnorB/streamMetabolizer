@@ -5,18 +5,18 @@
 #'
 #' @param dist_data Either a specs list (for priors only) or a metab_model
 #'   object (for both priors and posteriors).
-#' @param parname character. the name of the parameter whose distribution[s] you
+#' @param parname character. the name of the parameter whose distribution(s) you
 #'   wish to plot
 #' @param index integer or logical. Applicable only if plotting posteriors, and
 #'   useful only if the parname is for a parameter having multiple (e.g., daily)
 #'   instances. In this case, the index selects the instance and corresponds to
-#'   the row number in the data.frame element of \code{get_fit(metab_model)}
-#'   that contains the parameter, e.g. \code{get_fit(metab_model)$daily} for
-#'   \code{'GPP_daily'}. The default, TRUE, selects and pools all instances of
+#'   the row number in the data.frame element of `get_fit(metab_model)`
+#'   that contains the parameter, e.g. `get_fit(metab_model)$daily` for
+#'   `'GPP_daily'`. The default, TRUE, selects and pools all instances of
 #'   the parameter.
 #' @param style character indicating which graphics package to use
 #' @import dplyr
-#' @importFrom tidyr spread
+#' @importFrom tidyr pivot_wider
 #' @importFrom stats dunif qnorm dnorm qlnorm dlnorm qbeta dbeta qgamma dgamma qcauchy dcauchy rcauchy density
 #' @export
 #' @examples
@@ -333,7 +333,11 @@ plot_distribs <- function(
       # prepare the data for dygraphs. if the distributions overlap on the x
       # axis, they'll look really funny unless we fill in the NA values, so also
       # approx those in
-      dydensdf <- spread(densdf, dist, y)
+      dydensdf <- tidyr::pivot_wider(
+        densdf,
+        names_from = dist,
+        values_from = y
+      )
       if (plot_prior_rescaled || plot_posterior) {
         prior <- prior_rescaled <- posterior <- '.dplyr.var'
         dydensdf <- dydensdf %>%
@@ -449,7 +453,7 @@ select_cmdstan_draws <- function(draws_array, parname, index = TRUE) {
 
   list(
     draws = as.vector(
-      draws_array[, , match(selected_names, variable_names), drop = FALSE]
+      draws_array[,, match(selected_names, variable_names), drop = FALSE]
     ),
     indexed = indexed
   )

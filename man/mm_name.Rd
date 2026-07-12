@@ -26,17 +26,17 @@ mm_name(
 }
 \arguments{
 \item{type}{character. The model type. Options: \itemize{ \item \code{mle}:
-maximum likelihood estimation (see also \code{\link{metab_mle}}) \item
-\code{bayes}: bayesian hierarchical models \code{\link{metab_bayes}} \item
-\code{night}: nighttime regression (see also \code{\link{metab_night}})
+maximum likelihood estimation (see also \code{\link[=metab_mle]{metab_mle()}}) \item
+\code{bayes}: bayesian hierarchical models \code{\link[=metab_bayes]{metab_bayes()}} \item
+\code{night}: nighttime regression (see also \code{\link[=metab_night]{metab_night()}})
 \item \code{Kmodel}: regression of \emph{daily} estimates of
 \code{K600.daily} versus discharge, time, etc., usually for 3-phase
 estimation of K alone (by MLE or nighttime regression), K vs discharge
 (using this model), and then GPP and ER with fixed K (by MLE) (see also
-\code{\link{metab_Kmodel}}) \item \code{sim}: simulation of \code{DO.obs}
-'data' for testing other models (see also \code{\link{metab_sim}}) }}
+\code{\link[=metab_Kmodel]{metab_Kmodel()}}) \item \code{sim}: simulation of \code{DO.obs}
+'data' for testing other models (see also \code{\link[=metab_sim]{metab_sim()}}) }}
 
-\item{pool_K600}{character. [How] should the model pool information among
+\item{pool_K600}{character. How should the model pool information among
 days to get more consistent daily estimates for K600? Options (see Details
 for more): \itemize{ \item \code{none}: no pooling of K600 \item
 \code{normal}: \eqn{K600 ~ N(mu, sigma)} \item \code{linear}: \eqn{K600 ~
@@ -76,7 +76,7 @@ function of GPP, ER, DO, etc. at t=1 \item \code{trapezoid}, formerly
 \code{pairmeans}: the final change in DO from t=1 to t=2 is a function of
 the mean values of GPP, ER, etc. across t=1 and t=2. \item for
 \code{type='mle'}, options also include \code{rk2} and any character method
-accepted by \code{\link[deSolve]{ode}} in the \code{deSolve} package
+accepted by \code{\link[deSolve:ode]{deSolve::ode()}} in the \code{deSolve} package
 (\code{lsoda}, \code{lsode}, \code{lsodes}, \code{lsodar}, \code{vode},
 \code{daspk}, \code{rk4}, \code{ode23}, \code{ode45}, \code{radau},
 \code{bdf}, \code{bdf_d}, \code{adams}, \code{impAdams}, and
@@ -91,13 +91,11 @@ varies by day. \cr \code{GPP(t) = GPP.daily * light(t) / mean.light}
 into timestep-specific rates according to the fraction of that day's
 average light that occurs at each timestep (specifically, \code{mean.light}
 is the mean of the first 24 hours of the date's data window) } \item
-\code{satlight}: GPP is a saturating function of light. \cr \code{GPP(t) =
-Pmax * tanh(alpha * light(t) / Pmax)} \itemize{ \item \code{Pmax}: the
+\code{satlight}: GPP is a saturating function of light. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax)} \itemize{ \item \code{Pmax}: the
 maximum possible GPP \item \code{alpha}: a descriptor of the rate of
 increase of GPP as a function of light } \item \code{satlightq10temp}: GPP
 is a saturating function of light and an exponential function of
-temperature. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax) *
-1.036 ^ (temp.water(t) - 20)} \itemize{ \item \code{Pmax}: the maximum
+temperature. \cr \code{GPP(t) = Pmax * tanh(alpha * light(t) / Pmax) * 1.036 ^ (temp.water(t) - 20)} \itemize{ \item \code{Pmax}: the maximum
 possible GPP \item \code{alpha}: a descriptor of the rate of increase of
 GPP as a function of light } \item \code{NA}: applicable only to
 \code{type='Kmodel'}, for which GPP is not estimated }}
@@ -108,8 +106,7 @@ constant over every timestep of the day. \cr \code{ER(t) = ER.daily}
 \itemize{ \item \code{ER.daily}: the daily mean ER, which is equal to
 instantaneous ER at all times } \item \code{q10temp}: ER at each timestep
 is an exponential function of the water temperature and a
-temperature-normalized base rate. \cr \code{ER(t) = ER20 * 1.045 ^
-(temp.water(t) - 20)} \itemize{ \item \code{ER20}: the value of ER when
+temperature-normalized base rate. \cr \code{ER(t) = ER20 * 1.045 ^ (temp.water(t) - 20)} \itemize{ \item \code{ER20}: the value of ER when
 \code{temp.water} is 20 degrees C } \item \code{NA}: applicable only to
 \code{type='Kmodel'}, for which ER is not estimated }}
 
@@ -141,9 +138,9 @@ name against \code{mm_valid_names(type)}.}
 \description{
 A \code{model_name} concisely specifies the structure of a metabolism model.
 From a \code{model_name}, an appropriate set of model specifications
-(parameters and runtime options) can be generated with \code{\link{specs}}.
+(parameters and runtime options) can be generated with \code{\link[=specs]{specs()}}.
 From a complete \code{specs} list, a metabolism model can be run with
-\code{\link{metab}}.
+\code{\link[=metab]{metab()}}.
 }
 \details{
 While the \code{Usage} shows all valid values for each argument, not all
@@ -152,8 +149,6 @@ argument combinations are valid; the combination will also be checked if
 depend on the value of \code{type}: any argument that is not explicitly
 supplied (besides \code{type} and \code{check_validity}) will default to the
 values indicated by \code{mm_parse_name(mm_valid_names(type)[1])}.
-
-
 
 \subsection{pool_K600}{
 
@@ -165,29 +160,21 @@ pooling options.
 \code{none} \tab \code{K600_daily ~ normal(K600_daily_mu, K600_daily_sigma)}
 \cr
 
-\code{normal} \tab \code{K600_daily ~ normal(K600_daily_mu,
-K600_daily_sigma)}\cr \tab \code{K600_daily_mu ~ normal(K600_daily_mu_mu,
-K600_daily_mu_sigma)}\cr \tab \code{K600_daily_sigma ~
-gamma(K600_daily_sigma_shape, K600_daily_sigma_rate)}\cr
+\code{normal} \tab \code{K600_daily ~ normal(K600_daily_mu, K600_daily_sigma)}\cr \tab \code{K600_daily_mu ~ normal(K600_daily_mu_mu, K600_daily_mu_sigma)}\cr \tab \code{K600_daily_sigma ~ gamma(K600_daily_sigma_shape, K600_daily_sigma_rate)}\cr
 
-\code{linear} \tab \code{K600_daily_pred <- K600_daily_beta[1] +
-K600_daily_beta[2] * discharge_daily}\cr \tab \code{K600_daily ~
-normal(K600_daily_pred, K600_daily_sigma)}\cr \tab \code{K600_daily_beta ~
-normal(K600_daily_beta_mu, K600_daily_beta_sigma)}\cr \tab
-\code{K600_daily_sigma ~ gamma(K600_daily_sigma_shape,
-K600_daily_sigma_rate)}\cr
+\code{linear} \tab \code{K600_daily_pred <- K600_daily_beta[1] + K600_daily_beta[2] * discharge_daily}\cr \tab \code{K600_daily ~ normal(K600_daily_pred, K600_daily_sigma)}\cr \tab \code{K600_daily_beta ~ normal(K600_daily_beta_mu, K600_daily_beta_sigma)}\cr \tab
+\code{K600_daily_sigma ~ gamma(K600_daily_sigma_shape, K600_daily_sigma_rate)}\cr
 
 \code{binned} \tab \code{K600_daily_pred <- K600_daily_beta[Q_bin_daily]}\cr
 \tab \code{K600_daily ~ normal(K600_daily_pred, K600_daily_sigma)}\cr \tab
 \code{K600_daily_beta ~ normal(K600_daily_beta_mu, K600_daily_beta_sigma)}\cr
-\tab \code{K600_daily_sigma ~ gamma(K600_daily_sigma_shape,
-K600_daily_sigma_rate)}\cr
+\tab \code{K600_daily_sigma ~ gamma(K600_daily_sigma_shape, K600_daily_sigma_rate)}\cr
 
-\code{complete} \tab [This option refers to complete pooling via
+\code{complete} \tab This option refers to complete pooling via
 \code{metab_Kmodel} in conjunction with preceding\cr \tab estimates of K
 (e.g., by \code{metab_mle} or \code{metab_night}) and subsequent estimates of
 GPP and ER\cr \tab (e.g., by \code{metab_mle} with daily K600 values
-specified)]\cr } }
+specified)\cr } }
 }
 \examples{
 mm_name('mle')
@@ -199,5 +186,5 @@ mm_name('bayes', err_obs_iid=FALSE, err_proc_acor=TRUE,
   err_proc_acor_light=TRUE, err_proc_iid=FALSE, deficit_src='DO_obs')
 }
 \seealso{
-The converse of this function is \code{\link{mm_parse_name}}.
+The converse of this function is \code{\link[=mm_parse_name]{mm_parse_name()}}.
 }

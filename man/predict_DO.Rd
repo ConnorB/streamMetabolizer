@@ -56,7 +56,7 @@ the model?}
 }
 \value{
 A data.frame of dissolved oxygen predictions at the temporal
-  resolution of the input data
+resolution of the input data
 }
 \description{
 A function in the metab_model_interface. Returns predictions of dissolved

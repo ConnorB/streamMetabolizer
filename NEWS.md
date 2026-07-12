@@ -1,5 +1,7 @@
 # 0.12.1.9000
 
+* improved package maintenance with writable Stan-cache fallbacks, modernized dependencies, concise startup output, and automated R CMD check coverage
+
 * improved RStan support with safe persistent compilation caching outside the
 installed package, cache validation and read-only-directory fallback,
 parameter-filtered summaries, serializable retained fits, array-aware posterior
