@@ -7,8 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Installation • streamMetabolizer</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Installation">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="installation_files/libs/quarto-html/popper.min.js"></script><script src="installation_files/libs/quarto-html/tippy.umd.min.js"></script><link href="installation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="installation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Installation">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -54,66 +58,123 @@
 
 
   </div>
-</nav><div class="container template-article">
-
-
-
-
+</nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Installation</h1>
-                        <h4 data-toc-skip class="author">Alison
-Appling</h4>
-            
-            <h4 data-toc-skip class="date">2026-07-12</h4>
-      
-      <small class="dont-index">Source: <a href="https://github.com/ConnorB/streamMetabolizer/blob/HEAD/vignettes/installation.Rmd" class="external-link"><code>vignettes/installation.Rmd</code></a></small>
-      <div class="d-none name"><code>installation.Rmd</code></div>
+
+      <p class="author">Alison Appling</p>
+      <p class="date">2026-07-12</p>
+
+      <small class="dont-index">Source: <a href="https://github.com/ConnorB/streamMetabolizer/blob/HEAD/vignettes/installation.qmd" class="external-link"><code>vignettes/installation.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<div class="section level2">
-<h2 id="installing-streammetabolizer">Installing streamMetabolizer<a class="anchor" aria-label="anchor" href="#installing-streammetabolizer"></a>
+
+
+
+
+
+    <section class="section level2"><h2 id="installing-streammetabolizer">Installing streamMetabolizer<a class="anchor" aria-label="anchor" href="#installing-streammetabolizer"></a>
 </h2>
-<p>To install the <code>streamMetabolizer</code> package, use the
-<code>remotes</code> package (running
-<code>install.packages('remotes')</code> first if needed). To use
-<code><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">remotes::install_github()</a></code> it is convenient to set a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" class="external-link">GitHub
-Personal Access Token (PAT)</a>. There are <a href="https://usethis.r-lib.org/articles/git-credentials.html" class="external-link">several
-methods</a> for setting your PATs within R; the simplest is to call
-`Sys.setenv(GITHUB_PAT=“yyyy”), replacing yyyy with the PAT you
-established on the GitHub website.</p>
-<p>You can install the most cutting edge version of streamMetabolizer
-with this command:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p>To install the <code>streamMetabolizer</code> package, use the <code>remotes</code> package (running <code>install.packages('remotes')</code> first if needed). To use <code><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">remotes::install_github()</a></code> it is convenient to set a <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens" class="external-link">GitHub Personal Access Token (PAT)</a>. There are <a href="https://usethis.r-lib.org/articles/git-credentials.html" class="external-link">several methods</a> for setting your PATs within R; the simplest is to call `Sys.setenv(GITHUB_PAT=“yyyy”), replacing yyyy with the PAT you established on the GitHub website.</p>
+<p>You can install the most cutting edge version of streamMetabolizer with this command:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span></span>
 <span>  <span class="st">"USGS-R/streamMetabolizer"</span>, <span class="co"># soon to be "DOI-USGS/streamMetabolizer"</span></span>
 <span>  build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="software-dependencies-for-bayesian-models">Software dependencies for Bayesian models<a class="anchor" aria-label="anchor" href="#software-dependencies-for-bayesian-models"></a>
+</div>
+<section class="level2"><h3 id="software-dependencies-for-bayesian-models">Software dependencies for Bayesian models<a class="anchor" aria-label="anchor" href="#software-dependencies-for-bayesian-models"></a>
 </h3>
-<p>Bayesian models require a Stan backend, provided by either the
-<code>rstan</code> or <code>cmdstanr</code> packages. Installation of
-these packages is rarely as simple as a call to
-<code><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages()</a></code>. See the <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started" class="external-link">RStan
-installation guide</a> or the <a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html" class="external-link">CmdStanR
-installation guide</a> for up-to-date instructions, which differ by
-operating system. Select the backend with
-<code>specs(..., stan_engine = "rstan")</code> or
-<code>specs(..., stan_engine = "cmdstanr")</code>.</p>
-<p><code>streamMetabolizer</code> caches compiled models outside the
-installed package so they can be reused when the package library is
-read-only. Advanced users can override the cache locations with the
-<code>streamMetabolizer.rstan_cache_dir</code> and
-<code>streamMetabolizer.cmdstan_cache_dir</code> options.</p>
+<p>Bayesian models require a Stan backend, provided by either the <code>rstan</code> or <code>cmdstanr</code> packages. Installation of these packages is rarely as simple as a call to <code><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages()</a></code>. See the <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started" class="external-link">RStan installation guide</a> or the <a href="https://mc-stan.org/cmdstanr/articles/cmdstanr.html" class="external-link">CmdStanR installation guide</a> for up-to-date instructions, which differ by operating system. Select the backend with <code>specs(..., stan_engine = "rstan")</code> or <code>specs(..., stan_engine = "cmdstanr")</code>.</p>
+<p><code>streamMetabolizer</code> caches compiled models outside the installed package so they can be reused when the package library is read-only. Advanced users can override the cache locations with the <code>streamMetabolizer.rstan_cache_dir</code> and <code>streamMetabolizer.cmdstan_cache_dir</code> options.</p>
+</section></section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main>
 </div>
-</div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
-    </nav></aside>
-</div>
-
 
 
     <footer><div class="pkgdown-footer-left">

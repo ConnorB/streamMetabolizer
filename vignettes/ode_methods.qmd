@@ -1,11 +1,10 @@
 ---
 title: "ODE Methods"
 author: "Alison Appling"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 vignette: >
   %\VignetteIndexEntry{ODE Methods}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
   

@@ -7,7 +7,7 @@
 ^CONTRIBUTING\.md$
 ^DISCLAIMER\.md$
 ^LICENSE\.md$
-^README\.Rmd$
+^README\.qmd$
 ^_pkgdown\.yml$
 ^code\.json$
 ^development$
@@ -20,3 +20,4 @@
 ^\.agents$
 ^\.conductor$
 ^\.positai$
+^pkgdown$

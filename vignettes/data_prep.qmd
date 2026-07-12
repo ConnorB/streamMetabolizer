@@ -1,11 +1,10 @@
 ---
 title: "Data Preparation"
 author: "Alison Appling and Bob Hall"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 vignette: >
   %\VignetteIndexEntry{Data Preparation}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 

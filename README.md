@@ -1,3 +1,5 @@
+
+
 # streamMetabolizer: Models for Estimating Aquatic Photosynthesis and Respiration
 
 <!-- badges: start -->
@@ -30,14 +32,13 @@ al. 2018b](https://doi.org/10.1038/sdata.2018.292).
 > Appling, A. P., Hall, R. O., Yackulic, C. B., & Arroita, M. (2018a).
 > Overcoming equifinality: Leveraging long time series for stream
 > metabolism estimation. Journal of Geophysical Research:
-> Biogeosciences, 123(2), 624–645.
-> <https://doi.org/10.1002/2017JG004140>
+> Biogeosciences, 123(2), 624–645. https://doi.org/10.1002/2017JG004140
 
 > Appling, A. P., Read, J. S., Winslow, L. A., Arroita, M., Bernhardt,
 > E. S., Griffiths, N. A., Hall, R. O., Harvey, J. W., Heffernan, J. B.,
 > Stanley, E. H., Stets, E. G., & Yackulic, C. B. (2018b). The metabolic
 > regimes of 356 rivers in the United States. Scientific Data, 5(1),
-> 180292. <https://doi.org/10.1038/sdata.2018.292>
+> 180292. https://doi.org/10.1038/sdata.2018.292
 
 To see the recommended citation for this package, please run
 `citation('streamMetabolizer')` at the R prompt.

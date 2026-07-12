@@ -1,14 +1,10 @@
 ---
 title: "Installation"
 author: "Alison Appling"
-date: "`r Sys.Date()`"
-output:
-  # rmarkdown::github_document
-  rmarkdown::html_vignette:
-      keep_md: true
+date: today
 vignette: >
   %\VignetteIndexEntry{Installation}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 

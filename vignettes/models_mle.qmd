@@ -1,11 +1,10 @@
 ---
 title: "MLE Models"
 author: "Alison Appling"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 vignette: >
   %\VignetteIndexEntry{MLE Models}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 

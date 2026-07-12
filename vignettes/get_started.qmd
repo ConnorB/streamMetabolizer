@@ -1,21 +1,16 @@
 ---
 title: "Quickstart"
 author: "Alison Appling"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 vignette: >
   %\VignetteIndexEntry{Quickstart}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r knitr_init, echo=FALSE, cache=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(width=80)
-run_bayesian_example <- identical(
-  tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")),
-  "true"
-)
 ```
 
 # Introduction
@@ -118,7 +113,7 @@ fail for a short illustrative run. To execute them while rendering this
 vignette, set the environment variable
 `STREAMMETABOLIZER_RUN_STAN_VIGNETTE=true`.
 
-```{r bayes_fit, eval=run_bayesian_example}
+```{r bayes_fit, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 # set a seed so this short example fit is reproducible from run to run
 set.seed(24)
 mm <- metab(bayes_specs, data=dat)
@@ -132,32 +127,32 @@ Once you've fit a model, you can inspect the output with functions including
 `get_params()`, and `get_fit()`.
 
 Start by simply printing the model to the console.
-```{r, eval=run_bayesian_example}
+```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 mm
 ```
 
 Here are the daily metabolism predictions from the model:
-```{r bayes_pred_tbl, eval=run_bayesian_example}
+```{r bayes_pred_tbl, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 predict_metab(mm)
 ```
 
-```{r bayes_pred_fig, fig.width=5, fig.height=5, eval=run_bayesian_example}
+```{r bayes_pred_fig, fig.width=5, fig.height=5, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 plot_metab_preds(mm)
 ```
 
 You can inspect more of the fitted daily parameters, including K600, with `get_params()`:
-```{r, eval=run_bayesian_example}
+```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 get_params(mm)
 ```
 
 Here are the first few dissolved oxygen predictions from the model (`DO.mod`).
 They are returned along with the input data for convenience.
-```{r bayes_pdo_tbl, results='asis', eval=run_bayesian_example}
+```{r bayes_pdo_tbl, results='asis', eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 predict_DO(mm) %>% head()
 ```
 
 And here are the dissolved oxygen predictions in a figure:
-```{r bayes_pdo_fig, fig.width=5, fig.height=5, eval=run_bayesian_example}
+```{r bayes_pdo_fig, fig.width=5, fig.height=5, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 plot_DO_preds(mm)
 ```
 
@@ -165,7 +160,7 @@ For Bayesian models only, you can dig even deeper using `get_mcmc`, which
 returns a Stan model object that can be inspected using the `rstan` or `cmdstanr` packages.
 (These traceplots are pretty bad because we used so few MCMC iterations. You
 should strive for better in your final models.)
-```{r, fig.width=5, fig.height=5, eval=run_bayesian_example}
+```{r, fig.width=5, fig.height=5, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 mcmc <- get_mcmc(mm)
 # bayesplot::mcmc_trace(mcmc$draws("K600_daily"), n_warmup = 0) +
 #   ggplot2::facet_wrap(~ parameter, nrow = 3)
@@ -177,13 +172,13 @@ resolution, containing all fitted values and details about their distributions
 and convergence. Here are just the overall metrics of model convergence
 (`Rhat`s, or potential scale reduction statistics; see Gelman and Rubin 1992 or
 Brooks and Gelman 1998):
-```{r, eval=run_bayesian_example}
+```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 get_fit(mm)$overall %>%
   select(ends_with('Rhat'))
 ```
 
 And here is a list of all column names available through `get_fit()`:
-```{r, eval=run_bayesian_example}
+```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 get_fit(mm) %>%
   lapply(names)
 ```

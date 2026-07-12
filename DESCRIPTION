@@ -30,7 +30,7 @@ Copyright: This software is in the public domain because it contains materials
 URL: https://connorb.github.io/streamMetabolizer/,
     https://github.com/ConnorB/streamMetabolizer
 BugReports: https://github.com/ConnorB/streamMetabolizer/issues
-VignetteBuilder: knitr
+VignetteBuilder: quarto
 Depends:
     R (>= 4.1)
 Imports:
@@ -56,7 +56,7 @@ Suggests:
     knitr,
     microbenchmark,
     posterior,
-    rmarkdown,
+    quarto,
     rstan,
     sf,
     testthat (>= 3.0.0),
