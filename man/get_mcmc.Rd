@@ -17,14 +17,13 @@ return the MCMC model object(s)}
 The MCMC model object(s)
 }
 \description{
-A function specific to metab_bayes models. Returns an MCMC object of class
-\code{stanfit} (\link[rstan:stanfit-class]{rstan::stanfit}), which is saved in the metab_model by
-default because you should almost always inspect it; see \code{keep_mcmcs}
-argument to \code{\link[=specs]{specs()}} for options for saving space. The \code{rstan} methods
-for \link[rstan:stanfit-class]{rstan::stanfit} objects include \code{summary()}, \code{get_stancode()},
-\code{stan_dens()}, \code{stan_diag()}, and many more. See
-\code{?'rstan-plotting-functions'}, \link[rstan:stanfit-class]{rstan::stanfit} and the
-\href{https://cran.r-project.org/web/packages/rstan/rstan.pdf}{rstan manual}.
+A function specific to metab_bayes models. Returns the fitted object from the
+selected Stan interface: a \code{stanfit} (\link[rstan:stanfit-class]{rstan::stanfit}) for RStan or a
+\code{CmdStanMCMC} (\link[cmdstanr:CmdStanMCMC]{cmdstanr::CmdStanMCMC}) for CmdStanR. The object is saved in
+the metab_model by default because you should almost always inspect it; see
+the \code{keep_mcmcs} argument to \code{\link[=specs]{specs()}} for options for saving space. See the
+interface documentation for available summaries, diagnostics, draws, and
+plotting methods.
 }
 \section{Methods (by class)}{
 \itemize{

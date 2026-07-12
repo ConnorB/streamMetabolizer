@@ -178,7 +178,10 @@ metab_bayes <- function(
     data_daily <- dat_list$data_daily
 
     # Check and parse model file path
-    specs$model_path <- mm_locate_filename(specs$model_name)
+    specs$model_path <- mm_locate_filename(
+      specs$model_name,
+      stan_engine = specs$stan_engine
+    )
 
     # check the format of keep_mcmcs (more checks, below, are split_dates-specific)
     if (is.logical(specs$keep_mcmcs)) {
@@ -709,6 +712,32 @@ prepdata_bayes <- function(
   # parse model name into features for deciding what data to include
   features <- mm_parse_name(specs$model_name, expand = TRUE)
 
+  # Bob Hall's light-varying process-error model scales the AR innovation SD
+  # by the fraction of daily light at each timestep (not by raw light).
+  light_frac <- NULL
+  if (features$err_proc_acor_light) {
+    mat_light <- time_by_date_matrix(data$light)
+    in_solar_day <- apply(obs_times, MARGIN = 2, FUN = function(timevec) {
+      timevec - timevec[1] <= 1
+    })
+    daily_light_totals <- colSums(mat_light * in_solar_day)
+    if (any(daily_light_totals <= 0)) {
+      stop(
+        'daily light total is <= 0 on ',
+        paste(
+          names(date_table)[which(daily_light_totals <= 0)],
+          collapse = ', '
+        )
+      )
+    }
+    light_frac <- sweep(
+      mat_light,
+      MARGIN = 2,
+      STATS = daily_light_totals,
+      FUN = `/`
+    )
+  }
+
   # Format the data for Stan. Stan disallows period-separated names, so
   # change all the input data to underscore-separated. parameters given in
   # specs are already underscore-separated for this reason
@@ -775,6 +804,10 @@ prepdata_bayes <- function(
         light = time_by_date_matrix(data$light)
       )
     ),
+
+    if (features$err_proc_acor_light) {
+      list(light_frac = light_frac)
+    },
 
     list(
       # X_mult_Y syntax: X = process reflected by multiplier, Y = quantity
@@ -858,9 +891,15 @@ prepdata_bayes <- function(
 #'   means save all steps.
 #' @param stan_engine Character string specifying which Stan R interface to use.
 #'   Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
-#'   behavior of the streamMetabolizer package.
+#'   behavior of the streamMetabolizer package. CmdStanR requires both the R
+#'   package and a configured CmdStan installation; see
+#'   [cmdstanr::install_cmdstan()].
 #' @param verbose logical. give status messages?
 #' @param ... ignored arguments
+#' @details Compiled Stan models are cached by interface/compiler version,
+#'   platform, and model content in the user cache directory. Set the
+#'   `streamMetabolizer.rstan_cache_dir` or
+#'   `streamMetabolizer.cmdstan_cache_dir` option to use a different directory.
 #' @import parallel
 #' @import dplyr
 #' @import tibble
@@ -908,56 +947,17 @@ runstan_bayes <- function(
       stop("the rstan package is required for Stan MCMC models")
     }
 
-    compile_time <- system.time({})
-    mobj_path <- gsub('.stan$', '.stanrds', model_path)
-    if (
-      !file.exists(mobj_path) ||
-        file.info(mobj_path)$mtime < file.info(model_path)$mtime
-    ) {
-      if (verbose) {
-        message("compiling Stan model")
-      }
-      compile_time <- system.time({
-        compile_log <- capture.output(
-          {
-            stan_mobj <- rstan::stan_model(file = model_path, auto_write = TRUE)
-          },
-          type = c('output'),
-          split = verbose
-        )
-      })
-      rm(stan_mobj)
-      gc()
-      autowrite_path <- gsub('.stan$', '.rds', model_path)
-      if (!file.exists(autowrite_path)) {
-        autowrite_path <- gsub('.stan$', '.rda', model_path)
-      }
-      if (!file.exists(autowrite_path)) {
-        autowrite_path <- file.path(tempdir(), basename(autowrite_path))
-      }
-      if (!file.exists(autowrite_path)) {
-        warning('could not find saved rds model file')
-      } else {
-        tryCatch(
-          {
-            file.copy(autowrite_path, mobj_path, overwrite = TRUE)
-            file.remove(autowrite_path)
-          },
-          error = function(e) {
-            warning('could not copy Stan rds to .stanrds file: ', e$message)
-            mobj_path <- autowrite_path
-          }
-        )
-      }
-    } else {
-      if (verbose) message("loading pre-compiled Stan model")
+    compiled <- load_rstan_model(model_path, verbose = verbose)
+    stan_mobj <- compiled$model
+    compile_time <- compiled$compile_time
+    if (!is.null(compiled$compile_log)) {
+      compile_log <- compiled$compile_log
     }
-    stan_mobj <- readRDS(mobj_path)
 
     oldlogfiles <- normalizePath(file.path(
       tempdir(),
       grep("_StanProgress.txt", dir(tempdir()), value = TRUE)
-    ))
+    ), mustWork = FALSE)
 
     if (verbose) {
       message("sampling Stan model")
@@ -975,7 +975,7 @@ runstan_bayes <- function(
         init = "random",
         verbose = verbose,
         open_progress = FALSE,
-        cores = n_cores
+        cores = min(n_chains, n_cores)
       ),
       split = verbose
     )
@@ -983,11 +983,23 @@ runstan_bayes <- function(
     if (!requireNamespace('cmdstanr', quietly = TRUE)) {
       stop('the cmdstanr package is required for Stan MCMC models')
     }
+    cmdstan_version <- cmdstanr::cmdstan_version(error_on_NA = FALSE)
+    if (
+      is.null(cmdstan_version) ||
+        length(cmdstan_version) != 1 ||
+        is.na(cmdstan_version)
+    ) {
+      stop(
+        'CmdStanR is installed, but CmdStan is not configured. ',
+        'Install it with cmdstanr::install_cmdstan() and then retry.'
+      )
+    }
+    cache_dir <- cmdstan_cache_dir(model_path, cmdstan_version)
     compile_time <- system.time({
       stan_mobj <- cmdstanr::cmdstan_model(
         model_path,
         quiet = !verbose,
-        dir = tempdir()
+        dir = cache_dir
       )
     })
     consolelog <- capture.output(
@@ -995,7 +1007,7 @@ runstan_bayes <- function(
         runstan_out <- stan_mobj$sample(
           data = data_list,
           chains = n_chains,
-          parallel_chains = n_cores,
+          parallel_chains = min(n_chains, n_cores),
           iter_warmup = burnin_steps,
           iter_sampling = saved_steps,
           thin = thin_steps,
@@ -1005,19 +1017,42 @@ runstan_bayes <- function(
       type = "output",
       split = verbose
     )
+    consolelog <- unlist(runstan_out$output(), use.names = FALSE)
+    return_codes <- runstan_out$return_codes()
+    if (any(is.na(return_codes) | return_codes != 0)) {
+      failed_chains <- which(is.na(return_codes) | return_codes != 0)
+      stop(
+        'CmdStan sampling failed for chain',
+        if (length(failed_chains) > 1) 's ' else ' ',
+        paste(failed_chains, collapse = ', '),
+        ' (return code',
+        if (length(failed_chains) > 1) 's ' else ' ',
+        paste(return_codes[failed_chains], collapse = ', '),
+        ').',
+        if (length(consolelog) > 0) {
+          paste0('\n', paste(tail(consolelog, 20), collapse = '\n'))
+        }
+      )
+    }
   }
 
   # format output (but first detect and handle a failed model run)
   if (stan_engine == 'rstan') {
     if (runstan_out@mode == 2L) {
-      stan_out <- NULL
-      warning(capture.output(print(runstan_out)))
-    } else {
-      stan_mat <- rstan::summary(runstan_out)$summary
+      stop(
+        'RStan sampling failed.\n',
+        paste(capture.output(print(runstan_out)), collapse = '\n')
+      )
     }
+    stan_mat <- rstan::summary(
+      runstan_out,
+      pars = params_out,
+      probs = c(0.025, 0.25, 0.5, 0.75, 0.975),
+      use_cache = FALSE
+    )$summary
   } else {
     stan_sum <- posterior::summarise_draws(
-      runstan_out$draws(),
+      runstan_out$draws(variables = params_out),
       mean,
       se_mean = posterior::mcse_mean,
       sd,
@@ -1048,6 +1083,13 @@ runstan_bayes <- function(
     rownames(stan_sum) <- stan_sum[, "variable"]
     stan_sum <- stan_sum[, !(names(stan_sum) == "variable")]
     stan_mat <- as.matrix(stan_sum)
+    if (keep_mcmc) {
+      # CmdStan output files are temporary and fit contents are read lazily.
+      # Load all draws and diagnostics so a metab_model saved with saveRDS()
+      # remains usable after those files disappear.
+      runstan_out$draws()
+      try(runstan_out$sampler_diagnostics(), silent = TRUE)
+    }
   }
 
   if (split_dates) {
@@ -1097,6 +1139,174 @@ runstan_bayes <- function(
   )
 
   return(stan_out)
+}
+
+#' Load or compile an RStan model using a persistent cache
+#'
+#' @param model_path Path to a Stan program.
+#' @inheritParams runstan_bayes
+#' @return A list containing the `stanmodel`, compilation time, compilation
+#'   output, and cache file.
+#' @keywords internal
+load_rstan_model <- function(model_path, verbose = FALSE) {
+  cache_file <- rstan_cache_file(model_path)
+  stan_mobj <- NULL
+  if (file.exists(cache_file)) {
+    stan_mobj <- tryCatch(
+      readRDS(cache_file),
+      error = function(e) NULL
+    )
+    if (!inherits(stan_mobj, 'stanmodel')) {
+      stan_mobj <- NULL
+    } else if (verbose) {
+      message('loading cached RStan model')
+    }
+  }
+
+  compile_time <- system.time({})
+  compile_log <- NULL
+  if (is.null(stan_mobj)) {
+    if (verbose) {
+      message('compiling RStan model')
+    }
+    compile_time <- system.time({
+      compile_log <- capture.output(
+        {
+          stan_mobj <- rstan::stan_model(
+            file = model_path,
+            save_dso = TRUE,
+            auto_write = FALSE,
+            verbose = verbose
+          )
+        },
+        type = 'output',
+        split = verbose
+      )
+    })
+    cache_temp <- tempfile(
+      pattern = paste0(basename(cache_file), '-'),
+      tmpdir = dirname(cache_file)
+    )
+    cache_saved <- tryCatch(
+      {
+        saveRDS(stan_mobj, cache_temp)
+        if (!file.rename(cache_temp, cache_file)) {
+          copied <- file.copy(cache_temp, cache_file, overwrite = TRUE)
+          file.remove(cache_temp)
+          copied
+        } else {
+          TRUE
+        }
+      },
+      error = function(e) FALSE
+    )
+    if (!cache_saved) {
+      warning('could not save the compiled RStan model cache at ', cache_file)
+    }
+  }
+
+  list(
+    model = stan_mobj,
+    compile_time = compile_time,
+    compile_log = compile_log,
+    cache_file = cache_file
+  )
+}
+
+#' Locate the persistent compilation cache for an RStan model
+#'
+#' @param model_path Path to a Stan program.
+#' @return A cache file unique to the model contents, RStan and Stan versions,
+#'   R version, and platform.
+#' @keywords internal
+rstan_cache_file <- function(model_path) {
+  cache_root <- getOption('streamMetabolizer.rstan_cache_dir')
+  use_default_cache <- is.null(cache_root)
+  if (use_default_cache) {
+    cache_root <- if (getRversion() >= '4.0.0') {
+      tools::R_user_dir('streamMetabolizer', which = 'cache')
+    } else {
+      file.path(tempdir(), 'streamMetabolizer-cache')
+    }
+  }
+  model_hash <- unname(tools::md5sum(model_path))
+  dependency_versions <- vapply(
+    c('StanHeaders', 'Rcpp', 'RcppEigen', 'BH'),
+    function(package) as.character(utils::packageVersion(package)),
+    character(1)
+  )
+  version_key <- paste0(
+    'rs-', utils::packageVersion('rstan'),
+    '_s-', rstan::stan_version(),
+    '_deps-', paste(unname(dependency_versions), collapse = '-'),
+    '_R-', getRversion(),
+    '_', R.version$platform
+  )
+  version_key <- gsub('[^[:alnum:]_.-]', '-', version_key)
+  cache_dir <- file.path(cache_root, 'rstan', version_key)
+  created <- dir.exists(cache_dir) || suppressWarnings(
+    dir.create(cache_dir, recursive = TRUE)
+  )
+  if (!created && use_default_cache) {
+    cache_dir <- file.path(
+      tempdir(),
+      'streamMetabolizer-cache',
+      'rstan',
+      version_key
+    )
+    created <- dir.exists(cache_dir) || suppressWarnings(
+      dir.create(cache_dir, recursive = TRUE)
+    )
+  }
+  if (!created) {
+    stop('could not create the RStan model cache at ', cache_dir)
+  }
+  file.path(cache_dir, paste0(model_hash, '.rds'))
+}
+
+#' Locate the persistent compilation cache for a CmdStan model
+#'
+#' @param model_path Path to a Stan program.
+#' @param cmdstan_version The configured CmdStan version.
+#' @return A writable cache directory unique to the model contents and CmdStan
+#'   version.
+#' @keywords internal
+cmdstan_cache_dir <- function(model_path, cmdstan_version) {
+  cache_root <- getOption('streamMetabolizer.cmdstan_cache_dir')
+  use_default_cache <- is.null(cache_root)
+  if (use_default_cache) {
+    cache_root <- if (getRversion() >= '4.0.0') {
+      tools::R_user_dir('streamMetabolizer', which = 'cache')
+    } else {
+      file.path(tempdir(), 'streamMetabolizer-cache')
+    }
+  }
+  model_hash <- unname(tools::md5sum(model_path))
+  cache_dir <- file.path(
+    cache_root,
+    'cmdstan',
+    paste0('v', cmdstan_version),
+    model_hash
+  )
+  created <- dir.exists(cache_dir) || suppressWarnings(
+    dir.create(cache_dir, recursive = TRUE)
+  )
+  if (!created && use_default_cache) {
+    cache_dir <- file.path(
+      tempdir(),
+      'streamMetabolizer-cache',
+      'cmdstan',
+      paste0('v', cmdstan_version),
+      model_hash
+    )
+    created <- dir.exists(cache_dir) || suppressWarnings(
+      dir.create(cache_dir, recursive = TRUE)
+    )
+  }
+  if (!created) {
+    stop('could not create the CmdStan model cache at ', cache_dir)
+  }
+  cache_dir
 }
 
 #' Format MCMC output into a one-row data.frame
@@ -1162,7 +1372,10 @@ format_mcmc_mat_nosplit <- function(
       'err_proc_iid_sigma',
       'err_proc_iid_sigma_scaled',
       'err_proc_acor_phi',
+      'err_proc_acor_sigma',
       'err_proc_acor_sigma_scaled',
+      'err_proc_acor_light_alpha',
+      'err_proc_acor_light_alpha_scaled',
       'lp__'
     ),
     KQ_overall = c(
@@ -1321,14 +1534,13 @@ setClass(
 
 #' Extract any MCMC model objects that were stored with the model
 #'
-#' A function specific to metab_bayes models. Returns an MCMC object of class
-#' `stanfit` ([rstan::stanfit-class]), which is saved in the metab_model by
-#' default because you should almost always inspect it; see `keep_mcmcs`
-#' argument to [specs()] for options for saving space. The \code{rstan} methods
-#' for [rstan::stanfit-class] objects include `summary()`, `get_stancode()`,
-#' `stan_dens()`, `stan_diag()`, and many more. See
-#' `?'rstan-plotting-functions'`, [rstan::stanfit-class] and the
-#' \href{https://cran.r-project.org/web/packages/rstan/rstan.pdf}{rstan manual}.
+#' A function specific to metab_bayes models. Returns the fitted object from the
+#' selected Stan interface: a `stanfit` ([rstan::stanfit-class]) for RStan or a
+#' `CmdStanMCMC` ([cmdstanr::CmdStanMCMC]) for CmdStanR. The object is saved in
+#' the metab_model by default because you should almost always inspect it; see
+#' the `keep_mcmcs` argument to [specs()] for options for saving space. See the
+#' interface documentation for available summaries, diagnostics, draws, and
+#' plotting methods.
 #'
 #' @md
 #' @param metab_model A Bayesian metabolism model (metab_bayes) from which to

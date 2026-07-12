@@ -11,6 +11,7 @@ mm_name(
     "complete"),
   err_obs_iid = c(TRUE, FALSE),
   err_proc_acor = c(FALSE, TRUE),
+  err_proc_acor_light = c(FALSE, TRUE),
   err_proc_iid = c(FALSE, TRUE),
   err_proc_GPP = c(FALSE, TRUE),
   ode_method = c("trapezoid", "euler", "rk2", "lsoda", "lsode", "lsodes", "lsodar",
@@ -52,7 +53,13 @@ the model will be fit to the differences in successive DO measurements,
 rather than to the DO measurements themselves.}
 
 \item{err_proc_acor}{logical. Should autocorrelated process error (with the
-autocorrelation term phi fitted) be included?}
+autocorrelation term phi fitted) be included? For multi-day Bayesian
+process-error models, the AR likelihood continues across day boundaries.}
+
+\item{err_proc_acor_light}{logical. Should the innovation standard deviation
+of autocorrelated process error increase linearly with the fraction of
+each day's light occurring at that timestep? Only available when
+\code{err_proc_acor=TRUE}.}
 
 \item{err_proc_iid}{logical. Should IID process error be included?}
 
@@ -188,6 +195,8 @@ mm_name('mle', GPP_fun='satlight', ER_fun='q10temp')
 mm_name('night')
 mm_name('sim', err_proc_acor=TRUE)
 mm_name('bayes', pool_K600='binned')
+mm_name('bayes', err_obs_iid=FALSE, err_proc_acor=TRUE,
+  err_proc_acor_light=TRUE, err_proc_iid=FALSE, deficit_src='DO_obs')
 }
 \seealso{
 The converse of this function is \code{\link{mm_parse_name}}.

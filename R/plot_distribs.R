@@ -254,12 +254,14 @@ plot_distribs <- function(
         stop('the rstan package is required to investigate Stan MCMC models')
       }
       draws <- rstan::extract(mc, pars = parname)[[parname]]
-      indexed_posterior <- is.matrix(draws)
-      if (indexed_posterior) draws <- c(draws[, index])
+      selected <- select_rstan_draws(draws, parname, index)
+      draws <- selected$draws
+      indexed_posterior <- selected$indexed
     } else if (inherits(mc, 'CmdStanMCMC')) {
       draws_arr <- mc$draws(variables = parname)
-      draws <- as.vector(draws_arr)
-      indexed_posterior <- length(dim(draws_arr)) > 1
+      selected <- select_cmdstan_draws(draws_arr, parname, index)
+      draws <- selected$draws
+      indexed_posterior <- selected$indexed
     } else {
       stop('unknown mcmc object class')
     }
@@ -378,4 +380,77 @@ plot_distribs <- function(
   )
 
   plot_out
+}
+
+#' Select scalar or indexed RStan draws for a distribution plot
+#'
+#' @param extracted_draws The result for one parameter returned by
+#'   [rstan::extract()].
+#' @param parname The base parameter name.
+#' @inheritParams plot_distribs
+#' @return A list containing a numeric vector of draws and a logical indicating
+#'   whether the parameter is indexed.
+#' @keywords internal
+select_rstan_draws <- function(extracted_draws, parname, index = TRUE) {
+  draw_dims <- dim(extracted_draws)
+  indexed <- length(draw_dims) > 1
+  if (!indexed) {
+    return(list(draws = as.vector(extracted_draws), indexed = FALSE))
+  }
+
+  draw_matrix <- matrix(extracted_draws, nrow = draw_dims[1])
+  available <- seq_len(ncol(draw_matrix))
+  selected <- if (isTRUE(index)) available else available[index]
+  if (
+    length(selected) == 0 ||
+      any(is.na(selected)) ||
+      !all(selected %in% available)
+  ) {
+    stop('index does not select a valid element of ', parname)
+  }
+
+  list(
+    draws = as.vector(draw_matrix[, selected, drop = FALSE]),
+    indexed = TRUE
+  )
+}
+
+#' Select scalar or indexed CmdStan draws for a distribution plot
+#'
+#' @param draws_array A CmdStanR `draws_array`.
+#' @param parname The base parameter name.
+#' @inheritParams plot_distribs
+#' @return A list containing a numeric vector of draws and a logical indicating
+#'   whether the parameter is indexed.
+#' @keywords internal
+select_cmdstan_draws <- function(draws_array, parname, index = TRUE) {
+  variable_names <- dimnames(draws_array)[[3]]
+  prefix <- paste0(parname, '[')
+  indexed_names <- variable_names[
+    substring(variable_names, 1, nchar(prefix)) == prefix
+  ]
+  indexed <- length(indexed_names) > 0
+
+  if (indexed) {
+    selected_names <- if (isTRUE(index)) indexed_names else indexed_names[index]
+    if (
+      length(selected_names) == 0 ||
+        any(is.na(selected_names)) ||
+        !all(selected_names %in% variable_names)
+    ) {
+      stop('index does not select a valid element of ', parname)
+    }
+  } else {
+    if (!(parname %in% variable_names)) {
+      stop('could not find ', parname, ' in the CmdStan draws')
+    }
+    selected_names <- parname
+  }
+
+  list(
+    draws = as.vector(
+      draws_array[, , match(selected_names, variable_names), drop = FALSE]
+    ),
+    indexed = indexed
+  )
 }

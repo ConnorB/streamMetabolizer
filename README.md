@@ -88,11 +88,20 @@ remotes::install_github("ConnorB/streamMetabolizer",
 
 ### Software dependencies for Bayesian models
 
-The major dependency for Bayesian models is the `rstan` package, and
-installation of that package is rarely as simple as a call to
-`install.packages()`. Start at the [rstan wiki
-page](https://github.com/stan-dev/rstan/wiki) for the most up-to-date
-installation instructions, which differ by operating system.
+Bayesian models require a Stan backend, provided by either `rstan` or
+`cmdstanr`. Installation is rarely as simple as a call to
+`install.packages()`, because the compiler toolchain (and, for CmdStanR,
+CmdStan itself) must also be configured. See the [RStan installation
+guide](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) or
+the [CmdStanR installation
+guide](https://mc-stan.org/cmdstanr/articles/cmdstanr.html) for current
+platform-specific instructions. Select the backend with
+`specs(..., stan_engine = "rstan")` or
+`specs(..., stan_engine = "cmdstanr")`. Compiled models are cached
+outside the installed package so they can be reused even when the
+package library is read-only; advanced users can override the locations
+with the `streamMetabolizer.rstan_cache_dir` and
+`streamMetabolizer.cmdstan_cache_dir` options.
 
 ## Getting started
 

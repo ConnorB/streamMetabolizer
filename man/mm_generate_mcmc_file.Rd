@@ -10,6 +10,7 @@ mm_generate_mcmc_file(
     "linear_sdzero", "linear_sdfixed", "binned", "binned_sdzero", "binned_sdfixed"),
   err_obs_iid = c(TRUE, FALSE),
   err_proc_acor = c(FALSE, TRUE),
+  err_proc_acor_light = c(FALSE, TRUE),
   err_proc_iid = c(FALSE, TRUE),
   err_proc_GPP = c(FALSE, TRUE),
   ode_method = c("trapezoid", "euler"),
@@ -48,7 +49,13 @@ the model will be fit to the differences in successive DO measurements,
 rather than to the DO measurements themselves.}
 
 \item{err_proc_acor}{logical. Should autocorrelated process error (with the
-autocorrelation term phi fitted) be included?}
+autocorrelation term phi fitted) be included? For multi-day Bayesian
+process-error models, the AR likelihood continues across day boundaries.}
+
+\item{err_proc_acor_light}{logical. Should the innovation standard deviation
+of autocorrelated process error increase linearly with the fraction of
+each day's light occurring at that timestep? Only available when
+\code{err_proc_acor=TRUE}.}
 
 \item{err_proc_iid}{logical. Should IID process error be included?}
 

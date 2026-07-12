@@ -155,7 +155,7 @@ test_that("French Creek predictions are similar for streamMetabolizer & Bob Hall
       n_cores = 1,
       day_start = start.numeric,
       day_end = end.numeric,
-      stan_engine = "cmdstanr"
+      stan_engine = stan_engine_for_tests()
     ),
     data = vfrenchshort
   )

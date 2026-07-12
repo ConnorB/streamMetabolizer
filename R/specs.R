@@ -33,7 +33,9 @@
 #'   K600_lnQ_nodes_meanlog, K600_lnQ_nodes_sdlog, K600_daily_sigma_sigma}.
 #'   \item If \code{err_obs_iid} then \code{err_obs_iid_sigma_scale}. \item If
 #'   \code{err_proc_acor} then \code{err_proc_acor_phi_alpha,
-#'   err_proc_acor_phi_beta, err_proc_acor_sigma_scale}. \item If
+#'   err_proc_acor_phi_beta, err_proc_acor_sigma_scale}, and, if
+#'   \code{err_proc_acor_light},
+#'   \code{err_proc_acor_light_alpha_sigma}. \item If
 #'   \code{err_proc_iid} then \code{err_proc_iid_sigma_scale}. \item If
 #'   \code{err_proc_GPP} then \code{err_mult_GPP_sdlog_sigma}.}
 #'
@@ -237,6 +239,11 @@
 #'   half-Cauchy distribution for err_proc_acor_sigma, the standard deviation of
 #'   the autocorrelated component of process [& sometimes observation] error.
 #'   Visualize the PDF of err_proc_acor_sigma with \code{\link{plot_distribs}}.
+#' @param err_proc_acor_light_alpha_sigma The scale parameter of a half-normal
+#'   prior on \code{err_proc_acor_light_alpha}. The fitted alpha is the increase
+#'   in the process-error innovation standard deviation at a timestep receiving
+#'   all of the day's light; actual increases are alpha times the timestep's
+#'   fraction of daily light.
 #' @param err_proc_iid_sigma_scale The scale (= sigma) parameter of a
 #'   half-Cauchy distribution for err_proc_iid_sigma, the standard deviation of
 #'   the uncorrelated (IID) component of process [& sometimes observation]
@@ -444,6 +451,7 @@ specs <- function(
   err_proc_acor_phi_alpha = 1,
   err_proc_acor_phi_beta = 1,
   err_proc_acor_sigma_scale = 1,
+  err_proc_acor_light_alpha_sigma = 5,
   err_mult_GPP_sdlog_sigma = 1,
 
   # vector of hyperparameters to include as MCMC data
@@ -629,7 +637,10 @@ specs <- function(
           c(
             'err_proc_acor_phi_alpha',
             'err_proc_acor_phi_beta',
-            'err_proc_acor_sigma_scale'
+            'err_proc_acor_sigma_scale',
+            if (features$err_proc_acor_light) {
+              'err_proc_acor_light_alpha_sigma'
+            }
           )
         },
         if (features$err_proc_iid) 'err_proc_iid_sigma_scale',
@@ -725,7 +736,14 @@ specs <- function(
           },
           if (features$err_obs_iid) c('err_obs_iid_sigma', 'err_obs_iid'),
           if (features$err_proc_acor) {
-            c('err_proc_acor', 'err_proc_acor_phi', 'err_proc_acor_sigma')
+            c(
+              'err_proc_acor',
+              'err_proc_acor_phi',
+              'err_proc_acor_sigma',
+              if (features$err_proc_acor_light) {
+                'err_proc_acor_light_alpha'
+              }
+            )
           },
           if (features$err_proc_iid) c('err_proc_iid_sigma', 'err_proc_iid'),
           if (features$err_proc_GPP) c('err_proc_GPP', 'GPP_pseudo_R2')
@@ -734,7 +752,10 @@ specs <- function(
 
       # check for errors/inconsistencies
       model_path <- tryCatch(
-        mm_locate_filename(model_name),
+        mm_locate_filename(
+          model_name,
+          stan_engine = all_specs$stan_engine
+        ),
         error = function(e) {
           warning(e)
           return(model_name)

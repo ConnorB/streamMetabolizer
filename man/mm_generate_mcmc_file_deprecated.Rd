@@ -48,7 +48,8 @@ the model will be fit to the differences in successive DO measurements,
 rather than to the DO measurements themselves.}
 
 \item{err_proc_acor}{logical. Should autocorrelated process error (with the
-autocorrelation term phi fitted) be included?}
+autocorrelation term phi fitted) be included? For multi-day Bayesian
+process-error models, the AR likelihood continues across day boundaries.}
 
 \item{err_proc_iid}{logical. Should IID process error be included?}
 

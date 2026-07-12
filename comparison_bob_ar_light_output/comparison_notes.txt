@@ -1,0 +1,13 @@
+Bob Stan file: /Users/connor/GitHub/metab_proc_err/metab_pi_ar_light_2_modern.stan
+streamMetabolizer model: b_Kn_pclv_eu_plrcko.stan
+Bob IID process-error Stan file: /Users/connor/GitHub/metab_proc_err/metab_pi_2_modern.stan
+streamMetabolizer IID process-error model: b_Kn_pi_eu_plrcko.stan
+Sampling: chains = 4 , iter = 2000 , warmup = 1000
+
+Important comparison details:
+1. Both models apply the AR likelihood across day boundaries, where the boundary residual is zero.
+2. Bob uses half-normal(0, 1) for baseline process SD.
+3. streamMetabolizer uses its existing half-Cauchy(0, 1) baseline process-SD prior.
+4. Both use half-normal(0, 5) for the nonnegative light coefficient.
+5. Bob indexes Euler process covariates at the incoming observation; streamMetabolizer indexes them at the start of each transition.
+6. In the IID comparison, Bob's sigproc is a per-timestep DO residual SD, while streamMetabolizer's err_proc_iid_sigma is a process-rate SD. Compare their induced DO residuals rather than the raw sigma values.

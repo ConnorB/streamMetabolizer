@@ -113,7 +113,7 @@ test_that('get_params works for each model type, basic GPP & ER equations', {
       saved_steps = 50,
       n_chains = 1,
       n_cores = 1,
-      stan_engine = "cmdstanr"
+      stan_engine = stan_engine_for_tests()
     ),
     data = dat
   )

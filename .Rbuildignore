@@ -23,3 +23,7 @@ temp
 ^README\.Rmd$
 ^code\.json$
 ^\.positai$
+^compare_bob_ar_light\.R$
+^compare_bob_ar_light\.(qmd|rmarkdown)$
+^compare_bob_ar_light_cache$
+^comparison_bob_ar_light_output$

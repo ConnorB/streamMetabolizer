@@ -1,5 +1,20 @@
 # 0.12.1.9000
 
+* improved RStan support with safe persistent compilation caching outside the
+installed package, cache validation and read-only-directory fallback,
+parameter-filtered summaries, serializable retained fits, array-aware posterior
+plots, faster syntax-only checks, and clearer sampling failures
+
+* improved CmdStanR support with backend-aware Stan syntax selection,
+persistent executable caching, parameter-filtered summaries, durable retained
+fit objects, correct indexed posterior plots, CmdStan-based syntax checks, and
+clearer setup and sampling errors
+
+* added Bayesian process-only models with AR(1) process residuals and an
+optional light-varying innovation standard deviation, following Bob Hall's
+`metab_proc_err` implementation; multi-day models apply the AR likelihood
+across the concatenated series, including day boundaries
+
 * `convert_date_to_doyhr()` and `convert_doyhr_to_date()` are no longer exported; they are now package internals. This also fixes a spurious deprecation warning that `convert_UTC_to_solartime()` could emit when called via `streamMetabolizer::`.
 
 # 0.12.1

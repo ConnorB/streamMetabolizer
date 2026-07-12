@@ -1,5 +1,60 @@
 context("metab_bayes")
 
+test_that("AR process-error models prepare normalized light fractions", {
+  dat <- data_metab('1', '30')
+  dat$date <- as.Date(dat$solar.time - lubridate::hours(4))
+  model_name <- mm_name(
+    'bayes',
+    err_obs_iid = FALSE,
+    err_proc_acor = TRUE,
+    err_proc_acor_light = TRUE,
+    err_proc_iid = FALSE,
+    deficit_src = 'DO_obs'
+  )
+  model_specs <- specs(model_name)
+
+  stan_data <- prepdata_bayes(dat, NULL, specs = model_specs)
+
+  expect_true('light_frac' %in% names(stan_data))
+  expect_true(all(stan_data$light_frac >= 0))
+  expect_true(all(stan_data$light_frac <= 1))
+  expect_equal(
+    colSums(stan_data$light_frac[seq_len(stan_data$n24), , drop = FALSE]),
+    1
+  )
+  expect_equal(stan_data$err_proc_acor_light_alpha_sigma, 5)
+})
+
+test_that("generated AR process-error Stan models use one-step residuals", {
+  constant_model <- readLines(mm_locate_filename(
+    'b_np_pc_tr_plrcko.stan'
+  ))
+  light_model <- readLines(mm_locate_filename(
+    'b_np_pclv_tr_plrcko.stan'
+  ))
+
+  expect_true(any(grepl(
+    'err_proc_acor\\[i\\] = DO_obs\\[i\\+1\\] - DO_mod\\[i\\+1\\]',
+    constant_model
+  )))
+  expect_true(any(grepl(
+    'err_proc_acor_phi \\* err_proc_acor\\[i-1\\]',
+    constant_model
+  )))
+  expect_true(any(grepl(
+    'err_proc_acor_phi \\* err_proc_acor\\[n-1,j-1\\]',
+    constant_model
+  )))
+  expect_true(any(grepl(
+    'err_proc_acor_light_alpha \\* light_frac\\[i\\+1\\]',
+    light_model
+  )))
+  expect_true(any(grepl(
+    'err_proc_acor_light_alpha \\* light_frac\\[1,j\\]',
+    light_model
+  )))
+})
+
 # # NB: these lines work within testthat() calls:
 # skip()
 # skip_on_cran()
@@ -683,10 +738,10 @@ manual_test3 <- function() {
 }
 
 
-# takes too long to do all the time. also, saving and reloading a stan model
-# doesn't work!
+# This legacy compression benchmark takes too long to run routinely. Backend-
+# specific tests now verify that retained Stan fits can be saved and reloaded.
 test_that("test that metab_models can be saved & reloaded (see helper-save_load.R)", {
-  skip("NB: saving and reloading a stan model doesn't work!")
+  skip("slow legacy compression benchmark; serialization is tested by backend")
 
   source('tests/testthat/helper-save_load.R')
 
@@ -711,8 +766,8 @@ test_that("test that metab_models can be saved & reloaded (see helper-save_load.
   plot_save_load_timing(rdstimes)
 
   # save and load the mm, make sure it stays the same
-  mmls <- test_save_load_recovery(mm) # fails!
-  expect_equal(get_mcmc(mmls$original), get_mcmc(mmls$reloaded)) # fails!
+  mmls <- test_save_load_recovery(mm)
+  expect_equal(get_mcmc(mmls$original), get_mcmc(mmls$reloaded))
 })
 
 ## Code you can run after fitting any MCMC model

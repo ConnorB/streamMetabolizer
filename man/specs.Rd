@@ -54,6 +54,7 @@ specs(
   err_proc_acor_phi_alpha = 1,
   err_proc_acor_phi_beta = 1,
   err_proc_acor_sigma_scale = 1,
+  err_proc_acor_light_alpha_sigma = 5,
   err_mult_GPP_sdlog_sigma = 1,
   params_in,
   params_out,
@@ -333,6 +334,12 @@ half-Cauchy distribution for err_proc_acor_sigma, the standard deviation of
 the autocorrelated component of process [& sometimes observation] error.
 Visualize the PDF of err_proc_acor_sigma with \code{\link{plot_distribs}}.}
 
+\item{err_proc_acor_light_alpha_sigma}{The scale parameter of a half-normal
+prior on \code{err_proc_acor_light_alpha}. The fitted alpha is the increase
+in the process-error innovation standard deviation at a timestep receiving
+all of the day's light; actual increases are alpha times the timestep's
+fraction of daily light.}
+
 \item{err_mult_GPP_sdlog_sigma}{The scale parameter of a half-normal
 distribution for err_mult_GPP_sdlog, the scale parameter of the lognormal
 distribution of err_mult_GPP. err_mult_GPP is multiplied by light and then
@@ -363,7 +370,9 @@ means save all steps.}
 
 \item{stan_engine}{Character string specifying which Stan R interface to use.
 Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
-behavior of the streamMetabolizer package.}
+behavior of the streamMetabolizer package. CmdStanR requires both the R
+package and a configured CmdStan installation; see
+[cmdstanr::install_cmdstan()].}
 
 \item{verbose}{logical. give status messages?}
 
@@ -514,7 +523,9 @@ often should, be overridden to tailor the model to your needs.
   K600_lnQ_nodes_meanlog, K600_lnQ_nodes_sdlog, K600_daily_sigma_sigma}.
   \item If \code{err_obs_iid} then \code{err_obs_iid_sigma_scale}. \item If
   \code{err_proc_acor} then \code{err_proc_acor_phi_alpha,
-  err_proc_acor_phi_beta, err_proc_acor_sigma_scale}. \item If
+  err_proc_acor_phi_beta, err_proc_acor_sigma_scale}, and, if
+  \code{err_proc_acor_light},
+  \code{err_proc_acor_light_alpha_sigma}. \item If
   \code{err_proc_iid} then \code{err_proc_iid_sigma_scale}. \item If
   \code{err_proc_GPP} then \code{err_mult_GPP_sdlog_sigma}.}
 

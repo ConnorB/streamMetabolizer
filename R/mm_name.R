@@ -76,7 +76,12 @@
 #'   the model will be fit to the differences in successive DO measurements,
 #'   rather than to the DO measurements themselves.
 #' @param err_proc_acor logical. Should autocorrelated process error (with the
-#'   autocorrelation term phi fitted) be included?
+#'   autocorrelation term phi fitted) be included? For multi-day Bayesian
+#'   process-error models, the AR likelihood continues across day boundaries.
+#' @param err_proc_acor_light logical. Should the innovation standard deviation
+#'   of autocorrelated process error increase linearly with the fraction of
+#'   each day's light occurring at that timestep? Only available when
+#'   \code{err_proc_acor=TRUE}.
 #' @param err_proc_iid logical. Should IID process error be included?
 #' @param err_proc_GPP logical. Should IID process error in GPP be included?
 #'   This kind of error occurs only during the day and is used to adjust GPP
@@ -154,6 +159,8 @@
 #' mm_name('night')
 #' mm_name('sim', err_proc_acor=TRUE)
 #' mm_name('bayes', pool_K600='binned')
+#' mm_name('bayes', err_obs_iid=FALSE, err_proc_acor=TRUE,
+#'   err_proc_acor_light=TRUE, err_proc_iid=FALSE, deficit_src='DO_obs')
 mm_name <- function(
   type = c('mle', 'bayes', 'night', 'Kmodel', 'sim'),
   #pool_GPP='none', pool_ER='none', pool_eoi='alldays', pool_epc='alldays', pool_epi='alldays',
@@ -172,6 +179,7 @@ mm_name <- function(
   ),
   err_obs_iid = c(TRUE, FALSE),
   err_proc_acor = c(FALSE, TRUE),
+  err_proc_acor_light = c(FALSE, TRUE),
   err_proc_iid = c(FALSE, TRUE),
   err_proc_GPP = c(FALSE, TRUE),
   ode_method = c(
@@ -219,6 +227,7 @@ mm_name <- function(
     pool_all = 'complete'
     err_obs_iid = FALSE
     err_proc_acor = FALSE
+    err_proc_acor_light = FALSE
     err_proc_iid = FALSE
     err_proc_GPP = FALSE
     ode_method = 'NA'
@@ -246,6 +255,12 @@ mm_name <- function(
     }
     if (!is.logical(err_proc_acor) || length(err_proc_acor) != 1) {
       stop("need err_proc_acor to be a logical of length 1")
+    }
+    if (!is.logical(err_proc_acor_light) || length(err_proc_acor_light) != 1) {
+      stop("need err_proc_acor_light to be a logical of length 1")
+    }
+    if (err_proc_acor_light && !err_proc_acor) {
+      stop("err_proc_acor_light requires err_proc_acor=TRUE")
     }
     if (!is.logical(err_proc_iid) || length(err_proc_iid) != 1) {
       stop("need err_proc_iid to be a logical of length 1")
@@ -300,6 +315,7 @@ mm_name <- function(
     '_',
     if (err_obs_iid) 'oi',
     if (err_proc_acor) 'pc',
+    if (err_proc_acor_light) 'lv',
     if (err_proc_iid) 'pi',
     if (err_proc_GPP) 'pp',
     '_',
