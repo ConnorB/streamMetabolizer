@@ -405,13 +405,15 @@ predict_DO.metab_sim <- function(
 #' ~ lnQ relationship
 #'
 #' @inheritParams specs
+#' @param ... Additional simulation parameters, which are ignored.
 #' @export
 sim_Kb <- function(
   K600_lnQ_nodes_centers,
   K600_lnQ_cnode_meanlog,
   K600_lnQ_cnode_sdlog,
   K600_lnQ_nodediffs_meanlog,
-  K600_lnQ_nodediffs_sdlog
+  K600_lnQ_nodediffs_sdlog,
+  ...
 ) {
   # check Q bins
   if (!is.numeric(K600_lnQ_nodes_centers)) {
