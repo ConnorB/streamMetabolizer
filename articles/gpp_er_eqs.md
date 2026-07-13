@@ -31,8 +31,8 @@ time.
 ``` r
 
 # the Classic: linear GPP, constant ER (also the default)
-mm_classic <- 
-  mm_name('mle', GPP_fun='linlight', ER_fun='constant') %>% 
+mm_classic <-
+  mm_name('mle', GPP_fun='linlight', ER_fun='constant') %>%
   specs() %>%
   metab(dat)
 mm_classic
@@ -49,7 +49,7 @@ mm_classic
       init.GPP.daily    8
       init.ER.daily     -10
       init.K600.daily   10
-    Fitting time: 0.395 secs elapsed
+    Fitting time: 0.412 secs elapsed
     Parameters (3 dates):
             date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily ER.daily.lower ER.daily.upper
     1 2012-09-18 2.814873         2.158411        3.471335 -2.113937       -2.647969      -1.579906
@@ -71,8 +71,8 @@ constant.
 ``` r
 
 # the Saturator: GPP saturating with light, constant ER
-mm_saturator <- 
-  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>% 
+mm_saturator <-
+  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>%
   specs() %>%
   metab(dat)
 mm_saturator
@@ -90,7 +90,7 @@ mm_saturator
       init.alpha        1e-04
       init.ER.daily     -10
       init.K600.daily   10
-    Fitting time: 1.258 secs elapsed
+    Fitting time: 1.304 secs elapsed
     Parameters (3 dates):
             date       Pmax Pmax.lower Pmax.upper         alpha  alpha.lower alpha.upper    ER.daily
     1 2012-09-18  6.033049    5.715948   6.350149 0.0083268781  0.0078854775 0.008768279 -1.9344527
@@ -168,8 +168,8 @@ even be combined.
 
 ``` r
 
-mm_saturator2 <- 
-  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>% 
+mm_saturator2 <-
+  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>%
   specs() %>%
   metab(dat, data_daily=select(get_params(mm_saturator), date, init.Pmax=Pmax, init.alpha=alpha))
 get_params(mm_saturator2)
@@ -194,8 +194,8 @@ get_params(mm_saturator2)
 
 ``` r
 
-mm_saturator3 <- 
-  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>% 
+mm_saturator3 <-
+  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>%
   specs(init.Pmax=6.2, init.alpha=0.008) %>%
   metab(dat)
 get_params(mm_saturator3)
@@ -220,8 +220,8 @@ get_params(mm_saturator3)
 
 ``` r
 
-mm_saturator4 <- 
-  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>% 
+mm_saturator4 <-
+  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>%
   specs(init.Pmax=6.2, init.alpha=0.008) %>%
   metab(dat, transmute(get_params(mm_saturator), date, init.Pmax=Pmax[1], init.alpha=alpha[1])[2,])
 get_params(mm_saturator4)

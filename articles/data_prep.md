@@ -71,12 +71,12 @@ library(ggplot2)
 
 ``` r
 
-dat %>% 
+dat %>%
   mutate(DO.pctsat = 100 * (DO.obs / DO.sat)) %>%
   select(solar.time, starts_with('DO')) %>%
   gather(type, DO.value, starts_with('DO')) %>%
   mutate(units=ifelse(type == 'DO.pctsat', 'DO\n(% sat)', 'DO\n(mg/L)')) %>%
-  ggplot(aes(x=solar.time, y=DO.value, color=type)) + geom_line() + 
+  ggplot(aes(x=solar.time, y=DO.value, color=type)) + geom_line() +
   facet_grid(units ~ ., scale='free_y') + theme_bw() +
   scale_color_discrete('variable')
 ```
@@ -86,13 +86,13 @@ dat %>%
 ``` r
 
 labels <- c(depth='depth\n(m)', temp.water='water temp\n(deg C)', light='PAR\n(umol m^-2 s^-1)')
-dat %>% 
+dat %>%
   select(solar.time, depth, temp.water, light) %>%
   gather(type, value, depth, temp.water, light) %>%
   mutate(
     type=ordered(type, levels=c('depth','temp.water','light')),
     units=ordered(labels[type], unname(labels))) %>%
-  ggplot(aes(x=solar.time, y=value, color=type)) + geom_line() + 
+  ggplot(aes(x=solar.time, y=value, color=type)) + geom_line() +
   facet_grid(units ~ ., scale='free_y') + theme_bw() +
   scale_color_discrete('variable')
 ```

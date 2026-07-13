@@ -25,9 +25,10 @@
   syntax-only checks, and clearer sampling failures
 
 - improved CmdStanR support with backend-aware Stan syntax selection,
-  persistent executable caching, parameter-filtered summaries, durable
-  retained fit objects, correct indexed posterior plots, CmdStan-based
-  syntax checks, and clearer setup and sampling errors
+  platform- and toolchain-safe persistent executable caching,
+  parameter-filtered summaries, durable retained fit objects, correct
+  indexed posterior plots, CmdStan-based syntax checks, and clearer
+  setup and sampling errors
 
 - added Bayesian process-only models with AR(1) process residuals and an
   optional light-varying innovation standard deviation, following Bob

@@ -48,12 +48,12 @@ mm_trapezoid <- metab(specs(mm_name('mle', ode_method='trapezoid')), dat)
 
 ``` r
 
-mm_rk4 <- metab(specs(mm_name('mle', ode_method='rk4')), dat) 
+mm_rk4 <- metab(specs(mm_name('mle', ode_method='rk4')), dat)
 ```
 
 ``` r
 
-mm_lsoda <- metab(specs(mm_name('mle', ode_method='lsoda')), dat) 
+mm_lsoda <- metab(specs(mm_name('mle', ode_method='lsoda')), dat)
 ```
 
     Warning: we've seen bad results with ODE methods 'lsoda', 'lsodes', and 'lsodar'. Use at your own

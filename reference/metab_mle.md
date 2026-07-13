@@ -96,7 +96,7 @@ metab_mle(data=dat, data_daily=dat_daily)
 #>   init.GPP.daily    8                                                           
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.154 secs elapsed
+#> Fitting time: 0.161 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily
 #> 1 2012-09-18 3.202406         3.018387        3.386425 -2.419569 
@@ -137,7 +137,7 @@ metab_mle(data=dat, data_daily=dat_daily)
 #>   init.GPP.daily    8                                                           
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.234 secs elapsed
+#> Fitting time: 0.244 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily
 #> 1 2012-09-18 2.816207         1.894260        3.738153 -2.116196 
@@ -178,7 +178,7 @@ metab_mle(specs(mm_name('mle', GPP_fun='satlight')), data=dat)
 #>   init.alpha        1e-04                                                       
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.852 secs elapsed
+#> Fitting time: 0.889 secs elapsed
 #> Parameters (3 dates):
 #>         date      Pmax Pmax.lower Pmax.upper        alpha alpha.lower
 #> 1 2012-09-18 6.109051    5.645596   6.572507 0.008351592  0.007714564
@@ -213,7 +213,7 @@ metab_mle(specs(mm_name('mle', ER_fun='q10temp')), data=dat)
 #>   init.GPP.daily    8                                                           
 #>   init.ER20         -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.263 secs elapsed
+#> Fitting time: 0.274 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper       ER20 ER20.lower
 #> 1 2012-09-18 2.056615         1.532462        2.580768 -2.704649   -3.453849

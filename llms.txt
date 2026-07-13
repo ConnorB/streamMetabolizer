@@ -39,15 +39,15 @@ To see the recommended citation for this package, please run
 
 citation('streamMetabolizer')
 ## To cite streamMetabolizer in publications, please use:
-## 
+##
 ##   Appling, Alison P., Robert O. Hall, Charles B. Yackulic, and Maite
 ##   Arroita. “Overcoming Equifinality: Leveraging Long Time Series for
 ##   Stream Metabolism Estimation.” Journal of Geophysical Research:
 ##   Biogeosciences 123, no. 2 (February 2018): 624–45.
 ##   https://doi.org/10.1002/2017JG004140.
-## 
+##
 ## A BibTeX entry for LaTeX users is
-## 
+##
 ##   @Article{,
 ##     author = {Alison P. Appling and Robert O. {Hall Jr.} and Charles B. Yackulic and Maite Arroita},
 ##     title = {Overcoming Equifinality: Leveraging Long Time Series for Stream Metabolism Estimation},

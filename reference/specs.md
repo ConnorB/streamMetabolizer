@@ -88,7 +88,7 @@ specs(
   K600_lnQ_nodediffs_meanlog = 0.2,
   lnK600_lnQ_nodes = function(K600_lnQ_nodes_centers, K600_lnQ_cnode_meanlog,
     K600_lnQ_cnode_sdlog, K600_lnQ_nodediffs_meanlog, K600_lnQ_nodediffs_sdlog, ...) {
-  
+
       sim_Kb(K600_lnQ_nodes_centers, K600_lnQ_cnode_meanlog, K600_lnQ_cnode_sdlog,
     K600_lnQ_nodediffs_meanlog, K600_lnQ_nodediffs_sdlog)
  },
