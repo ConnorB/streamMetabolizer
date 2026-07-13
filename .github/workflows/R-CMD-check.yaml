@@ -45,6 +45,7 @@ jobs:
           dependencies: '"all"'
           extra-packages: >-
             any::rcmdcheck,
+            local::.,
             any::BH,
             any::Rcpp,
             any::RcppEigen,
