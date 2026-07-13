@@ -11,7 +11,8 @@ sim_Kb(
   K600_lnQ_cnode_meanlog,
   K600_lnQ_cnode_sdlog,
   K600_lnQ_nodediffs_meanlog,
-  K600_lnQ_nodediffs_sdlog
+  K600_lnQ_nodediffs_sdlog,
+  ...
 )
 ```
 
@@ -46,3 +47,7 @@ sim_Kb(
   hyperparameter for pool_K600='binned'. The standard deviations of the
   differences in estimated K600 between successive lnQ_nodes (bins),
   where the means of those differences are always zero
+
+- ...:
+
+  Additional simulation parameters, which are ignored.

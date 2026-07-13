@@ -86,10 +86,7 @@ specs(
   K600_lnQ_cnode_meanlog = log(6),
   K600_lnQ_cnode_sdlog = 1,
   K600_lnQ_nodediffs_meanlog = 0.2,
-  lnK600_lnQ_nodes = function(K600_lnQ_nodes_centers, K600_lnQ_cnode_meanlog,
-    K600_lnQ_cnode_sdlog, K600_lnQ_nodediffs_meanlog, K600_lnQ_nodediffs_sdlog, ...)
-    sim_Kb(K600_lnQ_nodes_centers, K600_lnQ_cnode_meanlog, K600_lnQ_cnode_sdlog,
-    K600_lnQ_nodediffs_meanlog, K600_lnQ_nodediffs_sdlog),
+  lnK600_lnQ_nodes = sim_Kb,
   discharge_daily = function(n, ...) rnorm(n, 20, 3),
   DO_mod_1 = NULL,
   K600_daily = function(n, K600_daily_predlog = log(10), ...) {
