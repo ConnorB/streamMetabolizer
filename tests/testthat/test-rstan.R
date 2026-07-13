@@ -49,6 +49,16 @@ test_that('RStan cache keys tolerate missing optional toolchain packages', {
   )
 })
 
+test_that('RStan compilation is skipped on R-devel', {
+  expect_false(rstan_compilation_is_available(
+    'R Under development (unstable) (2026-06-21 r90185)'
+  ))
+  expect_identical(
+    rstan_compilation_is_available('R version 4.6.1'),
+    rstan_is_available()
+  )
+})
+
 test_that('the default RStan cache always resolves to a writable directory', {
   skip_if_no_rstan()
 
@@ -74,8 +84,24 @@ test_that('RStan syntax checking does not require C++ compilation', {
   )
 })
 
-test_that('RStan caches models and retained fits survive serialization', {
+test_that('RStan compilation preserves the original compiler error', {
   skip_if_no_rstan()
+
+  stan_file <- tempfile(fileext = '.stan')
+  cache_root <- tempfile('streamMetabolizer-cache-')
+  old_options <- options(streamMetabolizer.rstan_cache_dir = cache_root)
+  on.exit(options(old_options), add = TRUE)
+  writeLines('parameters { real y; } model { y ~ normal(0, 1); }', stan_file)
+  local_mocked_bindings(
+    stan_model = function(...) stop('compiler exploded'),
+    .package = 'rstan'
+  )
+
+  expect_error(load_rstan_model(stan_file), 'compiler exploded')
+})
+
+test_that('RStan caches models and retained fits survive serialization', {
+  skip_if_no_rstan_compilation()
 
   stan_file <- tempfile(fileext = '.stan')
   cache_root <- tempfile('streamMetabolizer-cache-')

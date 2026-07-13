@@ -20,6 +20,16 @@ skip_if_no_rstan <- function() {
   )
 }
 
+skip_if_no_rstan_compilation <- function() {
+  testthat::skip_if_not(
+    rstan_compilation_is_available(),
+    paste(
+      'RStan C++ compilation is unavailable or intentionally skipped',
+      'on R-devel'
+    )
+  )
+}
+
 rstan_is_available <- function() {
   packages <- c(
     'rstan',
@@ -37,12 +47,24 @@ rstan_is_available <- function() {
   ))
 }
 
+rstan_compilation_is_available <- function(
+  r_version_string = R.version.string
+) {
+  rstan_is_available() &&
+    !grepl('Under development', r_version_string, fixed = TRUE)
+}
+
 stan_engine_for_tests <- function() {
   if (cmdstan_is_available()) {
     return('cmdstanr')
   }
-  if (rstan_is_available()) {
+  if (rstan_compilation_is_available()) {
     return('rstan')
   }
-  testthat::skip('neither CmdStanR nor RStan is available')
+  testthat::skip(
+    paste(
+      'neither CmdStanR nor an RStan configuration suitable for C++',
+      'compilation is available'
+    )
+  )
 }

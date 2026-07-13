@@ -1172,17 +1172,11 @@ load_rstan_model <- function(model_path, verbose = FALSE) {
       message('compiling RStan model')
     }
     compile_time <- system.time({
-      compile_log <- capture.output(
-        {
-          stan_mobj <- rstan::stan_model(
-            file = model_path,
-            save_dso = TRUE,
-            auto_write = FALSE,
-            verbose = verbose
-          )
-        },
-        type = 'output',
-        split = verbose
+      stan_mobj <- rstan::stan_model(
+        file = model_path,
+        save_dso = TRUE,
+        auto_write = FALSE,
+        verbose = verbose
       )
     })
     cache_temp <- tempfile(
