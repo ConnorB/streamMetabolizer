@@ -22,3 +22,5 @@
 ^\.positai$
 ^pkgdown$
 ^vignettes/\.quarto$
+^[.]?air[.]toml$
+^\.vscode$

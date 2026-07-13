@@ -279,7 +279,9 @@ mm_name <- function(
     deficit_src <- match.arg(deficit_src)
   } else {
     if (any(!(given_args %in% c('type', 'engine', 'check_validity')))) {
-      .cli_abort("for Kmodel, only type, engine, and check_validity may be specified")
+      .cli_abort(
+        "for Kmodel, only type, engine, and check_validity may be specified"
+      )
     }
   }
   engine <- match.arg(engine)

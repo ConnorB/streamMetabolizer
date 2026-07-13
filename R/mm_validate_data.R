@@ -102,13 +102,19 @@ mm_validate_data <- function(
         )
       }
       if (timecol == 'solar.time' && !lubridate::is.POSIXct(dat[[timecol]])) {
-        .cli_abort("expecting 'solar.time' to be of class 'POSIXct'", call. = FALSE)
+        .cli_abort(
+          "expecting 'solar.time' to be of class 'POSIXct'",
+          call. = FALSE
+        )
       }
       if (
         timecol == 'solar.time' &&
           !(lubridate::tz(dat[[timecol]]) %in% c('UTC', 'GMT'))
       ) {
-        .cli_abort("expecting 'solar.time' to have timezone 'UTC'", call. = FALSE)
+        .cli_abort(
+          "expecting 'solar.time' to have timezone 'UTC'",
+          call. = FALSE
+        )
       }
       if (timecol == 'date' && !lubridate::is.Date(dat[[timecol]])) {
         .cli_abort("expecting 'date' to be of class 'Date'", call. = FALSE)

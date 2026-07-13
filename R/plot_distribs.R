@@ -62,7 +62,9 @@ plot_distribs <- function(
 
   style <- match.arg(style)
   if (!class(dist_data)[1] %in% c('specs', 'metab_bayes')) {
-    .cli_abort("can only plot distribs for models of class 'specs' or 'metab_bayes'")
+    .cli_abort(
+      "can only plot distribs for models of class 'specs' or 'metab_bayes'"
+    )
   }
 
   # extract just the parameters we're interested in. do it this way rather than
@@ -193,7 +195,9 @@ plot_distribs <- function(
             hyperpars$sdlog <- hyperpars$sdlog[index[1]]
           }
         } else {
-          .cli_warn('multiple priors for this parameter; only showing the first')
+          .cli_warn(
+            'multiple priors for this parameter; only showing the first'
+          )
           hyperpars$meanlog <- hyperpars$meanlog[1]
           hyperpars$sdlog <- hyperpars$sdlog[1]
         }
@@ -251,7 +255,9 @@ plot_distribs <- function(
     mc <- get_mcmc(dist_data)
     if (inherits(mc, 'stanfit')) {
       if (!requireNamespace('rstan', quietly = TRUE)) {
-        .cli_abort('the rstan package is required to investigate Stan MCMC models')
+        .cli_abort(
+          'the rstan package is required to investigate Stan MCMC models'
+        )
       }
       draws <- rstan::extract(mc, pars = parname)[[parname]]
       selected <- select_rstan_draws(draws, parname, index)
@@ -272,7 +278,9 @@ plot_distribs <- function(
       select(dist, x, y)
     densdf <- bind_rows(densdf, post)
     if (!indexed_prior && !indexed_posterior && !missing(index)) {
-      .cli_warn('index will be ignored because prior & posterior are not indexed')
+      .cli_warn(
+        'index will be ignored because prior & posterior are not indexed'
+      )
     }
   } else {
     indexed_posterior <- FALSE

@@ -90,7 +90,9 @@ metab_bayes <- function(
       )
     }
     if (num_discharge_cols > 1) {
-      .cli_abort('either discharge or discharge.daily may be specified, but not both')
+      .cli_abort(
+        'either discharge or discharge.daily may be specified, but not both'
+      )
     }
 
     # Handle discharge. If K600 is a hierarchical function of discharge and
@@ -189,7 +191,9 @@ metab_bayes <- function(
         .cli_abort("if keep_mcmcs is logical, it must have length 1")
       }
     } else if (specs$split_dates == FALSE) {
-      .cli_abort("if split_dates==FALSE, keep_mcmcs must be a single logical value")
+      .cli_abort(
+        "if split_dates==FALSE, keep_mcmcs must be a single logical value"
+      )
     }
     if (is.logical(specs$keep_mcmc_data)) {
       if (length(specs$keep_mcmc_data) != 1) {
