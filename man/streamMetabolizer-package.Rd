@@ -119,10 +119,10 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Alison P. Appling \email{aappling@usgs.gov}
-  \item Robert O. Hall
-  \item Maite Arroita
-  \item Charles B. Yackulic
+  \item Alison P. Appling \email{aappling@usgs.gov} (\href{https://orcid.org/0000-0003-3638-8572}{ORCID})
+  \item Robert O. Hall (\href{https://orcid.org/0000-0002-0763-5346}{ORCID})
+  \item Maite Arroita (\href{https://orcid.org/0000-0001-8754-7604}{ORCID})
+  \item Charles B. Yackulic (\href{https://orcid.org/0000-0001-9661-0724}{ORCID})
 }
 
 }

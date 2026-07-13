@@ -93,11 +93,14 @@ with:
 pak::pak("ConnorB/streamMetabolizer")
 ```
 
-If you would like to build vignettes after installation, you can do so
-with:
+The rendered vignettes are available as articles on the [package
+website](https://connorb.github.io/streamMetabolizer/articles/).
+
+If you would like them available locally (via
+`browseVignettes("streamMetabolizer")`), install with vignettes built.
 
 ``` r
-devtools::build_vignettes("streamMetabolizer")
+remotes::install_github("ConnorB/streamMetabolizer", build_vignettes = TRUE)
 ```
 
 ### Software dependencies for Bayesian models

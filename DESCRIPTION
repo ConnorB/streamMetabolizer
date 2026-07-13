@@ -4,10 +4,14 @@ Title: Models for Estimating Aquatic Photosynthesis and Respiration
 Version: 0.12.1.9000
 Date: 2026-07-12
 Authors@R: c(
-    person("Alison P.", "Appling", , "aappling@usgs.gov", role = "aut"),
-    person("Robert O.", "Hall", role = "aut"),
-    person("Maite", "Arroita", role = "aut"),
-    person("Charles B.", "Yackulic", role = "aut"),
+    person("Alison P.", "Appling", , "aappling@usgs.gov", role = "aut",
+           comment = c(ORCID = "0000-0003-3638-8572")),
+    person("Robert O.", "Hall", role = "aut",
+           comment = c(ORCID = "0000-0002-0763-5346")),
+    person("Maite", "Arroita", role = "aut",
+           comment = c(ORCID = "0000-0001-8754-7604")),
+    person("Charles B.", "Yackulic", role = "aut",
+           comment = c(ORCID = "0000-0001-9661-0724")),
     person("Connor", "Brown", , "ConnorBrown1996@gmail.com", role = c("cre", "ctb"),
            comment = c(ORCID = "0000-0002-9680-8930"))
   )

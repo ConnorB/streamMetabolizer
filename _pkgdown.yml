@@ -3,6 +3,14 @@ llm-docs: true
 authors:
   Connor Brown:
     href: https://connorb.github.io/
+  Alison P. Appling:
+    href: https://www.usgs.gov/staff-profiles/alison-appling
+  Robert O. Hall:
+    href: https://robohall.github.io/
+  Charles B. Yackulic:
+    href: https://www.usgs.gov/staff-profiles/charles-b-yackulic
+  Maite Arroita:
+    href: https://www.ehu.eus/streamecology/maite-arroita.html
 template:
   bootstrap: 5
   light-switch: true
