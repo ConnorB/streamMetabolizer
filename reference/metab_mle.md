@@ -96,7 +96,7 @@ metab_mle(data=dat, data_daily=dat_daily)
 #>   init.GPP.daily    8                                                           
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.161 secs elapsed
+#> Fitting time: 0.103 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily
 #> 1 2012-09-18 3.202406         3.018387        3.386425 -2.419569 
@@ -137,7 +137,7 @@ metab_mle(data=dat, data_daily=dat_daily)
 #>   init.GPP.daily    8                                                           
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.244 secs elapsed
+#> Fitting time: 0.152 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily
 #> 1 2012-09-18 2.816207         1.894260        3.738153 -2.116196 
@@ -178,25 +178,25 @@ metab_mle(specs(mm_name('mle', GPP_fun='satlight')), data=dat)
 #>   init.alpha        1e-04                                                       
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.889 secs elapsed
+#> Fitting time: 0.457 secs elapsed
 #> Parameters (3 dates):
-#>         date      Pmax Pmax.lower Pmax.upper        alpha alpha.lower
-#> 1 2012-09-18 6.109051    5.645596   6.572507 0.008351592  0.007714564
-#> 2 2012-09-19 7.286768    6.537958   8.035577 0.009177225  0.008270835
-#> 3 2012-09-20 6.269003    5.586875   6.951132 0.007380747  0.006604585
+#>         date       Pmax Pmax.lower Pmax.upper        alpha alpha.lower
+#> 1 2012-09-18  6.109026    5.645578   6.572475 0.008351644  0.007714611
+#> 2 2012-09-19  7.286768    6.537958   8.035577 0.009177225  0.008270835
+#> 3 2012-09-20 -6.269003   -6.944955  -5.593052 0.007380747  0.006604207
 #>   alpha.upper   ER.daily ER.daily.lower ER.daily.upper K600.daily
-#> 1 0.008988621 -1.958640       -2.091695      -1.825586  24.80407 
+#> 1 0.008988677 -1.958644       -2.091698      -1.825590  24.80400 
 #> 2 0.010083616 -2.260354       -2.468651      -2.052058  26.65527 
-#> 3 0.008156909 -1.685959       -1.851738      -1.520180  24.46159 
+#> 3 0.008157286 -1.685959       -1.851037      -1.520881  24.46159 
 #>   K600.daily.lower K600.daily.upper msgs.fit
-#> 1         23.32555         26.28260         
+#> 1         23.32549         26.28251         
 #> 2         24.52059         28.78995         
-#> 3         22.48988         26.43329         
+#> 3         22.50383         26.41934         
 #> Predictions (3 dates):
 #>         date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1 2012-09-18 2.495259        NA        NA -1.958640 -2.091695 -1.825586
+#> 1 2012-09-18 2.495255        NA        NA -1.958644 -2.091698 -1.825590
 #> 2 2012-09-19 2.892573        NA        NA -2.260354 -2.468651 -2.052058
-#> 3 2012-09-20 2.422478        NA        NA -1.685959 -1.851738 -1.520180
+#> 3 2012-09-20 2.422478        NA        NA -1.685959 -1.851037 -1.520881
 #>   msgs.fit msgs.pred
 #> 1                   
 #> 2                   
@@ -213,10 +213,10 @@ metab_mle(specs(mm_name('mle', ER_fun='q10temp')), data=dat)
 #>   init.GPP.daily    8                                                           
 #>   init.ER20         -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.274 secs elapsed
+#> Fitting time: 0.185 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper       ER20 ER20.lower
-#> 1 2012-09-18 2.056615         1.532462        2.580768 -2.704649   -3.453849
+#> 1 2012-09-18 2.056615         1.532462        2.580769 -2.704649   -3.453849
 #> 2 2012-09-19 2.438948         1.833218        3.044678 -3.149906   -4.011733
 #> 3 2012-09-20 2.097309         1.653788        2.540831 -2.377270   -2.962660
 #>   ER20.upper K600.daily K600.daily.lower K600.daily.upper msgs.fit
@@ -225,7 +225,7 @@ metab_mle(specs(mm_name('mle', ER_fun='q10temp')), data=dat)
 #> 3  -1.791879  22.85723          18.55131         27.16315         
 #> Predictions (3 dates):
 #>         date      GPP GPP.lower GPP.upper        ER ER.lower ER.upper msgs.fit
-#> 1 2012-09-18 2.056615  1.532462  2.580768 -1.546919       NA       NA         
+#> 1 2012-09-18 2.056615  1.532462  2.580769 -1.546919       NA       NA         
 #> 2 2012-09-19 2.438948  1.833218  3.044678 -1.836107       NA       NA         
 #> 3 2012-09-20 2.097309  1.653788  2.540831 -1.386761       NA       NA         
 #>   msgs.pred

@@ -232,7 +232,7 @@ dat <- data_metab(num_days='3')
 mm <- metab(specs(mm_name('mle')), data=dat, info='my info')
 predict_metab(mm)
 #>         date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1 2012-09-18 2.812955  2.435230  3.190681 -2.103521 -2.410113 -1.796929
+#> 1 2012-09-18 2.812955  2.435230  3.190681 -2.103521 -2.410113 -1.796930
 #> 2 2012-09-19 3.277526  2.866958  3.688094 -2.470115 -2.808856 -2.131375
 #> 3 2012-09-20 2.582700  2.313734  2.851666 -1.709653 -1.914700 -1.504606
 #>   msgs.fit warnings errors
@@ -243,7 +243,7 @@ get_info(mm)
 #> [1] "my info"
 get_fitting_time(mm)
 #>    user  system elapsed 
-#>   0.737   0.000   0.737 
+#>   0.462   0.000   0.461 
 
 # with chaining & customization
 library(dplyr)
