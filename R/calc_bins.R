@@ -1,6 +1,6 @@
 #' Assign continuous values in a vector to discrete bins
 #'
-#' Assigns each value in \code{vec} a new, discrete value corresponding to a
+#' Assigns each value in `vec` a new, discrete value corresponding to a
 #' bin. This function provides one interface to the functions
 #' `base::cut`, `ggplot2::cut_interval`, and `ggplot2::cut_number`.
 #'
@@ -10,7 +10,7 @@
 #' @param method a single character string indicating the automated bin
 #'   selection method to use
 #' @param bounds if method=='bounds', a numeric vector of bin boundaries
-#' @param \dots other arguments (e.g. \code{n}, \code{width}) passed to the
+#' @param \dots other arguments (e.g. `n`, `width`) passed to the
 #'   ggplot function corresponding to the value of cuts, if cuts is a character
 #'   (otherwise ignored)
 #' @export

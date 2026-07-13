@@ -14,11 +14,11 @@
 #'
 #'   \itemize{
 #'
-#'   \item \code{\link{calc_depth}}
+#'   \item [calc_depth()]
 #'
-#'   \item \code{\link{calc_DO_sat}}
+#'   \item [calc_DO_sat()]
 #'
-#'   \item \code{\link{calc_light}}
+#'   \item [calc_light()]
 #'
 #'   }
 #'
@@ -26,13 +26,13 @@
 #'
 #'   \itemize{
 #'
-#'   \item \code{\link{convert_localtime_to_UTC}}
+#'   \item [convert_localtime_to_UTC()]
 #'
-#'   \item \code{\link{convert_UTC_to_solartime}}
+#'   \item [convert_UTC_to_solartime()]
 #'
-#'   \item \code{\link{convert_k600_to_kGAS}}
+#'   \item [convert_k600_to_kGAS()]
 #'
-#'   \item \code{\link{convert_PAR_to_SW}}
+#'   \item [convert_PAR_to_SW()]
 #'
 #'   }
 #'
@@ -40,11 +40,11 @@
 #'
 #'   \itemize{
 #'
-#'   \item \code{\link{mm_name}} 1. Choose a model structure
+#'   \item [mm_name()] 1. Choose a model structure
 #'
-#'   \item \code{\link{specs}} 2. Set the specifications
+#'   \item [specs()] 2. Set the specifications
 #'
-#'   \item \code{\link{metab}} 3. Fit the model
+#'   \item [metab()] 3. Fit the model
 #'
 #'   }
 #'
@@ -52,21 +52,21 @@
 #'
 #'   \itemize{
 #'
-#'   \item \code{\link{predict_metab}}
+#'   \item [predict_metab()]
 #'
-#'   \item \code{\link{predict_DO}}
+#'   \item [predict_DO()]
 #'
-#'   \item \code{\link{plot_metab_preds}}
+#'   \item [plot_metab_preds()]
 #'
-#'   \item \code{\link{plot_DO_preds}}
+#'   \item [plot_DO_preds()]
 #'
-#'   \item \code{\link{get_params}}
+#'   \item [get_params()]
 #'
-#'   \item \code{\link{get_fit}}
+#'   \item [get_fit()]
 #'
-#'   \item \code{\link{get_mcmc}} (Bayesian models only)
+#'   \item [get_mcmc()] (Bayesian models only)
 #'
-#'   \item \code{\link{get_fitting_time}}
+#'   \item [get_fitting_time()]
 #'
 #'
 #'   }
@@ -75,15 +75,15 @@
 #'
 #'   \itemize{
 #'
-#'   \item \code{\link{get_specs}}
+#'   \item [get_specs()]
 #'
-#'   \item \code{\link{get_data}}
+#'   \item [get_data()]
 #'
-#'   \item \code{\link{get_data_daily}}
+#'   \item [get_data_daily()]
 #'
-#'   \item \code{\link{get_info}}
+#'   \item [get_info()]
 #'
-#'   \item \code{\link{get_version}}
+#'   \item [get_version()]
 #'
 #'   }
 #'

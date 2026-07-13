@@ -18,6 +18,6 @@ Within each date (as labeled by the 'date' column of \code{data}, select the
 values of solar.time that are within the time range specified by day_start
 and day_end). This function only removes rows and cannot add them; to add
 overlap starting from a continuous time series, see
-\code{\link{mm_model_by_ply}}.
+\code{\link[=mm_model_by_ply]{mm_model_by_ply()}}.
 }
 \keyword{internal}

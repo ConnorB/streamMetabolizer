@@ -1,4 +1,3 @@
-context('distribs')
 # this file is really just to help me wrap my head around parameter
 # distributions and parameter scaling.
 
@@ -17,10 +16,10 @@ explore_scaling <- function() {
 
   # desired
   desired <- rlnorm(n, meanlog = location, sdlog = scale)
-  expect_equal(mean(log(desired)), location, tol = 0.5)
-  expect_equal(sd(log(desired)), scale, tol = 0.2)
+  expect_equal(mean(log(desired)), location, tolerance = 0.5)
+  expect_equal(sd(log(desired)), scale, tolerance = 0.2)
   expect_gt(min(desired), 0)
-  expect_equal(min(desired), 0, tol = 0.1)
+  expect_equal(min(desired), 0, tolerance = 0.1)
   ggplot(tibble::tibble(desired), aes(x = log(desired))) + geom_histogram()
   ggplot(tibble::tibble(desired), aes(x = desired)) +
     geom_histogram() +

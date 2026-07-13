@@ -1,30 +1,30 @@
 #' Fit a metabolism model to data
 #'
-#' Runs the metabolism model specified by the \code{specs} argument. Returns a
+#' Runs the metabolism model specified by the `specs` argument. Returns a
 #' fitted model.
 #'
 #' @author Alison Appling
 #'
 #' @param specs a list of model specifications and parameters for a model.
 #'   Although this may be specified manually (it's just a list), it is easier
-#'   and safer to use \code{\link{specs}} to generate the list, because the set
+#'   and safer to use [specs()] to generate the list, because the set
 #'   of required parameters and their defaults depends on the model given in the
-#'   \code{model_name} argument to \code{specs}. The help file for
-#'   \code{\link{specs}} lists the necessary parameters, describes them in
+#'   `model_name` argument to `specs`. The help file for
+#'   [specs()] lists the necessary parameters, describes them in
 #'   detail, and gives default values.
 #' @param data data.frame (not a tbl_df) of input data at the temporal
 #'   resolution of raw observations (unit-value). Columns must have the same
 #'   names, units, and format as the default. The solar.time column must also
 #'   have a timezone code ('tzone' attribute) of 'UTC'. See the
-#'   \strong{'Formatting \code{data}'} section below for a full description.
+#'   **'Formatting `data`'** section below for a full description.
 #' @param data_daily data.frame containing inputs with a daily timestep. See the
-#'   \strong{'Formatting \code{data_daily}'} section below for a full
+#'   **'Formatting `data_daily`'** section below for a full
 #'   description.
 #' @param info any information, in any format, that you would like to store
 #'   within the metab_model object
 #' @return An object inheriting from metab_model and containing the fitted
 #'   model. This object can be inspected with the functions in the
-#'   \code{\link{metab_model_interface}}.
+#'   [metab_model_interface()].
 #'
 #' @template metab_data
 #'

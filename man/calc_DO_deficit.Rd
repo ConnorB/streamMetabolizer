@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_DO_deficit.R
 \name{calc_DO_deficit}
 \alias{calc_DO_deficit}
-\title{Deprecated: Calculate a vector of dissolved oxygen deficits}
+\title{Calculate a vector of dissolved oxygen deficits}
 \usage{
 calc_DO_deficit(DO.obs, temp.water, pressure.air, salinity.water = 0, ...)
 }
@@ -24,12 +24,19 @@ one or equal to length of \code{temp.water}.}
 a vector of DO.deficit values
 }
 \description{
-Deprecated: Submit a GitHub issue if you want calc_DO_deficit() to stick
-around. Creates a DO.deficit vector for input into metabolism models.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{calc_DO_deficit()} is deprecated. Subtract observed dissolved oxygen from
+the output of \code{\link[=calc_DO_sat]{calc_DO_sat()}} instead.
 }
 \examples{
-\dontrun{
-# Warning: this function is deprecated.
-calc_DO_deficit(DO.obs=7, temp.water=25, pressure.air=900, salinity.water=2.43)
-}
+# Old:
+calc_DO_deficit(
+  DO.obs = 7,
+  temp.water = 25,
+  pressure.air = 900,
+  salinity.water = 2.43
+)
+# New:
+calc_DO_sat(25, 900, 2.43) - 7
 }

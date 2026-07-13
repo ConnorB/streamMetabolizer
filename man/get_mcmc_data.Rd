@@ -20,7 +20,7 @@ The MCMC data list
 A function specific to metab_bayes models. Returns data as formatted to run
 through the MCMC process or, for nopool models, a list of data lists. These
 lists are not saved by default; see \code{keep_mcmc_data} argument to
-\code{\link{specs}} for options.
+\code{\link[=specs]{specs()}} for options.
 }
 \section{Methods (by class)}{
 \itemize{

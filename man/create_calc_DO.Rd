@@ -20,7 +20,7 @@ function of GPP, ER, DO, etc. at t=1 \item \code{trapezoid}, formerly
 \code{pairmeans}: the final change in DO from t=1 to t=2 is a function of
 the mean values of GPP, ER, etc. across t=1 and t=2. \item for
 \code{type='mle'}, options also include \code{rk2} and any character method
-accepted by \code{\link[deSolve]{ode}} in the \code{deSolve} package
+accepted by \code{\link[deSolve:ode]{deSolve::ode()}} in the \code{deSolve} package
 (\code{lsoda}, \code{lsode}, \code{lsodes}, \code{lsodar}, \code{vode},
 \code{daspk}, \code{rk4}, \code{ode23}, \code{ode45}, \code{radau},
 \code{bdf}, \code{bdf_d}, \code{adams}, \code{impAdams}, and
@@ -35,7 +35,7 @@ regression model) \code{err.obs} should be missing or 0}
 }
 \value{
 a function that will return a negative log likelihood of the data
-  given a set of metab.pars
+given a set of metab.pars
 }
 \description{
 Create a function to compute the numerical integration of a dDOdt function

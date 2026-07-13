@@ -1,5 +1,3 @@
-context("metab_sim")
-
 test_that("metab_sim predictions (predict_metab, predict_DO) make sense", {
   # generate data
   dat <- data_metab('3')
@@ -212,6 +210,6 @@ test_that("metab_sim predictions (predict_metab, predict_DO) make sense", {
   expect_equal(
     diffs$DO.mod.1[c(2:nrow(diffs), 1)],
     diffs$DO.mod.n,
-    tol = 0.000000001
+    tolerance = 0.000000001
   )
 })

@@ -14,7 +14,7 @@ calc_light(
 }
 \arguments{
 \item{solar.time}{mean solar time, as required for input to metabolism
-models. See \code{\link{mm_data}} and \code{\link{calc_solar_time}}.}
+models. See \code{\link[=mm_data]{mm_data()}} and \code{\link[=calc_solar_time]{calc_solar_time()}}.}
 
 \item{latitude}{numeric value or vector indicating the site latitude in
 decimal degrees (never radians or deg-min-sec, no matter what \code{format}

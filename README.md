@@ -1,15 +1,18 @@
+
+
 # streamMetabolizer: Models for Estimating Aquatic Photosynthesis and Respiration
 
 <!-- badges: start -->
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![USGS
-Status](https://img.shields.io/badge/USGS-Research-blue.svg)](https://owi.usgs.gov/R/packages.html#research)
+[![R-CMD-check](https://github.com/ConnorB/streamMetabolizer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ConnorB/streamMetabolizer/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This is a fork of the original
-[`streamMetabolizer`](https://github.com/DOI-USGS/streamMetabolizer)
+This is an actively maintained fork of the original
+[`streamMetabolizer`](https://github.com/DOI-USGS/streamMetabolizer).
+Report issues with this fork at
+<https://github.com/ConnorB/streamMetabolizer/issues>.
 
 The `streamMetabolizer` R package uses inverse modeling to estimate
 aquatic photosynthesis and respiration (collectively, metabolism) from
@@ -29,14 +32,13 @@ al. 2018b](https://doi.org/10.1038/sdata.2018.292).
 > Appling, A. P., Hall, R. O., Yackulic, C. B., & Arroita, M. (2018a).
 > Overcoming equifinality: Leveraging long time series for stream
 > metabolism estimation. Journal of Geophysical Research:
-> Biogeosciences, 123(2), 624–645.
-> <https://doi.org/10.1002/2017JG004140>
+> Biogeosciences, 123(2), 624–645. https://doi.org/10.1002/2017JG004140
 
 > Appling, A. P., Read, J. S., Winslow, L. A., Arroita, M., Bernhardt,
 > E. S., Griffiths, N. A., Hall, R. O., Harvey, J. W., Heffernan, J. B.,
 > Stanley, E. H., Stets, E. G., & Yackulic, C. B. (2018b). The metabolic
 > regimes of 356 rivers in the United States. Scientific Data, 5(1),
-> 180292. <https://doi.org/10.1038/sdata.2018.292>
+> 180292. https://doi.org/10.1038/sdata.2018.292
 
 To see the recommended citation for this package, please run
 `citation('streamMetabolizer')` at the R prompt.
@@ -67,32 +69,53 @@ citation('streamMetabolizer')
 
 ## Installation
 
-To install the `streamMetabolizer` package, use the `remotes` package
-(running `install.packages('remotes')` first if needed). To use
-`remotes::install_github()` it is convenient to set a [GitHub Personal
-Access Token
+To install the `streamMetabolizer` package, you can use the `pak`
+package (run `install.packages("pak")` first if needed). `pak` is fast
+and handles dependencies automatically.
+
+If you are installing from GitHub, it is helpful to set a [GitHub
+Personal Access Token
 (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 There are [several
 methods](https://usethis.r-lib.org/articles/git-credentials.html) for
-setting your PATs within R; the simplest is to call
-`Sys.setenv(GITHUB_PAT="yyyy")`, replacing yyyy with the PAT you
-established on the GitHub website.
-
-You can then install the most cutting edge version of
-`streamMetabolizer` with this command:
+setting your PAT within R; a simple approach is:
 
 ``` r
-remotes::install_github("ConnorB/streamMetabolizer", 
-                        build_vignettes = TRUE)
+Sys.setenv(GITHUB_PAT = "yyyy")
+```
+
+Replace `"yyyy"` with your PAT from GitHub.
+
+You can then install the development version of `streamMetabolizer`
+with:
+
+``` r
+pak::pak("ConnorB/streamMetabolizer")
+```
+
+If you would like to build vignettes after installation, you can do so
+with:
+
+``` r
+devtools::build_vignettes("streamMetabolizer")
 ```
 
 ### Software dependencies for Bayesian models
 
-The major dependency for Bayesian models is the `rstan` package, and
-installation of that package is rarely as simple as a call to
-`install.packages()`. Start at the [rstan wiki
-page](https://github.com/stan-dev/rstan/wiki) for the most up-to-date
-installation instructions, which differ by operating system.
+Bayesian models require a Stan backend, provided by either `rstan` or
+`cmdstanr`. Installation is rarely as simple as a call to
+`install.packages()`, because the compiler toolchain (and, for CmdStanR,
+CmdStan itself) must also be configured. See the [RStan installation
+guide](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) or
+the [CmdStanR installation
+guide](https://mc-stan.org/cmdstanr/articles/cmdstanr.html) for current
+platform-specific instructions. Select the backend with
+`specs(..., stan_engine = "rstan")` or
+`specs(..., stan_engine = "cmdstanr")`. Compiled models are cached
+outside the installed package so they can be reused even when the
+package library is read-only; advanced users can override the locations
+with the `streamMetabolizer.rstan_cache_dir` and
+`streamMetabolizer.cmdstan_cache_dir` options.
 
 ## Getting started
 
@@ -118,12 +141,19 @@ for more information.
 For technical details on how to contribute, see
 [CONTRIBUTING.md](https://github.com/ConnorB/streamMetabolizer/blob/main/CONTRIBUTING.md)
 
-### Development History
+### Project history and maintenance
 
 `streamMetabolizer` was developed 2015-2018 with support from the USGS
 Powell Center (through a working group on Continental Patterns of Stream
 Metabolism), the USGS National Water Quality Program, and the USGS
 Office of Water Information.
+
+The original USGS project is archived and its project funding has ended.
+Its source and historical documentation remain available from the
+[`DOI-USGS/streamMetabolizer`](https://github.com/DOI-USGS/streamMetabolizer)
+repository. This fork contains subsequent enhancements and bug fixes and
+is maintained independently at
+[`ConnorB/streamMetabolizer`](https://github.com/ConnorB/streamMetabolizer).
 
 ## Disclaimer
 

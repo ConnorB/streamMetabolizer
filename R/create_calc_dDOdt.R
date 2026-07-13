@@ -7,7 +7,7 @@
 #'
 #' 'pairmeans' and 'trapezoid' are identical. They are the analytical
 #' solution to a trapezoid rule with this starting point:
-#' \code{
+#' ```
 #'  DO.mod[t+1] =
 #'   DO.mod[t] +
 #'    (((GPP[t]+GPP[t+1])/2) / (depth[t]+depth[t+1])/2
@@ -15,9 +15,9 @@
 #'    + (k.O2[t](DO.sat[t] - DO.mod[t]) + k.O2[t+1](DO.sat[t+1] - DO.mod[t+1]))/2
 #'    + ((err.proc[t]+err.proc[t+1])/2) / (depth[t]+depth[t+1])/2
 #'    ) * timestep
-#' }
+#' ```
 #' and this solution:
-#' \code{
+#' ```
 #' DO.mod[t+1] - DO.mod[t] =
 #'  (- DO.mod[t] * (k.O2[t]+k.O2[t+1])/2
 #'    + (GPP[t]+GPP[t+1] +
@@ -26,13 +26,13 @@
 #'      ) / (depth[t]+depth[t+1])
 #'    + (k.O2[t]*DO.sat[t] + k.O2[t+1]*DO.sat[t+1])/2
 #'  ) * timestep / (1 + timestep*k.O2[t+1]/2)
-#' }
+#' ```
 #' where we're treating err.proc as a rate in gO2/m2/d, just like GPP & ER, and
 #' err.proc=0 for model fitting.
 #'
-#' @param data data.frame as in \code{\link{metab}}, except that data must
+#' @param data data.frame as in [metab()], except that data must
 #'   contain exactly one date worth of inputs (~24 hours according to
-#'   \code{\link{specs}$day_start} and \code{\link{specs}$day_end}).
+#'   `[specs]$day_start` and `[specs]$day_end`).
 #' @inheritParams mm_name
 #' @param err.proc optional numerical vector of length nrow(data). Process error
 #'   in units of gO2 m^-2 d^-1 (THIS MAY DIFFER FROM WHAT YOU'RE USED TO!).
@@ -40,12 +40,12 @@
 #'   added to the calculated values of GPP and ER (then divided by depth and
 #'   multiplied by timestep duration) to simulate process error. But usually
 #'   (for MLE or prediction from a fitted MLE/Bayesian/nighttime regression
-#'   model) \code{err.proc} should be missing or 0
-#' @return a function that accepts args \code{t} (the time in 0:(n-1) where n is
-#'   the number of timesteps), \code{DO.mod.t} (the value of DO.mod at time t in
-#'   gO2 m^-3), and \code{metab} (a list of metabolism parameters; to see which
-#'   parameters should be included in this list, create \code{dDOdt} with this
-#'   function and then call \code{environment(dDOdt)$metab.needs})
+#'   model) `err.proc` should be missing or 0
+#' @return a function that accepts args `t` (the time in 0:(n-1) where n is
+#'   the number of timesteps), `DO.mod.t` (the value of DO.mod at time t in
+#'   gO2 m^-3), and `metab` (a list of metabolism parameters; to see which
+#'   parameters should be included in this list, create `dDOdt` with this
+#'   function and then call `environment(dDOdt)$metab.needs`)
 #' @import dplyr
 #' @importFrom stats approxfun
 #' @export

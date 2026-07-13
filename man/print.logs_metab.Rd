@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{an object to print}
 
-\item{...}{ignored; included only for compatibility with `base::print`}
+\item{...}{ignored; included only for compatibility with \code{base::print}}
 }
 \description{
 Print metab model compilation and/or fitting logs

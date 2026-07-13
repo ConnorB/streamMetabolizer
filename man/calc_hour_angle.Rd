@@ -8,7 +8,7 @@ http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Sit
 calc_hour_angle(hour, format = c("degrees", "radians"))
 }
 \arguments{
-\item{hour}{numeric value or vector. hour since [solar] midnight as number
+\item{hour}{numeric value or vector. hour since solar midnight as number
 between 0 and 23.999}
 
 \item{format}{The format of both the input and the output. May be "degrees"
@@ -16,7 +16,7 @@ or "radians".}
 }
 \value{
 numeric value or vector, in the units specified by \code{format},
-  indicating the angle corresponding to each value supplied in \code{hour}.
+indicating the angle corresponding to each value supplied in \code{hour}.
 }
 \description{
 This is an approximation when hour is in clock time; should actually be given

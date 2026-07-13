@@ -15,8 +15,8 @@ or "radians".}
 }
 \value{
 numeric value or vector, in the units specified by \code{format},
-  indicating the declination angle corresponding to each value supplied in
-  \code{jday}.
+indicating the declination angle corresponding to each value supplied in
+\code{jday}.
 }
 \description{
 Calculate declination angle as in Yard et al. (2005)
@@ -31,8 +31,8 @@ ggplot(decdf, aes(x=jday, y=dec)) + geom_line()
 }
 \references{
 Yard, Michael D., Glenn E. Bennett, Steve N. Mietz, Lewis G.
-  Coggins Jr., Lawrence E. Stevens, Susan Hueftle, and Dean W. Blinn.
-  \emph{Influence of Topographic Complexity on Solar Insolation Estimates for
-  the Colorado River, Grand Canyon, AZ.} Ecological Modelling 183, no. 2-3
-  (April 25, 2005): 157-72. doi:10.1016/j.ecolmodel.2004.07.027.
+Coggins Jr., Lawrence E. Stevens, Susan Hueftle, and Dean W. Blinn.
+\emph{Influence of Topographic Complexity on Solar Insolation Estimates for
+the Colorado River, Grand Canyon, AZ.} Ecological Modelling 183, no. 2-3
+(April 25, 2005): 157-72. doi:10.1016/j.ecolmodel.2004.07.027.
 }

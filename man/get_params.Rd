@@ -101,7 +101,7 @@ the model?}
 }
 \value{
 A data.frame of the parameters needed to predict GPP, ER, D, and DO,
-  one row per date
+one row per date
 }
 \description{
 A function in the metab_model_interface. Returns estimates of those
@@ -120,7 +120,7 @@ to streamMetabolizer parameter names; otherwise the same as
 \item \code{get_params(metab_model)}: This implementation is shared by many model types
 
 \item \code{get_params(metab_sim)}: Generates new simulated values for daily parameters if
-they were described with evaluatable expressions in \code{\link{specs}}, or
+they were described with evaluatable expressions in \code{\link[=specs]{specs()}}, or
 returns the fixed values for daily parameters if they were set in
 \code{data_daily}
 
@@ -132,7 +132,7 @@ get_params(mm)
 get_params(mm, date_start=get_fit(mm)$date[2])
 }
 \seealso{
-\code{\link{predict_metab}} for daily average rates of GPP and ER
+\code{\link[=predict_metab]{predict_metab()}} for daily average rates of GPP and ER
 
 Other metab_model_interface:
 \code{\link[=get_data]{get_data()}},

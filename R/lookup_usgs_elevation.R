@@ -2,11 +2,8 @@
 #' local elevation
 #'
 #' This is meant to supply an APPROXIMATE elevation, with no guarantees on
-#' precision or on the lifetime of the API service used by the function. This
-#' function uses two packages, \code{RCurl} and \code{XML}, that are not
-#' required for the \code{streamMetabolizer} package as a whole. If these are
-#' not already installed, run \code{install.packages(c('RCurl','XML'))} before
-#' calling \code{lookup_usgs_elevation}.
+#' precision or on the lifetime of the API service used by the function. The
+#' lookup uses the JSON response from the service.
 #'
 #' @param latitude degrees latitude (positive for north) of the location to look
 #'   up.
@@ -14,40 +11,48 @@
 #'   look up.
 #' @param units character, one of Meters or Feet, specifying the units in which
 #'   to return the elevation
-#' @references https://nationalmap.gov/epqs/
+#' @returns The numeric elevation in the requested units.
+#' @references https://epqs.nationalmap.gov/v1/docs
+#' @examplesIf interactive()
+#' elevation_m <- lookup_usgs_elevation(
+#'   latitude = 39.102075,
+#'   longitude = -96.594689
+#' )
+#' elevation_m
+#'
+#' elevation_ft <- lookup_usgs_elevation(
+#'   latitude = 39.102075,
+#'   longitude = -96.594689,
+#'   units = "Feet"
+#' )
+#' elevation_ft
 #' @export
 lookup_usgs_elevation <- function(
   latitude,
   longitude,
   units = c("Meters", "Feet")
 ) {
-  # confirm that units are among the accepted values for ned.usgs.gov
   units <- match.arg(units)
 
-  # check for required packages specific to this function
-  if (!requireNamespace("RCurl", quietly = TRUE)) {
-    stop("the RCurl package must be installed to use this function")
-  }
-  if (!requireNamespace("XML", quietly = TRUE)) {
-    stop("the XML package must be installed to use this function")
-  }
-
-  # ask the USGS
   api.url <- sprintf(
-    "https://nationalmap.gov/epqs/pqs.php?x=%f&y=%f&units=%s&output=xml",
+    paste0(
+      "https://epqs.nationalmap.gov/v1/json?",
+      "x=%.10f&y=%.10f&wkid=4326&units=%s&includeDate=false"
+    ),
     longitude,
     latitude,
     units
   )
-  api.out <- RCurl::getURL(api.url, .opts = list(ssl.verifypeer = FALSE))
-  out.parsed <- XML::xmlParse(api.out)
-  out.units <- switch(
-    out.parsed[["string(//Units)"]],
-    "Feet" = "ft",
-    "Meters" = "m"
-  )
-  return(list(
-    data_source = out.parsed[["string(//Data_Source)"]],
-    elevation = as.numeric(out.parsed[["string(//Elevation)"]])
-  ))
+  response <- read_epqs_json(api.url)
+  elevation <- as.numeric(response$value)
+
+  if (length(elevation) != 1L || is.na(elevation)) {
+    stop("the USGS Elevation Point Query Service returned no elevation")
+  }
+
+  elevation
+}
+
+read_epqs_json <- function(url) {
+  jsonlite::fromJSON(url)
 }

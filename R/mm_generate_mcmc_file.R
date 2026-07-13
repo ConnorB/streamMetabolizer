@@ -18,6 +18,7 @@ mm_generate_mcmc_file <- function(
   ),
   err_obs_iid = c(TRUE, FALSE),
   err_proc_acor = c(FALSE, TRUE),
+  err_proc_acor_light = c(FALSE, TRUE),
   err_proc_iid = c(FALSE, TRUE),
   err_proc_GPP = c(FALSE, TRUE),
   ode_method = c('trapezoid', 'euler'),
@@ -47,6 +48,7 @@ mm_generate_mcmc_file <- function(
     pool_K600 = pool_K600,
     err_obs_iid = err_obs_iid,
     err_proc_acor = err_proc_acor,
+    err_proc_acor_light = err_proc_acor_light,
     err_proc_iid = err_proc_iid,
     err_proc_GPP = err_proc_GPP,
     ode_method = ode_method,
@@ -59,6 +61,7 @@ mm_generate_mcmc_file <- function(
   features <- mm_parse_name(model_name, expand = TRUE)
   pool_K600_type <- features$pool_K600_type
   pool_K600_sd <- features$pool_K600_sd
+  acor_residual_model <- err_proc_acor && !err_obs_iid && !err_proc_iid
 
   #### helper functions ####
   comment <- function(...) {
@@ -261,7 +264,10 @@ mm_generate_mcmc_file <- function(
           c(
             'real err_proc_acor_phi_alpha;',
             'real err_proc_acor_phi_beta;',
-            'real<lower=0> err_proc_acor_sigma_scale;'
+            'real<lower=0> err_proc_acor_sigma_scale;',
+            if (err_proc_acor_light) {
+              'real<lower=0> err_proc_acor_light_alpha_sigma;'
+            }
           )
         },
         if (err_proc_iid) {
@@ -315,6 +321,9 @@ mm_generate_mcmc_file <- function(
           linlight = 'array[n] vector[d] light_mult_GPP;',
           satlight = 'array[n] vector[d] light;'
         ),
+        if (err_proc_acor_light) {
+          'array[n] vector<lower=0, upper=1>[d] light_frac;'
+        },
         'array[n] vector[d] const_mult_ER;',
         'array[n] vector[d] depth;',
         'array[n] vector[d] KO2_conv;'
@@ -401,10 +410,15 @@ mm_generate_mcmc_file <- function(
             # need to figure out how to scale phi (which might be 0-1 or very close to 0)
             'real<lower=0, upper=1> err_proc_acor_phi;',
             'real<lower=0> err_proc_acor_sigma_scaled;',
-            sprintf(
-              'array[%s] vector[d] err_proc_acor_inc;',
-              switch(ode_method, euler = 'n-1', trapezoid = 'n')
-            )
+            if (!acor_residual_model) {
+              sprintf(
+                'array[%s] vector[d] err_proc_acor_inc;',
+                switch(ode_method, euler = 'n-1', trapezoid = 'n')
+              )
+            },
+            if (err_proc_acor_light) {
+              'real<lower=0> err_proc_acor_light_alpha_scaled;'
+            }
           )
         },
         if (err_proc_iid) {
@@ -461,7 +475,7 @@ mm_generate_mcmc_file <- function(
           'real<lower=0> err_obs_iid_sigma;'
         )
       },
-      if (err_proc_acor || err_proc_iid) {
+      if (err_proc_iid) {
         c(
           'array[n] vector[d] DO_mod_partial_sigma;'
         )
@@ -469,7 +483,10 @@ mm_generate_mcmc_file <- function(
       if (err_proc_acor) {
         c(
           # 'real<lower=0, upper=1> err_proc_acor_phi;', # currently opting not to scale phi (which might be 0-1 or very close to 0)
-          'real<lower=0> err_proc_acor_sigma;'
+          'real<lower=0> err_proc_acor_sigma;',
+          if (err_proc_acor_light) {
+            'real<lower=0> err_proc_acor_light_alpha;'
+          }
         )
       },
       if (err_proc_iid) {
@@ -520,7 +537,15 @@ mm_generate_mcmc_file <- function(
       if (err_proc_acor) {
         sprintf(
           'array[%s] vector[d] err_proc_acor;',
-          switch(ode_method, euler = 'n-1', trapezoid = 'n')
+          if (acor_residual_model) {
+            'n-1'
+          } else {
+            switch(
+              ode_method,
+              euler = 'n-1',
+              trapezoid = 'n'
+            )
+          }
         )
       }
     ),
@@ -549,7 +574,10 @@ mm_generate_mcmc_file <- function(
       if (err_proc_acor) {
         c(
           # s(fs('beta', 'err_proc_acor_phi'?)), # currently opting not to scale phi (which might be 0-1 or very close to 0)
-          s(fs('halfcauchy', 'err_proc_acor_sigma'))
+          s(fs('halfcauchy', 'err_proc_acor_sigma')),
+          if (err_proc_acor_light) {
+            s(fs('halfnormal', 'err_proc_acor_light_alpha'))
+          }
         )
       },
       if (err_proc_iid) {
@@ -626,8 +654,8 @@ mm_generate_mcmc_file <- function(
       ),
       comment('* ', 'reaeration depends on ', deficit_src),
 
-      # process error (always looped, vectorized across days)
-      if (err_proc_acor) {
+      # latent process-error rates (residual models calculate errors below)
+      if (err_proc_acor && !acor_residual_model) {
         c(
           p(''),
           comment("Calculate autocorrelated process error rates"),
@@ -694,7 +722,7 @@ mm_generate_mcmc_file <- function(
       c(
         p(''),
         comment("DO model"),
-        if (err_obs_iid && !err_proc_iid) {
+        if ((err_obs_iid && !err_proc_iid) || acor_residual_model) {
           c(
             # applies to oi models. pi models don't have DO_mod, and oipi models
             # have DO_mod as a parameter rather than a transformed parameter. not
@@ -756,7 +784,9 @@ mm_generate_mcmc_file <- function(
             ),
             p(
               '  (GPP_inst[i] + ER_inst[i]',
-              if (err_proc_acor) ' + err_proc_acor[i]',
+              if (err_proc_acor && !acor_residual_model) {
+                ' + err_proc_acor[i]'
+              },
               ') ./ depth[i] +'
             ),
             switch(
@@ -776,7 +806,9 @@ mm_generate_mcmc_file <- function(
               'trapezoid' = c(
                 p(
                   '  (GPP_inst[i+1] + ER_inst[i+1]',
-                  if (err_proc_acor) ' + err_proc_acor[i+1]',
+                  if (err_proc_acor && !acor_residual_model) {
+                    ' + err_proc_acor[i+1]'
+                  },
                   ') ./ depth[i+1] +'
                 ),
                 p('  KO2_inst[i] .* DO_sat[i] + KO2_inst[i+1] .* DO_sat[i+1]'),
@@ -818,7 +850,16 @@ mm_generate_mcmc_file <- function(
             )
           }
         ),
-        p('}')
+        p('}'),
+        if (acor_residual_model) {
+          c(
+            p('for(i in 1:(n-1)) {'),
+            indent(
+              s('err_proc_acor[i] = DO_obs[i+1] - DO_mod[i+1]')
+            ),
+            p('}')
+          )
+        }
       )
     ),
     '}',
@@ -852,14 +893,78 @@ mm_generate_mcmc_file <- function(
         if (err_proc_acor) {
           c(
             comment('Autocorrelated process error'),
-            p('for(i in 1:n) {'),
-            indent(
-              s(
-                'err_proc_acor_inc[i-1] ~ ',
-                f('normal', mu = '0', sigma = 'err_proc_acor_sigma')
+            if (acor_residual_model) {
+              c(
+                comment(
+                  'Connect adjacent dates through the zero residual at each day boundary'
+                ),
+                p('if(d > 1) {'),
+                indent(
+                  p('for(j in 2:d) {'),
+                  indent(
+                    s(
+                      '0 ~ ',
+                      f(
+                        'normal',
+                        mu = 'err_proc_acor_phi * err_proc_acor[n-1,j-1]',
+                        sigma = if (err_proc_acor_light) {
+                          'err_proc_acor_sigma + err_proc_acor_light_alpha * light_frac[1,j] + 1e-9'
+                        } else {
+                          'err_proc_acor_sigma + 1e-9'
+                        }
+                      )
+                    )
+                  ),
+                  p('}')
+                ),
+                p('}'),
+                comment(
+                  'Within each date, the first modeled residual follows the zero boundary residual'
+                ),
+                s(
+                  'err_proc_acor[1] ~ ',
+                  f(
+                    'normal',
+                    mu = '0',
+                    sigma = if (err_proc_acor_light) {
+                      'err_proc_acor_sigma + err_proc_acor_light_alpha * light_frac[2] + 1e-9'
+                    } else {
+                      'err_proc_acor_sigma + 1e-9'
+                    }
+                  )
+                ),
+                p('for(i in 2:(n-1)) {'),
+                indent(
+                  s(
+                    'err_proc_acor[i] ~ ',
+                    f(
+                      'normal',
+                      mu = 'err_proc_acor_phi * err_proc_acor[i-1]',
+                      sigma = if (err_proc_acor_light) {
+                        'err_proc_acor_sigma + err_proc_acor_light_alpha * light_frac[i+1] + 1e-9'
+                      } else {
+                        'err_proc_acor_sigma + 1e-9'
+                      }
+                    )
+                  )
+                ),
+                p('}')
               )
-            ),
-            p('}')
+            } else {
+              c(
+                p(sprintf(
+                  'for(i in 1:%s) {',
+                  switch(ode_method, euler = '(n-1)', trapezoid = 'n')
+                )),
+                indent(
+                  s(
+                    'err_proc_acor_inc[i] ~ ',
+                    f('normal', mu = '0', sigma = 'err_proc_acor_sigma')
+                  )
+                ),
+                p('}')
+              )
+            }
           )
         },
         if (err_proc_iid) {
@@ -879,7 +984,16 @@ mm_generate_mcmc_file <- function(
                 beta = 'err_proc_acor_phi_beta'
               )
             ), # currently opting not to scale phi (which might be 0-1 or very close to 0)
-            s('err_proc_acor_sigma_scaled ~ ', f('halfcauchy', scale = '1'))
+            s('err_proc_acor_sigma_scaled ~ ', f('halfcauchy', scale = '1')),
+            if (err_proc_acor_light) {
+              c(
+                comment('Light effect on process-error innovation SD'),
+                s(
+                  'err_proc_acor_light_alpha_scaled ~ ',
+                  f('normal', mu = '0', sigma = '1')
+                )
+              )
+            }
           )
         }
       )
@@ -1069,7 +1183,7 @@ mm_generate_mcmc_file <- function(
       },
       'vector[d] GPP;',
       'vector[d] ER;',
-      if (err_obs_iid) {
+      if (err_obs_iid || acor_residual_model) {
         c(
           'vector[n] DO_obs_vec; // temporary',
           'vector[n] DO_mod_vec; // temporary'
@@ -1128,7 +1242,7 @@ mm_generate_mcmc_file <- function(
       indent(
         s('GPP[j] = sum(GPP_inst[1:n24,j]) / n24'),
         s('ER[j] = sum(ER_inst[1:n24,j]) / n24'),
-        if (err_obs_iid) {
+        if (err_obs_iid || acor_residual_model) {
           c(
             p(''),
             p(
@@ -1219,6 +1333,7 @@ mm_generate_mcmc_files <- function() {
     ),
     err_obs_iid = c(TRUE, FALSE),
     err_proc_acor = FALSE,
+    err_proc_acor_light = FALSE,
     err_proc_iid = c(FALSE, TRUE),
     err_proc_GPP = c(FALSE, TRUE),
     ode_method = c('trapezoid', 'euler'),
@@ -1237,6 +1352,37 @@ mm_generate_mcmc_files <- function() {
     !opts$err_proc_GPP) |
     (opts$err_proc_GPP & (opts$GPP_fun != 'linlight'))
   opts <- opts[!incompatible, ]
+
+  # Bob Hall's AR(1) process-error models use one-step DO residuals and no
+  # separate observation or IID process-error term. Generate both the constant
+  # innovation-SD model and its light-varying counterpart.
+  acor_opts <- expand.grid(
+    pool_K600 = c(
+      'none',
+      'normal',
+      'normal_sdzero',
+      'normal_sdfixed',
+      'linear',
+      'linear_sdzero',
+      'linear_sdfixed',
+      'binned',
+      'binned_sdzero',
+      'binned_sdfixed'
+    ),
+    err_obs_iid = FALSE,
+    err_proc_acor = TRUE,
+    err_proc_acor_light = c(FALSE, TRUE),
+    err_proc_iid = FALSE,
+    err_proc_GPP = FALSE,
+    ode_method = c('trapezoid', 'euler'),
+    GPP_fun = c('linlight', 'satlight'),
+    ER_fun = 'constant',
+    deficit_src = 'DO_obs',
+    engine = 'stan',
+    stringsAsFactors = FALSE
+  )
+  attr(acor_opts, 'out.attrs') <- NULL
+  opts <- rbind(opts, acor_opts)
 
   for (i in 1:nrow(opts)) {
     do.call(mm_generate_mcmc_file, opts[i, ])

@@ -6,7 +6,7 @@
 #'
 #' @param PAR.obs a 2-column data.frame with columns solar.time and light, as in
 #'   argument default, containing the full time series of observed light (should
-#'   be at a lower temporal resolution than \code{PAR.mod})
+#'   be at a lower temporal resolution than `PAR.mod`)
 #' @param solar.time a vector of mean solar times for which the light should be
 #'   modeled and merged with the values in PAR.obs
 #' @inheritParams calc_light

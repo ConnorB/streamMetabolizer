@@ -18,7 +18,7 @@ plot_distribs(
 \item{dist_data}{Either a specs list (for priors only) or a metab_model
 object (for both priors and posteriors).}
 
-\item{parname}{character. the name of the parameter whose distribution[s] you
+\item{parname}{character. the name of the parameter whose distribution(s) you
 wish to plot}
 
 \item{index}{integer or logical. Applicable only if plotting posteriors, and

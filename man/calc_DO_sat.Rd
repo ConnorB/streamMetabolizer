@@ -2,6 +2,7 @@
 % Please edit documentation in R/calc_DO_sat.R
 \name{calc_DO_sat}
 \alias{calc_DO_sat}
+\alias{calc_DO_at_sat}
 \title{Calculates the equilibrium saturation concentration of oxygen in water at the
 supplied conditions}
 \usage{
@@ -31,8 +32,9 @@ a numeric vector of dissolved oxygen equilibrium saturation
 concentrations, in mg/L.
 }
 \description{
-Calculates the equilibrium saturation concentration of oxygen in water at the
-supplied conditions
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+The \code{calc_DO_at_sat()} alias is deprecated. Use \code{calc_DO_sat()} instead.
 }
 \examples{
 calc_DO_sat(temp=21, press=1000.1, sal=0)

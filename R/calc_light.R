@@ -4,7 +4,7 @@
 #' date-times and site coordinates.
 #'
 #' @param solar.time mean solar time, as required for input to metabolism
-#'   models. See \code{\link{mm_data}} and \code{\link{calc_solar_time}}.
+#'   models. See [mm_data()] and [calc_solar_time()].
 #' @inheritParams calc_zenith_angle
 #' @inheritParams convert_solartime_to_UTC
 #' @param max.PAR numeric or unitted_numeric: the PAR (umol m^-2 s^-1) that each

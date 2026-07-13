@@ -1,5 +1,3 @@
-context('predict')
-
 test_that('predict_DO works as expected', {
   # empty model
   mm <- metab_model()
@@ -44,7 +42,7 @@ test_that('predict_metab works on allmodel types', {
       burnin_steps = 50,
       saved_steps = 50,
       n_cores = 1,
-      stan_engine = "cmdstanr"
+      stan_engine = stan_engine_for_tests()
     ),
     data = dat
   )

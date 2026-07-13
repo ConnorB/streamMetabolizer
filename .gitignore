@@ -15,11 +15,18 @@ vignettes/*.pdf
 tests/testthat/Rplots.pdf
 # Temporary files
 temp
+development/**/*_cache/
+development/**/*_files/
 # Machine-specific files
 inst/models/*.stanrda
 inst/models/*.stanrds
 inst/doc
 doc
 Meta
-.claude/
-.positai
+**/.claude/
+**/.claude/settings.local.json
+**/.agents
+**/AGENTS.md
+.posit/assistant/
+.positai/
+docs

@@ -25,7 +25,7 @@ one unique timestep (within the given tolerance \code{tol})?}
 \item{tol}{if \code{format == 'unique'}, unique values are first calculated
 to machine precision, but then subsetted to those that differ from one
 another by at least tol, where tol is a time difference in units of days
-(and thus 1/(24*60*60) is one second).}
+(and thus 1/(24\emph{60}60) is one second).}
 }
 \description{
 Return the average timestep in days

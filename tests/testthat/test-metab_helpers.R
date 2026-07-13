@@ -1,13 +1,12 @@
-context("metab_model_helpers")
-
 test_that("mm_data works", {
   # runs and can be used to select columns
-  expect_is(mm_data(), "data.frame")
+  expect_s3_class(mm_data(), "data.frame")
   expect_equal(nrow(mm_data()), 1)
-  expect_equivalent(mm_data(solar.time), mm_data()["solar.time"])
-  expect_equivalent(
+  expect_equal(mm_data(solar.time), mm_data()["solar.time"], ignore_attr = TRUE)
+  expect_equal(
     mm_data(depth, temp.water, solar.time),
-    mm_data()[c("depth", "temp.water", "solar.time")]
+    mm_data()[c("depth", "temp.water", "solar.time")],
+    ignore_attr = TRUE
   )
 
   # 'optional' attribute is set sensibly
@@ -83,9 +82,9 @@ test_that("mm_validate_data works", {
     eval(formals(metab_mle)$data_daily),
     'metab_mle'
   )
-  expect_is(val_out, 'list')
+  expect_type(val_out, 'list')
   expect_equal(names(val_out), c('data', 'data_daily'))
-  expect_is(val_out[[1]], 'data.frame')
+  expect_s3_class(val_out[[1]], 'data.frame')
 
   # notices missing, extra, badly unitted columns in data; accepts non-unitted data
   ok_data <- eval(formals(metab_mle)$data)
@@ -114,11 +113,11 @@ test_that("mm_validate_data works", {
     "data should omit these extra columns: temp.air"
   )
   # units checking removed (unitted package dependency removed)
-  expect_is(mm_validate_data(ok_data, NULL, "metab_mle"), 'list')
+  expect_type(mm_validate_data(ok_data, NULL, "metab_mle"), 'list')
 
   # notices missing, extra, badly unitted columns in data_daily
   ok_data_daily <- eval(formals(metab_mle)$data_daily)
-  expect_is(mm_validate_data(ok_data, NULL, "metab_mle"), 'list')
+  expect_type(mm_validate_data(ok_data, NULL, "metab_mle"), 'list')
   expect_error(
     mm_validate_data(ok_data, data.frame(), "metab_mle"),
     "found 0 possible timestamp columns"
@@ -132,7 +131,7 @@ test_that("mm_validate_data works", {
     "data_daily should omit these extra columns: temp.air"
   )
   # units checking removed (unitted package dependency removed)
-  expect_is(mm_validate_data(ok_data, ok_data_daily, "metab_mle"), 'list')
+  expect_type(mm_validate_data(ok_data, ok_data_daily, "metab_mle"), 'list')
 })
 
 test_that("mm_is_valid_day works", {
@@ -264,7 +263,11 @@ test_that("mm_filter_dates works", {
     value = 1:100
   )
   # no filter with defaults
-  expect_equal(streamMetabolizer:::mm_filter_dates(udat), udat)
+  expect_equal(
+    streamMetabolizer:::mm_filter_dates(udat),
+    udat,
+    ignore_attr = "tzone"
+  )
   expect_equal(streamMetabolizer:::mm_filter_dates(ddat), ddat)
   # dates are inclusive
   expect_equal(

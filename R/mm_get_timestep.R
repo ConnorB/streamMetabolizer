@@ -4,10 +4,10 @@
 #'   compute the average timestep
 #' @param format the format in which to return the timestep. 'mean' always
 #'   returns one value; 'unique' may return more than one depending on the
-#'   variation in timesteps and the value of \code{digits}.
+#'   variation in timesteps and the value of `digits`.
 #' @param require_unique logical. should it be required that there is exactly
-#'   one unique timestep (within the given tolerance \code{tol})?
-#' @param tol if \code{format == 'unique'}, unique values are first calculated
+#'   one unique timestep (within the given tolerance `tol`)?
+#' @param tol if `format == 'unique'`, unique values are first calculated
 #'   to machine precision, but then subsetted to those that differ from one
 #'   another by at least tol, where tol is a time difference in units of days
 #'   (and thus 1/(24*60*60) is one second).

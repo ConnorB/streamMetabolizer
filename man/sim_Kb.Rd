@@ -15,7 +15,7 @@ sim_Kb(
 \arguments{
 \item{K600_lnQ_nodes_centers}{data configuration argument for
 pool_K600='binned'. numeric vector giving the natural-log-space centers of
-the discharge bins. See also \code{\link{calc_bins}}}
+the discharge bins. See also \code{\link[=calc_bins]{calc_bins()}}}
 
 \item{K600_lnQ_cnode_meanlog}{For a sim model with pool_K600='binned'. The
 mean of a lognormal distribution describing the y=K600 value of the middle

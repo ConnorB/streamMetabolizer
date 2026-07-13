@@ -1,27 +1,25 @@
-context("convert")
-
 test_that("converting between k600 and kgas works", {
   # k600 to kgas
   expect_equal(
     convert_k600_to_kGAS(k600 = 20, temperature = 15),
     18.698,
-    tol = 0.001
+    tolerance = 0.001
   )
   expect_equal(
     convert_k600_to_kGAS(k600 = 20, temperature = 15, gas = "O2"),
     18.698,
-    tol = 0.001
+    tolerance = 0.001
   )
   expect_equal(
     convert_k600_to_kGAS(k600 = 20, temperature = 15, gas = "CO2"),
     17.361,
-    tol = 0.001
+    tolerance = 0.001
   )
   # kgas to k600
   expect_equal(
     convert_kGAS_to_k600(kGAS = 18.698, temperature = 15),
     20,
-    tol = 0.001
+    tolerance = 0.001
   )
   # there and back
   expect_equal(
@@ -51,12 +49,12 @@ test_that("converting between SW and PAR works", {
   expect_equal(
     convert_PAR_to_SW(convert_SW_to_PAR(sw = 800)),
     800,
-    tol = 0.0001
+    tolerance = 0.0001
   )
   expect_equal(
     convert_SW_to_PAR(convert_PAR_to_SW(par = 800)),
     800,
-    tol = 0.0001
+    tolerance = 0.0001
   )
 })
 
@@ -68,7 +66,7 @@ test_that("converting between date and DOY works", {
       tz = "UTC"
     )),
     1,
-    tol = 0.000001,
+    tolerance = 0.000001,
     info = "Jan 1 should be 0"
   )
   expect_equal(
@@ -77,7 +75,7 @@ test_that("converting between date and DOY works", {
       tz = "CST6CDT"
     )),
     1,
-    tol = 0.000001,
+    tolerance = 0.000001,
     info = "use the same timezone as the arg date"
   )
   expect_equal(
@@ -85,7 +83,7 @@ test_that("converting between date and DOY works", {
       "2020-01-01 00:00:00"
     )),
     1,
-    tol = 0.000001,
+    tolerance = 0.000001,
     info = "should work in any tester's default tz"
   )
   expect_equal(
@@ -93,7 +91,7 @@ test_that("converting between date and DOY works", {
       "2020-01-01 01:00:00"
     )),
     1 + 1 / 24,
-    tol = 0.000001,
+    tolerance = 0.000001,
     info = "decimal should include hours"
   )
   expect_equal(
@@ -101,7 +99,7 @@ test_that("converting between date and DOY works", {
       "2020-01-01 01:03:58"
     )),
     1 + (60 + 3 + 58 / 60) / (24 * 60),
-    tol = 0.000001,
+    tolerance = 0.000001,
     info = "decimal should include minutes and seconds"
   )
   expect_equal(
@@ -112,7 +110,7 @@ test_that("converting between date and DOY works", {
       streamMetabolizer:::convert_date_to_doyhr(as.POSIXct(
         "2019-12-01 00:00:00"
       )),
-    tol = 0.000001,
+    tolerance = 0.000001,
     info = "should catch leap days"
   )
   expect_equal(
@@ -191,7 +189,7 @@ test_that("converting between UTC and solar time works", {
       time.type = "apparent solar"
     ),
     adate + as.difftime(-4.661701, units = "mins"),
-    tol = 0.0001
+    tolerance = 0.0001
   )
   expect_error(
     convert_UTC_to_solartime(adate, longitude = 0, time.type = "not a type"),
@@ -269,7 +267,7 @@ test_that("converting between UTC and solar time works", {
       time.type = "apparent solar"
     ),
     adate + as.difftime(+4.661701, units = "mins"),
-    tol = 0.0001
+    tolerance = 0.0001
   )
   expect_error(
     convert_solartime_to_UTC(adate, longitude = 0, time.type = "not a type"),
@@ -316,7 +314,7 @@ test_that("converting between UTC and solar time works", {
       time.type = "apparent solar"
     )),
     as.numeric(somedates),
-    tol = 1000,
+    tolerance = 1000,
     info = "handle multiple dates"
   )
   # there and back
@@ -351,7 +349,7 @@ test_that("converting between UTC and solar time works", {
       time.type = "apparent solar"
     )),
     as.numeric(adate),
-    tol = 6
+    tolerance = 6
   )
   expect_equal(
     as.numeric(convert_solartime_to_UTC(
@@ -360,7 +358,7 @@ test_that("converting between UTC and solar time works", {
       time.type = "appar"
     )),
     as.numeric(adate),
-    tol = 6
+    tolerance = 6
   )
   expect_equal(
     convert_UTC_to_solartime(
@@ -397,7 +395,7 @@ test_that("converting between UTC and solar time works", {
       time.type = "apparent solar"
     )),
     as.numeric(somedates),
-    tol = 10
+    tolerance = 10
   )
   expect_equal(
     as.numeric(convert_solartime_to_UTC(
@@ -410,7 +408,7 @@ test_that("converting between UTC and solar time works", {
       time.type = "appar"
     )),
     as.numeric(somedates),
-    tol = 10
+    tolerance = 10
   )
 })
 
@@ -590,11 +588,11 @@ test_that("common use-case conversions (calc_solar_time) works", {
   expect_equal(
     lubridate::force_tz(asummerdate, 'UTC'),
     calc_solar_time(asummerdate, -60),
-    tol = as.difftime(10, units = 'mins')
+    tolerance = 10 * 60
   )
   expect_equal(
     lubridate::force_tz(somedates, 'UTC'),
     calc_solar_time(somedates, -120),
-    tol = as.difftime(10, units = 'mins')
+    tolerance = 10 * 60
   )
 })

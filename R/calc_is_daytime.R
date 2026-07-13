@@ -1,15 +1,20 @@
 #' Determines if specified datetime is during the daytime
 #' Returns T/F indicating whether a datetime occurs during the daytime (sunlight hours)
 #'
-#' @param datetimes Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format, but in SOLAR time
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' `calc_is_daytime()` is deprecated.
+#'
+#' @param datetimes Vector of dates as `POSIXct` or `POSIXlt` (see [DateTimeClasses()]) format, but in SOLAR time
 #' @param lat Single latitude value of site. South should be negative, north positive
 #'
-#' @return a boolean vector of same length as \code{datetimes}
+#' @return a boolean vector of same length as `datetimes`
 #'
 #' @author
 #' Luke A. Winslow
 #' @seealso
-#' \link{calc_sun_rise_set}
+#' [calc_sun_rise_set]
 #' @importFrom LakeMetabolizer is.day
 #' @examples
 #' \dontrun{
@@ -18,8 +23,7 @@
 #' }
 #' @export
 calc_is_daytime <- function(datetimes, lat) {
-  .Deprecated()
-  warning("submit a GitHub issue if you want calc_is_daytime() to stick around")
+  lifecycle::deprecate_warn("0.13.0", "calc_is_daytime()")
 
   LakeMetabolizer::is.day(datetimes, lat)
 }

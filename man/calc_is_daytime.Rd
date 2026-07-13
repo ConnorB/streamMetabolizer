@@ -8,7 +8,7 @@ Returns T/F indicating whether a datetime occurs during the daytime (sunlight ho
 calc_is_daytime(datetimes, lat)
 }
 \arguments{
-\item{datetimes}{Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link{DateTimeClasses}}) format, but in SOLAR time}
+\item{datetimes}{Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link[=DateTimeClasses]{DateTimeClasses()}}) format, but in SOLAR time}
 
 \item{lat}{Single latitude value of site. South should be negative, north positive}
 }
@@ -16,8 +16,9 @@ calc_is_daytime(datetimes, lat)
 a boolean vector of same length as \code{datetimes}
 }
 \description{
-Determines if specified datetime is during the daytime
-Returns T/F indicating whether a datetime occurs during the daytime (sunlight hours)
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{calc_is_daytime()} is deprecated.
 }
 \examples{
 \dontrun{

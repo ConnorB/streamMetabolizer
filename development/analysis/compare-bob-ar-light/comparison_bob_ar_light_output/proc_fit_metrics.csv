@@ -1,0 +1,4 @@
+"metric","bob","streamMetabolizer"
+"one_step_DO_RMSE",0.0269946300544069,0.027557852303692
+"within_day_residual_correlation",0.994304248153896,0.994304248153896
+"within_day_residual_lag1_ACF",0.416660447276022,0.442289320515236

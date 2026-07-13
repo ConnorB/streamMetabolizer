@@ -7,7 +7,7 @@
 model.}
 \format{
 A collection of functions which any metabolism model in
-  \code{streamMetabolizer} should implement.
+\code{streamMetabolizer} should implement.
 }
 \description{
 Metabolism models in the \code{streamMetabolizer} package all implement a
@@ -17,34 +17,34 @@ the \code{metab_model_interface} defined here.
 \section{Functions in the interface}{
 
 
-  \itemize{
+\itemize{
 
-  \item \code{\link{show}(metab_model) \{ display(metab_model) \}}
+\item \code{[show](metab_model) \{ display(metab_model) \}}
 
-  \item \code{\link{get_params}(metab_model, ...) \{ return(data.frame) \}}
+\item \code{[get_params](metab_model, ...) \{ return(data.frame) \}}
 
-  \item \code{\link{get_param_names}(metab_model, ...) \{ return(list) \}}
+\item \code{[get_param_names](metab_model, ...) \{ return(list) \}}
 
-  \item \code{\link{predict_metab}(metab_model, ...) \{ return(data.frame)
+\item \code{[predict_metab](metab_model, ...) \{ return(data.frame)
   \}}
 
-  \item \code{\link{predict_DO}(metab_model, ...) \{ return(data.frame) \}}
+\item \code{[predict_DO](metab_model, ...) \{ return(data.frame) \}}
 
-  \item \code{\link{get_fit}(metab_model) \{ return(fitted.model) \}}
+\item \code{[get_fit](metab_model) \{ return(fitted.model) \}}
 
-  \item \code{\link{get_fitting_time}(metab_model) \{ return(proc_time) \}}
+\item \code{[get_fitting_time](metab_model) \{ return(proc_time) \}}
 
-  \item \code{\link{get_info}(metab_model) \{ return(info) \}}
+\item \code{[get_info](metab_model) \{ return(info) \}}
 
-  \item \code{\link{get_specs}(metab_model) \{ return(specs.list) \}}
+\item \code{[get_specs](metab_model) \{ return(specs.list) \}}
 
-  \item \code{\link{get_data}(metab_model) \{ return(data.frame) \}}
+\item \code{[get_data](metab_model) \{ return(data.frame) \}}
 
-  \item \code{\link{get_data_daily}(metab_model) \{ return(data.frame) \}}
+\item \code{[get_data_daily](metab_model) \{ return(data.frame) \}}
 
-  \item \code{\link{get_version}(metab_model) \{ return(version.string) \}}
+\item \code{[get_version](metab_model) \{ return(version.string) \}}
 
-  }
+}
 }
 
 \examples{

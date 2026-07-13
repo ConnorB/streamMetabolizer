@@ -18,7 +18,7 @@ An proc_time object
 }
 \description{
 A function in the metab_model_interface. Returns the time that was taken to
-fit the model; see \code{\link{proc.time}} for details.
+fit the model; see \code{\link[=proc.time]{proc.time()}} for details.
 }
 \section{Methods (by class)}{
 \itemize{

@@ -1,8 +1,13 @@
 #' Calculates the time of sunrise and sunset
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' `calc_sun_rise_set()` is deprecated.
+#'
 #' Calculates the time of sunrise and sunset based on latitude and date.
 #'
-#' @param date Vector of dates in \code{Date} format.
+#' @param date Vector of dates in `Date` format.
 #' @param latitude Single latitude value of site. South should be negative,
 #'   North positive
 #' @return data.frame of sunrise and sunset (apparent solar time, nominally UTC)
@@ -12,13 +17,10 @@
 #' @examples
 #' calc_sun_rise_set(latitude=40.75,
 #'   date=as.POSIXlt(c('2013-03-31', '2017-07-01')))
-#' @seealso \link{calc_is_daytime}
+#' @seealso [calc_is_daytime]
 #' @export
 calc_sun_rise_set <- function(date, latitude) {
-  .Deprecated
-  warning(
-    "submit a GitHub issue if you want calc_sun_rise_set() to stick around"
-  )
+  lifecycle::deprecate_warn("0.13.0", "calc_sun_rise_set()")
 
   app.solar.time <- as.POSIXct(
     strftime(date, "%Y-%m-%d 0"),

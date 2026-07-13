@@ -1,5 +1,3 @@
-context("metab_model class and inheriting classes")
-
 test_that("metab_model objects can be created and accessed", {
   # basic structure of metab_model parent class
   mm <- metab_model()
@@ -11,20 +9,17 @@ test_that("metab_model objects can be created and accessed", {
     all(names(formals(metab)) %in% names(getSlots('metab_model'))),
     info = "slots should match args to metab()"
   )
-  expect_is(
+  expect_s3_class(
     slot(mm, "fitting_time"),
-    "proc_time",
-    info = "time should be recorded"
+    "proc_time"
   )
-  expect_is(
+  expect_s3_class(
     slot(mm, "data"),
-    "data.frame",
-    info = "default should populate with example data"
+    "data.frame"
   )
-  expect_is(
+  expect_type(
     slot(mm, "pkg_version"),
-    "character",
-    info = "pkg version should be autopopulated"
+    "character"
   )
 
   # display

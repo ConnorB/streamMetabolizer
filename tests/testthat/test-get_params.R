@@ -1,5 +1,3 @@
-context('get_params')
-
 dat <- data_metab('3', '15')
 mm <- metab_mle(specs("m_np_oi_tr_plrckm.nlm"), data = dat)
 dat_daily <- data.frame(
@@ -113,7 +111,7 @@ test_that('get_params works for each model type, basic GPP & ER equations', {
       saved_steps = 50,
       n_chains = 1,
       n_cores = 1,
-      stan_engine = "cmdstanr"
+      stan_engine = stan_engine_for_tests()
     ),
     data = dat
   )

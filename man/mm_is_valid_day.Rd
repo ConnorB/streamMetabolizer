@@ -64,7 +64,7 @@ handle.
 }
 \details{
 Assumes that the data have already been validated as in
-\code{\link{mm_validate_data}}
+\code{\link[=mm_validate_data]{mm_validate_data()}}
 }
 \examples{
 mm_is_valid_day(data_metab('1'))

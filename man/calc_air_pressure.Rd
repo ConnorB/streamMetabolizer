@@ -18,7 +18,7 @@ the returned vector be a unitted object?}
 }
 \value{
 a numeric vector of barometric pressures in mb, with units attached
-  if requested.
+if requested.
 }
 \description{
 Estimates air pressure from air temperature and elevation

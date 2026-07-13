@@ -1,7 +1,7 @@
 #' Parse a model name into its features
 #'
 #' Returns a data.frame with one column per model structure detail and one row
-#' per `model_name` supplied to this function. See \code{?\link{mm_name}} for a
+#' per `model_name` supplied to this function. See `?[mm_name]` for a
 #' description of each of the data.frame columns that is returned.
 #'
 #' Custom model files (for MCMC) may have additional characters after an
@@ -9,7 +9,7 @@
 #' 'b_np_pcpi_eu_ko.stan' and 'b_np_pcpi_eu_ko_v2.stan' are parsed the same; the
 #' _v2 is ignored by this function.
 #'
-#' @seealso The converse of this function is \code{\link{mm_name}}.
+#' @seealso The converse of this function is [mm_name()].
 #'
 #' @param model_name character: the model name
 #' @param expand logical: should additional columns such as model_name and
@@ -74,6 +74,7 @@ mm_parse_name <- function(model_name, expand = FALSE) {
   })
   err_obs_iid <- grepl('oi', sapply(parsed, `[`, 3))
   err_proc_acor <- grepl('pc', sapply(parsed, `[`, 3))
+  err_proc_acor_light <- grepl('lv', sapply(parsed, `[`, 3))
   err_proc_iid <- grepl('pi', sapply(parsed, `[`, 3))
   err_proc_GPP <- grepl('pp', sapply(parsed, `[`, 3))
   ode_method <- unname(
@@ -134,6 +135,7 @@ mm_parse_name <- function(model_name, expand = FALSE) {
     pool_K600_sd = pool_K600_sd,
     err_obs_iid = err_obs_iid,
     err_proc_acor = err_proc_acor,
+    err_proc_acor_light = err_proc_acor_light,
     err_proc_iid = err_proc_iid,
     err_proc_GPP = err_proc_GPP,
     ode_method = ifelse(is.na(ode_method), 'NA', ode_method),

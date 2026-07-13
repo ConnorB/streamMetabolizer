@@ -3,18 +3,18 @@ NULL
 
 #' Simulate dissolved oxygen data from input data
 #'
-#' Takes input data in the form of a sub-daily time series (\code{data}) of
+#' Takes input data in the form of a sub-daily time series (`data`) of
 #' DO.sat, depth, temperature, and light, and a daily time series
-#' (\code{data_daily}) of GPP, ER, and K600 values, and turns these into
-#' simulated DO.obs. Either \code{data} or \code{data_daily} should specify a
-#' starting DO.obs value for each day; if in \code{data}, this takes the form of
+#' (`data_daily`) of GPP, ER, and K600 values, and turns these into
+#' simulated DO.obs. Either `data` or `data_daily` should specify a
+#' starting DO.obs value for each day; if in `data`, this takes the form of
 #' a DO.obs column with values on at least the first time point of each day (all
-#' other values are ignored), or if in \code{data_daily}, this takes the form of
+#' other values are ignored), or if in `data_daily`, this takes the form of
 #' a DO.mod.1 column with one starting DO value per day.
 #'
 #' @inheritParams metab
 #' @return A metab_sim object containing the fitted model. This object can be
-#'   inspected with the functions in the \code{\link{metab_model_interface}}.
+#'   inspected with the functions in the [metab_model_interface()].
 #' @examples
 #' ## simulations with variation all at sub-daily scale
 #' # prepare input data (DO used only to pick first DO of each day)
@@ -133,7 +133,7 @@ metab_sim <- function(
 #' Used in get_params.metab_sim. Looks in both data_daily and specs for a daily
 #' paramter, e.g., 'K600.daily'. If it's present in just one place, those values
 #' will be used. If it's present in neither, an error or NULLs will be returned
-#' depending on whether \code{required=TRUE}.
+#' depending on whether `required=TRUE`.
 #'
 #' @param par.name The parameter name. Should be period.separated if that's how
 #'   data_daily is. Periods will be converted to underscores when searching
@@ -143,12 +143,12 @@ metab_sim <- function(
 #' @param data_daily a data.frame of daily values from which parameter values
 #'   will be drawn
 #' @param eval_env an environment containing any parameters that have already
-#'   been finalized, plus the variable \code{n} containing the number of daily
+#'   been finalized, plus the variable `n` containing the number of daily
 #'   values required
 #' @param required logical. If true and the parameter is unavailable, an error
 #'   will be thrown.
-#' @return list containing up to three vectors (or NULLs) named \code{specs},
-#'   \code{data_daily}, and \code{combo} according to the source of the numbers
+#' @return list containing up to three vectors (or NULLs) named `specs`,
+#'   `data_daily`, and `combo` according to the source of the numbers
 #'   in each vector.
 #' @keywords internal
 sim_get_par <- function(
@@ -223,7 +223,7 @@ sim_get_par <- function(
 
 #' Data simulator
 #'
-#' \code{metab_sim} models generate a DO time series from other input data,
+#' `metab_sim` models generate a DO time series from other input data,
 #' including GPP, ER, and K600 values
 #'
 #' @exportClass metab_sim
@@ -234,9 +234,9 @@ setClass(
 )
 
 #' @describeIn get_params Generates new simulated values for daily parameters if
-#'   they were described with evaluatable expressions in \code{\link{specs}}, or
+#'   they were described with evaluatable expressions in [specs()], or
 #'   returns the fixed values for daily parameters if they were set in
-#'   \code{data_daily}
+#'   `data_daily`
 #' @importFrom lifecycle deprecated is_present
 #' @import dplyr
 #' @export
@@ -451,11 +451,11 @@ sim_Kb <- function(
 #'
 #' Uses linear interpolation among "nodes" (lnQ, lnK points) to predict daily
 #' values of the natural log of K600, based on the lnK ~ lnQ relationship
-#' specified by \code{K600_lnQ_nodes_centers} and \code{lnK600_lnQ_nodes}
+#' specified by `K600_lnQ_nodes_centers` and `lnK600_lnQ_nodes`
 #'
 #' @inheritParams specs
 #' @param lnQ.daily vector of daily values of the natural log of discharge,
-#'   e.g., \code{log(data_daily$discharge.daily)}
+#'   e.g., `log(data_daily$discharge.daily)`
 #' @export
 sim_pred_Kb <- function(K600_lnQ_nodes_centers, lnK600_lnQ_nodes, lnQ.daily) {
   # this function is HIGHLY REDUNDANT with metab_bayes.R. See GH#236
@@ -475,10 +475,10 @@ sim_pred_Kb <- function(K600_lnQ_nodes_centers, lnK600_lnQ_nodes, lnQ.daily) {
     (bounds[as.numeric(cuts) + 1] - lnQ.daily) / widths
   )
   # package info
-  lnQ.bin1 = bins[1, ]
-  lnQ.bin2 = bins[2, ]
-  lnQ.bin1.weight = weights
-  lnQ.bin2.weight = 1 - weights
+  lnQ.bin1 <- bins[1, ]
+  lnQ.bin2 <- bins[2, ]
+  lnQ.bin1.weight <- weights
+  lnQ.bin2.weight <- 1 - weights
 
   # Predict K600_daily_predlog (ln(K600) for each value of discharge.daily)
   lnK600_lnQ_nodes[lnQ.bin1] *

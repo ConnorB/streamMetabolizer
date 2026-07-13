@@ -4,7 +4,7 @@
 #' created by specs()
 #'
 #' @param specs a list of specifications to revise
-#' @param ... named values to replace in or add to \code{specs}
+#' @param ... named values to replace in or add to `specs`
 #' @param delete a vector of names of elements to remove from the specs list
 #' @export
 #' @examples

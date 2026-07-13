@@ -8,8 +8,7 @@ approach.}
 bayes_allply(data_all, data_daily_all, removed, specs)
 }
 \arguments{
-\item{data_all}{data.frame of the form \code{mm_data(solar.time, DO.obs,
-DO.sat, depth, temp.water, light)} and containing data for just one
+\item{data_all}{data.frame of the form \code{mm_data(solar.time, DO.obs, DO.sat, depth, temp.water, light)} and containing data for just one
 estimation-day (this may be >24 hours but only yields estimates for one
 24-hour period)}
 
@@ -20,10 +19,10 @@ model_path}
 
 \item{specs}{a list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
-and safer to use \code{\link{specs}} to generate the list, because the set
+and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
 \code{model_name} argument to \code{specs}. The help file for
-\code{\link{specs}} lists the necessary parameters, describes them in
+\code{\link[=specs]{specs()}} lists the necessary parameters, describes them in
 detail, and gives default values.}
 }
 \value{

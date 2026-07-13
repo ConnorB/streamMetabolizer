@@ -1,12 +1,12 @@
 #' Create a function to compute the numerical integration of a dDOdt function
 #'
-#' @param calc_dDOdt a function as from \code{create_calc_dDOdt}
+#' @param calc_dDOdt a function as from `create_calc_dDOdt`
 #' @inheritParams mm_name
 #' @param err.obs optional numerical vector of length nrow(data) in units of gO2
 #'   m^3. Appropriate for simulation, when this vector of observation errors
 #'   will be added to the calculated DO values to simulate observation error.
 #'   But usually (for MLE or prediction from a fitted MLE/Bayesian/nighttime
-#'   regression model) \code{err.obs} should be missing or 0
+#'   regression model) `err.obs` should be missing or 0
 #' @return a function that will return a negative log likelihood of the data
 #'   given a set of metab.pars
 #' @import deSolve

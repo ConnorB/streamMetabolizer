@@ -45,14 +45,14 @@ messages if any tests failed.}
 
 \item{timestep_days}{numeric length of the mean timestep for this day, if
 requested by setting \code{timestep_days} to \code{TRUE} or a numeric value
-in the call to \code{\link{mm_model_by_ply}}}
+in the call to \code{\link[=mm_model_by_ply]{mm_model_by_ply()}}}
 
 \item{...}{other args that were passed untouched from the function calling
 mm_model_by_ply, through mm_model_by_ply, and finally to this function.}
 }
 \description{
 This function does nothing but has the proper form for a model_fun passed to
-\code{\link{mm_model_by_ply}} Other functions to be used as model_fun may
+\code{\link[=mm_model_by_ply]{mm_model_by_ply()}} Other functions to be used as model_fun may
 call inheritParams to use the parameter definitions given here.
 }
 \examples{

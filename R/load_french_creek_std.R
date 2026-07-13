@@ -1,8 +1,8 @@
 #' Load a short dataset from French Creek using Bob Hall's code
 #'
-#' This function requires \code{chron}, a package that is not formally required
-#' by the \code{streamMetabolizer} package overall. Ensure that you have
-#' \code{chron} installed or install it with \code{install.packages('chron')}.
+#' This function requires `chron`, a package that is not formally required
+#' by the `streamMetabolizer` package overall. Ensure that you have
+#' `chron` installed or install it with `install.packages('chron')`.
 #'
 #' This function produces a version of the French Creek dataset that agrees as
 #' much as possible with raw code from Bob Hall, for comparison to functions
@@ -159,10 +159,10 @@ load_french_creek_std <- function(attach.units = deprecated()) {
 #' possible. The exception is that we're using solar.time rather than
 #' local.time, for consistency with streamMetabolizer's recommendations
 #'
-#' This function requires the \code{chron} package, which is only suggested
-#' rather than required for the \code{streamMetabolizer} package. If you wish to
-#' run this function, ensure that \code{chron} is installed or install it with
-#' \code{install.packages('chron')}.
+#' This function requires the `chron` package, which is only suggested
+#' rather than required for the `streamMetabolizer` package. If you wish to
+#' run this function, ensure that `chron` is installed or install it with
+#' `install.packages('chron')`.
 #'
 #' @param french the French Creek dataset
 #' @param K optional. If specified, a number for the K600 to assume (units of
@@ -213,9 +213,9 @@ load_french_creek_std_mle <- function(
   ]
 
   # set constants specific to French Creek data
-  z = 0.16
-  bp = 523
-  ts = 5 / 1440 # was 0.003422, which is ~= 5/1440=0.0034722
+  z <- 0.16
+  bp <- 523
+  ts <- 5 / 1440 # was 0.003422, which is ~= 5/1440=0.0034722
 
   # function to correct K600 to instantaneous KO2
   Kcor <- function(temp, K600) {
