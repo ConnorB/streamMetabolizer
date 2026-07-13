@@ -115,7 +115,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Connor L. Brown \email{connor.brown@ku.edu} [contributor]
+\strong{Maintainer}: Connor Brown \email{ConnorBrown1996@gmail.com} (\href{https://orcid.org/0000-0002-9680-8930}{ORCID}) [contributor]
 
 Authors:
 \itemize{

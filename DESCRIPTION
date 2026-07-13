@@ -8,7 +8,8 @@ Authors@R: c(
     person("Robert O.", "Hall", role = "aut"),
     person("Maite", "Arroita", role = "aut"),
     person("Charles B.", "Yackulic", role = "aut"),
-    person("Connor L.", "Brown", , "connor.brown@ku.edu", role = c("cre", "ctb"))
+    person("Connor", "Brown", , "ConnorBrown1996@gmail.com", role = c("cre", "ctb"),
+           comment = c(ORCID = "0000-0002-9680-8930"))
   )
 Description: streamMetabolizer uses inverse modeling to estimate aquatic
     photosynthesis and respiration (collectively, metabolism) from time series
@@ -30,6 +31,7 @@ Copyright: This software is in the public domain because it contains materials
 URL: https://connorb.github.io/streamMetabolizer/,
     https://github.com/ConnorB/streamMetabolizer
 BugReports: https://github.com/ConnorB/streamMetabolizer/issues
+Additional_repositories: https://stan-dev.r-universe.dev
 VignetteBuilder: quarto
 Depends:
     R (>= 4.1)
@@ -47,6 +49,7 @@ Imports:
     tibble (>= 3.0.0),
     tidyr (>= 1.0.0)
 Suggests:
+    BH,
     bayesplot,
     chron,
     cmdstanr,
@@ -57,8 +60,12 @@ Suggests:
     microbenchmark,
     posterior,
     quarto,
-    rstan,
+    Rcpp,
+    RcppEigen,
+    RcppParallel,
+    rstan (>= 2.26.0),
     sf,
+    StanHeaders,
     testthat (>= 3.0.0),
     withr,
     xts

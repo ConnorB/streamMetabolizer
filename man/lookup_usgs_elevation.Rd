@@ -26,7 +26,7 @@ precision or on the lifetime of the API service used by the function. The
 lookup uses the JSON response from the service.
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+\dontrun{
 elevation_m <- lookup_usgs_elevation(
   latitude = 39.102075,
   longitude = -96.594689
@@ -39,7 +39,7 @@ elevation_ft <- lookup_usgs_elevation(
   units = "Feet"
 )
 elevation_ft
-\dontshow{\}) # examplesIf}
+}
 }
 \references{
 https://epqs.nationalmap.gov/v1/docs

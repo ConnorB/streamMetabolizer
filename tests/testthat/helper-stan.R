@@ -14,14 +14,34 @@ skip_if_no_cmdstan <- function() {
 }
 
 skip_if_no_rstan <- function() {
-  testthat::skip_if_not_installed('rstan')
+  testthat::skip_if_not(
+    rstan_is_available(),
+    'RStan and its compilation dependencies are not installed'
+  )
+}
+
+rstan_is_available <- function() {
+  packages <- c(
+    'rstan',
+    'StanHeaders',
+    'Rcpp',
+    'RcppEigen',
+    'RcppParallel',
+    'BH'
+  )
+  all(vapply(
+    packages,
+    requireNamespace,
+    quietly = TRUE,
+    FUN.VALUE = logical(1)
+  ))
 }
 
 stan_engine_for_tests <- function() {
   if (cmdstan_is_available()) {
     return('cmdstanr')
   }
-  if (requireNamespace('rstan', quietly = TRUE)) {
+  if (rstan_is_available()) {
     return('rstan')
   }
   testthat::skip('neither CmdStanR nor RStan is available')

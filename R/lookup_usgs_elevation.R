@@ -13,7 +13,8 @@
 #'   to return the elevation
 #' @returns The numeric elevation in the requested units.
 #' @references https://epqs.nationalmap.gov/v1/docs
-#' @examplesIf interactive()
+#' @examples
+#' \dontrun{
 #' elevation_m <- lookup_usgs_elevation(
 #'   latitude = 39.102075,
 #'   longitude = -96.594689
@@ -26,6 +27,7 @@
 #'   units = "Feet"
 #' )
 #' elevation_ft
+#' }
 #' @export
 lookup_usgs_elevation <- function(
   latitude,

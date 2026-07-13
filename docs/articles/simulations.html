@@ -6,19 +6,26 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Simulations • streamMetabolizer</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="simulations_files/libs/quarto-html/popper.min.js"></script><script src="simulations_files/libs/quarto-html/tippy.umd.min.js"></script><link href="simulations_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="simulations_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Simulations">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-ELB0F4QNPS"></script><script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ELB0F4QNPS');
+</script>
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">streamMetabolizer</a>
 
@@ -53,6 +60,14 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/ConnorB/streamMetabolizer/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
       </ul>
 </div>
 
@@ -65,7 +80,7 @@
       <h1>Simulations</h1>
 
       <p class="author">Alison Appling</p>
-      <p class="date">2026-07-12</p>
+      <p class="date">2026-07-13</p>
 
       <small class="dont-index">Source: <a href="https://github.com/ConnorB/streamMetabolizer/blob/HEAD/vignettes/simulations.qmd" class="external-link"><code>vignettes/simulations.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -121,14 +136,14 @@
 <code class="sourceCode R"><span><span class="va">mm_sim_q10_trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metab.html">metab</a></span><span class="op">(</span><span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span><span class="va">name_sim_q10</span><span class="op">)</span>, <span class="va">dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm_sim_q10_trial</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        date K600.daily GPP.daily       ER20 err.obs.sigma err.obs.phi err.proc.sigma err.proc.phi
-1 2012-09-18   3.139130  6.078223 -10.172252          0.01           0            0.2            0
-2 2012-09-19   0.000000  6.996890  -8.034961          0.01           0            0.2            0
-3 2012-09-20   2.740712  9.656541  -4.531754          0.01           0            0.2            0
+<pre><code>        date K600.daily  GPP.daily       ER20 err.obs.sigma err.obs.phi err.proc.sigma err.proc.phi
+1 2012-09-18  5.0110277 14.4314432 -11.208202          0.01           0            0.2            0
+2 2012-09-19  0.8782183  0.4578506 -15.861314          0.01           0            0.2            0
+3 2012-09-20  3.9982962  2.8815043  -5.734633          0.01           0            0.2            0
   discharge.daily
-1        20.39247
-2        24.44253
-3        18.61086</code></pre>
+1        17.84960
+2        23.64297
+3        20.93546</code></pre>
 </div>
 </div>
 <p>Great: we need <code>GPP.daily</code>, <code>ER20</code>, and <code>K600.daily</code>. Now we can pick values for those parameters and put them in a data.frame.</p>
@@ -216,22 +231,22 @@
 <div class="cell-output cell-output-stdout">
 <pre><code>           date          solar.time   DO.sat depth temp.water light  DO.pure   DO.mod   DO.obs
 5689 2012-09-18 2012-09-18 04:05:58 9.083329  0.16       3.60     0 8.410000 8.410000 8.410000
-5692 2012-09-18 2012-09-18 04:20:58 9.093063  0.16       3.56     0 8.333532 8.327458 8.327458
-5695 2012-09-18 2012-09-18 04:35:58 9.105254  0.16       3.51     0 8.266667 8.270311 8.270311
-5698 2012-09-18 2012-09-18 04:50:58 9.112582  0.16       3.48     0 8.208204 8.246432 8.246432
-5701 2012-09-18 2012-09-18 05:05:58 9.127267  0.16       3.42     0 8.157374 8.265991 8.265991
-5704 2012-09-18 2012-09-18 05:20:58 9.137079  0.16       3.38     0 8.113493 8.252088 8.252088</code></pre>
+5692 2012-09-18 2012-09-18 04:20:58 9.093063  0.16       3.56     0 8.333532 8.319648 8.319648
+5695 2012-09-18 2012-09-18 04:35:58 9.105254  0.16       3.51     0 8.266667 8.175490 8.175490
+5698 2012-09-18 2012-09-18 04:50:58 9.112582  0.16       3.48     0 8.208204 8.061278 8.061278
+5701 2012-09-18 2012-09-18 05:05:58 9.127267  0.16       3.42     0 8.157374 8.012066 8.012066
+5704 2012-09-18 2012-09-18 05:20:58 9.137079  0.16       3.38     0 8.113493 7.932135 7.932135</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/predict_DO.html">predict_DO</a></span><span class="op">(</span><span class="va">mm_sim_q10b</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           date          solar.time   DO.sat depth temp.water light  DO.pure   DO.mod   DO.obs
 5689 2012-09-18 2012-09-18 04:05:58 9.083329  0.16       3.60     0 8.410000 8.410000 8.410000
-5692 2012-09-18 2012-09-18 04:20:58 9.093063  0.16       3.56     0 8.431047 8.470168 8.470168
-5695 2012-09-18 2012-09-18 04:35:58 9.105254  0.16       3.51     0 8.450642 8.538804 8.538804
-5698 2012-09-18 2012-09-18 04:50:58 9.112582  0.16       3.48     0 8.468822 8.608271 8.608271
-5701 2012-09-18 2012-09-18 05:05:58 9.127267  0.16       3.42     0 8.485984 8.632272 8.632272
-5704 2012-09-18 2012-09-18 05:20:58 9.137079  0.16       3.38     0 8.502466 8.641000 8.641000</code></pre>
+5692 2012-09-18 2012-09-18 04:20:58 9.093063  0.16       3.56     0 8.431047 8.437322 8.437322
+5695 2012-09-18 2012-09-18 04:35:58 9.105254  0.16       3.51     0 8.450642 8.480042 8.480042
+5698 2012-09-18 2012-09-18 04:50:58 9.112582  0.16       3.48     0 8.468822 8.421646 8.421646
+5701 2012-09-18 2012-09-18 05:05:58 9.127267  0.16       3.42     0 8.485984 8.386057 8.386057
+5704 2012-09-18 2012-09-18 05:20:58 9.137079  0.16       3.38     0 8.502466 8.453119 8.453119</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_DO_preds.html">plot_DO_preds</a></span><span class="op">(</span><span class="va">mm_sim_q10a</span>, y_var<span class="op">=</span><span class="st">'conc'</span><span class="op">)</span></span></code></pre></div>
@@ -338,7 +353,7 @@ Specifications:
   err_proc_phi      0
   err_round         NA
   sim_seed          NA
-Fitting time: 0.003 secs elapsed
+Fitting time: 0.002 secs elapsed
 Parameters (10 dates)(* = fixed value):
          date K600.daily      Pmax        alpha       ER20 err.obs.sigma err.obs.phi err.proc.sigma
 1  2012-09-18        16* 8.499653* 0.010029735* -4.780125*          0.2           0              1
@@ -352,16 +367,16 @@ Parameters (10 dates)(* = fixed value):
 9  2012-09-26        16* 5.671489* 0.009372155* -7.103388*          0.2           0              1
 10 2012-09-27        16* 8.824851* 0.011480065* -3.531540*          0.2           0              1
    err.proc.phi discharge.daily msgs.fit
-1            0        15.60672        NA
-2            0        21.09041        NA
-3            0        14.53161        NA
-4            0        26.43299        NA
-5            0        19.50182        NA
-6            0        18.13035        NA
-7            0        18.81140        NA
-8            0        19.12364        NA
-9            0        17.46230        NA
-10           0        19.82438        NA
+1            0        21.79075        NA
+2            0        17.84323        NA
+3            0        21.61944        NA
+4            0        20.64187        NA
+5            0        22.46762        NA
+6            0        17.10891        NA
+7            0        20.31606        NA
+8            0        19.05287        NA
+9            0        16.30102        NA
+10           0        22.71136        NA
 Predictions (10 dates):
          date      GPP GPP.lower GPP.upper        ER ER.lower ER.upper msgs.fit msgs.pred
 1  2012-09-18 3.322718        NA        NA -2.733984       NA       NA       NA
@@ -411,7 +426,8 @@ $K600_daily$code
 NULL
 
 $K600_daily$example_vals
- [1] 2.473569 4.625353 5.535663 2.038462 3.511939 2.169934 0.000000 8.674173 2.485766 0.000000
+ [1] 0.02071581 5.54163077 2.15814644 5.32528601 6.18507654 0.00000000 0.95673075 0.00000000
+ [9] 7.79838521 3.15649017
 
 
 $GPP_daily
@@ -419,8 +435,8 @@ $GPP_daily$code
 NULL
 
 $GPP_daily$example_vals
- [1]  4.165790  9.175468  7.431929 11.876324  2.274165 13.175473  6.517572 10.800307  5.679784
-[10]  5.837463
+ [1]  7.5693747  9.6516798  9.6901278  7.7056245  4.7782629  7.4064188 11.9455850  6.4708210
+ [9]  3.2161260  0.5442086
 
 
 $ER_daily
@@ -428,8 +444,8 @@ $ER_daily$code
 NULL
 
 $ER_daily$example_vals
- [1]  -8.7118040  -6.0800766   0.0000000 -10.8731954 -10.4743640  -3.5475721   0.0000000 -12.2202248
- [9]  -0.5938653  -9.7112936</code></pre>
+ [1] -10.1765029  -9.7426469 -10.2691210 -13.5534757 -16.3684253  -8.1842872 -10.9544671  -0.5091364
+ [9]  -2.1747479 -13.1949536</code></pre>
 </div>
 </div>
 <p>These functions get called to generate new values for K600.daily, GPP.daily, and ER.daily each time you call <code>get_params</code>, <code>predict_metab</code>, or <code>predict_DO</code>. (They’ll be the same random values each time if you set <code>sim_seed</code>.)</p>
@@ -438,27 +454,27 @@ $ER_daily$example_vals
 <code class="sourceCode R"><span><span class="va">mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metab.html">metab</a></span><span class="op">(</span><span class="va">sp</span>, <span class="va">dat20</span>, data_daily<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'date'</span>,<span class="st">'K600.daily'</span>,<span class="st">'GPP.daily'</span>,<span class="st">'ER.daily'</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>         date K600.daily GPP.daily     ER.daily
-1  2012-09-18  5.4065277  1.985174 -14.66505547
-2  2012-09-19  0.0000000 10.017283 -12.76055368
-3  2012-09-20  0.0000000 14.811735 -19.98789823
-4  2012-09-21  4.9150140  7.915469 -15.81658442
-5  2012-09-22 12.0059060 11.007334  -8.84239989
-6  2012-09-23  0.0000000 10.241299  -8.69924757
-7  2012-09-24  8.5236957 11.212188  -8.23306376
-8  2012-09-25  0.4786006  8.170534 -10.87389194
-9  2012-09-26  0.7776399 10.952884  -0.04204432
-10 2012-09-27  4.0828447 15.668017 -12.00855568
-11 2012-09-28  2.0846917  5.724216 -18.77689230
-12 2012-09-29  4.1080064  4.628423 -11.07259888
-13 2012-09-30  7.7608363  5.107160  -6.75993933
-14 2012-10-01  4.1001550 12.605246   0.00000000
-15 2012-10-02  3.9889580  9.650197  -5.13240122
-16 2012-10-03  0.4736111  8.102014  -8.83608457
-17 2012-10-04  3.5894625  7.301242 -10.41877215
-18 2012-10-05  0.0000000  7.458664 -15.58451680
-19 2012-10-06  4.4383031 13.218775  -5.36880812
-20 2012-10-07  1.3658599  8.587510 -10.54472972</code></pre>
+<pre><code>         date K600.daily GPP.daily   ER.daily
+1  2012-09-18  5.4350455  7.749050  -3.666652
+2  2012-09-19  0.0000000  8.211071 -15.453556
+3  2012-09-20  4.7957552 11.187728  -7.598931
+4  2012-09-21  1.9732692  8.539985  -7.767494
+5  2012-09-22  0.0000000  4.244624 -17.135068
+6  2012-09-23  0.0000000  3.958254  -1.481656
+7  2012-09-24  3.3091833 10.143191  -5.352655
+8  2012-09-25  6.1243680  8.847000 -14.844615
+9  2012-09-26  5.2318839 14.885115 -17.531392
+10 2012-09-27  0.0000000 16.674936 -10.613685
+11 2012-09-28  0.0000000 12.314778 -10.570182
+12 2012-09-29  0.0000000  9.320205 -22.973797
+13 2012-09-30  3.5329514  2.741687  -7.053378
+14 2012-10-01  1.8209898  9.415338 -17.809886
+15 2012-10-02  0.0000000 13.802004  -5.760405
+16 2012-10-03  2.5724735  4.969850 -11.564054
+17 2012-10-04  4.3157180  8.128543 -18.472892
+18 2012-10-05  0.6387472 10.658853 -11.978248
+19 2012-10-06 12.0741442  3.241573 -13.756927
+20 2012-10-07  2.4942148 13.649471 -13.932067</code></pre>
 </div>
 </div>
 <p>You can also set <code>err_obs_sigma</code> and other error terms as daily values and/or functions. The defaults are simple numeric values that get replicated to every date, but the values can also be vectors or functions, as with <code>GPP_daily</code>, etc.</p>
@@ -469,47 +485,47 @@ $ER_daily$example_vals
 <span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         date K600.daily GPP.daily ER.daily err.obs.sigma err.obs.phi err.proc.sigma err.proc.phi
-1  2012-09-18         16         3       -4          0.19           0     0.10288516   0.00000000
-2  2012-09-19         16         3       -4          0.36           0     0.10636693   0.05263158
-3  2012-09-20         16         3       -4          0.51           0     0.09635739   0.10526316
-4  2012-09-21         16         3       -4          0.64           0     0.09799013   0.15789474
-5  2012-09-22         16         3       -4          0.75           0     0.10070356   0.21052632
-6  2012-09-23         16         3       -4          0.84           0     0.08845192   0.26315789
-7  2012-09-24         16         3       -4          0.91           0     0.09572964   0.31578947
-8  2012-09-25         16         3       -4          0.96           0     0.10063749   0.36842105
-9  2012-09-26         16         3       -4          0.99           0     0.09885675   0.42105263
-10 2012-09-27         16         3       -4          1.00           0     0.09762740   0.47368421
-11 2012-09-28         16         3       -4          0.99           0     0.10541753   0.52631579
-12 2012-09-29         16         3       -4          0.96           0     0.09478446   0.57894737
-13 2012-09-30         16         3       -4          0.91           0     0.10137847   0.63157895
-14 2012-10-01         16         3       -4          0.84           0     0.09730714   0.68421053
-15 2012-10-02         16         3       -4          0.75           0     0.10822539   0.73684211
-16 2012-10-03         16         3       -4          0.64           0     0.10060528   0.78947368
-17 2012-10-04         16         3       -4          0.51           0     0.09400817   0.84210526
-18 2012-10-05         16         3       -4          0.36           0     0.09139142   0.89473684
-19 2012-10-06         16         3       -4          0.19           0     0.10187170   0.94736842
-20 2012-10-07         16         3       -4          0.00           0     0.10027442   1.00000000
+1  2012-09-18         16         3       -4          0.19           0     0.09761706   0.00000000
+2  2012-09-19         16         3       -4          0.36           0     0.10167975   0.05263158
+3  2012-09-20         16         3       -4          0.51           0     0.10321089   0.10526316
+4  2012-09-21         16         3       -4          0.64           0     0.10186268   0.15789474
+5  2012-09-22         16         3       -4          0.75           0     0.09700303   0.21052632
+6  2012-09-23         16         3       -4          0.84           0     0.10456864   0.26315789
+7  2012-09-24         16         3       -4          0.91           0     0.10763811   0.31578947
+8  2012-09-25         16         3       -4          0.96           0     0.09950898   0.36842105
+9  2012-09-26         16         3       -4          0.99           0     0.10335204   0.42105263
+10 2012-09-27         16         3       -4          1.00           0     0.10450815   0.47368421
+11 2012-09-28         16         3       -4          0.99           0     0.09775301   0.52631579
+12 2012-09-29         16         3       -4          0.96           0     0.09312034   0.57894737
+13 2012-09-30         16         3       -4          0.91           0     0.09957236   0.63157895
+14 2012-10-01         16         3       -4          0.84           0     0.09563621   0.68421053
+15 2012-10-02         16         3       -4          0.75           0     0.10405617   0.73684211
+16 2012-10-03         16         3       -4          0.64           0     0.09711604   0.78947368
+17 2012-10-04         16         3       -4          0.51           0     0.10032204   0.84210526
+18 2012-10-05         16         3       -4          0.36           0     0.09686111   0.89473684
+19 2012-10-06         16         3       -4          0.19           0     0.10374946   0.94736842
+20 2012-10-07         16         3       -4          0.00           0     0.09676609   1.00000000
    discharge.daily
-1         18.41650
-2         13.91390
-3         23.11172
-4         21.78655
-5         22.71623
-6         17.82392
-7         21.08706
-8         21.09230
-9         18.81861
-10        18.00008
-11        25.51812
-12        17.50020
-13        16.94166
-14        16.19978
-15        13.93922
-16        14.90153
-17        18.65029
-18        21.38205
-19        19.27904
-20        15.85415</code></pre>
+1         19.17659
+2         20.58512
+3         21.76338
+4         20.63387
+5         17.07886
+6         24.00694
+7         21.16531
+8         27.51038
+9         16.81293
+10        19.10456
+11        22.12520
+12        16.87243
+13        19.08602
+14        20.90291
+15        18.67625
+16        17.26646
+17        18.80408
+18        27.01856
+19        18.04054
+20        20.97784</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_DO_preds.html">plot_DO_preds</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
@@ -549,26 +565,26 @@ $ER_daily$example_vals
 19 2012-10-06         16         3       -4          0.01           0            4.0   0.71111111
 20 2012-10-07         16         3       -4          0.01           0            4.0   0.80000000
    discharge.daily
-1         23.60628
-2         21.50547
-3         18.34720
-4         18.67251
-5         20.74388
-6         21.72609
-7         18.30914
-8         16.24278
-9         21.14138
-10        21.77679
-11        17.71564
-12        17.91152
-13        18.87588
-14        24.92910
-15        19.86720
-16        20.73327
-17        24.12160
-18        18.10545
-19        20.90325
-20        20.56314</code></pre>
+1         20.74720
+2         23.28544
+3         20.22697
+4         21.53162
+5         22.63219
+6         20.45666
+7         19.93882
+8         16.25914
+9         26.53083
+10        20.13423
+11        20.37814
+12        23.36970
+13        14.77759
+14        16.21020
+15        22.56268
+16        20.23279
+17        19.40765
+18        20.61460
+19        22.19636
+20        14.81690</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_DO_preds.html">plot_DO_preds</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
@@ -587,47 +603,47 @@ $ER_daily$example_vals
 <span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         date K600.daily GPP.daily ER.daily err.obs.sigma err.obs.phi err.proc.sigma err.proc.phi
-1  2012-09-18         16       5.0    -10.0          0.01           0            0.4            0
-2  2012-09-19         16       3.3     -6.6          0.01           0            0.4            0
-3  2012-09-20         16       2.9     -5.8          0.01           0            0.4            0
-4  2012-09-21         16       3.3     -6.6          0.01           0            0.4            0
+1  2012-09-18         16       4.9     -9.8          0.01           0            0.4            0
+2  2012-09-19         16       3.6     -7.2          0.01           0            0.4            0
+3  2012-09-20         16       4.8     -9.6          0.01           0            0.4            0
+4  2012-09-21         16       6.2    -12.4          0.01           0            0.4            0
 5  2012-09-22         16       4.3     -8.6          0.01           0            0.4            0
-6  2012-09-23         16       5.0    -10.0          0.01           0            0.4            0
+6  2012-09-23         16       3.7     -7.4          0.01           0            0.4            0
 7  2012-09-24         16       3.9     -7.8          0.01           0            0.4            0
-8  2012-09-25         16       3.6     -7.2          0.01           0            0.4            0
-9  2012-09-26         16       3.4     -6.8          0.01           0            0.4            0
-10 2012-09-27         16       3.9     -7.8          0.01           0            0.4            0
-11 2012-09-28         16       4.8     -9.6          0.01           0            0.4            0
-12 2012-09-29         16       3.5     -7.0          0.01           0            0.4            0
-13 2012-09-30         16       1.9     -3.8          0.01           0            0.4            0
-14 2012-10-01         16       4.4     -8.8          0.01           0            0.4            0
-15 2012-10-02         16       3.4     -6.8          0.01           0            0.4            0
-16 2012-10-03         16       4.7     -9.4          0.01           0            0.4            0
-17 2012-10-04         16       5.8    -11.6          0.01           0            0.4            0
-18 2012-10-05         16       3.8     -7.6          0.01           0            0.4            0
-19 2012-10-06         16       3.5     -7.0          0.01           0            0.4            0
-20 2012-10-07         16       2.3     -4.6          0.01           0            0.4            0
+8  2012-09-25         16       3.4     -6.8          0.01           0            0.4            0
+9  2012-09-26         16       3.7     -7.4          0.01           0            0.4            0
+10 2012-09-27         16       4.3     -8.6          0.01           0            0.4            0
+11 2012-09-28         16       3.1     -6.2          0.01           0            0.4            0
+12 2012-09-29         16       5.5    -11.0          0.01           0            0.4            0
+13 2012-09-30         16       4.4     -8.8          0.01           0            0.4            0
+14 2012-10-01         16       3.9     -7.8          0.01           0            0.4            0
+15 2012-10-02         16       4.9     -9.8          0.01           0            0.4            0
+16 2012-10-03         16       3.6     -7.2          0.01           0            0.4            0
+17 2012-10-04         16       4.7     -9.4          0.01           0            0.4            0
+18 2012-10-05         16       2.6     -5.2          0.01           0            0.4            0
+19 2012-10-06         16       4.4     -8.8          0.01           0            0.4            0
+20 2012-10-07         16       3.0     -6.0          0.01           0            0.4            0
    discharge.daily
-1         22.52737
-2         20.66771
-3         21.33295
-4         18.51154
-5         19.91958
-6         22.73815
-7         21.93073
-8         18.34612
-9         16.68142
-10        22.89258
-11        19.37253
-12        27.79433
-13        18.96704
-14        18.38761
-15        17.85022
-16        22.78754
-17        18.78682
-18        16.64662
-19        16.51026
-20        18.44349</code></pre>
+1         16.56425
+2         16.20899
+3         22.87417
+4         19.05155
+5         19.13106
+6         20.18081
+7         22.23702
+8         15.46906
+9         21.84678
+10        17.73179
+11        20.63344
+12        22.88926
+13        21.18149
+14        15.99643
+15        21.29587
+16        18.62982
+17        20.90710
+18        18.64620
+19        19.46684
+20        23.21473</code></pre>
 </div>
 </div>
 <p>The K600_daily function can also take advantage of pre-specified model structures relating K to discharge. As of December 2016, the <code>Kb</code> formulation (<code>pool_K600 = 'binned'</code>) is the only one available. But it’s a good one! See which parameters you can set by calling <code>specs</code> one preliminary time with a Kb model name:</p>
@@ -820,7 +836,7 @@ $K600_daily_predlog
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Alison P. Appling, Robert O. Hall, Maite Arroita, Charles B. Yackulic, Connor L. Brown.</p>
+  <p>Developed by Alison P. Appling, Robert O. Hall, Maite Arroita, Charles B. Yackulic, <a href="https://connorb.github.io/" class="external-link">Connor Brown</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -42,6 +42,13 @@ test_that('RStan cache keys include model contents', {
   expect_true(dir.exists(dirname(first)))
 })
 
+test_that('RStan cache keys tolerate missing optional toolchain packages', {
+  expect_equal(
+    package_version_for_cache('streamMetabolizer-package-that-does-not-exist'),
+    'not-installed'
+  )
+})
+
 test_that('the default RStan cache always resolves to a writable directory', {
   skip_if_no_rstan()
 

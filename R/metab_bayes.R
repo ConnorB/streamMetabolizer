@@ -1233,8 +1233,8 @@ rstan_cache_file <- function(model_path) {
   }
   model_hash <- unname(tools::md5sum(model_path))
   dependency_versions <- vapply(
-    c('StanHeaders', 'Rcpp', 'RcppEigen', 'BH'),
-    function(package) as.character(utils::packageVersion(package)),
+    c('StanHeaders', 'Rcpp', 'RcppEigen', 'RcppParallel', 'BH'),
+    package_version_for_cache,
     character(1)
   )
   version_key <- paste0(
@@ -1265,6 +1265,16 @@ rstan_cache_file <- function(model_path) {
     stop('could not create a writable RStan model cache at ', cache_dir)
   }
   file.path(cache_dir, paste0(model_hash, '.rds'))
+}
+
+# Return a stable cache-key component even when an optional toolchain package
+# is unavailable. The subsequent RStan compilation will provide the actionable
+# dependency error, while cache-path creation remains safe.
+package_version_for_cache <- function(package) {
+  tryCatch(
+    as.character(utils::packageVersion(package)),
+    error = function(e) 'not-installed'
+  )
 }
 
 #' Locate the persistent compilation cache for a CmdStan model

@@ -1,4 +1,10 @@
 url: https://connorb.github.io/streamMetabolizer/
+llm-docs: true
+authors:
+  Connor Brown:
+    href: https://connorb.github.io/
 template:
   bootstrap: 5
-
+  light-switch: true
+  params:
+    ganalytics: "G-ELB0F4QNPS"
