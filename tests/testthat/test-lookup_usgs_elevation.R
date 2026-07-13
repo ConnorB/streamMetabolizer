@@ -23,6 +23,7 @@ test_that("lookup_usgs_elevation rejects a missing elevation", {
 
 test_that("lookup_usgs_elevation works with the live EPQS API", {
   skip_on_cran()
+  skip_on_ci()
   epqs_available <- tryCatch(
     suppressWarnings({
       jsonlite::fromJSON(paste0(

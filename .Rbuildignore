@@ -24,3 +24,5 @@
 ^vignettes/\.quarto$
 ^[.]?air[.]toml$
 ^\.vscode$
+# Ignore pre-commit config
+.pre-commit-config.yaml

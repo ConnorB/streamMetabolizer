@@ -1,4 +1,4 @@
-test_that('Stan model lookup uses the selected backend version', {
+test_that('Stan model lookup rejects unsupported backend versions', {
   testthat::local_mocked_bindings(
     stan_version_for_engine = function(stan_engine) {
       expect_equal(stan_engine, 'cmdstanr')
@@ -7,11 +7,13 @@ test_that('Stan model lookup uses the selected backend version', {
     .package = 'streamMetabolizer'
   )
 
-  model_path <- mm_locate_filename(
-    'b_np_oi_tr_plrckm.stan',
-    stan_engine = 'cmdstanr'
+  expect_error(
+    mm_locate_filename(
+      'b_np_oi_tr_plrckm.stan',
+      stan_engine = 'cmdstanr'
+    ),
+    'Stan version 2.25.0 is not supported'
   )
-  expect_equal(basename(dirname(model_path)), 'deprecated')
 })
 
 test_that('CmdStan draw selection respects indexed parameters', {

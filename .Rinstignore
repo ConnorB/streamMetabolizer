@@ -1,2 +1,3 @@
 ^inst/models/.*\.stanrda$
 ^inst/models/.*\.stanrds$
+^inst/models/deprecated($|/)

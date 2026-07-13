@@ -1184,6 +1184,7 @@ mm_generate_mcmc_file_deprecated <- function(
   )
   #### <end model definition> ####
 
+  model_text <- gsub('[ \t]+(?=\n|$)', '', model_text, perl = TRUE)
   writeLines(
     model_text,
     con = paste0('inst/models/deprecated/', model_name),

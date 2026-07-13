@@ -6,26 +6,24 @@
 #' @param model_name a model file in the 'models' folder of the
 #'   streamMetabolizer package or a relative or absolute file path of a model
 #'   file
-#' @param stan_engine The Stan interface whose compiler version should be used
-#'   when choosing between current and deprecated model syntax. If `NULL`,
-#'   CmdStanR is preferred when available, followed by RStan.
+#' @param stan_engine The Stan interface whose compiler version should be
+#'   validated. If `NULL`, CmdStanR is preferred when available, followed by
+#'   RStan.
 #' @return a file path if the file exists or an error otherwise
 #' @keywords internal
 mm_locate_filename <- function(model_name, stan_engine = NULL) {
   package_dir <- system.file("models", package = "streamMetabolizer")
   package_path <- file.path(package_dir, model_name)
-  deprecated_path <- file.path(package_dir, "deprecated", model_name)
   other_path <- model_name
 
   stan_version <- stan_version_for_engine(stan_engine)
 
-  # If engine is detected and version < 2.26.0, use deprecated model if available
-  if (
-    !is.na(stan_version) &&
-      stan_version < "2.26.0" &&
-      file.exists(deprecated_path)
-  ) {
-    return(deprecated_path)
+  if (!is.na(stan_version) && stan_version < "2.26.0") {
+    .cli_abort(
+      "Stan version ",
+      stan_version,
+      " is not supported; version 2.26.0 or later is required"
+    )
   }
 
   # Normal fallback paths

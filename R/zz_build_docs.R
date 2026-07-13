@@ -63,7 +63,7 @@ zz_build_docs <- function() {
   }
 
   . <- 'dplyr.var'
-  c(
+  doc_text <- c(
     "@section Formatting \\code{data}:",
     "Unit-value model inputs passed via the \\code{data} argument should",
     "be formatted as a data.frame with column names and values that",
@@ -148,8 +148,9 @@ zz_build_docs <- function() {
     ),
     "}"
   ) %>%
-    paste0("#' ", .) %>%
-    writeLines('man-roxygen/metab_data.R')
+    paste0("#' ", .)
+  doc_text <- gsub('[ \t]+(?=\n|$)', '', doc_text, perl = TRUE)
+  writeLines(doc_text, 'man-roxygen/metab_data.R')
 
   invisible()
 }

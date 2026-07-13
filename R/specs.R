@@ -497,15 +497,13 @@ specs <- function(
     K600_lnQ_nodediffs_meanlog,
     K600_lnQ_nodediffs_sdlog,
     ...
-  ) {
-    sim_Kb(
-      K600_lnQ_nodes_centers,
-      K600_lnQ_cnode_meanlog,
-      K600_lnQ_cnode_sdlog,
-      K600_lnQ_nodediffs_meanlog,
-      K600_lnQ_nodediffs_sdlog
-    )
-  },
+  ) sim_Kb(
+    K600_lnQ_nodes_centers,
+    K600_lnQ_cnode_meanlog,
+    K600_lnQ_cnode_sdlog,
+    K600_lnQ_nodediffs_meanlog,
+    K600_lnQ_nodediffs_sdlog
+  ),
 
   # daily simulation parameters
   discharge_daily = function(n, ...) rnorm(n, 20, 3),
