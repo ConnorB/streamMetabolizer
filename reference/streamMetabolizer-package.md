@@ -102,9 +102,10 @@ Useful links:
 Authors:
 
 - Alison P. Appling <aappling@usgs.gov>
+  ([ORCID](https://orcid.org/0000-0003-3638-8572))
 
-- Robert O. Hall
+- Robert O. Hall ([ORCID](https://orcid.org/0000-0002-0763-5346))
 
-- Maite Arroita
+- Maite Arroita ([ORCID](https://orcid.org/0000-0001-8754-7604))
 
-- Charles B. Yackulic
+- Charles B. Yackulic ([ORCID](https://orcid.org/0000-0001-9661-0724))

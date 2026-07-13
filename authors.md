@@ -2,13 +2,20 @@
 
 ## Authors
 
-- **Alison P. Appling**. Author.
+- **[Alison P.
+  Appling](https://www.usgs.gov/staff-profiles/alison-appling)**.
+  Author. [](https://orcid.org/0000-0003-3638-8572)
 
-- **Robert O. Hall**. Author.
+- **[Robert O. Hall](https://robohall.github.io/)**. Author.
+  [](https://orcid.org/0000-0002-0763-5346)
 
-- **Maite Arroita**. Author.
+- **[Maite
+  Arroita](https://www.ehu.eus/streamecology/maite-arroita.html)**.
+  Author. [](https://orcid.org/0000-0001-8754-7604)
 
-- **Charles B. Yackulic**. Author.
+- **[Charles B.
+  Yackulic](https://www.usgs.gov/staff-profiles/charles-b-yackulic)**.
+  Author. [](https://orcid.org/0000-0001-9661-0724)
 
 - **[Connor Brown](https://connorb.github.io/)**. Maintainer,
   contributor. [](https://orcid.org/0000-0002-9680-8930)
