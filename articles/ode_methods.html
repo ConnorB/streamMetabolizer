@@ -128,8 +128,8 @@
 <div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_lsoda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/metab.html">metab</a></span><span class="op">(</span><span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span><span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, ode_method<span class="op">=</span><span class="st">'lsoda'</span><span class="op">)</span><span class="op">)</span>, <span class="va">dat</span><span class="op">)</span> </span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning in metab_fun(specs = specs, data = data, data_daily = data_daily, : we've seen bad results
-with ODE methods 'lsoda', 'lsodes', and 'lsodar'. Use at your own risk</code></pre>
+<pre><code>Warning: we've seen bad results with ODE methods 'lsoda', 'lsodes', and 'lsodar'. Use at your own
+risk</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DLSODA-  At T (=R1), too much accuracy requested

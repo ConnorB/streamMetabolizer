@@ -56,8 +56,8 @@ mm_rk4 <- metab(specs(mm_name('mle', ode_method='rk4')), dat)
 mm_lsoda <- metab(specs(mm_name('mle', ode_method='lsoda')), dat) 
 ```
 
-    Warning in metab_fun(specs = specs, data = data, data_daily = data_daily, : we've seen bad results
-    with ODE methods 'lsoda', 'lsodes', and 'lsodar'. Use at your own risk
+    Warning: we've seen bad results with ODE methods 'lsoda', 'lsodes', and 'lsodar'. Use at your own
+    risk
 
     DLSODA-  At T (=R1), too much accuracy requested
           for precision of machine..  See TOLSF (=R2)
