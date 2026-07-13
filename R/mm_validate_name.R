@@ -25,14 +25,14 @@ mm_validate_name <- function(model_name) {
     }
   )
   if (length(parse_problem) > 0) {
-    stop(parse_problem)
+    .cli_abort(parse_problem)
   }
 
   # require valid type
   type <- parsed$type
   valid_types <- eval(formals(mm_name)$type)
   if (is.na(type) || !(type %in% valid_types)) {
-    stop(
+    .cli_abort(
       'model name implies unknown model type (',
       type,
       '). try constructing with mm_name()'
@@ -44,7 +44,7 @@ mm_validate_name <- function(model_name) {
   if (basename(model_name) != model_name) {
     mm_locate_filename(model_name)
   } else if (!(model_name %in% valid_names)) {
-    stop(
+    .cli_abort(
       "model_name (",
       model_name,
       ") is not among valid ",

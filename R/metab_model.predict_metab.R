@@ -35,7 +35,7 @@ predict_metab.metab_model <- function(
         (!missing(day_end) &&
           day_end != min(day_start + 24, get_specs(metab_model)$day_end))
     ) {
-      warning(
+      .cli_warn(
         "using saved daily metabolism values and so ignoring new day_start and/or day_end values"
       )
     }
@@ -64,16 +64,16 @@ predict_metab.metab_model <- function(
     # consider the appropriateness of day_start and day_end
     if (specs$day_start != day_start || specs$day_end != day_end) {
       if (day_start < specs$day_start) {
-        stop(
+        .cli_abort(
           "day_start may not be earlier than the day_start stored in metab_model@specs"
         )
       }
       if (day_end > specs$day_end) {
-        stop(
+        .cli_abort(
           "day_end may not be later than the day_end stored in metab_model@specs"
         )
       }
-      message(paste(
+      .cli_inform(paste(
         "daily metabolism predictions are for the period from",
         day_start,
         "to",
@@ -91,7 +91,7 @@ predict_metab.metab_model <- function(
       # but also because it's hard to interpret a mean metabolism for a period
       # other than 24 hours, given that light and temperature and DO deficits
       # all vary systematically with time of day
-      stop(
+      .cli_abort(
         "day_end - day_start must not exceed 24 hours for metabolism prediction"
       )
     } else if ((day_end - day_start) < 24) {
@@ -103,7 +103,7 @@ predict_metab.metab_model <- function(
         # what new GPP or ER functions might break similarly, so stay on the
         # safe side by requiring what most people will want anyway (a
         # 24-hour-period prediction)
-        stop(
+        .cli_abort(
           "day_end - day_start < 24 hours; this is unacceptable except for metab_night"
         )
       } else {
@@ -112,7 +112,7 @@ predict_metab.metab_model <- function(
         # metab_night. and actually don't even give a warning because it's
         # really fine - metab_night will give the correct answers (within its
         # abilities) regardless of the period of time specified here
-        message(
+        .cli_inform(
           "for metab_night, GPP estimates are 0 because they're for nighttime only "
         )
       }

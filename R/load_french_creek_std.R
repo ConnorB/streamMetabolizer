@@ -49,7 +49,7 @@ load_french_creek_std <- function(attach.units = deprecated()) {
 
   # datetime
   if (!requireNamespace("chron", quietly = TRUE)) {
-    stop(
+    .cli_abort(
       "chron package is needed for this function. Try install.packages('chron')"
     )
   }
@@ -186,7 +186,7 @@ load_french_creek_std_mle <- function(
 ) {
   # require chron package
   if (!requireNamespace("chron", quietly = TRUE)) {
-    stop(
+    .cli_abort(
       "chron package is needed for this function. Try install.packages('chron')"
     )
   }

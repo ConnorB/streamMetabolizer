@@ -114,7 +114,7 @@ create_calc_DO <- function(
       ode_method,
       Euler = ,
       pairmeans = 'euler', # we do the trapezoidy/pairmeansy stuff in calc_dDOdt
-      stop(
+      .cli_abort(
         "package deSolve is required for ode_method '",
         ode_method,
         "'.\n",

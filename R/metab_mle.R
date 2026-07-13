@@ -69,7 +69,7 @@ metab_mle <- function(
     mm_parse_name(specs$model_name)$ode_method %in%
       c('lsoda', 'lsodes', 'lsodar')
   ) {
-    warning(
+    .cli_warn(
       "we've seen bad results with ODE methods 'lsoda', 'lsodes', and 'lsodar'. Use at your own risk"
     )
   }

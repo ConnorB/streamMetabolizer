@@ -2,9 +2,10 @@
 #' @importFrom utils available.packages contrib.url
 #' @keywords internal
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage(
+  .cli_inform(
     "streamMetabolizer fork maintained at ",
-    "https://github.com/ConnorB/streamMetabolizer"
+    "https://github.com/ConnorB/streamMetabolizer",
+    .class = "packageStartupMessage"
   )
 
   # Load deSolve because otherwise after a few model runs we're likely to get

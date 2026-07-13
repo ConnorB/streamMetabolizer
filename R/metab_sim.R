@@ -178,7 +178,7 @@ sim_get_par <- function(
     # option d: spec is function; return output from call
     fitvals <- do.call(parsp, as.list(eval_env))
   } else {
-    stop(paste0("specs$", par_name, " must be numeric or a function"))
+    .cli_abort(paste0("specs$", par_name, " must be numeric or a function"))
   }
 
   # determine whether data will come from data_daily and/or specs; set combovals
@@ -193,7 +193,7 @@ sim_get_par <- function(
     # competing data coming from both data_daily and specs; tell the user what
     # will happen, find the final coalesced values, and set fitvals to only
     # contain numbers on dates when data_daily doesn't supply a number
-    message(paste0(
+    .cli_inform(paste0(
       'non-NA values for data_daily$',
       par.name,
       ' will override numbers from specs$',
@@ -204,7 +204,7 @@ sim_get_par <- function(
   }
   if (is.null(fitvals) && is.null(ddvals)) {
     if (required) {
-      stop(paste0(
+      .cli_abort(paste0(
         "need column '",
         par.name,
         "' in data_daily or parameter '",
@@ -415,7 +415,7 @@ sim_Kb <- function(
 ) {
   # check Q bins
   if (!is.numeric(K600_lnQ_nodes_centers)) {
-    stop("K600_lnQ_nodes_centers must be numeric")
+    .cli_abort("K600_lnQ_nodes_centers must be numeric")
   }
 
   # simulate piecewise (binned) relationship for lnK600 ~ lnQ

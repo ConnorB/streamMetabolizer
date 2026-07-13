@@ -72,7 +72,7 @@ plot_metab_preds <- function(
     style,
     'ggplot2' = {
       if (!requireNamespace("ggplot2", quietly = TRUE)) {
-        stop(
+        .cli_abort(
           "call install.packages('ggplot2') before plotting with style='ggplot2'"
         )
       }
@@ -137,17 +137,17 @@ plot_metab_preds <- function(
     },
     'dygraphs' = {
       if (!requireNamespace("dygraphs", quietly = TRUE)) {
-        stop(
+        .cli_abort(
           "call install.packages('dygraphs') before plotting with style='dygraphs'"
         )
       }
       if (!requireNamespace("xts", quietly = TRUE)) {
-        stop(
+        .cli_abort(
           "call install.packages('xts') before plotting with style='dygraphs'"
         )
       }
 
-      stop("no dygraphs option yet")
+      .cli_abort("no dygraphs option yet")
     }
   )
 

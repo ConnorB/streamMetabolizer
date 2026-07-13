@@ -38,7 +38,7 @@ create_calc_NLL <- function(
   err_proc_iid = FALSE
 ) {
   if (!xor(err_obs_iid, err_proc_iid)) {
-    stop("need err_obs_iid or err_proc_iid but not both or neither")
+    .cli_abort("need err_obs_iid or err_proc_iid but not both or neither")
   }
 
   # pull out info from the calc_dDOdt closure

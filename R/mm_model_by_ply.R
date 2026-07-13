@@ -79,22 +79,22 @@ mm_model_by_ply <- function(
 ) {
   # avoid some ugly edge cases
   if (missing(day_start) || is.null(day_start)) {
-    stop('day_start must be specified')
+    .cli_abort('day_start must be specified')
   }
   if (missing(day_end) || is.null(day_end)) {
-    stop('day_end must be specified')
+    .cli_abort('day_end must be specified')
   }
   if (day_end < day_start) {
-    stop("day_end must be greater than or equal to day_start")
+    .cli_abort("day_end must be greater than or equal to day_start")
   }
   if (day_end - day_start > 48) {
-    stop("day_end - day_start must not be > 48")
+    .cli_abort("day_end - day_start must not be > 48")
   } # would break our odd/even algorithm
   if (-24 >= day_start || day_start >= 24) {
-    stop("day_start must be in (-24,24)")
+    .cli_abort("day_start must be in (-24,24)")
   }
   if (0 >= day_end || day_end >= 48) {
-    stop("day_end must be in (0,48)")
+    .cli_abort("day_end must be in (0,48)")
   }
 
   #### Order data and daily data by solar.time/date, if not getting error
@@ -122,10 +122,10 @@ mm_model_by_ply <- function(
   # two additional columns (odd.- and even.- date.groups)
   data.plys <- as.data.frame(data)
   if (!('solar.time' %in% names(data.plys))) {
-    stop("data must contain a 'solar.time' column")
+    .cli_abort("data must contain a 'solar.time' column")
   }
   if (any(is.na(data.plys$solar.time))) {
-    stop("no values in solar.time may be NA")
+    .cli_abort("no values in solar.time may be NA")
   }
   min_timestep <- mm_get_timestep(data$solar.time, format = 'unique')[1]
   if (
@@ -133,7 +133,7 @@ mm_model_by_ply <- function(
   ) {
     timesteps <- as.numeric(diff(data$solar.time), units = "days")
     timegoof <- which.min(timesteps) + c(0, 1)
-    stop(
+    .cli_abort(
       "min timestep is <= 0: ",
       format(min_timestep, digits = 3),
       " days from ",
@@ -149,7 +149,7 @@ mm_model_by_ply <- function(
   }
   if (!is.null(data_daily)) {
     if (!('date' %in% names(data_daily))) {
-      stop("data_daily must contain a 'date' column")
+      .cli_abort("data_daily must contain a 'date' column")
     }
     min_datestep <- mm_get_timestep(data_daily$date, format = 'unique')
     if (
@@ -159,7 +159,7 @@ mm_model_by_ply <- function(
     ) {
       timesteps <- as.numeric(diff(data_daily$date), units = "days")
       timegoof <- which.min(timesteps) + c(0, 1)
-      stop(
+      .cli_abort(
         "min datestep is <= 0: ",
         min_datestep,
         " days from ",
@@ -298,7 +298,7 @@ mm_model_by_ply <- function(
       # FALSE or NA, it will be passed as NA to the model_fun and only computed
       # there if needed for specific tests
       if (length(timestep_days) > 1) {
-        stop("expecting no more than 1 value in timestep_days")
+        .cli_abort("expecting no more than 1 value in timestep_days")
       }
       timestep_days <- if (isTRUE(timestep_days)) {
         mm_get_timestep(data_ply$solar.time, format = 'mean')

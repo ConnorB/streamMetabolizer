@@ -15,18 +15,18 @@ mm_check_mcmc_file <- function(
     model_file <- mm_locate_filename(model_file, stan_engine = stan_engine)
   }
   if (engine != 'stan') {
-    stop('need to add handling for engines other than stan')
+    .cli_abort('need to add handling for engines other than stan')
   }
 
   if (stan_engine == 'rstan' && !requireNamespace('rstan', quietly = TRUE)) {
-    stop('the rstan package is required to check Stan MCMC models')
+    .cli_abort('the rstan package is required to check Stan MCMC models')
   }
   if (stan_engine == 'cmdstanr') {
     if (!requireNamespace('cmdstanr', quietly = TRUE)) {
-      stop('the cmdstanr package is required to check Stan MCMC models')
+      .cli_abort('the cmdstanr package is required to check Stan MCMC models')
     }
     if (is.na(stan_version_for_engine('cmdstanr'))) {
-      stop(
+      .cli_abort(
         'CmdStanR is installed, but CmdStan is not configured. ',
         'Install it with cmdstanr::install_cmdstan() and then retry.'
       )
@@ -37,7 +37,7 @@ mm_check_mcmc_file <- function(
       if (stan_engine == 'rstan') {
         stanc_result <- rstan::stanc(file = model_file)
         if (!isTRUE(stanc_result$status)) {
-          stop('RStan could not translate the Stan program')
+          .cli_abort('RStan could not translate the Stan program')
         }
       } else {
         cmdstan_model <- cmdstanr::cmdstan_model(model_file, compile = FALSE)
@@ -80,13 +80,13 @@ mm_check_mcmc_files <- function(
     model_files <- grep(grep_pattern, model_files, value = TRUE)
   }
   sapply(setNames(model_files, model_files), function(m) {
-    message("checking ", m, "...", appendLF = FALSE)
     model_status <- mm_check_mcmc_file(m, stan_engine = stan_engine)
-    if (model_status != "correct") {
-      message("found a problem.")
+    status_message <- if (model_status != "correct") {
+      "found a problem."
     } else {
-      message("OK!")
+      "OK!"
     }
+    .cli_inform("checking ", m, "...", status_message)
     model_status
   })
 }

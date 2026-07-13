@@ -102,7 +102,7 @@ metab_model <- function(
   if (isTRUE(specs$verbose)) {
     fitting_mins <- floor(fitting_time[['elapsed']] / 60)
     fitting_secs <- round(fitting_time[['elapsed']] %% 60)
-    message(
+    .cli_inform(
       "model fit in ",
       if (fitting_mins > 0) paste0(fitting_mins, " min, "),
       fitting_secs,
@@ -166,7 +166,7 @@ get_data_daily.metab_model <- function(metab_model) {
   tryCatch(
     metab_model@data_daily,
     error = function(e) {
-      warning('this metab_model is out of date and has no data_daily slot')
+      .cli_warn('this metab_model is out of date and has no data_daily slot')
       as.data.frame(NULL)
     }
   )

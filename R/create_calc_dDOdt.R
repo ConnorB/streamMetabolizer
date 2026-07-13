@@ -191,7 +191,7 @@ create_calc_dDOdt <- function(
     more_rows <- if (length(bad_rows) > 3) length(bad_rows) - 3 else NA
     bad_times <- data$solar.time[show_rows]
     bad_temps <- data$temp.water[show_rows]
-    warning(sprintf(
+    .cli_warn(sprintf(
       'NaNs in KO2-K600 conversion at %s%s',
       paste0(
         sprintf(
@@ -299,7 +299,7 @@ create_calc_dDOdt <- function(
         }
       }
     })(),
-    stop('unrecognized GPP_fun')
+    .cli_abort('unrecognized GPP_fun')
   )
 
   # ER: instantaneous ecosystem respiration at time t in d^-1
@@ -324,7 +324,7 @@ create_calc_dDOdt <- function(
         }
       }
     })(),
-    stop('unrecognized ER_fun')
+    .cli_abort('unrecognized ER_fun')
   )
 
   # D: instantaneous reaeration rate at time t in gO2 m^-3 d^-1
@@ -355,7 +355,7 @@ create_calc_dDOdt <- function(
         }
       }
     })(),
-    stop('unrecognized deficit_src')
+    .cli_abort('unrecognized deficit_src')
   )
 
   # dDOdt: instantaneous rate of change in DO at time t in gO2 m^-3 timestep^-1

@@ -42,7 +42,7 @@ mm_get_timestep <- function(
   tol = 60 / (24 * 60 * 60)
 ) {
   if (length(datetimes) < 2) {
-    if (require_unique) stop('!=1 unique timestep') else return(NA)
+    if (require_unique) .cli_abort('!=1 unique timestep') else return(NA)
   }
   timesteps <- as.numeric(diff(datetimes), units = "days")
   timestep <- switch(
@@ -69,7 +69,7 @@ mm_get_timestep <- function(
         )]
       }
       if (require_unique == TRUE && length(sufficiently_unique) != 1) {
-        stop('!=1 unique timestep')
+        .cli_abort('!=1 unique timestep')
       }
       sufficiently_unique
     },

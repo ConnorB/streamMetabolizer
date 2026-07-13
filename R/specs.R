@@ -559,25 +559,25 @@ specs <- function(
 
   # argument checks
   if (any(required %in% yes_missing)) {
-    stop(
+    .cli_abort(
       "missing and required argument: ",
       paste(required[required %in% yes_missing], collapse = ", ")
     )
   }
   if (any(prefer_not_missing %in% yes_missing)) {
     warn_about <- prefer_not_missing[prefer_not_missing %in% yes_missing]
-    warning(
+    .cli_warn(
       "you should specify site-appropriate values for all parameters and especially ",
       paste(warn_about, collapse = ", ")
     )
   }
   redundant <- not_missing[not_missing %in% prefer_missing]
   if ('engine' %in% redundant) {
-    warning("'engine' should be specified in mm_name() rather than specs()")
+    .cli_warn("'engine' should be specified in mm_name() rather than specs()")
     redundant <- redundant[redundant != 'engine']
   }
   if (length(redundant) > 0) {
-    warning(
+    .cli_warn(
       "argument[s] that should usually be specified in revise() rather than specs(): ",
       paste(redundant, collapse = ", ")
     )
@@ -692,7 +692,7 @@ specs <- function(
           'normal' = ,
           'linear' = ,
           'binned' = FALSE,
-          stop("unknown pool_K600; unsure how to set split_dates")
+          .cli_abort("unknown pool_K600; unsure how to set split_dates")
         )
       }
       if (features$pool_K600_type == 'binned') {
@@ -757,12 +757,12 @@ specs <- function(
           stan_engine = all_specs$stan_engine
         ),
         error = function(e) {
-          warning(e)
+          .cli_warn(e)
           return(model_name)
         }
       )
       if (features$engine == "NA") {
-        stop('engine must be specified for Bayesian models')
+        .cli_abort('engine must be specified for Bayesian models')
       }
     },
     'mle' = {
@@ -907,10 +907,10 @@ specs <- function(
         switch(
           features$pool_K600,
           none = c(),
-          normal = stop(
+          normal = .cli_abort(
             "pool_K600='normal' unavailable for now; try 'binned' instead"
           ),
-          linear = stop(
+          linear = .cli_abort(
             "pool_K600='linear' unavailable for now; try 'binned' instead"
           ), # 'discharge_daily', etc.
           binned = c(
@@ -940,7 +940,7 @@ specs <- function(
 
   # stop if truly irrelevant arguments were given
   if (length(irrelevant <- not_missing[!(not_missing %in% included)]) > 0) {
-    stop("irrelevant argument: ", paste(irrelevant, collapse = ", "))
+    .cli_abort("irrelevant argument: ", paste(irrelevant, collapse = ", "))
   }
 
   # return just the arguments we actually need

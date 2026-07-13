@@ -19,7 +19,7 @@ lookup_timezone <- function(latitude, longitude) {
   if (is.null(tz_info)) {
     tz_name <- lutz::tz_lookup_coords(latitude, longitude, method = "accurate")
     if (is.na(tz_name) || tz_name == "") {
-      stop("sorry, could not find time zone for specified lat/long")
+      .cli_abort("sorry, could not find time zone for specified lat/long")
     }
 
     # compute standard UTC offset using a non-DST reference date

@@ -21,3 +21,4 @@
 ^\.conductor$
 ^\.positai$
 ^pkgdown$
+^vignettes/\.quarto$

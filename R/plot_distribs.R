@@ -62,7 +62,7 @@ plot_distribs <- function(
 
   style <- match.arg(style)
   if (!class(dist_data)[1] %in% c('specs', 'metab_bayes')) {
-    stop("can only plot distribs for models of class 'specs' or 'metab_bayes'")
+    .cli_abort("can only plot distribs for models of class 'specs' or 'metab_bayes'")
   }
 
   # extract just the parameters we're interested in. do it this way rather than
@@ -91,7 +91,7 @@ plot_distribs <- function(
         " hyperparameters in get_specs(dist_data)."
       )
     }
-    stop(msg1, " try one of these: ", paste0(couldabeen, collapse = ', '))
+    .cli_abort(msg1, " try one of these: ", paste0(couldabeen, collapse = ', '))
   }
   hyperpars <- sp[hpspecs]
   names(hyperpars) <- substring(names(hyperpars), nchar(parname) + 2)
@@ -184,7 +184,7 @@ plot_distribs <- function(
         indexed_prior <- TRUE
         if (!isTRUE(index)) {
           if (length(index) > 1) {
-            warning('only using index[1] for the prior')
+            .cli_warn('only using index[1] for the prior')
           }
           if (length(hyperpars$meanlog) > 1) {
             hyperpars$meanlog <- hyperpars$meanlog[index[1]]
@@ -193,7 +193,7 @@ plot_distribs <- function(
             hyperpars$sdlog <- hyperpars$sdlog[index[1]]
           }
         } else {
-          warning('multiple priors for this parameter; only showing the first')
+          .cli_warn('multiple priors for this parameter; only showing the first')
           hyperpars$meanlog <- hyperpars$meanlog[1]
           hyperpars$sdlog <- hyperpars$sdlog[1]
         }
@@ -236,7 +236,7 @@ plot_distribs <- function(
       )
     },
 
-    stop('unrecognized distribution function')
+    .cli_abort('unrecognized distribution function')
   )
   plot_prior_rescaled <- plot_prior_rescaled &&
     ('prior_rescaled' %in% densdf$dist)
@@ -251,7 +251,7 @@ plot_distribs <- function(
     mc <- get_mcmc(dist_data)
     if (inherits(mc, 'stanfit')) {
       if (!requireNamespace('rstan', quietly = TRUE)) {
-        stop('the rstan package is required to investigate Stan MCMC models')
+        .cli_abort('the rstan package is required to investigate Stan MCMC models')
       }
       draws <- rstan::extract(mc, pars = parname)[[parname]]
       selected <- select_rstan_draws(draws, parname, index)
@@ -263,7 +263,7 @@ plot_distribs <- function(
       draws <- selected$draws
       indexed_posterior <- selected$indexed
     } else {
-      stop('unknown mcmc object class')
+      .cli_abort('unknown mcmc object class')
     }
     # generate density w/ 1000 points along the line
     post <- density(draws, n = 1000)[c('x', 'y')] %>%
@@ -272,12 +272,12 @@ plot_distribs <- function(
       select(dist, x, y)
     densdf <- bind_rows(densdf, post)
     if (!indexed_prior && !indexed_posterior && !missing(index)) {
-      warning('index will be ignored because prior & posterior are not indexed')
+      .cli_warn('index will be ignored because prior & posterior are not indexed')
     }
   } else {
     indexed_posterior <- FALSE
     if (!indexed_prior && !missing(index)) {
-      warning(
+      .cli_warn(
         'index will be ignored because prior is unindexed and posterior is unavailable'
       )
     }
@@ -309,7 +309,7 @@ plot_distribs <- function(
     style,
     ggplot2 = {
       if (!requireNamespace("ggplot2", quietly = TRUE)) {
-        stop(
+        .cli_abort(
           "call install.packages('ggplot2') before plotting with style='ggplot2'"
         )
       }
@@ -326,7 +326,7 @@ plot_distribs <- function(
     },
     dygraphs = {
       if (!requireNamespace("dygraphs", quietly = TRUE)) {
-        stop(
+        .cli_abort(
           "call install.packages('dygraphs') before plotting with style='dygraphs'"
         )
       }
@@ -410,7 +410,7 @@ select_rstan_draws <- function(extracted_draws, parname, index = TRUE) {
       any(is.na(selected)) ||
       !all(selected %in% available)
   ) {
-    stop('index does not select a valid element of ', parname)
+    .cli_abort('index does not select a valid element of ', parname)
   }
 
   list(
@@ -442,11 +442,11 @@ select_cmdstan_draws <- function(draws_array, parname, index = TRUE) {
         any(is.na(selected_names)) ||
         !all(selected_names %in% variable_names)
     ) {
-      stop('index does not select a valid element of ', parname)
+      .cli_abort('index does not select a valid element of ', parname)
     }
   } else {
     if (!(parname %in% variable_names)) {
-      stop('could not find ', parname, ' in the CmdStan draws')
+      .cli_abort('could not find ', parname, ' in the CmdStan draws')
     }
     selected_names <- parname
   }

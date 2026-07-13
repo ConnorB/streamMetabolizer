@@ -1,5 +1,5 @@
-Package: streamMetabolizer
 Type: Package
+Package: streamMetabolizer
 Title: Models for Estimating Aquatic Photosynthesis and Respiration
 Version: 0.12.1.9000
 Date: 2026-07-12
@@ -16,30 +16,24 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-9680-8930"))
   )
 Description: streamMetabolizer uses inverse modeling to estimate aquatic
-    photosynthesis and respiration (collectively, metabolism) from time series
-    data on dissolved oxygen, water temperature, depth, and light. The package
-    assists with data preparation, handles data gaps during modeling, and
-    provides tabular and graphical reports of model outputs. Several
-    time-honored methods are implemented along with many promising new variants
-    that produce more accurate and precise metabolism estimates.
-    This package is a fork of the original USGS-R
-    streamMetabolizer package. It includes enhancements and bug fixes beyond the
-    original version. The original package can be found at
+    photosynthesis and respiration (collectively, metabolism) from time
+    series data on dissolved oxygen, water temperature, depth, and light.
+    The package assists with data preparation, handles data gaps during
+    modeling, and provides tabular and graphical reports of model outputs.
+    Several time-honored methods are implemented along with many promising
+    new variants that produce more accurate and precise metabolism
+    estimates.  This package is a fork of the original USGS-R
+    streamMetabolizer package. It includes enhancements and bug fixes
+    beyond the original version. The original package can be found at
     https://github.com/DOI-USGS/streamMetabolizer.
 License: CC0
-Copyright: This software is in the public domain because it contains materials
-    that originally came from the United States Geological Survey, an agency of
-    the United States Department of Interior. For more information, see the
-    official USGS copyright policy at
-    https://www.usgs.gov/visual-id/credit_usgs.html#copyright
 URL: https://connorb.github.io/streamMetabolizer/,
     https://github.com/ConnorB/streamMetabolizer
 BugReports: https://github.com/ConnorB/streamMetabolizer/issues
-Additional_repositories: https://stan-dev.r-universe.dev
-VignetteBuilder: quarto
 Depends:
     R (>= 4.1)
 Imports:
+    cli,
     deSolve,
     dplyr (>= 1.0.0),
     jsonlite,
@@ -53,8 +47,8 @@ Imports:
     tibble (>= 3.0.0),
     tidyr (>= 1.0.0)
 Suggests:
-    BH,
     bayesplot,
+    BH,
     chron,
     cmdstanr,
     dygraphs,
@@ -73,8 +67,20 @@ Suggests:
     testthat (>= 3.0.0),
     withr,
     xts
+VignetteBuilder: 
+    quarto
+Additional_repositories: https://stan-dev.r-universe.dev
+Config/roxygen2/version: 8.0.0.9000
 Config/testthat/edition: 3
+Copyright: This software is in the public domain because it contains
+    materials that originally came from the United States Geological
+    Survey, an agency of the United States Department of Interior. For
+    more information, see the official USGS copyright policy at
+    https://www.usgs.gov/visual-id/credit_usgs.html#copyright
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
 Collate:
+    '00-cli.R'
     '01-onLoad.R'
     'calc_DO_deficit.R'
     'calc_DO_sat.R'
@@ -147,6 +153,3 @@ Collate:
     'streamMetabolizer-package.R'
     'streamMetabolizer.R'
     'zz_build_docs.R'
-Encoding: UTF-8
-Config/roxygen2/version: 8.0.0.9000
-Roxygen: list(markdown = TRUE)

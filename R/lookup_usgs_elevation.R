@@ -49,7 +49,7 @@ lookup_usgs_elevation <- function(
   elevation <- as.numeric(response$value)
 
   if (length(elevation) != 1L || is.na(elevation)) {
-    stop("the USGS Elevation Point Query Service returned no elevation")
+    .cli_abort("the USGS Elevation Point Query Service returned no elevation")
   }
 
   elevation

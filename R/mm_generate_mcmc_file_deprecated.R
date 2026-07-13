@@ -28,7 +28,7 @@ mm_generate_mcmc_file_deprecated <- function(
 ) {
   # handle Euler and pairmeans as deprecated arguments. mm_name runs a similar check & warning
   if (ode_method %in% c('Euler', 'pairmeans')) {
-    warning(
+    .cli_warn(
       "for ode_method, 'Euler' and 'pairmeans' are deprecated in favor of 'euler' and 'trapezoid'"
     )
   }
@@ -94,48 +94,48 @@ mm_generate_mcmc_file_deprecated <- function(
       distrib,
       beta = {
         if (!all(names(args) == c('alpha', 'beta'))) {
-          stop("expecting beta(alpha,beta)")
+          .cli_abort("expecting beta(alpha,beta)")
         }
       },
       gamma = {
         if (!all(names(args) == c('shape', 'rate'))) {
-          stop("expecting gamma(shape,rate)")
+          .cli_abort("expecting gamma(shape,rate)")
         }
         # shape = alpha = k = first argument
         # rate = beta = 1/theta = inverse scale = second argument
       },
       halfcauchy = {
         if (!all(names(args) == c('scale'))) {
-          stop("expecting halfcauchy(scale)")
+          .cli_abort("expecting halfcauchy(scale)")
         }
         distrib <- 'cauchy'
         args <- c(list(location = 0), args)
       },
       halfnormal = {
         if (!all(names(args) == c('sigma'))) {
-          stop("expecting halfnormal(sigma)")
+          .cli_abort("expecting halfnormal(sigma)")
         }
         distrib <- 'normal'
         args <- c(list(mu = 0), args)
       },
       lognormal = {
         if (!all(names(args) == c('meanlog', 'sdlog'))) {
-          stop("expecting lognormal(meanlog,sdlog)")
+          .cli_abort("expecting lognormal(meanlog,sdlog)")
         }
         # meanlog = mu = first argument
         # sdlog = sigma = second argument
       },
       normal = {
         if (!all(names(args) == c('mu', 'sigma'))) {
-          stop("expecting normal(mu,sigma)")
+          .cli_abort("expecting normal(mu,sigma)")
         }
       },
       uniform = {
         if (!all(names(args) == c('min', 'max'))) {
-          stop("expecting uniform(min,max)")
+          .cli_abort("expecting uniform(min,max)")
         }
       },
-      stop(paste0("no f function available for ", distrib))
+      .cli_abort(paste0("no f function available for ", distrib))
     )
     # create the function call text
     paste0(distrib, '(', paste0(args, collapse = ', '), ')')
@@ -151,14 +151,14 @@ mm_generate_mcmc_file_deprecated <- function(
       ' = ',
       switch(
         distrib,
-        beta = stop(),
-        gamma = stop(),
+        beta = .cli_abort(),
+        gamma = .cli_abort(),
         halfcauchy = sprintf('%s_scale * %s_scaled', Y, Y), # scaled = cauchy(0,1)
         halfnormal = sprintf('%s_sigma * %s_scaled', Y, Y), # scaled = normal(0,1)
         lognormal = sprintf('exp(%s_meanlog + %s_sdlog * %s_scaled)', Y, Y, Y), # scaled = norm(0,1)
         normal = sprintf('%s_sigma * %s_scaled', Y, Y), # scaled = norm(0,1)
         uniform = sprintf('%s_min + (%s_max - %s_min) * %s_scaled', Y, Y), # scaled = unif(0,1)
-        stop(paste0("no fs function available for ", distrib))
+        .cli_abort(paste0("no fs function available for ", distrib))
       )
     )
   }

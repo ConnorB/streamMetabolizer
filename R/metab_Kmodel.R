@@ -148,7 +148,7 @@ metab_Kmodel <- function(
         is.na(specs$transforms[['K600']]) ||
         isTRUE(specs$transforms[['K600']] == 'log'))
     ) {
-      stop("specs$transforms['K600'] should be NA or 'log'")
+      .cli_abort("specs$transforms['K600'] should be NA or 'log'")
     }
 
     # Check data for correct column names & units
@@ -235,7 +235,7 @@ prepdata_Kmodel <- function(
       c('discharge', 'velocity') %in% names(data)
     ]
     if (length(columns) == 0) {
-      stop(
+      .cli_abort(
         "data arg is pointless without at least one of c('discharge', 'velocity')"
       )
     }
@@ -278,7 +278,7 @@ prepdata_Kmodel <- function(
         c('K600.daily.lower.obs', 'K600.daily.upper.obs') %in% names(data_daily)
       )
     ) {
-      stop(
+      .cli_abort(
         "need 'K600.daily.lower', and 'K600.daily.upper' in data_daily to set weights by CI or CI/K600"
       )
     }
@@ -466,7 +466,7 @@ Kmodel_allply <- function(
     },
     'loess' = {
       if (length(predictors) < 1) {
-        stop("need at least one predictor for engine='loess'") # stop rather than stop_strs because it's a poorly formatted request
+        .cli_abort("need at least one predictor for engine='loess'") # stop rather than stop_strs because it's a poorly formatted request
       }
       formul <- formula(paste0(
         trans_preds["K600.daily.obs"],
@@ -649,7 +649,7 @@ predict_metab.metab_Kmodel <- function(
   attach.units = deprecated(),
   use_saved = TRUE
 ) {
-  stop(
+  .cli_abort(
     "can only predict K600.daily, not metabolism, from metab_Kmodel. try get_params() instead"
   )
 }
@@ -666,7 +666,7 @@ predict_DO.metab_Kmodel <- function(
   ...,
   use_saved = TRUE
 ) {
-  stop(
+  .cli_abort(
     "can only predict K, not DO, from metab_Kmodel. try get_params() instead"
   )
 }

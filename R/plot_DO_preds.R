@@ -120,7 +120,7 @@ plot_DO_preds <- function(
     style,
     'ggplot2' = {
       if (!requireNamespace("ggplot2", quietly = TRUE)) {
-        stop(
+        .cli_abort(
           "call install.packages('ggplot2') before plotting with style='ggplot2'"
         )
       }
@@ -208,12 +208,12 @@ plot_DO_preds <- function(
     },
     'dygraphs' = {
       if (!requireNamespace("dygraphs", quietly = TRUE)) {
-        stop(
+        .cli_abort(
           "call install.packages('dygraphs') before plotting with style='dygraphs'"
         )
       }
       if (!requireNamespace("xts", quietly = TRUE)) {
-        stop(
+        .cli_abort(
           "call install.packages('xts') before plotting with style='dygraphs'"
         )
       }
@@ -251,7 +251,7 @@ plot_DO_preds <- function(
       }
       if (length(y_var) > 1) {
         y_var <- y_var[1]
-        warning(
+        .cli_warn(
           "can only plot one dygraph y_var at a time for now; plotting ",
           y_var
         )

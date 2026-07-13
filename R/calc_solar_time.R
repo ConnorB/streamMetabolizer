@@ -23,7 +23,7 @@ calc_solar_time <- function(local.time, longitude) {
     ) # london: 51.5N, 0W
     if (!is.null(implied_tz) && !implied_tz$std_offset %in% -1:1) {
       # give some buffer. UTC longitudes vary with latitude
-      warning(
+      .cli_warn(
         'found non-UTC longitude for UTC timezone. Are you sure you passed in a local time?'
       )
     }

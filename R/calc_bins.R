@@ -62,7 +62,7 @@ calc_bins <- function(
   method <- match.arg(method)
   if (method != 'bounds') {
     if (!requireNamespace('ggplot2', quietly = TRUE)) {
-      stop(
+      .cli_abort(
         "need ggplot2 to calculate discharge bins when is.character(method). ",
         "either install ggplot2 or switch to a numeric vector for method"
       )

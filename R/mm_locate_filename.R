@@ -37,9 +37,9 @@ mm_locate_filename <- function(model_name, stan_engine = NULL) {
   }
   # Final fallback: warn if engine is unknown
   if (is.na(stan_version)) {
-    warning("Neither RStan nor a configured CmdStanR installation was detected")
+    .cli_warn("Neither RStan nor a configured CmdStanR installation was detected")
   }
-  stop(
+  .cli_abort(
     "Could not locate the model file at ",
     file.path(package_dir, model_name),
     " or ",

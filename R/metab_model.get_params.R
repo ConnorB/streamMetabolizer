@@ -56,7 +56,7 @@ get_params.metab_model <- function(
     ) >
       0
   ) {
-    stop(paste0(
+    .cli_abort(paste0(
       "can't find metabolism parameter",
       if (length(missing.metabs) > 1) "s",
       " ",

@@ -26,10 +26,10 @@ convert_UTC_to_localtime <- function(
   # format checking
   time.type <- match.arg(time.type)
   if (class(date.time)[1] != "POSIXct") {
-    stop("expecting date.time as a POSIXct object")
+    .cli_abort("expecting date.time as a POSIXct object")
   }
   if (!(tz(date.time) %in% c("GMT", "Etc/GMT-0", "Etc/GMT+0", "UTC"))) {
-    stop("expecting tz=UTC")
+    .cli_abort("expecting tz=UTC")
   }
 
   # ask the cache and/or Google for the timezone at these coordinates

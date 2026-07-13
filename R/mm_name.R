@@ -251,26 +251,26 @@ mm_name <- function(
     pool_K600 <- match.arg(pool_K600)
     pool_all <- if (pool_K600 == 'none') 'none' else 'partial'
     if (!is.logical(err_obs_iid) || length(err_obs_iid) != 1) {
-      stop("need err_obs_iid to be a logical of length 1")
+      .cli_abort("need err_obs_iid to be a logical of length 1")
     }
     if (!is.logical(err_proc_acor) || length(err_proc_acor) != 1) {
-      stop("need err_proc_acor to be a logical of length 1")
+      .cli_abort("need err_proc_acor to be a logical of length 1")
     }
     if (!is.logical(err_proc_acor_light) || length(err_proc_acor_light) != 1) {
-      stop("need err_proc_acor_light to be a logical of length 1")
+      .cli_abort("need err_proc_acor_light to be a logical of length 1")
     }
     if (err_proc_acor_light && !err_proc_acor) {
-      stop("err_proc_acor_light requires err_proc_acor=TRUE")
+      .cli_abort("err_proc_acor_light requires err_proc_acor=TRUE")
     }
     if (!is.logical(err_proc_iid) || length(err_proc_iid) != 1) {
-      stop("need err_proc_iid to be a logical of length 1")
+      .cli_abort("need err_proc_iid to be a logical of length 1")
     }
     if (!is.logical(err_proc_GPP) || length(err_proc_GPP) != 1) {
-      stop("need err_proc_GPP to be a logical of length 1")
+      .cli_abort("need err_proc_GPP to be a logical of length 1")
     }
     ode_method <- match.arg(ode_method)
     if (ode_method %in% c('Euler', 'pairmeans')) {
-      warning(
+      .cli_warn(
         "for ode_method, 'Euler' and 'pairmeans' are deprecated in favor of 'euler' and 'trapezoid'"
       )
     }
@@ -279,7 +279,7 @@ mm_name <- function(
     deficit_src <- match.arg(deficit_src)
   } else {
     if (any(!(given_args %in% c('type', 'engine', 'check_validity')))) {
-      stop("for Kmodel, only type, engine, and check_validity may be specified")
+      .cli_abort("for Kmodel, only type, engine, and check_validity may be specified")
     }
   }
   engine <- match.arg(engine)
@@ -293,7 +293,7 @@ mm_name <- function(
         sim = 'rnorm'
       )[[type]])
   ) {
-    stop("mismatch between type (", type, ") and engine (", engine, ")")
+    .cli_abort("mismatch between type (", type, ") and engine (", engine, ")")
   }
 
   # make the name
@@ -356,7 +356,7 @@ mm_name <- function(
 
   # check validity if requested
   check_validity <- if (!is.logical(check_validity)) {
-    stop("need check_validity to be a logical of length 1")
+    .cli_abort("need check_validity to be a logical of length 1")
   } else {
     check_validity[1]
   }

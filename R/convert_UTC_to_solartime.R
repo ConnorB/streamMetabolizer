@@ -28,10 +28,10 @@ convert_UTC_to_solartime <- function(
 
   # format checking
   if (class(date.time)[1] != "POSIXct") {
-    stop("expecting date.time as a POSIXct object")
+    .cli_abort("expecting date.time as a POSIXct object")
   }
   if (!(tz(date.time) %in% c("GMT", "Etc/GMT-0", "Etc/GMT+0", "UTC"))) {
-    stop("expecting tz=UTC")
+    .cli_abort("expecting tz=UTC")
   }
 
   # calculate mean solar time (approximates solar noon at clock noon to within ~20 mins)
@@ -83,7 +83,7 @@ convert_solartime_to_UTC <- function(
 ) {
   # quick check to try to warn users away from using non-solar time
   if (!(tz(any.solar.time) %in% c("GMT", "Etc/GMT-0", "Etc/GMT+0", "UTC"))) {
-    stop("expecting nominal tz=UTC for solar.time")
+    .cli_abort("expecting nominal tz=UTC for solar.time")
   }
 
   conversion <- any.solar.time -

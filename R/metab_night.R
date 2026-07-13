@@ -133,7 +133,7 @@ nightreg_1ply <- function(
         # it'd be meaningless to look at the diff from 1 night to the next 2 nights
         which_night <- which(data_ply$light < 0.1)
         if (length(which_night) == 0) {
-          stop("no nighttime rows in data_ply")
+          .cli_abort("no nighttime rows in data_ply")
         }
         if (any(diff(which_night) > 1)) {
           stop_strs <- c(stop_strs, "need exactly one night per data_ply")
@@ -184,7 +184,7 @@ nightreg_1ply <- function(
         # actually stop if anything has broken so far; the tryCatch will catch it,
         # and our stop_strs will be retained for later reporting
         if (length(stop_strs) > 0) {
-          stop("")
+          .cli_abort("")
         }
 
         # smooth DO data
