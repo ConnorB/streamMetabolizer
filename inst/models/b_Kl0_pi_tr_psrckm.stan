@@ -9,26 +9,26 @@ data {
   real ER_daily_mu;
   real ER_daily_upper;
   real<lower=0> ER_daily_sigma;
-  
+
   // Parameters of hierarchical priors on K600_daily (linear_sdzero model)
   real lnK600_lnQ_intercept_mu;
   real<lower=0> lnK600_lnQ_intercept_sigma;
   real lnK600_lnQ_slope_mu;
   real<lower=0> lnK600_lnQ_slope_sigma;
-  
+
   // Error distributions
   real<lower=0> err_proc_iid_sigma_scale;
-  
+
   // Data dimensions
   int<lower=1> d; // number of dates
   real<lower=0> timestep; // length of each timestep in days
   int<lower=1> n24; // number of observations in first 24 hours per date
   int<lower=1> n; // number of observations per date
-  
+
   // Daily data
   vector[d] DO_obs_1;
   vector[d] lnQ_daily;
-  
+
   // Data
   array[n] vector[d] DO_obs;
   array[n] vector[d] DO_sat;
@@ -42,10 +42,10 @@ parameters {
   vector[d] alpha_scaled;
   vector[d] Pmax;
   vector<upper=ER_daily_upper>[d] ER_daily;
-  
+
   real lnK600_lnQ_intercept;
   real lnK600_lnQ_slope;
-  
+
   real<lower=0> err_proc_iid_sigma_scaled;
 }
 
@@ -59,30 +59,30 @@ transformed parameters {
   array[n] vector[d] ER_inst;
   array[n] vector[d] KO2_inst;
   array[n] vector[d] DO_mod_partial;
-  
+
   // Rescale error distribution parameters
   err_proc_iid_sigma = err_proc_iid_sigma_scale * err_proc_iid_sigma_scaled;
-  
+
   // Rescale select daily parameters
   alpha = exp(alpha_meanlog + alpha_sdlog * alpha_scaled);
-  
+
   // Hierarchical, linear_sdzero model of K600_daily
   K600_daily_predlog = lnK600_lnQ_intercept + lnK600_lnQ_slope * lnQ_daily;
   K600_daily = exp(K600_daily_predlog);
-  
+
   // Model DO time series
   // * trapezoid version
   // * no observation error
   // * IID process error
   // * reaeration depends on DO_mod
-  
+
   // Calculate individual process rates
   for(i in 1:n) {
     GPP_inst[i] = Pmax .* tanh(light[i] .* alpha ./ Pmax);
     ER_inst[i] = ER_daily .* const_mult_ER[i];
     KO2_inst[i] = K600_daily .* KO2_conv[i];
   }
-  
+
   // DO model
   DO_mod_partial[1] = DO_obs_1;
   DO_mod_partial_sigma[1] = err_proc_iid_sigma * timestep ./ depth[1];
@@ -95,7 +95,7 @@ transformed parameters {
         KO2_inst[i] .* DO_sat[i] + KO2_inst[i+1] .* DO_sat[i+1]
       ) .* (timestep ./ (2.0 + KO2_inst[i+1] * timestep));
     for(j in 1:d) {
-      DO_mod_partial_sigma[i+1,j] = err_proc_iid_sigma * 
+      DO_mod_partial_sigma[i+1,j] = err_proc_iid_sigma *
         sqrt(pow(depth[i,j], -2) + pow(depth[i+1,j], -2)) .*
         (timestep / (2.0 + KO2_inst[i+1,j] * timestep));
     }
@@ -109,7 +109,7 @@ model {
   }
   // SD (sigma) of the IID process errors
   err_proc_iid_sigma_scaled ~ cauchy(0, 1);
-  
+
   // Daily metabolism priors
   alpha_scaled ~ normal(0, 1);
   Pmax ~ normal(Pmax_mu, Pmax_sigma);
@@ -117,23 +117,23 @@ model {
   // Hierarchical constraints on K600_daily (linear_sdzero model)
   lnK600_lnQ_intercept ~ normal(lnK600_lnQ_intercept_mu, lnK600_lnQ_intercept_sigma);
   lnK600_lnQ_slope ~ normal(lnK600_lnQ_slope_mu, lnK600_lnQ_slope_sigma);
-  
+
 }
 generated quantities {
   array[n-1] vector[d] err_proc_iid;
   vector[d] GPP;
   vector[d] ER;
   vector[d] DO_R2;
-  
+
   for(i in 2:n) {
     err_proc_iid[i-1] = (DO_mod_partial[i] - DO_obs[i]) .* (err_proc_iid_sigma ./ DO_mod_partial_sigma[i]);
   }
   for(j in 1:d) {
     GPP[j] = sum(GPP_inst[1:n24,j]) / n24;
     ER[j] = sum(ER_inst[1:n24,j]) / n24;
-    
+
     // R2 for DO observations is always 1 for process-error-only models
     DO_R2[j] = 1;
   }
-  
+
 }

@@ -10,21 +10,21 @@ data {
   real<lower=0> ER_daily_sigma;
   real K600_daily_meanlog;
   real<lower=0> K600_daily_sdlog;
-  
+
   // Error distributions
   real err_proc_acor_phi_alpha;
   real err_proc_acor_phi_beta;
   real<lower=0> err_proc_acor_sigma_scale;
-  
+
   // Data dimensions
   int<lower=1> d; // number of dates
   real<lower=0> timestep; // length of each timestep in days
   int<lower=1> n24; // number of observations in first 24 hours per date
   int<lower=1> n; // number of observations per date
-  
+
   // Daily data
   vector[d] DO_obs_1;
-  
+
   // Data
   array[n] vector[d] DO_obs;
   array[n] vector[d] DO_sat;
@@ -38,7 +38,7 @@ parameters {
   vector<lower=GPP_daily_lower>[d] GPP_daily;
   vector<upper=ER_daily_upper>[d] ER_daily;
   vector<lower=0>[d] K600_daily;
-  
+
   real<lower=0, upper=1> err_proc_acor_phi;
   real<lower=0> err_proc_acor_sigma_scaled;
 }
@@ -50,23 +50,23 @@ transformed parameters {
   array[n] vector[d] KO2_inst;
   array[n] vector[d] DO_mod;
   array[n-1] vector[d] err_proc_acor;
-  
+
   // Rescale error distribution parameters
   err_proc_acor_sigma = err_proc_acor_sigma_scale * err_proc_acor_sigma_scaled;
-  
+
   // Model DO time series
   // * trapezoid version
   // * no observation error
   // * autocorrelated process error
   // * reaeration depends on DO_obs
-  
+
   // Calculate individual process rates
   for(i in 1:n) {
     GPP_inst[i] = GPP_daily .* light_mult_GPP[i];
     ER_inst[i] = ER_daily .* const_mult_ER[i];
     KO2_inst[i] = K600_daily .* KO2_conv[i];
   }
-  
+
   // DO model
   DO_mod[1] = DO_obs_1;
   for(i in 1:(n-1)) {
@@ -99,7 +99,7 @@ model {
   // Autocorrelation (phi) & SD (sigma) of the process errors
   err_proc_acor_phi ~ beta(err_proc_acor_phi_alpha, err_proc_acor_phi_beta);
   err_proc_acor_sigma_scaled ~ cauchy(0, 1);
-  
+
   // Daily metabolism priors
   GPP_daily ~ normal(GPP_daily_mu, GPP_daily_sigma);
   ER_daily ~ normal(ER_daily_mu, ER_daily_sigma);
@@ -111,11 +111,11 @@ generated quantities {
   vector[n] DO_obs_vec; // temporary
   vector[n] DO_mod_vec; // temporary
   vector[d] DO_R2;
-  
+
   for(j in 1:d) {
     GPP[j] = sum(GPP_inst[1:n24,j]) / n24;
     ER[j] = sum(ER_inst[1:n24,j]) / n24;
-    
+
     // Compute R2 for DO observations relative to the modeled, process-error-corrected state (DO_mod)
     for(i in 1:n) {
       DO_mod_vec[i] = DO_mod[i,j];
@@ -123,5 +123,5 @@ generated quantities {
     }
     DO_R2[j] = 1 - sum((DO_mod_vec - DO_obs_vec) .* (DO_mod_vec - DO_obs_vec)) / sum((DO_obs_vec - mean(DO_obs_vec)) .* (DO_obs_vec - mean(DO_obs_vec)));
   }
-  
+
 }

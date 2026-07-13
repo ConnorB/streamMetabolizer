@@ -34,7 +34,7 @@ library(dplyr)
 # 1. Preparing the input data
 
 Load a small example dataset from the package (data are from French
-Creek in Laramie, WY, courtesy of Bob Hall). 
+Creek in Laramie, WY, courtesy of Bob Hall).
 We'll use the `streamMetabolizer` standard in defining our day to run from 4 am
 (`day_start=4`) to 4 am (`day_end=28`).
 ```{r data}
@@ -44,7 +44,7 @@ dat <- data_metab(num_days='3', res='15', day_start=4, day_end=28)
 # 2. Configuring the model
 
 There are two steps to configuring a metabolism model in `streamMetabolizer`.
- 
+
 a. Identify the name of the model structure you want using `mm_name()`.
 b. Set the specifications for the model using defaults from`specs()` as a starting point.
 
@@ -67,7 +67,7 @@ mle_specs <- specs(mle_name)
 mle_specs
 ```
 
-See `?specs` for definitions of all specifications. Note that most of the 
+See `?specs` for definitions of all specifications. Note that most of the
 specifications in that help file are omitted from the output of
 `specs(mle_name)` above - this is because MLE models are simple and don't have
 many parameters to set. Any of those parameters that are included in

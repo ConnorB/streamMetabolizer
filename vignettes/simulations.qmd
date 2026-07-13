@@ -38,7 +38,7 @@ dat <- data_metab('3', '15')
 
 # Creating a Sim Model
 
-To create a simulation model, you should 
+To create a simulation model, you should
 
 1. Choose a model structure
 2. Choose daily metabolism parameters
@@ -48,8 +48,8 @@ To create a simulation model, you should
 
 ## 1. Choosing the model structure
 
-You can simulate data using any of the GPP and ER functions available to MLE 
-models. Simulations are done by models of type `'sim'` but otherwise take very 
+You can simulate data using any of the GPP and ER functions available to MLE
+models. Simulations are done by models of type `'sim'` but otherwise take very
 similar arguments to those of an MLE model. Here we'll use a model where ER is a
 function of temperature.
 
@@ -65,8 +65,8 @@ learn which daily parameters you need to specify.
 
 ### A. Trial and error
 
-To learn about parameter needs by trial and error, simply create the model with 
-the equations you want but without daily inputs, ask for the parameters, and 
+To learn about parameter needs by trial and error, simply create the model with
+the equations you want but without daily inputs, ask for the parameters, and
 read the error message to get a list of parameters. It's fine to use the
 defaults for the specifications for now.
 
@@ -89,7 +89,7 @@ You can also use fitted parameters from another model as your input for a
 simulation model. This method could be useful for identifying realistic
 parameters and/or exploring why a model fitting process didn't work so well.
 
-First fit an MLE model to the same data using the `GPP_fun` and `ER_fun` you 
+First fit an MLE model to the same data using the `GPP_fun` and `ER_fun` you
 want. It's fine (again) to use the defaults for the specifications.
 
 ```{r}
@@ -118,9 +118,9 @@ in options A or B.
 
 ## 3. Choosing the specifications
 
-After choosing parameters, the next step is to choose the rest of the 
-specifications. The main difference between sim models and other models is that 
-you can choose values for the probability distributions of the observation 
+After choosing parameters, the next step is to choose the rest of the
+specifications. The main difference between sim models and other models is that
+you can choose values for the probability distributions of the observation
 and/or process errors. See `?specs` for details on the distribution parameters
 `err_obs_sigma`, `err_obs_phi`, `err_proc_sigma`, and `err_proc_phi`.
 
@@ -201,8 +201,8 @@ specs <- specs(mm_name('sim', GPP_fun='satlight', ER_fun='q10temp'), err_obs_sig
 mm <- metab(specs, data=dat, data_daily=params)
 ```
 
-Sim models print out their parameters with asterisks to denote that the values 
-are fixed rather than fitted. 
+Sim models print out their parameters with asterisks to denote that the values
+are fixed rather than fitted.
 
 ```{r}
 mm
@@ -281,7 +281,7 @@ The centers and nodes are the essential pieces of the final piecewise relationsh
 ```{r}
 KQ <- as.data.frame(attr(pars, 'K600_eqn')[c('K600_lnQ_nodes_centers', 'lnK600_lnQ_nodes')])
 Kpred <- mutate(select(pars, date, discharge.daily, K600.daily), K600_daily_predlog=attr(pars, 'K600_eqn')$K600_daily_predlog)
-ggplot(KQ, aes(x=K600_lnQ_nodes_centers, y=lnK600_lnQ_nodes)) + geom_line(color='blue') + geom_point(color='blue') + 
+ggplot(KQ, aes(x=K600_lnQ_nodes_centers, y=lnK600_lnQ_nodes)) + geom_line(color='blue') + geom_point(color='blue') +
   geom_point(data=Kpred, aes(x=log(discharge.daily), y=K600_daily_predlog), color='purple') +
   geom_point(data=Kpred, aes(x=log(discharge.daily), y=log(K600.daily)), color='red')
 ```

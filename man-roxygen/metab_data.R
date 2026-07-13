@@ -3,7 +3,7 @@
 #' be formatted as a data.frame with column names and values that
 #' depend on the model \code{type}, as follows.
 #' (If all columns are optional, \code{data} may equal \code{NULL}.)
-#' 
+#'
 #' \describe{
 #'   \item{\code{mle} or \code{night}}{
 #'     \tabular{llll}{
@@ -14,9 +14,9 @@
 #'       depth             \tab numeric         \tab NA              \tab required      \cr
 #'       temp.water        \tab numeric         \tab NA              \tab required      \cr
 #'       light             \tab numeric         \tab NA              \tab required      \cr
-#'       discharge         \tab numeric         \tab NA              \tab optional      
+#'       discharge         \tab numeric         \tab NA              \tab optional
 #'     }
-#'     
+#'
 #'     \strong{Example}:
 #'     \tabular{lrrrrrr}{
 #'       \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light} \tab \code{discharge}\cr
@@ -32,9 +32,9 @@
 #'       depth             \tab numeric         \tab NA              \tab required      \cr
 #'       temp.water        \tab numeric         \tab NA              \tab required      \cr
 #'       light             \tab numeric         \tab NA              \tab required      \cr
-#'       discharge         \tab numeric         \tab NA              \tab optional      
+#'       discharge         \tab numeric         \tab NA              \tab optional
 #'     }
-#'     
+#'
 #'     \strong{Example}:
 #'     \tabular{lrrrrrr}{
 #'       \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light} \tab \code{discharge}\cr
@@ -46,9 +46,9 @@
 #'       \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
 #'       solar.time        \tab POSIXct,POSIXt  \tab NA              \tab optional      \cr
 #'       discharge         \tab numeric         \tab NA              \tab optional      \cr
-#'       velocity          \tab numeric         \tab NA              \tab optional      
+#'       velocity          \tab numeric         \tab NA              \tab optional
 #'     }
-#'     
+#'
 #'     \strong{Example}:
 #'     \tabular{lrr}{
 #'       \code{solar.time         } \tab \code{discharge} \tab \code{velocity}\cr
@@ -63,9 +63,9 @@
 #'       DO.sat            \tab numeric         \tab NA              \tab required      \cr
 #'       depth             \tab numeric         \tab NA              \tab required      \cr
 #'       temp.water        \tab numeric         \tab NA              \tab required      \cr
-#'       light             \tab numeric         \tab NA              \tab required      
+#'       light             \tab numeric         \tab NA              \tab required
 #'     }
-#'     
+#'
 #'     \strong{Example}:
 #'     \tabular{lrrrrr}{
 #'       \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light}\cr
@@ -78,7 +78,7 @@
 #' be formatted as a data.frame with column names and values that
 #' depend on the model \code{type}, as follows.
 #' (If all columns are optional, \code{data_daily} may equal \code{NULL}.)
-#' 
+#'
 #' \describe{
 #'   \item{\code{night}}{
 #'     \code{NULL}
@@ -93,9 +93,9 @@
 #'       init.alpha        \tab numeric         \tab NA              \tab optional      \cr
 #'       init.ER.daily     \tab numeric         \tab NA              \tab optional      \cr
 #'       init.ER20         \tab numeric         \tab NA              \tab optional      \cr
-#'       init.K600.daily   \tab numeric         \tab NA              \tab optional      
+#'       init.K600.daily   \tab numeric         \tab NA              \tab optional
 #'     }
-#'     
+#'
 #'     \strong{Example}:
 #'     \tabular{lrrrrrrr}{
 #'       \code{date      } \tab \code{K600.daily} \tab \code{init.GPP.daily} \tab \code{init.Pmax} \tab \code{init.alpha} \tab \code{init.ER.daily} \tab \code{init.ER20} \tab \code{init.K600.daily}\cr
@@ -106,9 +106,9 @@
 #'     \tabular{llll}{
 #'       \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
 #'       date              \tab Date            \tab NA              \tab optional      \cr
-#'       discharge.daily   \tab numeric         \tab NA              \tab optional      
+#'       discharge.daily   \tab numeric         \tab NA              \tab optional
 #'     }
-#'     
+#'
 #'     \strong{Example}:
 #'     \tabular{lr}{
 #'       \code{date      } \tab \code{discharge.daily}\cr
@@ -123,9 +123,9 @@
 #'       K600.daily.lower  \tab numeric         \tab NA              \tab optional      \cr
 #'       K600.daily.upper  \tab numeric         \tab NA              \tab optional      \cr
 #'       discharge.daily   \tab numeric         \tab NA              \tab optional      \cr
-#'       velocity.daily    \tab numeric         \tab NA              \tab optional      
+#'       velocity.daily    \tab numeric         \tab NA              \tab optional
 #'     }
-#'     
+#'
 #'     \strong{Example}:
 #'     \tabular{lrrrrr}{
 #'       \code{date      } \tab \code{K600.daily} \tab \code{K600.daily.lower} \tab \code{K600.daily.upper} \tab \code{discharge.daily} \tab \code{velocity.daily}\cr
@@ -147,9 +147,9 @@
 #'       err.obs.sigma     \tab numeric         \tab NA              \tab optional      \cr
 #'       err.obs.phi       \tab numeric         \tab NA              \tab optional      \cr
 #'       err.proc.sigma    \tab numeric         \tab NA              \tab optional      \cr
-#'       err.proc.phi      \tab numeric         \tab NA              \tab optional      
+#'       err.proc.phi      \tab numeric         \tab NA              \tab optional
 #'     }
-#'     
+#'
 #'     \strong{Example}:
 #'     \tabular{lrrrrrrrrrrrr}{
 #'       \code{date      } \tab \code{discharge.daily} \tab \code{DO.mod.1} \tab \code{K600.daily} \tab \code{GPP.daily} \tab \code{Pmax} \tab \code{alpha} \tab \code{ER.daily} \tab \code{ER20} \tab \code{err.obs.sigma} \tab \code{err.obs.phi} \tab \code{err.proc.sigma} \tab \code{err.proc.phi}\cr

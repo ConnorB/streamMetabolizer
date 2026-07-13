@@ -4,16 +4,25 @@
 \alias{cmdstan_cache_dir}
 \title{Locate the persistent compilation cache for a CmdStan model}
 \usage{
-cmdstan_cache_dir(model_path, cmdstan_version)
+cmdstan_cache_dir(
+  model_path,
+  cmdstan_version,
+  cmdstanr_version = package_version_for_cache("cmdstanr"),
+  platform = R.version$platform
+)
 }
 \arguments{
 \item{model_path}{Path to a Stan program.}
 
 \item{cmdstan_version}{The configured CmdStan version.}
+
+\item{cmdstanr_version}{The installed CmdStanR version.}
+
+\item{platform}{The platform on which the model executable will run.}
 }
 \value{
-A writable cache directory unique to the model contents and CmdStan
-version.
+A writable cache directory unique to the model contents, CmdStan and
+CmdStanR versions, and platform.
 }
 \description{
 Locate the persistent compilation cache for a CmdStan model

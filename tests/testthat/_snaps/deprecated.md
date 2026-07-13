@@ -31,4 +31,3 @@
     Condition
       Warning:
       `calc_sun_rise_set()` was deprecated in streamMetabolizer 0.13.0.
-

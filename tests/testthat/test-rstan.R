@@ -42,6 +42,13 @@ test_that('RStan cache keys include model contents', {
   expect_true(dir.exists(dirname(first)))
 })
 
+test_that('RStan cache paths reject missing model files', {
+  expect_error(
+    rstan_cache_file(tempfile(fileext = '.stan')),
+    'model_path must identify an existing Stan file'
+  )
+})
+
 test_that('RStan cache keys tolerate missing optional toolchain packages', {
   expect_equal(
     package_version_for_cache('streamMetabolizer-package-that-does-not-exist'),

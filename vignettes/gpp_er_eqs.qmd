@@ -41,8 +41,8 @@ Here's a basic model with GPP proportional to light and ER constant over time.
 
 ```{r}
 # the Classic: linear GPP, constant ER (also the default)
-mm_classic <- 
-  mm_name('mle', GPP_fun='linlight', ER_fun='constant') %>% 
+mm_classic <-
+  mm_name('mle', GPP_fun='linlight', ER_fun='constant') %>%
   specs() %>%
   metab(dat)
 mm_classic
@@ -52,8 +52,8 @@ Here's one where GPP is a saturating function of light. ER is still constant.
 
 ```{r}
 # the Saturator: GPP saturating with light, constant ER
-mm_saturator <- 
-  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>% 
+mm_saturator <-
+  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>%
   specs() %>%
   metab(dat)
 mm_saturator
@@ -88,18 +88,18 @@ this - as date-specific values in data_daily, or as values that apply to every
 date in specs(). The two methods can even be combined.
 
 ```{r}
-mm_saturator2 <- 
-  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>% 
+mm_saturator2 <-
+  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>%
   specs() %>%
   metab(dat, data_daily=select(get_params(mm_saturator), date, init.Pmax=Pmax, init.alpha=alpha))
 get_params(mm_saturator2)
-mm_saturator3 <- 
-  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>% 
+mm_saturator3 <-
+  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>%
   specs(init.Pmax=6.2, init.alpha=0.008) %>%
   metab(dat)
 get_params(mm_saturator3)
-mm_saturator4 <- 
-  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>% 
+mm_saturator4 <-
+  mm_name('mle', GPP_fun='satlight', ER_fun='constant') %>%
   specs(init.Pmax=6.2, init.alpha=0.008) %>%
   metab(dat, transmute(get_params(mm_saturator), date, init.Pmax=Pmax[1], init.alpha=alpha[1])[2,])
 get_params(mm_saturator4)

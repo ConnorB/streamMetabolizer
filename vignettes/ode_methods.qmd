@@ -7,8 +7,8 @@ vignette: >
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
-  
-  
+
+
 ```{r knitr_init, echo=FALSE, cache=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(width=100)
@@ -30,7 +30,7 @@ library(dplyr)
 library(ggplot2)
 ```
 
-Get some data to work with: here we're requesting three days of data at 
+Get some data to work with: here we're requesting three days of data at
 30-minute resolution. Thanks to Bob Hall for the test data.
 
 ```{r}
@@ -39,9 +39,9 @@ dat <- data_metab('3','30')
 
 # Numerical integration
 
-Inspired by Song et al. 2016, we can now do several types of numerical 
-integration and compare them. `lsoda` often fails to converge, but `rk4` and 
-`trapezoid` perform well and very similarly to one another (and `trapezoid` is 
+Inspired by Song et al. 2016, we can now do several types of numerical
+integration and compare them. `lsoda` often fails to converge, but `rk4` and
+`trapezoid` perform well and very similarly to one another (and `trapezoid` is
 faster). `trapezoid` is available for both MLE and Bayesian models.
 
 Here we fit MLE models using four different ODE methods.
@@ -54,11 +54,11 @@ mm_trapezoid <- metab(specs(mm_name('mle', ode_method='trapezoid')), dat)
 ```
 
 ```{r}
-mm_rk4 <- metab(specs(mm_name('mle', ode_method='rk4')), dat) 
+mm_rk4 <- metab(specs(mm_name('mle', ode_method='rk4')), dat)
 ```
 
 ```{r}
-mm_lsoda <- metab(specs(mm_name('mle', ode_method='lsoda')), dat) 
+mm_lsoda <- metab(specs(mm_name('mle', ode_method='lsoda')), dat)
 ```
 
 Now we create a data.frame to compare the above options.

@@ -57,16 +57,16 @@ See the `?metab` help document and the [Data Preparation](data_prep.html) tutori
 # 2. Configuring the model
 
 There are two steps to configuring a metabolism model in `streamMetabolizer`.
- 
+
 a. Identify the name of the model structure you want using `mm_name()`.
 b. Set the specifications for the model using defaults from`specs()` as a starting point.
 
 ## 2a. Choose a model structure
 
-For this example, we will specify a Bayesian model with both 
-observation error and process error. We won't pool K600 here because we don't 
-have many days of data, but pooling is one feature that makes Bayesian models 
-better than MLE models in general. Another great feature of Bayesian models is 
+For this example, we will specify a Bayesian model with both
+observation error and process error. We won't pool K600 here because we don't
+have many days of data, but pooling is one feature that makes Bayesian models
+better than MLE models in general. Another great feature of Bayesian models is
 that they produce more accurate and nuanced confidence intervals.
 ```{r bayes_name}
 bayes_name <- mm_name(type='bayes', pool_K600='none', err_obs_iid=TRUE, err_proc_iid=TRUE)
@@ -90,9 +90,9 @@ bayes_specs <- specs(bayes_name, burnin_steps=100, saved_steps=200, n_cores=1, G
 bayes_specs <- revise(bayes_specs, burnin_steps=500, saved_steps=500, n_cores=1, GPP_daily_mu=3, GPP_daily_sigma=2)
 ```
 
-Here I've used a very small number of `burnin_steps` and `saved_steps` because I don't want to 
+Here I've used a very small number of `burnin_steps` and `saved_steps` because I don't want to
 wait long for the vignette to run. When you run your own models, you should bump
-those numbers up substantially (to several thousand or so, depending on 
+those numbers up substantially (to several thousand or so, depending on
 exactly which model you're using.)
 
 Other Bayesian model specifications will also need your close attention when

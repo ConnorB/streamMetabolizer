@@ -40,23 +40,70 @@ test_that('CmdStan draw selection respects indexed parameters', {
   )
 })
 
-test_that('CmdStan cache keys include the compiler and model contents', {
+test_that('CmdStan cache keys include the toolchain and model contents', {
   stan_file <- tempfile(fileext = '.stan')
   cache_root <- tempfile('streamMetabolizer-cache-')
   old_options <- options(streamMetabolizer.cmdstan_cache_dir = cache_root)
   on.exit(options(old_options), add = TRUE)
 
   writeLines('parameters { real y; } model { y ~ normal(0, 1); }', stan_file)
-  first <- cmdstan_cache_dir(stan_file, '2.39.0')
-  same <- cmdstan_cache_dir(stan_file, '2.39.0')
-  other_version <- cmdstan_cache_dir(stan_file, '2.38.0')
+  first <- cmdstan_cache_dir(
+    stan_file,
+    '2.39.0',
+    cmdstanr_version = '0.9.0',
+    platform = 'aarch64-apple-darwin23'
+  )
+  same <- cmdstan_cache_dir(
+    stan_file,
+    '2.39.0',
+    cmdstanr_version = '0.9.0',
+    platform = 'aarch64-apple-darwin23'
+  )
+  other_cmdstan <- cmdstan_cache_dir(
+    stan_file,
+    '2.38.0',
+    cmdstanr_version = '0.9.0',
+    platform = 'aarch64-apple-darwin23'
+  )
+  other_cmdstanr <- cmdstan_cache_dir(
+    stan_file,
+    '2.39.0',
+    cmdstanr_version = '0.8.1',
+    platform = 'aarch64-apple-darwin23'
+  )
+  other_platform <- cmdstan_cache_dir(
+    stan_file,
+    '2.39.0',
+    cmdstanr_version = '0.9.0',
+    platform = 'x86_64-w64-mingw32'
+  )
   writeLines('parameters { real y; } model { y ~ normal(1, 1); }', stan_file)
-  changed <- cmdstan_cache_dir(stan_file, '2.39.0')
+  changed <- cmdstan_cache_dir(
+    stan_file,
+    '2.39.0',
+    cmdstanr_version = '0.9.0',
+    platform = 'aarch64-apple-darwin23'
+  )
 
   expect_equal(first, same)
-  expect_false(identical(first, other_version))
+  expect_false(identical(first, other_cmdstan))
+  expect_false(identical(first, other_cmdstanr))
+  expect_false(identical(first, other_platform))
   expect_false(identical(first, changed))
-  expect_true(all(dir.exists(c(first, other_version, changed))))
+  expect_true(all(dir.exists(c(
+    first,
+    other_cmdstan,
+    other_cmdstanr,
+    other_platform,
+    changed
+  ))))
+})
+
+test_that('CmdStan cache paths reject missing model files', {
+  expect_error(
+    cmdstan_cache_dir(tempfile(fileext = '.stan'), '2.39.0'),
+    'model_path must identify an existing Stan file'
+  )
 })
 
 test_that('the default CmdStan cache always resolves to a writable directory', {

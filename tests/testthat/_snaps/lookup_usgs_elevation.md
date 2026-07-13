@@ -5,4 +5,3 @@
     Condition
       Error in `lookup_usgs_elevation()`:
       ! the USGS Elevation Point Query Service returned no elevation
-

@@ -1229,7 +1229,7 @@ rstan_cache_file <- function(model_path) {
       file.path(tempdir(), 'streamMetabolizer-cache')
     }
   }
-  model_hash <- unname(tools::md5sum(model_path))
+  model_hash <- stan_model_hash(model_path)
   dependency_versions <- vapply(
     c('StanHeaders', 'Rcpp', 'RcppEigen', 'RcppParallel', 'BH'),
     package_version_for_cache,
@@ -1279,10 +1279,17 @@ package_version_for_cache <- function(package) {
 #'
 #' @param model_path Path to a Stan program.
 #' @param cmdstan_version The configured CmdStan version.
-#' @return A writable cache directory unique to the model contents and CmdStan
-#'   version.
+#' @param cmdstanr_version The installed CmdStanR version.
+#' @param platform The platform on which the model executable will run.
+#' @return A writable cache directory unique to the model contents, CmdStan and
+#'   CmdStanR versions, and platform.
 #' @keywords internal
-cmdstan_cache_dir <- function(model_path, cmdstan_version) {
+cmdstan_cache_dir <- function(
+  model_path,
+  cmdstan_version,
+  cmdstanr_version = package_version_for_cache('cmdstanr'),
+  platform = R.version$platform
+) {
   cache_root <- getOption('streamMetabolizer.cmdstan_cache_dir')
   use_default_cache <- is.null(cache_root)
   if (use_default_cache) {
@@ -1292,11 +1299,20 @@ cmdstan_cache_dir <- function(model_path, cmdstan_version) {
       file.path(tempdir(), 'streamMetabolizer-cache')
     }
   }
-  model_hash <- unname(tools::md5sum(model_path))
+  model_hash <- stan_model_hash(model_path)
+  version_key <- paste0(
+    'csr-',
+    cmdstanr_version,
+    '_cs-',
+    cmdstan_version,
+    '_',
+    platform
+  )
+  version_key <- gsub('[^[:alnum:]_.-]', '-', version_key)
   cache_dir <- file.path(
     cache_root,
     'cmdstan',
-    paste0('v', cmdstan_version),
+    version_key,
     model_hash
   )
   writable <- cache_dir_is_writable(cache_dir)
@@ -1305,7 +1321,7 @@ cmdstan_cache_dir <- function(model_path, cmdstan_version) {
       tempdir(),
       'streamMetabolizer-cache',
       'cmdstan',
-      paste0('v', cmdstan_version),
+      version_key,
       model_hash
     )
     writable <- cache_dir_is_writable(cache_dir)
@@ -1314,6 +1330,25 @@ cmdstan_cache_dir <- function(model_path, cmdstan_version) {
     .cli_abort('could not create a writable CmdStan model cache at ', cache_dir)
   }
   cache_dir
+}
+
+stan_model_hash <- function(model_path) {
+  if (
+    !is.character(model_path) ||
+      length(model_path) != 1 ||
+      is.na(model_path) ||
+      !nzchar(model_path) ||
+      !file.exists(model_path) ||
+      dir.exists(model_path)
+  ) {
+    .cli_abort('model_path must identify an existing Stan file')
+  }
+
+  model_hash <- unname(tools::md5sum(model_path))
+  if (length(model_hash) != 1 || is.na(model_hash)) {
+    .cli_abort('could not hash the Stan model at ', model_path)
+  }
+  model_hash
 }
 
 cache_dir_is_writable <- function(cache_dir) {

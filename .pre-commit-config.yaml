@@ -1,0 +1,18 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: ["--markdown-linebreak-ext=md,qmd"]
+
+  - repo: https://github.com/posit-dev/air-pre-commit
+    rev: 0.10.0
+    hooks:
+      - id: air-format
+
+  - repo: https://github.com/lorenzwalthert/precommit
+    rev: v0.4.3.9029
+    hooks:
+      - id: use-tidy-description
+        args: [--root=.]

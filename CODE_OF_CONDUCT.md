@@ -12,14 +12,14 @@ Project maintainers have the right and responsibility to remove, edit, or reject
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening an issue or contacting one or more of the project maintainers.
 
-This Code of Conduct is adapted from the 
+This Code of Conduct is adapted from the
 [Contributor Covenant, version 1.0.0](https://www.contributor-covenant.org/version/1/0/0/code-of-conduct.html).
 
 
 ### USGS Code of Scientific Conduct
 
 Additionally, all contributions to -- and interactions surrounding -- this project will abide by
-the 
+the
 [USGS Code of Scientific Conduct](https://www.usgs.gov/office-of-science-quality-and-integrity/fundamental-science-practices)
-and the 
+and the
 [DOI Code of Development Conduct](https://github.com/DOI-BLM/01-guidance/blob/master/CODE_OF_CONDUCT.md).

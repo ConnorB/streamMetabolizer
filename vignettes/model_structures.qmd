@@ -64,7 +64,7 @@ See the help file at `?mm_parse_name`, and refer again to `?mm_name` for definit
 
 # Listing all the options
 
-You can see the full list of available model structures by 
+You can see the full list of available model structures by
 calling `mm_valid_names()` (here we'll just print a sampling of the full list):
 
 ```{r}
