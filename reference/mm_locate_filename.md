@@ -18,9 +18,8 @@ mm_locate_filename(model_name, stan_engine = NULL)
 
 - stan_engine:
 
-  The Stan interface whose compiler version should be used when choosing
-  between current and deprecated model syntax. If `NULL`, CmdStanR is
-  preferred when available, followed by RStan.
+  The Stan interface whose compiler version should be validated. If
+  `NULL`, CmdStanR is preferred when available, followed by RStan.
 
 ## Value
 
