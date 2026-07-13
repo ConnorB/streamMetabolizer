@@ -69,23 +69,35 @@ citation('streamMetabolizer')
 
 ## Installation
 
-To install the `streamMetabolizer` package, use the `remotes` package
-(running `install.packages('remotes')` first if needed). To use
-`remotes::install_github()` it is convenient to set a [GitHub Personal
-Access Token
+To install the `streamMetabolizer` package, you can use the `pak`
+package (run `install.packages("pak")` first if needed). `pak` is fast
+and handles dependencies automatically.
+
+If you are installing from GitHub, it is helpful to set a [GitHub
+Personal Access Token
 (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 There are [several
 methods](https://usethis.r-lib.org/articles/git-credentials.html) for
-setting your PATs within R; the simplest is to call
-`Sys.setenv(GITHUB_PAT="yyyy")`, replacing yyyy with the PAT you
-established on the GitHub website.
-
-You can then install the most cutting edge version of
-`streamMetabolizer` with this command:
+setting your PAT within R; a simple approach is:
 
 ``` r
-remotes::install_github("ConnorB/streamMetabolizer", 
-                        build_vignettes = TRUE)
+Sys.setenv(GITHUB_PAT = "yyyy")
+```
+
+Replace `"yyyy"` with your PAT from GitHub.
+
+You can then install the development version of `streamMetabolizer`
+with:
+
+``` r
+pak::pak("ConnorB/streamMetabolizer")
+```
+
+If you would like to build vignettes after installation, you can do so
+with:
+
+``` r
+devtools::build_vignettes("streamMetabolizer")
 ```
 
 ### Software dependencies for Bayesian models
