@@ -34,16 +34,17 @@ metab_mle(
 
 - data:
 
-  data.frame (not a tbl_df) of input data at the temporal resolution of
-  raw observations (unit-value). Columns must have the same names,
-  units, and format as the default. The solar.time column must also have
-  a timezone code ('tzone' attribute) of 'UTC'. See the **'Formatting
+  A data frame or tibble of input data at the temporal resolution of raw
+  observations (unit-value). Columns must have the same names, units,
+  and format as the default. The solar.time column must also have a
+  timezone code ('tzone' attribute) of 'UTC'. See the **'Formatting
   `data`'** section below for a full description.
 
 - data_daily:
 
-  data.frame containing inputs with a daily timestep. See the
-  **'Formatting `data_daily`'** section below for a full description.
+  A data frame or tibble containing inputs with a daily timestep. See
+  the **'Formatting `data_daily`'** section below for a full
+  description.
 
 - info:
 
@@ -73,14 +74,13 @@ dat <- data_metab('3','30')
 # PRK
 mm <- metab_mle(data=dat)
 predict_metab(mm)
-#>         date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1 2012-09-18 2.816207  1.894260  3.738153 -2.116196 -2.867236 -1.365155
-#> 2 2012-09-19 3.287146  2.265982  4.308309 -2.479248 -3.322547 -1.635950
-#> 3 2012-09-20 2.599133  1.935957  3.262309 -1.718192 -2.224222 -1.212162
-#>   msgs.fit warnings errors
-#> 1                         
-#> 2                         
-#> 3                         
+#> # A tibble: 3 × 10
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit warnings
+#>   <date>     <dbl>     <dbl>     <dbl> <dbl>    <dbl>    <dbl> <chr>    <chr>   
+#> 1 2012-09-18  2.82      1.89      3.74 -2.12    -2.87    -1.37 "      … ""      
+#> 2 2012-09-19  3.29      2.27      4.31 -2.48    -3.32    -1.64 "      … ""      
+#> 3 2012-09-20  2.60      1.94      3.26 -1.72    -2.22    -1.21 "      … ""      
+#> # ℹ 1 more variable: errors <chr>
 
 # PR with fixed K on two days
 dat_daily <- data.frame(date=as.Date(c("2012-09-18","2012-09-20")), K600.daily=35)
@@ -96,7 +96,7 @@ metab_mle(data=dat, data_daily=dat_daily)
 #>   init.GPP.daily    8                                                           
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.162 secs elapsed
+#> Fitting time: 0.166 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily
 #> 1 2012-09-18 3.202406         3.018387        3.386425 -2.419569 
@@ -113,14 +113,13 @@ metab_mle(data=dat, data_daily=dat_daily)
 #> Fitting warnings:
 #>   1 date: data_daily$K600.daily==NA so fitting by MLE
 #> Predictions (3 dates):
-#>         date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1 2012-09-18 3.202406  3.018387  3.386425 -2.419569 -2.691317 -2.147821
-#> 2 2012-09-19 3.287146  2.265982  4.308309 -2.479248 -3.322547 -1.635950
-#> 3 2012-09-20 3.214161  3.042628  3.385693 -2.158125 -2.413318 -1.902933
-#>   msgs.fit msgs.pred
-#> 1                   
-#> 2      W            
-#> 3                   
+#> # A tibble: 3 × 9
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit 
+#>   <date>     <dbl>     <dbl>     <dbl> <dbl>    <dbl>    <dbl> <chr>    
+#> 1 2012-09-18  3.20      3.02      3.39 -2.42    -2.69    -2.15 "       "
+#> 2 2012-09-19  3.29      2.27      4.31 -2.48    -3.32    -1.64 "    W  "
+#> 3 2012-09-20  3.21      3.04      3.39 -2.16    -2.41    -1.90 "       "
+#> # ℹ 1 more variable: msgs.pred <chr>
 
 # PRK with day-specific inits on some days
 dat_daily <- data.frame(date=as.Date("2012-09-19"),
@@ -137,7 +136,7 @@ metab_mle(data=dat, data_daily=dat_daily)
 #>   init.GPP.daily    8                                                           
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.241 secs elapsed
+#> Fitting time: 0.243 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily
 #> 1 2012-09-18 2.816207         1.894260        3.738153 -2.116196 
@@ -155,14 +154,13 @@ metab_mle(data=dat, data_daily=dat_daily)
 #>   2 dates: data_daily$init.GPP.daily==NA so using specs
 #>   2 dates: data_daily$init.K600.daily==NA so using specs
 #> Predictions (3 dates):
-#>         date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1 2012-09-18 2.816207  1.894260  3.738153 -2.116196 -2.867236 -1.365155
-#> 2 2012-09-19 3.287148  2.269303  4.304993 -2.479250 -3.319998 -1.638502
-#> 3 2012-09-20 2.599133  1.935957  3.262309 -1.718192 -2.224222 -1.212162
-#>   msgs.fit msgs.pred
-#> 1      W            
-#> 2                   
-#> 3      W            
+#> # A tibble: 3 × 9
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit 
+#>   <date>     <dbl>     <dbl>     <dbl> <dbl>    <dbl>    <dbl> <chr>    
+#> 1 2012-09-18  2.82      1.89      3.74 -2.12    -2.87    -1.37 "    W  "
+#> 2 2012-09-19  3.29      2.27      4.30 -2.48    -3.32    -1.64 "       "
+#> 3 2012-09-20  2.60      1.94      3.26 -1.72    -2.22    -1.21 "    W  "
+#> # ℹ 1 more variable: msgs.pred <chr>
 
 # Nonlinear GPP or ER equations
 metab_mle(specs(mm_name('mle', GPP_fun='satlight')), data=dat)
@@ -178,29 +176,28 @@ metab_mle(specs(mm_name('mle', GPP_fun='satlight')), data=dat)
 #>   init.alpha        1e-04                                                       
 #>   init.ER.daily     -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.885 secs elapsed
+#> Fitting time: 0.757 secs elapsed
 #> Parameters (3 dates):
-#>         date      Pmax Pmax.lower Pmax.upper        alpha alpha.lower
-#> 1 2012-09-18 6.109051    5.645596   6.572507 0.008351592  0.007714564
-#> 2 2012-09-19 7.286768    6.537958   8.035577 0.009177225  0.008270835
-#> 3 2012-09-20 6.269003    5.586875   6.951132 0.007380747  0.006604585
+#>         date       Pmax Pmax.lower Pmax.upper        alpha alpha.lower
+#> 1 2012-09-18  6.109026    5.645578   6.572475 0.008351644  0.007714611
+#> 2 2012-09-19  7.286768    6.537958   8.035577 0.009177225  0.008270835
+#> 3 2012-09-20 -6.269003   -6.944955  -5.593052 0.007380747  0.006604207
 #>   alpha.upper   ER.daily ER.daily.lower ER.daily.upper K600.daily
-#> 1 0.008988621 -1.958640       -2.091695      -1.825586  24.80407 
+#> 1 0.008988677 -1.958644       -2.091698      -1.825590  24.80400 
 #> 2 0.010083616 -2.260354       -2.468651      -2.052058  26.65527 
-#> 3 0.008156909 -1.685959       -1.851738      -1.520180  24.46159 
+#> 3 0.008157286 -1.685959       -1.851037      -1.520881  24.46159 
 #>   K600.daily.lower K600.daily.upper msgs.fit
-#> 1         23.32555         26.28260         
+#> 1         23.32549         26.28251         
 #> 2         24.52059         28.78995         
-#> 3         22.48988         26.43329         
+#> 3         22.50383         26.41934         
 #> Predictions (3 dates):
-#>         date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1 2012-09-18 2.495259        NA        NA -1.958640 -2.091695 -1.825586
-#> 2 2012-09-19 2.892573        NA        NA -2.260354 -2.468651 -2.052058
-#> 3 2012-09-20 2.422478        NA        NA -1.685959 -1.851738 -1.520180
-#>   msgs.fit msgs.pred
-#> 1                   
-#> 2                   
-#> 3                   
+#> # A tibble: 3 × 9
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit 
+#>   <date>     <dbl> <lgl>     <lgl>     <dbl>    <dbl>    <dbl> <chr>    
+#> 1 2012-09-18  2.50 NA        NA        -1.96    -2.09    -1.83 "       "
+#> 2 2012-09-19  2.89 NA        NA        -2.26    -2.47    -2.05 "       "
+#> 3 2012-09-20  2.42 NA        NA        -1.69    -1.85    -1.52 "       "
+#> # ℹ 1 more variable: msgs.pred <chr>
 metab_mle(specs(mm_name('mle', ER_fun='q10temp')), data=dat)
 #> metab_model of type metab_mle 
 #> streamMetabolizer version 0.12.1.9000 
@@ -213,10 +210,10 @@ metab_mle(specs(mm_name('mle', ER_fun='q10temp')), data=dat)
 #>   init.GPP.daily    8                                                           
 #>   init.ER20         -10                                                         
 #>   init.K600.daily   10                                                          
-#> Fitting time: 0.277 secs elapsed
+#> Fitting time: 0.27 secs elapsed
 #> Parameters (3 dates):
 #>         date GPP.daily GPP.daily.lower GPP.daily.upper       ER20 ER20.lower
-#> 1 2012-09-18 2.056615         1.532462        2.580768 -2.704649   -3.453849
+#> 1 2012-09-18 2.056615         1.532462        2.580769 -2.704649   -3.453849
 #> 2 2012-09-19 2.438948         1.833218        3.044678 -3.149906   -4.011733
 #> 3 2012-09-20 2.097309         1.653788        2.540831 -2.377270   -2.962660
 #>   ER20.upper K600.daily K600.daily.lower K600.daily.upper msgs.fit
@@ -224,14 +221,13 @@ metab_mle(specs(mm_name('mle', ER_fun='q10temp')), data=dat)
 #> 2  -2.288080  24.24939          18.82827         29.67052         
 #> 3  -1.791879  22.85723          18.55131         27.16315         
 #> Predictions (3 dates):
-#>         date      GPP GPP.lower GPP.upper        ER ER.lower ER.upper msgs.fit
-#> 1 2012-09-18 2.056615  1.532462  2.580768 -1.546919       NA       NA         
-#> 2 2012-09-19 2.438948  1.833218  3.044678 -1.836107       NA       NA         
-#> 3 2012-09-20 2.097309  1.653788  2.540831 -1.386761       NA       NA         
-#>   msgs.pred
-#> 1          
-#> 2          
-#> 3          
+#> # A tibble: 3 × 9
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit 
+#>   <date>     <dbl>     <dbl>     <dbl> <dbl> <lgl>    <lgl>    <chr>    
+#> 1 2012-09-18  2.06      1.53      2.58 -1.55 NA       NA       "       "
+#> 2 2012-09-19  2.44      1.83      3.04 -1.84 NA       NA       "       "
+#> 3 2012-09-20  2.10      1.65      2.54 -1.39 NA       NA       "       "
+#> # ℹ 1 more variable: msgs.pred <chr>
 if (FALSE) { # \dontrun{
 plot_DO_preds(predict_DO(mm))
 } # }

@@ -5,7 +5,7 @@ Load or compile an RStan model using a persistent cache
 ## Usage
 
 ``` r
-load_rstan_model(model_path, verbose = FALSE)
+load_rstan_model(model_path, verbose = FALSE, stan_model_fn = rstan_stan_model)
 ```
 
 ## Arguments
@@ -17,6 +17,10 @@ load_rstan_model(model_path, verbose = FALSE)
 - verbose:
 
   logical. give status messages?
+
+- stan_model_fn:
+
+  Internal function used to compile the Stan model.
 
 ## Value
 

@@ -17,4 +17,4 @@ load_spring_creek(attach.units = deprecated())
 
 ## Value
 
-a data.frame, unitted if attach.units==TRUE
+A tibble.

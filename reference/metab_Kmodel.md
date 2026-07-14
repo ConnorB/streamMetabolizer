@@ -34,16 +34,17 @@ metab_Kmodel(
 
 - data:
 
-  data.frame (not a tbl_df) of input data at the temporal resolution of
-  raw observations (unit-value). Columns must have the same names,
-  units, and format as the default. The solar.time column must also have
-  a timezone code ('tzone' attribute) of 'UTC'. See the **'Formatting
+  A data frame or tibble of input data at the temporal resolution of raw
+  observations (unit-value). Columns must have the same names, units,
+  and format as the default. The solar.time column must also have a
+  timezone code ('tzone' attribute) of 'UTC'. See the **'Formatting
   `data`'** section below for a full description.
 
 - data_daily:
 
-  data.frame containing inputs with a daily timestep. See the
-  **'Formatting `data_daily`'** section below for a full description.
+  A data frame or tibble containing inputs with a daily timestep. See
+  the **'Formatting `data_daily`'** section below for a full
+  description.
 
 - info:
 
@@ -111,7 +112,7 @@ library(dplyr)
 # create example data
 set.seed(24842)
 example_Ks <- data.frame(date=seq(as.Date("2012-08-15"),as.Date("2012-09-15"),
-  as.difftime(1,units='days')), discharge.daily=exp(rnorm(32,2,1)), K600.daily=rnorm(32,30,4)) %>%
+  as.difftime(1,units='days')), discharge.daily=exp(rnorm(32,2,1)), K600.daily=rnorm(32,30,4)) |>
   mutate(K600.daily.lower=K600.daily-5, K600.daily.upper=K600.daily+6)
 
 # mean
@@ -249,13 +250,13 @@ mle_specs <- specs(mm_name('mle'))
 
 # fit a first-round MLE and extract the K estimates
 mm1 <- metab_mle(mle_specs, data=dat)
-K600_mm1 <- get_params(mm1, uncertainty='ci') %>%
+K600_mm1 <- get_params(mm1, uncertainty='ci') |>
   select(date, K600.daily, K600.daily.lower, K600.daily.upper)
 
 # smooth the K600s
 mm2 <- metab_Kmodel(specs(mm_name('Kmodel', engine='mean'),
   day_start=-1, day_end=23), data_daily=K600_mm1)
-K600_mm2 <- get_params(mm2) %>% select(date, K600.daily)
+K600_mm2 <- get_params(mm2) |> select(date, K600.daily)
 
 # refit the MLE with fixed K
 mm3 <- metab_mle(mle_specs, data=dat, data_daily=K600_mm2)
@@ -263,10 +264,10 @@ get_params(mm3, fixed='stars')
 #>          date GPP.daily GPP.daily.sd   ER.daily ER.daily.sd K600.daily warnings
 #> 1  2012-09-18 2.558979    0.05519044 -1.913915   0.08116143  28.44894*         
 #> 2  2012-09-19 2.765987    0.05888406 -2.066356   0.08646030  28.44894*         
-#> 3  2012-09-20 2.564581    0.05024763 -1.693337   0.07446124  28.44894*         
+#> 3  2012-09-20 2.564581    0.05024763 -1.693336   0.07446124  28.44894*         
 #> 4  2012-09-21 2.558030    0.04396162 -1.709250   0.06493983  28.44894*         
 #> 5  2012-09-22 2.607292    0.05752125 -1.745543   0.08553130  28.44894*         
-#> 6  2012-09-23 2.835975    0.06980850 -2.159617   0.10599572  28.44894*         
+#> 6  2012-09-23 2.835975    0.06980850 -2.159617   0.10599571  28.44894*         
 #> 7  2012-09-24 2.756249    0.07120201 -2.627882   0.10734383  28.44894*         
 #> 8  2012-09-25 1.881598    0.06901491 -1.999497   0.10824960  28.44894*         
 #> 9  2012-09-26 2.139146    0.05002992 -1.970511   0.07780874  28.44894*         
@@ -283,28 +284,20 @@ get_params(mm3, fixed='stars')
 #> 9        
 #> 10       
 predict_metab(mm3)
-#>          date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1  2012-09-18 2.558979  2.450808  2.667150 -1.913915 -2.072988 -1.754841
-#> 2  2012-09-19 2.765987  2.650577  2.881398 -2.066356 -2.235815 -1.896897
-#> 3  2012-09-20 2.564581  2.466098  2.663065 -1.693337 -1.839278 -1.547395
-#> 4  2012-09-21 2.558030  2.471867  2.644193 -1.709250 -1.836530 -1.581971
-#> 5  2012-09-22 2.607292  2.494553  2.720032 -1.745543 -1.913181 -1.577905
-#> 6  2012-09-23 2.835975  2.699153  2.972797 -2.159617 -2.367365 -1.951869
-#> 7  2012-09-24 2.756249  2.616695  2.895802 -2.627882 -2.838272 -2.417492
-#> 8  2012-09-25 1.881598  1.746331  2.016865 -1.999497 -2.211662 -1.787331
-#> 9  2012-09-26 2.139146  2.041090  2.237203 -1.970511 -2.123014 -1.818009
-#> 10 2012-09-27 1.954997  1.863422  2.046572 -1.854895 -1.996783 -1.713008
-#>    msgs.fit warnings errors
-#> 1                          
-#> 2                          
-#> 3                          
-#> 4                          
-#> 5                          
-#> 6                          
-#> 7                          
-#> 8                          
-#> 9                          
-#> 10                         
+#> # A tibble: 10 × 10
+#>    date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit 
+#>    <date>     <dbl>     <dbl>     <dbl> <dbl>    <dbl>    <dbl> <chr>    
+#>  1 2012-09-18  2.56      2.45      2.67 -1.91    -2.07    -1.75 "       "
+#>  2 2012-09-19  2.77      2.65      2.88 -2.07    -2.24    -1.90 "       "
+#>  3 2012-09-20  2.56      2.47      2.66 -1.69    -1.84    -1.55 "       "
+#>  4 2012-09-21  2.56      2.47      2.64 -1.71    -1.84    -1.58 "       "
+#>  5 2012-09-22  2.61      2.49      2.72 -1.75    -1.91    -1.58 "       "
+#>  6 2012-09-23  2.84      2.70      2.97 -2.16    -2.37    -1.95 "       "
+#>  7 2012-09-24  2.76      2.62      2.90 -2.63    -2.84    -2.42 "       "
+#>  8 2012-09-25  1.88      1.75      2.02 -2.00    -2.21    -1.79 "       "
+#>  9 2012-09-26  2.14      2.04      2.24 -1.97    -2.12    -1.82 "       "
+#> 10 2012-09-27  1.95      1.86      2.05 -1.85    -2.00    -1.71 "       "
+#> # ℹ 2 more variables: warnings <chr>, errors <chr>
 if (FALSE) { # \dontrun{
 plot_metab_preds(mm1)
 plot_metab_preds(mm3)

@@ -21,28 +21,44 @@ metab_inputs(
 
   the name of an argument to pass into metab()
 
+## Value
+
+For `data` and `data_daily`, a tibble describing the required columns
+when the selected model accepts that input. Otherwise, returns `NULL`
+invisibly after displaying guidance with
+[`cli::cli_inform()`](https://cli.r-lib.org/reference/cli_abort.html).
+
 ## Examples
 
 ``` r
 metab_inputs('night','specs')
-#> [1] "specs(mm_name('night')) # see ?mm_name, ?mm_specs for more options"
+#> ℹ Use `specs(mm_name('night'))`.
+#> • See `mm_name()` (`?streamMetabolizer::mm_name()`) and `specs()`
+#>   (`?streamMetabolizer::specs()`) for more options.
 metab_inputs('bayes','data')
-#>      colname          class units     need
-#> 1 solar.time POSIXct,POSIXt  <NA> required
-#> 2     DO.obs        numeric  <NA> required
-#> 3     DO.sat        numeric  <NA> required
-#> 4      depth        numeric  <NA> required
-#> 5 temp.water        numeric  <NA> required
-#> 6      light        numeric  <NA> required
-#> 7  discharge        numeric  <NA> optional
+#> # A tibble: 7 × 4
+#>   colname    class          units            need    
+#>   <chr>      <chr>          <chr>            <chr>   
+#> 1 solar.time POSIXct,POSIXt ""               required
+#> 2 DO.obs     numeric        "mgO2 L^-1"      required
+#> 3 DO.sat     numeric        "mgO2 L^-1"      required
+#> 4 depth      numeric        "m"              required
+#> 5 temp.water numeric        "degC"           required
+#> 6 light      numeric        "umol m^-2 s^-1" required
+#> 7 discharge  numeric        "m^3 s^-1"       optional
 metab_inputs('Kmodel','data_daily')
-#>            colname   class units     need
-#> 1             date    Date  <NA> required
-#> 2       K600.daily numeric  <NA> required
-#> 3 K600.daily.lower numeric  <NA> optional
-#> 4 K600.daily.upper numeric  <NA> optional
-#> 5  discharge.daily numeric  <NA> optional
-#> 6   velocity.daily numeric  <NA> optional
+#> # A tibble: 6 × 4
+#>   colname          class   units      need    
+#>   <chr>            <chr>   <chr>      <chr>   
+#> 1 date             Date    ""         required
+#> 2 K600.daily       numeric "d^-1"     required
+#> 3 K600.daily.lower numeric "d^-1"     optional
+#> 4 K600.daily.upper numeric "d^-1"     optional
+#> 5 discharge.daily  numeric "m^3 s^-1" optional
+#> 6 velocity.daily   numeric "m s^-1"   optional
 metab_inputs('mle','info')
-#> [1] "info may be NULL, a list, or any other data you want to attach to the output of metab()"
+#> ℹ `info` is optional metadata stored in the returned `metab_model()`
+#>   (`?streamMetabolizer::metab_model()`).
+#> • Use `NULL` (the default) or any R object, then retrieve it with `get_info()`
+#>   (`?streamMetabolizer::get_info()`).
 ```

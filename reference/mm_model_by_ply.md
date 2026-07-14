@@ -1,12 +1,12 @@
 # Split and label data into \>=24-hr days for fitting daily metabolism
 
-Splits up to two data.frames, data and data_daily, into date-specific
-chunks. These are passed to model_fun. If `day_tests` is not empty,
-those validity checks are run and the results are also passed to
-model_fun (in `validity`). The results of model_fun (which must be a
-data.frame) are modified to include the data as a first column, then
-row-bound together into a single data.frame containing results from all
-days.
+Splits up to two data frames or tibbles, `data` and `data_daily`, into
+date-specific chunks. These are passed to model_fun. If `day_tests` is
+not empty, those validity checks are run and the results are also passed
+to model_fun (in `validity`). The results of `model_fun` (which must be
+data frames or tibbles) are modified to include the date as the first
+column, then row-bound together into a single object containing results
+from all days. Tibble inputs and outputs retain their tibble class.
 
 ## Usage
 
@@ -36,15 +36,15 @@ mm_model_by_ply(
 
 - data:
 
-  required. A data.frame to split into chunks by date, where a 'date'
-  begins on the hour day_start and ends at the hour day_end. The
+  required. A data frame or tibble to split into chunks by date, where a
+  'date' begins on the hour day_start and ends at the hour day_end. The
   solar.time column must be present.
 
 - data_daily:
 
-  optional. A data.frame containing inputs with a daily timestep, each
-  row of which will be passed to the corresponding date chunk from
-  `data`. The date column must be present.
+  optional. A data frame or tibble containing inputs with a daily
+  timestep, each row of which will be passed to the corresponding date
+  chunk from `data`. The date column must be present.
 
 - day_start:
 
@@ -101,7 +101,8 @@ mm_model_by_ply(
 
 ## Value
 
-a data.frame of model results
+A data frame or tibble of model results. The class returned by
+`model_fun` is preserved.
 
 ## Examples
 

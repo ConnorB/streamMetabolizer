@@ -7,7 +7,13 @@ The lookup uses the JSON response from the service.
 ## Usage
 
 ``` r
-lookup_usgs_elevation(latitude, longitude, units = c("Meters", "Feet"))
+lookup_usgs_elevation(
+  latitude,
+  longitude,
+  units = "m",
+  timeout = 30,
+  max_tries = 3
+)
 ```
 
 ## Arguments
@@ -22,8 +28,17 @@ lookup_usgs_elevation(latitude, longitude, units = c("Meters", "Feet"))
 
 - units:
 
-  character, one of Meters or Feet, specifying the units in which to
-  return the elevation
+  A single string specifying the elevation units. Accepts `"m"`,
+  `"meters"`, `"ft"`, or `"feet"`, case-insensitively.
+
+- timeout:
+
+  A single positive number giving the request timeout in seconds.
+
+- max_tries:
+
+  A single positive integer giving the maximum number of request
+  attempts.
 
 ## Value
 
@@ -46,7 +61,7 @@ elevation_m
 elevation_ft <- lookup_usgs_elevation(
   latitude = 39.102075,
   longitude = -96.594689,
-  units = "Feet"
+  units = "ft"
 )
 elevation_ft
 } # }

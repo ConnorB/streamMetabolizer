@@ -44,12 +44,14 @@ dim(dat)
 dat[c(1,48,96,240,288),] # some example rows
 ```
 
-                  solar.time DO.obs   DO.sat depth temp.water    light
-    5689 2012-09-18 04:05:58   8.41 9.083329  0.16       3.60   0.0000
-    5830 2012-09-18 15:50:58   8.36 7.403370  0.16      11.80 925.1370
-    5974 2012-09-19 03:50:58   8.17 8.927566  0.16       4.25   0.0000
-    6404 2012-09-20 15:50:58   8.35 7.358846  0.16      12.06 898.9231
-    6548 2012-09-21 03:50:58   8.21 8.854844  0.16       4.56   0.0000
+    # A tibble: 5 × 6
+      solar.time          DO.obs DO.sat depth temp.water light
+      <dttm>               <dbl>  <dbl> <dbl>      <dbl> <dbl>
+    1 2012-09-18 04:05:58   8.41   9.08  0.16       3.6     0
+    2 2012-09-18 15:50:58   8.36   7.40  0.16      11.8   925.
+    3 2012-09-19 03:50:58   8.17   8.93  0.16       4.25    0
+    4 2012-09-20 15:50:58   8.35   7.36  0.16      12.1   899.
+    5 2012-09-21 03:50:58   8.21   8.85  0.16       4.56    0 
 
 You can get additional information about the expected format of the data
 in the
@@ -59,45 +61,18 @@ units of your data match those specified in that document.
 
 ## Exploring input data
 
-You can use other common R packages to graphically inspect the input
-data. Look for outliers and oddities to ensure the quality of your data.
+Use
+[`plot_metab_data()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_data.md)
+to graphically inspect the input data. Look for outliers and other
+oddities before fitting a model. By default, the function plots all five
+measurement columns and calculates dissolved oxygen percent saturation.
 
 ``` r
 
-library(dplyr)
-library(tidyr)
-library(ggplot2)
+plot_metab_data(dat)
 ```
 
-``` r
-
-dat %>%
-  mutate(DO.pctsat = 100 * (DO.obs / DO.sat)) %>%
-  select(solar.time, starts_with('DO')) %>%
-  gather(type, DO.value, starts_with('DO')) %>%
-  mutate(units=ifelse(type == 'DO.pctsat', 'DO\n(% sat)', 'DO\n(mg/L)')) %>%
-  ggplot(aes(x=solar.time, y=DO.value, color=type)) + geom_line() +
-  facet_grid(units ~ ., scale='free_y') + theme_bw() +
-  scale_color_discrete('variable')
-```
-
-![](data_prep_files/figure-html/viz_inputs_DO-1.png)
-
-``` r
-
-labels <- c(depth='depth\n(m)', temp.water='water temp\n(deg C)', light='PAR\n(umol m^-2 s^-1)')
-dat %>%
-  select(solar.time, depth, temp.water, light) %>%
-  gather(type, value, depth, temp.water, light) %>%
-  mutate(
-    type=ordered(type, levels=c('depth','temp.water','light')),
-    units=ordered(labels[type], unname(labels))) %>%
-  ggplot(aes(x=solar.time, y=value, color=type)) + geom_line() +
-  facet_grid(units ~ ., scale='free_y') + theme_bw() +
-  scale_color_discrete('variable')
-```
-
-![](data_prep_files/figure-html/viz_inputs_other-1.png)
+![](data_prep_files/figure-html/viz_inputs-1.png)
 
 ## Check the input data format
 
@@ -114,14 +89,16 @@ The inputs are identical for the model types ‘mle’, ‘bayes’, and
 metab_inputs('mle', 'data')
 ```
 
-         colname          class units     need
-    1 solar.time POSIXct,POSIXt  <NA> required
-    2     DO.obs        numeric  <NA> required
-    3     DO.sat        numeric  <NA> required
-    4      depth        numeric  <NA> required
-    5 temp.water        numeric  <NA> required
-    6      light        numeric  <NA> required
-    7  discharge        numeric  <NA> optional
+    # A tibble: 7 × 4
+      colname    class          units            need
+      <chr>      <chr>          <chr>            <chr>
+    1 solar.time POSIXct,POSIXt ""               required
+    2 DO.obs     numeric        "mgO2 L^-1"      required
+    3 DO.sat     numeric        "mgO2 L^-1"      required
+    4 depth      numeric        "m"              required
+    5 temp.water numeric        "degC"           required
+    6 light      numeric        "umol m^-2 s^-1" required
+    7 discharge  numeric        "m^3 s^-1"       optional
 
 Also read through the help pages at
 [`?metab`](https://connorb.github.io/streamMetabolizer/reference/metab.md)

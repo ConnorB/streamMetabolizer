@@ -16,16 +16,16 @@ These are the columns that may be included:
   "solar.time" are mean solar time, "app.solar.time" means apparent
   solar time, and "any.solar.time" means either.
 
-- `DO.obs` dissolved oxygen concentration observations, \\mg O\[2\]
+- `DO.obs` dissolved oxygen concentration observations, \\mg O_2
   L^{-1}\\
 
 - `DO.sat` dissolved oxygen concentrations if the water were at
-  equilibrium saturation \\mg O\[2\] L^{-1}\\. Calculate using
+  equilibrium saturation \\mg O_2 L^{-1}\\. Calculate using
   [calc_DO_sat](https://connorb.github.io/streamMetabolizer/reference/calc_DO_sat.md)
 
 - `depth` stream depth, \\m\\.
 
-- `temp.water` water temperature, \\degC\\.
+- `temp.water` water temperature, \\^\circ\\C
 
 - `light` photosynthetically active radiation, \\\mu mol\\ m^{-2}
   s^{-1}\\
@@ -42,27 +42,27 @@ These are the columns that may be included:
 - `err.proc.phi` autocorrelation of process error to use in simulating
   data
 
-- `DO.obs` dissolved oxygen concentration observations, \\mg O\[2\]
+- `DO.obs` dissolved oxygen concentration observations, \\mg O_2
   L^{-1}\\
 
-- `GPP` daily estimates of GPP, \\g O\[2\] m^-2 d^-1\\
+- `GPP` daily estimates of GPP, \\g O_2 m^{-2} d^{-1}\\
 
-- `ER` daily estimates of ER, \\g O\[2\] m^-2 d^-1\\
+- `ER` daily estimates of ER, \\g O_2 m^{-2} d^{-1}\\
 
-- `K600` daily estimates of K600, \\d^-1\\
+- `K600` daily estimates of K600, \\d^{-1}\\
 
-- `GPP.init` daily initial values of GPP, \\g O\[2\] m^-2 d^-1\\, for
+- `GPP.init` daily initial values of GPP, \\g O_2 m^{-2} d^{-1}\\, for
   use in maximum likelihood estimation
 
-- `ER.init` daily initial values of ER, \\g O\[2\] m^-2 d^-1\\, for use
+- `ER.init` daily initial values of ER, \\g O_2 m^{-2} d^{-1}\\, for use
   in maximum likelihood estimation
 
-- `K600.init` daily initial values of K600, \\d^-1\\, for use in maximum
-  likelihood estimation
+- `K600.init` daily initial values of K600, \\d^{-1}\\, for use in
+  maximum likelihood estimation
 
-- `discharge.daily` daily mean river discharge, \\m^3 s^-1\\
+- `discharge.daily` daily mean river discharge, \\m^3 s^{-1}\\
 
-- `velocity.daily` daily mean river flow velocity, \\m s^-1\\
+- `velocity.daily` daily mean river flow velocity, \\m s^{-1}\\
 
 ## Usage
 

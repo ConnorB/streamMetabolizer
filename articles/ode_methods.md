@@ -56,8 +56,7 @@ mm_rk4 <- metab(specs(mm_name('mle', ode_method='rk4')), dat)
 mm_lsoda <- metab(specs(mm_name('mle', ode_method='lsoda')), dat)
 ```
 
-    Warning: we've seen bad results with ODE methods 'lsoda', 'lsodes', and 'lsodar'. Use at your own
-    risk
+    Warning: ODE methods "lsoda", "lsodes", and "lsodar" may produce unreliable results.
 
     DLSODA-  At T (=R1), too much accuracy requested
           for precision of machine..  See TOLSF (=R2)
@@ -73,7 +72,7 @@ ode_preds <- bind_rows(
   mutate(predict_DO(mm_euler), method='euler'),
   mutate(predict_DO(mm_trapezoid), method='trapezoid'),
   mutate(predict_DO(mm_rk4), method='rk4'),
-  mutate(predict_DO(mm_lsoda), method='lsoda')) %>%
+  mutate(predict_DO(mm_lsoda), method='lsoda')) |>
   mutate(DO.mod.diffeuler = DO.mod - DO.standard)
 ```
 

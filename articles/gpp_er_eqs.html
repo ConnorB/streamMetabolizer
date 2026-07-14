@@ -6,9 +6,18 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>GPP and ER Equations • streamMetabolizer</title>
-<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Fira_Code-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="gpp_er_eqs_files/libs/quarto-html/popper.min.js"></script><script src="gpp_er_eqs_files/libs/quarto-html/tippy.umd.min.js"></script><link href="gpp_er_eqs_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="gpp_er_eqs_files/libs/quarto-html/light-border.css" rel="stylesheet">
@@ -80,7 +89,7 @@
       <h1>GPP and ER Equations</h1>
 
       <p class="author">Alison Appling</p>
-      <p class="date">2026-07-13</p>
+      <p class="date">2026-07-14</p>
 
       <small class="dont-index">Source: <a href="https://github.com/ConnorB/streamMetabolizer/blob/main/vignettes/gpp_er_eqs.qmd" class="external-link"><code>vignettes/gpp_er_eqs.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -114,8 +123,8 @@
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the Classic: linear GPP, constant ER (also the default)</span></span>
 <span><span class="va">mm_classic</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'linlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'linlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/metab.html">metab</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="va">mm_classic</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -130,10 +139,10 @@ Specifications:
   init.GPP.daily    8
   init.ER.daily     -10
   init.K600.daily   10
-Fitting time: 0.412 secs elapsed
+Fitting time: 0.388 secs elapsed
 Parameters (3 dates):
         date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily ER.daily.lower ER.daily.upper
-1 2012-09-18 2.814873         2.158411        3.471335 -2.113937       -2.647969      -1.579906
+1 2012-09-18 2.814873         2.158411        3.471335 -2.113937       -2.647968      -1.579906
 2 2012-09-19 3.271209         2.561176        3.981243 -2.466198       -3.052360      -1.880037
 3 2012-09-20 2.590927         2.119941        3.061914 -1.712055       -2.070765      -1.353344
   K600.daily K600.daily.lower K600.daily.upper msgs.fit
@@ -141,10 +150,12 @@ Parameters (3 dates):
 2  33.23838          26.62471         39.85206
 3  28.71846          24.00835         33.42857
 Predictions (3 dates):
-        date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper msgs.fit msgs.pred
-1 2012-09-18 2.814873  2.158411  3.471335 -2.113937 -2.647969 -1.579906
-2 2012-09-19 3.271209  2.561176  3.981243 -2.466198 -3.052360 -1.880037
-3 2012-09-20 2.590927  2.119941  3.061914 -1.712055 -2.070765 -1.353344                   </code></pre>
+# A tibble: 3 × 9
+  date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit  msgs.pred
+  &lt;date&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;
+1 2012-09-18  2.81      2.16      3.47 -2.11    -2.65    -1.58 "       " "       "
+2 2012-09-19  3.27      2.56      3.98 -2.47    -3.05    -1.88 "       " "       "
+3 2012-09-20  2.59      2.12      3.06 -1.71    -2.07    -1.35 "       " "       "</code></pre>
 </div>
 </div>
 <p>Here’s one where GPP is a saturating function of light. ER is still constant.</p>
@@ -152,8 +163,8 @@ Predictions (3 dates):
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># the Saturator: GPP saturating with light, constant ER</span></span>
 <span><span class="va">mm_saturator</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'satlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'satlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/metab.html">metab</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="va">mm_saturator</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -169,29 +180,31 @@ Specifications:
   init.alpha        1e-04
   init.ER.daily     -10
   init.K600.daily   10
-Fitting time: 1.314 secs elapsed
+Fitting time: 1.31 secs elapsed
 Parameters (3 dates):
-        date       Pmax Pmax.lower Pmax.upper         alpha  alpha.lower alpha.upper    ER.daily
-1 2012-09-18  6.033049    5.715948   6.350149 0.0083268781  0.0078854775 0.008768279 -1.9344527
-2 2012-09-19 10.636301  -14.149356  35.421959 0.0006899063  0.0001361327 0.001243680 -0.9308165
-3 2012-09-20  6.226685    5.745419   6.707950 0.0073752921  0.0068235252 0.007927059 -1.6730454
+        date       Pmax Pmax.lower Pmax.upper         alpha   alpha.lower alpha.upper   ER.daily
+1 2012-09-18  6.033017    5.715922   6.350112 0.0083269284   0.0078855248 0.008768332 -1.934454
+2 2012-09-19 10.513878  -30.075534  51.103290 0.0006386593  -0.0002643586 0.001541677 -1.013413
+3 2012-09-20  6.226685    5.745419   6.707950 0.0073752923   0.0068235254 0.007927059 -1.673045
   ER.daily.lower ER.daily.upper K600.daily K600.daily.lower K600.daily.upper msgs.fit
-1      -2.025453     -1.8434520 24.570655         23.556080         25.58523
-2      -1.247575     -0.6140585  9.018137          6.705663         11.33061      W
-3      -1.789892     -1.5561989 24.400665         23.003057         25.79827
+1      -2.025455     -1.8434540  24.57056          23.55600         25.58512
+2      -1.885540     -0.1412865  25.55571          19.95822         31.15319      W
+3      -1.789892     -1.5561989  24.40066          23.00306         25.79827
 Fitting warnings:
   1 date: iteration limit exceeded
 Predictions (3 dates):
-        date      GPP GPP.lower GPP.upper         ER  ER.lower   ER.upper msgs.fit msgs.pred
-1 2012-09-18 2.468770        NA        NA -1.9344527 -2.025453 -1.8434520
-2 2012-09-19 0.391596        NA        NA -0.9308165 -1.247575 -0.6140585      W
-3 2012-09-20 2.407793        NA        NA -1.6730454 -1.789892 -1.5561989                   </code></pre>
+# A tibble: 3 × 9
+  date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit  msgs.pred
+  &lt;date&gt;     &lt;dbl&gt; &lt;lgl&gt;     &lt;lgl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;
+1 2012-09-18 2.47  NA        NA        -1.93    -2.03   -1.84  "       " "       "
+2 2012-09-19 0.363 NA        NA        -1.01    -1.89   -0.141 "    W  " "       "
+3 2012-09-20 2.41  NA        NA        -1.67    -1.79   -1.56  "       " "       "</code></pre>
 </div>
 </div>
 <p>The Saturator produces fitting warnings, which are condensed to ‘w’ and a summary in the above print-out. They can be inspected in detail by looking directly at the fitted daily parameters:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">warnings</span>, <span class="va">errors</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">warnings</span>, <span class="va">errors</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        date                 warnings errors
 1 2012-09-18
@@ -202,26 +215,30 @@ Predictions (3 dates):
 <p>Similary, you can inspect the warnings and errors that arise during prediction by pulling out the daily metabolism predictions (but there aren’t any, so those columns are empty):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/predict_metab.html">predict_metab</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">warnings</span>, <span class="va">errors</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/predict_metab.html">predict_metab</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">warnings</span>, <span class="va">errors</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        date warnings errors
-1 2012-09-18
-2 2012-09-19
-3 2012-09-20                </code></pre>
+<pre><code># A tibble: 3 × 3
+  date       warnings errors
+  &lt;date&gt;     &lt;chr&gt;    &lt;chr&gt;
+1 2012-09-18 ""       ""
+2 2012-09-19 ""       ""
+3 2012-09-20 ""       ""    </code></pre>
 </div>
 </div>
 <p>You can predict and/or plot instantaneous DO values from the fitted daily parameters.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/predict_DO.html">predict_DO</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">head</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/predict_DO.html">predict_DO</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>           date          solar.time DO.obs   DO.sat depth temp.water light   DO.mod
-5689 2012-09-18 2012-09-18 04:05:58   8.41 9.083329  0.16       3.60     0 8.410000
-5692 2012-09-18 2012-09-18 04:20:58   8.42 9.093063  0.16       3.56     0 8.403197
-5695 2012-09-18 2012-09-18 04:35:58   8.42 9.105254  0.16       3.51     0 8.399110
-5698 2012-09-18 2012-09-18 04:50:58   8.43 9.112582  0.16       3.48     0 8.397120
-5701 2012-09-18 2012-09-18 05:05:58   8.45 9.127267  0.16       3.42     0 8.397068
-5704 2012-09-18 2012-09-18 05:20:58   8.46 9.137079  0.16       3.38     0 8.398825</code></pre>
+<pre><code># A tibble: 6 × 8
+  date       solar.time          DO.obs DO.sat depth temp.water light DO.mod
+  &lt;date&gt;     &lt;dttm&gt;               &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+1 2012-09-18 2012-09-18 04:05:58   8.41   9.08  0.16       3.6      0   8.41
+2 2012-09-18 2012-09-18 04:20:58   8.42   9.09  0.16       3.56     0   8.40
+3 2012-09-18 2012-09-18 04:35:58   8.42   9.11  0.16       3.51     0   8.40
+4 2012-09-18 2012-09-18 04:50:58   8.43   9.11  0.16       3.48     0   8.40
+5 2012-09-18 2012-09-18 05:05:58   8.45   9.13  0.16       3.42     0   8.40
+6 2012-09-18 2012-09-18 05:20:58   8.46   9.14  0.16       3.38     0   8.40</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_DO_preds.html">plot_DO_preds</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span></span></code></pre></div>
@@ -236,19 +253,19 @@ Predictions (3 dates):
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_saturator2</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'satlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'satlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/metab.html">metab</a></span><span class="op">(</span><span class="va">dat</span>, data_daily<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span>, <span class="va">date</span>, init.Pmax<span class="op">=</span><span class="va">Pmax</span>, init.alpha<span class="op">=</span><span class="va">alpha</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm_saturator2</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        date     Pmax   Pmax.sd       alpha     alpha.sd  ER.daily ER.daily.sd K600.daily
 1 2012-09-18 6.033048 0.1614450 0.008326878 0.0002252292 -1.934453  0.04636854   24.57065
-2 2012-09-19 7.269962 0.2810137 0.009041367 0.0003329972 -2.239060  0.07722047   26.60996
-3 2012-09-20 6.226683 0.2451116 0.007375290 0.0002815439 -1.673045  0.05956598   24.40066
+2 2012-09-19 7.270001 0.2810037 0.009041332 0.0003329968 -2.239060  0.07721838   26.61006
+3 2012-09-20 6.226683 0.2451117 0.007375290 0.0002815440 -1.673045  0.05956599   24.40066
   K600.daily.sd
 1     0.5166937
-2     0.7961691
-3     0.7120838
+2     0.7961435
+3     0.7120839
                                                                                                                                                 warnings
 1
 2
@@ -260,18 +277,18 @@ Predictions (3 dates):
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_saturator3</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'satlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span>init.Pmax<span class="op">=</span><span class="fl">6.2</span>, init.alpha<span class="op">=</span><span class="fl">0.008</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'satlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span>init.Pmax<span class="op">=</span><span class="fl">6.2</span>, init.alpha<span class="op">=</span><span class="fl">0.008</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/metab.html">metab</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm_saturator3</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        date     Pmax   Pmax.sd       alpha     alpha.sd  ER.daily ER.daily.sd K600.daily
-1 2012-09-18 6.033048 0.1614592 0.008326878 0.0002252284 -1.934452  0.04637106   24.57065
-2 2012-09-19 7.270001 0.2806162 0.009041332 0.0003330177 -2.239060  0.07715525   26.61006
+1 2012-09-18 6.033048 0.1614592 0.008326878 0.0002252283 -1.934452  0.04637106   24.57065
+2 2012-09-19 7.270001 0.2806163 0.009041332 0.0003330178 -2.239060  0.07715527   26.61006
 3 2012-09-20 6.226684 0.2451105 0.007375292 0.0002815623 -1.673045  0.05956607   24.40066
   K600.daily.sd
-1     0.5167332
-2     0.7952315
+1     0.5167333
+2     0.7952317
 3     0.7120806
                                                                                                                                                 warnings
 1 last global step failed to locate a point lower than estimate. Either estimate is an approximate local minimum of the function or steptol is too small
@@ -284,18 +301,18 @@ Predictions (3 dates):
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mm_saturator4</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'satlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span>init.Pmax<span class="op">=</span><span class="fl">6.2</span>, init.alpha<span class="op">=</span><span class="fl">0.008</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mm_name.html">mm_name</a></span><span class="op">(</span><span class="st">'mle'</span>, GPP_fun<span class="op">=</span><span class="st">'satlight'</span>, ER_fun<span class="op">=</span><span class="st">'constant'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/specs.html">specs</a></span><span class="op">(</span>init.Pmax<span class="op">=</span><span class="fl">6.2</span>, init.alpha<span class="op">=</span><span class="fl">0.008</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/metab.html">metab</a></span><span class="op">(</span><span class="va">dat</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/transmute.html" class="external-link">transmute</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm_saturator</span><span class="op">)</span>, <span class="va">date</span>, init.Pmax<span class="op">=</span><span class="va">Pmax</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, init.alpha<span class="op">=</span><span class="va">alpha</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_params.html">get_params</a></span><span class="op">(</span><span class="va">mm_saturator4</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        date     Pmax   Pmax.sd       alpha     alpha.sd  ER.daily ER.daily.sd K600.daily
-1 2012-09-18 6.033048 0.1614592 0.008326878 0.0002252284 -1.934452  0.04637106   24.57065
-2 2012-09-19 7.270001 0.2806151 0.009041378 0.0003330192 -2.239069  0.07715563   26.61007
+1 2012-09-18 6.033048 0.1614592 0.008326878 0.0002252283 -1.934452  0.04637106   24.57065
+2 2012-09-19 7.270001 0.2806150 0.009041378 0.0003330192 -2.239069  0.07715563   26.61007
 3 2012-09-20 6.226684 0.2451105 0.007375292 0.0002815623 -1.673045  0.05956607   24.40066
   K600.daily.sd
-1     0.5167332
-2     0.7952308
+1     0.5167333
+2     0.7952307
 3     0.7120806
                                                                                                                                                                                                                                    warnings
 1 data_daily$init.Pmax==NA so using specs; data_daily$init.alpha==NA so using specs; last global step failed to locate a point lower than estimate. Either estimate is an approximate local minimum of the function or steptol is too small

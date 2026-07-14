@@ -2,6 +2,9 @@
 
 ## streamMetabolizer 0.12.1.9000
 
+- Messages, errors, and warnings now use structured cli formatting to
+  make diagnostics clearer and more actionable.
+
 - [`calc_DO_at_sat()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_sat.md),
   [`calc_DO_deficit()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_deficit.md),
   [`calc_is_daytime()`](https://connorb.github.io/streamMetabolizer/reference/calc_is_daytime.md),
@@ -14,9 +17,27 @@
   check coverage
 
 - [`lookup_usgs_elevation()`](https://connorb.github.io/streamMetabolizer/reference/lookup_usgs_elevation.md)
-  now uses the current USGS Elevation Point Query Service API, returns
-  the numeric elevation directly, and no longer requires the legacy
-  RCurl and XML packages.
+  now uses httr2 with coordinate and unit validation, configurable
+  timeouts and retries, and clearer service errors; it returns the
+  numeric elevation directly and no longer requires the legacy RCurl,
+  XML, or jsonlite packages.
+
+- [`metab()`](https://connorb.github.io/streamMetabolizer/reference/metab.md),
+  [`mm_model_by_ply()`](https://connorb.github.io/streamMetabolizer/reference/mm_model_by_ply.md),
+  [`mm_filter_valid_days()`](https://connorb.github.io/streamMetabolizer/reference/mm_filter_valid_days.md),
+  and
+  [`calc_light_merged()`](https://connorb.github.io/streamMetabolizer/reference/calc_light_merged.md)
+  now accept tibbles without coercing them to base data frames, and
+  model data and prediction outputs preserve tibble classes.
+
+- [`metab_inputs()`](https://connorb.github.io/streamMetabolizer/reference/metab_inputs.md)
+  now uses structured cli messages for model specifications, optional
+  inputs, and model information guidance.
+
+- [`plot_metab_data()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_data.md)
+  now provides a faceted quality-control plot for metabolism input data,
+  including dissolved oxygen percent saturation when both dissolved
+  oxygen columns are selected.
 
 - improved RStan support with safe persistent compilation caching
   outside the installed package, cache validation and

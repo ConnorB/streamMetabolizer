@@ -15,7 +15,7 @@ mm_is_valid_day(
   day_tests = c("full_day", "even_timesteps", "complete_data", "pos_discharge",
     "pos_depth"),
   required_timestep = NA,
-  ply_date = as.Date(format(data_ply[max(1, nrow(data_ply)/2), "solar.time"],
+  ply_date = as.Date(format(data_ply[["solar.time"]][max(1, nrow(data_ply)/2)],
     "%Y-%m-%d")),
   timestep_days = NA
 )
@@ -25,9 +25,10 @@ mm_is_valid_day(
 
 - data_ply:
 
-  a data.frame containing all relevant, validated modeling data for a
-  single ply of data. (1 ply ~= 1 date, although the day length has been
-  specified by day_start and day_end and may not be exactly 24 hours)
+  a data frame or tibble containing all relevant, validated modeling
+  data for a single ply of data. (1 ply ~= 1 date, although the day
+  length has been specified by day_start and day_end and may not be
+  exactly 24 hours)
 
 - day_start:
 

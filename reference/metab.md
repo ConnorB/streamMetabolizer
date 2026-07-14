@@ -31,16 +31,17 @@ metab(
 
 - data:
 
-  data.frame (not a tbl_df) of input data at the temporal resolution of
-  raw observations (unit-value). Columns must have the same names,
-  units, and format as the default. The solar.time column must also have
-  a timezone code ('tzone' attribute) of 'UTC'. See the **'Formatting
+  A data frame or tibble of input data at the temporal resolution of raw
+  observations (unit-value). Columns must have the same names, units,
+  and format as the default. The solar.time column must also have a
+  timezone code ('tzone' attribute) of 'UTC'. See the **'Formatting
   `data`'** section below for a full description.
 
 - data_daily:
 
-  data.frame containing inputs with a daily timestep. See the
-  **'Formatting `data_daily`'** section below for a full description.
+  A data frame or tibble containing inputs with a daily timestep. See
+  the **'Formatting `data_daily`'** section below for a full
+  description.
 
 - info:
 
@@ -62,16 +63,16 @@ equal `NULL`.)
 
 - `mle` or `night`:
 
-  |             |                |           |          |
-  |-------------|----------------|-----------|----------|
-  | **colname** | **class**      | **units** | **need** |
-  | solar.time  | POSIXct,POSIXt | NA        | required |
-  | DO.obs      | numeric        | NA        | required |
-  | DO.sat      | numeric        | NA        | required |
-  | depth       | numeric        | NA        | required |
-  | temp.water  | numeric        | NA        | required |
-  | light       | numeric        | NA        | required |
-  | discharge   | numeric        | NA        | optional |
+  |             |                |                |          |
+  |-------------|----------------|----------------|----------|
+  | **colname** | **class**      | **units**      | **need** |
+  | solar.time  | POSIXct,POSIXt |                | required |
+  | DO.obs      | numeric        | mgO2 L^-1      | required |
+  | DO.sat      | numeric        | mgO2 L^-1      | required |
+  | depth       | numeric        | m              | required |
+  | temp.water  | numeric        | degC           | required |
+  | light       | numeric        | umol m^-2 s^-1 | required |
+  | discharge   | numeric        | m^3 s^-1       | optional |
 
       \strong{Example}:
       \tabular{lrrrrrr}{
@@ -81,16 +82,16 @@ equal `NULL`.)
 
 - `bayes`:
 
-  |             |                |           |          |
-  |-------------|----------------|-----------|----------|
-  | **colname** | **class**      | **units** | **need** |
-  | solar.time  | POSIXct,POSIXt | NA        | required |
-  | DO.obs      | numeric        | NA        | required |
-  | DO.sat      | numeric        | NA        | required |
-  | depth       | numeric        | NA        | required |
-  | temp.water  | numeric        | NA        | required |
-  | light       | numeric        | NA        | required |
-  | discharge   | numeric        | NA        | optional |
+  |             |                |                |          |
+  |-------------|----------------|----------------|----------|
+  | **colname** | **class**      | **units**      | **need** |
+  | solar.time  | POSIXct,POSIXt |                | required |
+  | DO.obs      | numeric        | mgO2 L^-1      | required |
+  | DO.sat      | numeric        | mgO2 L^-1      | required |
+  | depth       | numeric        | m              | required |
+  | temp.water  | numeric        | degC           | required |
+  | light       | numeric        | umol m^-2 s^-1 | required |
+  | discharge   | numeric        | m^3 s^-1       | optional |
 
       \strong{Example}:
       \tabular{lrrrrrr}{
@@ -103,9 +104,9 @@ equal `NULL`.)
   |             |                |           |          |
   |-------------|----------------|-----------|----------|
   | **colname** | **class**      | **units** | **need** |
-  | solar.time  | POSIXct,POSIXt | NA        | optional |
-  | discharge   | numeric        | NA        | optional |
-  | velocity    | numeric        | NA        | optional |
+  | solar.time  | POSIXct,POSIXt |           | optional |
+  | discharge   | numeric        | m^3 s^-1  | optional |
+  | velocity    | numeric        | m s^-1    | optional |
 
       \strong{Example}:
       \tabular{lrr}{
@@ -115,15 +116,15 @@ equal `NULL`.)
 
 - `sim`:
 
-  |             |                |           |          |
-  |-------------|----------------|-----------|----------|
-  | **colname** | **class**      | **units** | **need** |
-  | solar.time  | POSIXct,POSIXt | NA        | required |
-  | DO.obs      | numeric        | NA        | optional |
-  | DO.sat      | numeric        | NA        | required |
-  | depth       | numeric        | NA        | required |
-  | temp.water  | numeric        | NA        | required |
-  | light       | numeric        | NA        | required |
+  |             |                |                |          |
+  |-------------|----------------|----------------|----------|
+  | **colname** | **class**      | **units**      | **need** |
+  | solar.time  | POSIXct,POSIXt |                | required |
+  | DO.obs      | numeric        | mgO2 L^-1      | optional |
+  | DO.sat      | numeric        | mgO2 L^-1      | required |
+  | depth       | numeric        | m              | required |
+  | temp.water  | numeric        | degC           | required |
+  | light       | numeric        | umol m^-2 s^-1 | required |
 
       \strong{Example}:
       \tabular{lrrrrr}{
@@ -144,17 +145,17 @@ may equal `NULL`.)
 
 - `mle`:
 
-  |                 |           |           |          |
-  |-----------------|-----------|-----------|----------|
-  | **colname**     | **class** | **units** | **need** |
-  | date            | Date      | NA        | optional |
-  | K600.daily      | numeric   | NA        | optional |
-  | init.GPP.daily  | numeric   | NA        | optional |
-  | init.Pmax       | numeric   | NA        | optional |
-  | init.alpha      | numeric   | NA        | optional |
-  | init.ER.daily   | numeric   | NA        | optional |
-  | init.ER20       | numeric   | NA        | optional |
-  | init.K600.daily | numeric   | NA        | optional |
+  |                 |           |                    |          |
+  |-----------------|-----------|--------------------|----------|
+  | **colname**     | **class** | **units**          | **need** |
+  | date            | Date      |                    | optional |
+  | K600.daily      | numeric   | d^-1               | optional |
+  | init.GPP.daily  | numeric   | gO2 m^-2 d^-1      | optional |
+  | init.Pmax       | numeric   | gO2 m^-2 d^-1      | optional |
+  | init.alpha      | numeric   | gO2 s d^-1 umol^-1 | optional |
+  | init.ER.daily   | numeric   | gO2 m^-2 d^-1      | optional |
+  | init.ER20       | numeric   | gO2 m^-2 d^-1      | optional |
+  | init.K600.daily | numeric   | d^-1               | optional |
 
       \strong{Example}:
       \tabular{lrrrrrrr}{
@@ -167,8 +168,8 @@ may equal `NULL`.)
   |                 |           |           |          |
   |-----------------|-----------|-----------|----------|
   | **colname**     | **class** | **units** | **need** |
-  | date            | Date      | NA        | optional |
-  | discharge.daily | numeric   | NA        | optional |
+  | date            | Date      |           | optional |
+  | discharge.daily | numeric   | m^3 s^-1  | optional |
 
       \strong{Example}:
       \tabular{lr}{
@@ -181,12 +182,12 @@ may equal `NULL`.)
   |                  |           |           |          |
   |------------------|-----------|-----------|----------|
   | **colname**      | **class** | **units** | **need** |
-  | date             | Date      | NA        | required |
-  | K600.daily       | numeric   | NA        | required |
-  | K600.daily.lower | numeric   | NA        | optional |
-  | K600.daily.upper | numeric   | NA        | optional |
-  | discharge.daily  | numeric   | NA        | optional |
-  | velocity.daily   | numeric   | NA        | optional |
+  | date             | Date      |           | required |
+  | K600.daily       | numeric   | d^-1      | required |
+  | K600.daily.lower | numeric   | d^-1      | optional |
+  | K600.daily.upper | numeric   | d^-1      | optional |
+  | discharge.daily  | numeric   | m^3 s^-1  | optional |
+  | velocity.daily   | numeric   | m s^-1    | optional |
 
       \strong{Example}:
       \tabular{lrrrrr}{
@@ -196,22 +197,22 @@ may equal `NULL`.)
 
 - `sim`:
 
-  |                 |           |           |          |
-  |-----------------|-----------|-----------|----------|
-  | **colname**     | **class** | **units** | **need** |
-  | date            | Date      | NA        | optional |
-  | discharge.daily | numeric   | NA        | optional |
-  | DO.mod.1        | numeric   | NA        | optional |
-  | K600.daily      | numeric   | NA        | optional |
-  | GPP.daily       | numeric   | NA        | optional |
-  | Pmax            | numeric   | NA        | optional |
-  | alpha           | numeric   | NA        | optional |
-  | ER.daily        | numeric   | NA        | optional |
-  | ER20            | numeric   | NA        | optional |
-  | err.obs.sigma   | numeric   | NA        | optional |
-  | err.obs.phi     | numeric   | NA        | optional |
-  | err.proc.sigma  | numeric   | NA        | optional |
-  | err.proc.phi    | numeric   | NA        | optional |
+  |                 |           |                    |          |
+  |-----------------|-----------|--------------------|----------|
+  | **colname**     | **class** | **units**          | **need** |
+  | date            | Date      |                    | optional |
+  | discharge.daily | numeric   | m^3 s^-1           | optional |
+  | DO.mod.1        | numeric   | mgO2 L^-1          | optional |
+  | K600.daily      | numeric   | d^-1               | optional |
+  | GPP.daily       | numeric   | gO2 m^-2 d^-1      | optional |
+  | Pmax            | numeric   | gO2 m^-2 d^-1      | optional |
+  | alpha           | numeric   | gO2 s d^-1 umol^-1 | optional |
+  | ER.daily        | numeric   | gO2 m^-2 d^-1      | optional |
+  | ER20            | numeric   | gO2 m^-2 d^-1      | optional |
+  | err.obs.sigma   | numeric   | mgO2 L^-1          | optional |
+  | err.obs.phi     | numeric   |                    | optional |
+  | err.proc.sigma  | numeric   | gO2 m^-2 d^-1      | optional |
+  | err.proc.phi    | numeric   |                    | optional |
 
       \strong{Example}:
       \tabular{lrrrrrrrrrrrr}{
@@ -231,19 +232,18 @@ dat <- data_metab(num_days='3')
 # fit a basic MLE model
 mm <- metab(specs(mm_name('mle')), data=dat, info='my info')
 predict_metab(mm)
-#>         date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1 2012-09-18 2.812955  2.435230  3.190681 -2.103521 -2.410113 -1.796929
-#> 2 2012-09-19 3.277526  2.866958  3.688094 -2.470115 -2.808856 -2.131375
-#> 3 2012-09-20 2.582700  2.313734  2.851666 -1.709653 -1.914700 -1.504606
-#>   msgs.fit warnings errors
-#> 1                         
-#> 2      W                  
-#> 3                         
+#> # A tibble: 3 × 10
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit warnings
+#>   <date>     <dbl>     <dbl>     <dbl> <dbl>    <dbl>    <dbl> <chr>    <chr>   
+#> 1 2012-09-18  2.81      2.44      3.19 -2.10    -2.41    -1.80 "      … ""      
+#> 2 2012-09-19  3.28      2.87      3.69 -2.47    -2.81    -2.13 "    W … ""      
+#> 3 2012-09-20  2.58      2.31      2.85 -1.71    -1.91    -1.50 "      … ""      
+#> # ℹ 1 more variable: errors <chr>
 get_info(mm)
 #> [1] "my info"
 get_fitting_time(mm)
 #>    user  system elapsed 
-#>   0.742   0.000   0.742 
+#>   0.868   0.000   0.867 
 
 # with chaining & customization
 library(dplyr)
@@ -255,18 +255,17 @@ library(dplyr)
 #> The following objects are masked from ‘package:base’:
 #> 
 #>     intersect, setdiff, setequal, union
-mm <- mm_name('mle', ode_method='euler') %>%
-  specs(init.GPP.daily=40) %>%
+mm <- mm_name('mle', ode_method='euler') |>
+  specs(init.GPP.daily=40) |>
   metab(data=dat)
 predict_metab(mm)
-#>         date      GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper
-#> 1 2012-09-18 2.809444  2.402234  3.216654 -2.098404 -2.427638 -1.769169
-#> 2 2012-09-19 3.271351  2.838930  3.703772 -2.463138 -2.818887 -2.107388
-#> 3 2012-09-20 2.568592  2.286376  2.850807 -1.697389 -1.911571 -1.483207
-#>   msgs.fit warnings errors
-#> 1      W                  
-#> 2      W                  
-#> 3      W                  
+#> # A tibble: 3 × 10
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit warnings
+#>   <date>     <dbl>     <dbl>     <dbl> <dbl>    <dbl>    <dbl> <chr>    <chr>   
+#> 1 2012-09-18  2.81      2.40      3.22 -2.10    -2.43    -1.77 "    W … ""      
+#> 2 2012-09-19  3.27      2.84      3.70 -2.46    -2.82    -2.11 "    W … ""      
+#> 3 2012-09-20  2.57      2.29      2.85 -1.70    -1.91    -1.48 "    W … ""      
+#> # ℹ 1 more variable: errors <chr>
 if (FALSE) { # \dontrun{
 plot_DO_preds(predict_DO(mm))
 plot_DO_preds(predict_DO(mm), y_var='pctsat', style='dygraphs')

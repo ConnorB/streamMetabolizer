@@ -142,19 +142,18 @@ Other metab_model_interface:
 dat <- data_metab('3', day_start=12, day_end=36)
 mm <- metab_night(specs(mm_name('night')), data=dat)
 predict_metab(mm)
-#>         date GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper msgs.fit
-#> 1 2012-09-18   0        NA        NA -2.122498 -2.351240 -1.893755         
-#> 2 2012-09-19   0        NA        NA -2.927715 -3.233801 -2.621628         
-#> 3 2012-09-20   0        NA        NA -2.125522 -2.305859 -1.945185         
-#>   warnings errors
-#> 1                
-#> 2                
-#> 3                
+#> # A tibble: 3 × 10
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit warnings
+#>   <date>     <dbl> <lgl>     <lgl>     <dbl>    <dbl>    <dbl> <chr>    <chr>   
+#> 1 2012-09-18     0 NA        NA        -2.12    -2.35    -1.89 "      … ""      
+#> 2 2012-09-19     0 NA        NA        -2.93    -3.23    -2.62 "      … ""      
+#> 3 2012-09-20     0 NA        NA        -2.13    -2.31    -1.95 "      … ""      
+#> # ℹ 1 more variable: errors <chr>
 predict_metab(mm, date_start=get_fit(mm)$date[2])
-#>         date GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper msgs.fit
-#> 1 2012-09-19   0        NA        NA -2.927715 -3.233801 -2.621628         
-#> 2 2012-09-20   0        NA        NA -2.125522 -2.305859 -1.945185         
-#>   warnings errors
-#> 1                
-#> 2                
+#> # A tibble: 2 × 10
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit warnings
+#>   <date>     <dbl> <lgl>     <lgl>     <dbl>    <dbl>    <dbl> <chr>    <chr>   
+#> 1 2012-09-19     0 NA        NA        -2.93    -3.23    -2.62 "      … ""      
+#> 2 2012-09-20     0 NA        NA        -2.13    -2.31    -1.95 "      … ""      
+#> # ℹ 1 more variable: errors <chr>
 ```

@@ -35,16 +35,17 @@ metab_night(
 
 - data:
 
-  data.frame (not a tbl_df) of input data at the temporal resolution of
-  raw observations (unit-value). Columns must have the same names,
-  units, and format as the default. The solar.time column must also have
-  a timezone code ('tzone' attribute) of 'UTC'. See the **'Formatting
+  A data frame or tibble of input data at the temporal resolution of raw
+  observations (unit-value). Columns must have the same names, units,
+  and format as the default. The solar.time column must also have a
+  timezone code ('tzone' attribute) of 'UTC'. See the **'Formatting
   `data`'** section below for a full description.
 
 - data_daily:
 
-  data.frame containing inputs with a daily timestep. See the
-  **'Formatting `data_daily`'** section below for a full description.
+  A data frame or tibble containing inputs with a daily timestep. See
+  the **'Formatting `data_daily`'** section below for a full
+  description.
 
 - info:
 
@@ -75,14 +76,13 @@ Alison Appling, Maite Arroita, Bob Hall
 dat <- data_metab('3', day_start=12, day_end=35)
 mm <- metab_night(data=dat)
 predict_metab(mm)
-#>         date GPP GPP.lower GPP.upper        ER  ER.lower  ER.upper msgs.fit
-#> 1 2012-09-18   0        NA        NA -2.122498 -2.351240 -1.893755         
-#> 2 2012-09-19   0        NA        NA -2.927715 -3.233801 -2.621628         
-#> 3 2012-09-20   0        NA        NA -2.125522 -2.305859 -1.945185         
-#>   warnings errors
-#> 1                
-#> 2                
-#> 3                
+#> # A tibble: 3 × 10
+#>   date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit warnings
+#>   <date>     <dbl> <lgl>     <lgl>     <dbl>    <dbl>    <dbl> <chr>    <chr>   
+#> 1 2012-09-18     0 NA        NA        -2.12    -2.35    -1.89 "      … ""      
+#> 2 2012-09-19     0 NA        NA        -2.93    -3.23    -2.62 "      … ""      
+#> 3 2012-09-20     0 NA        NA        -2.13    -2.31    -1.95 "      … ""      
+#> # ℹ 1 more variable: errors <chr>
 if (FALSE) { # \dontrun{
 plot_DO_preds(predict_DO(mm))
 } # }

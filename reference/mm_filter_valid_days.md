@@ -21,13 +21,14 @@ mm_filter_valid_days(
 
 - data:
 
-  data.frame of instantaneous observations, to be filtered to only those
-  points on days that pass the specified tests in mm_is_valid_day
+  A data frame or tibble of instantaneous observations, to be filtered
+  to only those points on days that pass the specified tests in
+  [`mm_is_valid_day()`](https://connorb.github.io/streamMetabolizer/reference/mm_is_valid_day.md).
 
 - data_daily:
 
-  data.frame of daily estimates/statistics, to be filtered in accordance
-  with the filtering of data
+  A data frame or tibble of daily estimates/statistics, to be filtered
+  in accordance with the filtering of data.
 
 - day_start:
 
@@ -80,8 +81,9 @@ mm_filter_valid_days(
 
 ## Value
 
-list of data and data_daily with same structure as inputs but with
-invalid days removed, plus a third data.frame of dates that were removed
+A list of data and data_daily with the same structure as the inputs but
+with invalid days removed, plus a third data frame of dates that were
+removed.
 
 ## Examples
 

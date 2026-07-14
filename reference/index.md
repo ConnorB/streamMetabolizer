@@ -1,6 +1,17 @@
 # Package index
 
-## All functions
+## Plotting
+
+- [`plot_DO_preds()`](https://connorb.github.io/streamMetabolizer/reference/plot_DO_preds.md)
+  : Plot predictions produced with predict_DO
+- [`plot_distribs()`](https://connorb.github.io/streamMetabolizer/reference/plot_distribs.md)
+  : Plot the prior/posterior distributions of a parameter
+- [`plot_metab_data()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_data.md)
+  : Plot metabolism input data
+- [`plot_metab_preds()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_preds.md)
+  : Plot predictions produced with predict_DO
+
+## Other
 
 - [`calc_DO_deficit()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_deficit.md)
   **\[deprecated\]** : Calculate a vector of dissolved oxygen deficits
@@ -240,15 +251,6 @@
 
 - [`mm_validate_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_validate_name.md)
   : Check the validity of a model name
-
-- [`plot_DO_preds()`](https://connorb.github.io/streamMetabolizer/reference/plot_DO_preds.md)
-  : Plot predictions produced with predict_DO
-
-- [`plot_distribs()`](https://connorb.github.io/streamMetabolizer/reference/plot_distribs.md)
-  : Plot the prior/posterior distributions of a parameter
-
-- [`plot_metab_preds()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_preds.md)
-  : Plot predictions produced with predict_DO
 
 - [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md)
   : Predict DO from a fitted model.

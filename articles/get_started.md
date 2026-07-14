@@ -217,7 +217,7 @@ Here are the first few dissolved oxygen predictions from the model
 
 ``` r
 
-predict_DO(mm) %>% head()
+predict_DO(mm) |> head()
 ```
 
 And here are the dissolved oxygen predictions in a figure:
@@ -251,7 +251,7 @@ convergence. Here are just the overall metrics of model convergence
 
 ``` r
 
-get_fit(mm)$overall %>%
+get_fit(mm)$overall |>
   select(ends_with('Rhat'))
 ```
 
@@ -260,7 +260,7 @@ And here is a list of all column names available through
 
 ``` r
 
-get_fit(mm) %>%
+get_fit(mm) |>
   lapply(names)
 ```
 
