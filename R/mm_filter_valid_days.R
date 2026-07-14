@@ -3,13 +3,15 @@
 #' Filter out any data rows that don't pass the specified tests for completeness
 #' and regularity
 #'
-#' @param data data.frame of instantaneous observations, to be filtered to only
-#'   those points on days that pass the specified tests in mm_is_valid_day
-#' @param data_daily data.frame of daily estimates/statistics, to be filtered in
-#'   accordance with the filtering of data
+#' @param data A data frame or tibble of instantaneous observations, to be
+#'   filtered to only those points on days that pass the specified tests in
+#'   [mm_is_valid_day()].
+#' @param data_daily A data frame or tibble of daily estimates/statistics, to be
+#'   filtered in accordance with the filtering of data.
 #' @inheritParams mm_model_by_ply
-#' @return list of data and data_daily with same structure as inputs but with
-#'   invalid days removed, plus a third data.frame of dates that were removed
+#' @return A list of data and data_daily with the same structure as the inputs
+#'   but with invalid days removed, plus a third data frame of dates that were
+#'   removed.
 #' @import dplyr
 #' @examples
 #' dat <- data_metab(res='30', num_days='10', flaws='missing middle')

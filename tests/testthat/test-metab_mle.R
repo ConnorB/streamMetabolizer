@@ -13,6 +13,15 @@ test_that("metab_mle models can be created", {
   expect_equal(get_params(mmt), get_params(mmt))
 })
 
+test_that("metab_mle preserves tibble data and predictions", {
+  dat <- tibble::as_tibble(data_metab("1", res = "30"))
+  mm <- metab_mle(data = dat)
+
+  expect_s3_class(get_data(mm), "tbl_df")
+  expect_s3_class(predict_DO(mm), "tbl_df")
+  expect_s3_class(predict_metab(mm), "tbl_df")
+})
+
 test_that("metab_mle works with fancy GPP, ER functions", {
   # setup for example fanciness
   satlight_q10temp_params <- c('Pmax', 'alpha', 'ER20', 'K600.daily')

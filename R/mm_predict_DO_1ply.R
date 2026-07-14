@@ -20,7 +20,8 @@ mm_predict_DO_1ply <- function(
   # skip today (return DO.mod=NAs) if they're missing. otherwise, proceed to
   # predict DO
   if (nrow(data_daily_ply) == 0 || any(is.na(data_daily_ply))) {
-    return(data.frame(data_ply, DO.mod = rep(NA, nrow(data_ply))))
+    data_ply$DO.mod <- rep(NA_real_, nrow(data_ply))
+    return(data_ply)
   }
 
   # prepare arguments to DO prediction function. enable 3 possible sources for

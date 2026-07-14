@@ -20,6 +20,9 @@ mm_predict_metab_1ply <- function(
   # record ply validity failures if present (only gets tested for sim models)
   stop_strs <- if (isTRUE(ply_validity)) character(0) else ply_validity
   warn_strs <- character(0)
+  restore_class <- function(x) {
+    if (inherits(data_ply, "tbl_df")) tibble::as_tibble(x) else x
+  }
 
   # skip today if we're missing metabolism estimates and/or input data (return a
   # near-empty or empty data.frame, respectively, and don't bother reporting on
@@ -55,7 +58,7 @@ mm_predict_metab_1ply <- function(
       'all_NA' = na.df,
       'empty' = filter(na.df, FALSE)
     )
-    return(out.df)
+    return(restore_class(out.df))
   }
 
   # prepare metab prediction functions
@@ -117,5 +120,5 @@ mm_predict_metab_1ply <- function(
     errors = paste0(unique(stop_strs), collapse = "; "), # so far there will never be error strings; just a placeholder
     stringsAsFactors = FALSE
   )
-  data.frame(preds, err.cols)
+  restore_class(data.frame(preds, err.cols))
 }

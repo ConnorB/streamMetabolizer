@@ -12,14 +12,14 @@ mm_validate_data(
 )
 }
 \arguments{
-\item{data}{data.frame (not a tbl_df) of input data at the temporal
-resolution of raw observations (unit-value). Columns must have the same
+\item{data}{A data frame or tibble of input data at the temporal resolution
+of raw observations (unit-value). Columns must have the same
 names, units, and format as the default. The solar.time column must also
 have a timezone code ('tzone' attribute) of 'UTC'. See the
 \strong{'Formatting \code{data}'} section below for a full description.}
 
-\item{data_daily}{data.frame containing inputs with a daily timestep. See the
-\strong{'Formatting \code{data_daily}'} section below for a full
+\item{data_daily}{A data frame or tibble containing inputs with a daily
+timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
 \item{metab_class}{character the class name of the metab_model constructor}

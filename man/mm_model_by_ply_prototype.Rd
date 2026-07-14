@@ -16,12 +16,13 @@ mm_model_by_ply_prototype(
 )
 }
 \arguments{
-\item{data_ply}{a data.frame containing all relevant, validated modeling data
-for a single ply of data. (1 ply ~= 1 date, although the day length has
-been specified by day_start and day_end and may not be exactly 24 hours)}
+\item{data_ply}{a data frame or tibble containing all relevant, validated
+modeling data for a single ply of data. (1 ply ~= 1 date, although the day
+length has been specified by day_start and day_end and may not be exactly
+24 hours)}
 
-\item{data_daily_ply}{NULL or a data.frame containing inputs with a daily
-timestep.}
+\item{data_daily_ply}{\code{NULL} or a data frame or tibble containing inputs with
+a daily timestep.}
 
 \item{day_start}{start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5

@@ -1,23 +1,25 @@
 #' Split and label data into >=24-hr days for fitting daily metabolism
 #'
-#' Splits up to two data.frames, data and data_daily, into date-specific chunks.
+#' Splits up to two data frames or tibbles, `data` and `data_daily`, into
+#' date-specific chunks.
 #' These are passed to model_fun. If `day_tests` is not empty, those
 #' validity checks are run and the results are also passed to model_fun (in
-#' `validity`). The results of model_fun (which must be a data.frame) are
-#' modified to include the data as a first column, then row-bound together into
-#' a single data.frame containing results from all days.
+#' `validity`). The results of `model_fun` (which must be data frames or
+#' tibbles) are modified to include the date as the first column, then row-bound
+#' together into a single object containing results from all days. Tibble
+#' inputs and outputs retain their tibble class.
 #'
 #' @param model_fun the function to apply to each data ply. This function should
 #'   accept the arguments `c(data, data_daily, ..., day_start, day_end,
 #'   ply_date)` where `data_daily` is `NULL` when the
 #'   `data_daily` argument to `mm_model_by_ply` is missing or
 #'   `NULL`
-#' @param data required. A data.frame to split into chunks by date, where a
-#'   'date' begins on the hour day_start and ends at the hour day_end. The
-#'   solar.time column must be present.
-#' @param data_daily optional. A data.frame containing inputs with a daily
-#'   timestep, each row of which will be passed to the corresponding date chunk
-#'   from `data`. The date column must be present.
+#' @param data required. A data frame or tibble to split into chunks by date,
+#'   where a 'date' begins on the hour day_start and ends at the hour day_end.
+#'   The solar.time column must be present.
+#' @param data_daily optional. A data frame or tibble containing inputs with a
+#'   daily timestep, each row of which will be passed to the corresponding date
+#'   chunk from `data`. The date column must be present.
 #' @param day_start start time (inclusive) of a day's data in number of hours
 #'   from the midnight that begins the date. For example, day_start=-1.5
 #'   indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
@@ -51,7 +53,8 @@
 #'   numeric as a specifically expected timestep length in days; for example, a
 #'   1-hour timestep is 1/24 is 0.0416667.
 #' @param ... other args to be passed through mm_model_by_ply to model_fun
-#' @return a data.frame of model results
+#' @return A data frame or tibble of model results. The class returned by
+#'   `model_fun` is preserved.
 #' @import dplyr
 #' @import tibble
 #' @examples
@@ -122,7 +125,7 @@ mm_model_by_ply <- function(
   # Identify the data plys that will let us use a user-specified-hr window for
   # each date (day_start to day_end, which may be != 24). store this labeling in
   # two additional columns (odd.- and even.- date.groups)
-  data.plys <- as.data.frame(data)
+  data.plys <- data
   if (!('solar.time' %in% names(data.plys))) {
     .cli_abort("{.arg data} must contain a {.var solar.time} column.")
   }
@@ -201,58 +204,54 @@ mm_model_by_ply <- function(
   # there are two columns so that one row can belong to two dates if needed.
   dt.NA <- as.character(NA)
   if (nrow(data.plys) == 0) {
-    data.plys <- bind_cols(
-      data.plys,
-      tibble::tibble(odd.date.group = dt.NA, even.date.group = dt.NA)[c(), ]
-    )
+    data.plys$odd.date.group <- character()
+    data.plys$even.date.group <- character()
     out_list <- list()
   } else {
-    data.plys <- bind_cols(
-      data.plys,
-      bind_rows(lapply(seq_len(nrow(date_rows)), function(dt) {
-        run <- date_rows[dt, ]
-        dt.today <- run$date
-        dt.yesterday <- if (dt > 1) date_rows[[dt - 1, 'date']] else dt.NA
-        dt.tomorrow <- if (dt < nrow(date_rows)) {
-          date_rows[[dt + 1, 'date']]
-        } else {
-          dt.NA
-        }
-        data.plys.rows <- run$start:run$end
-        hr <- data.plys[data.plys.rows, 'hour']
-        primary.date <- c(dt.today, dt.NA)[ifelse(
-          hr >= day_start_fudge & hr < day_end_fudge,
-          1,
-          2
-        )]
-        secondary.date <- c(dt.yesterday, dt.NA, dt.tomorrow)[ifelse(
-          hr <= (day_end_fudge - 24),
-          1,
-          ifelse(hr < (24 + day_start_fudge), 2, 3)
-        )]
-        if (dt.today %in% odd.dates) {
-          tibble(
-            odd.date.group = primary.date,
-            even.date.group = secondary.date
-          )
-          #data.plys[data.plys.rows, c('odd.date.group','even.date.group')] <- c(primary.date, secondary.date)
-        } else {
-          # dt.today %in% even.dates
-          tibble(
-            odd.date.group = secondary.date,
-            even.date.group = primary.date
-          )
-          #data.plys[data.plys.rows, c('odd.date.group','even.date.group')] <- c(secondary.date, primary.date)
-        }
-      }))
-    ) |>
-      as.data.frame(stringsAsFactors = FALSE)
+    date_groups <- bind_rows(lapply(seq_len(nrow(date_rows)), function(dt) {
+      run <- date_rows[dt, ]
+      dt.today <- run$date
+      dt.yesterday <- if (dt > 1) date_rows[[dt - 1, 'date']] else dt.NA
+      dt.tomorrow <- if (dt < nrow(date_rows)) {
+        date_rows[[dt + 1, 'date']]
+      } else {
+        dt.NA
+      }
+      data.plys.rows <- run$start:run$end
+      hr <- data.plys[['hour']][data.plys.rows]
+      primary.date <- c(dt.today, dt.NA)[ifelse(
+        hr >= day_start_fudge & hr < day_end_fudge,
+        1,
+        2
+      )]
+      secondary.date <- c(dt.yesterday, dt.NA, dt.tomorrow)[ifelse(
+        hr <= (day_end_fudge - 24),
+        1,
+        ifelse(hr < (24 + day_start_fudge), 2, 3)
+      )]
+      if (dt.today %in% odd.dates) {
+        tibble(
+          odd.date.group = primary.date,
+          even.date.group = secondary.date
+        )
+        #data.plys[data.plys.rows, c('odd.date.group','even.date.group')] <- c(primary.date, secondary.date)
+      } else {
+        # dt.today %in% even.dates
+        tibble(
+          odd.date.group = secondary.date,
+          even.date.group = primary.date
+        )
+        #data.plys[data.plys.rows, c('odd.date.group','even.date.group')] <- c(secondary.date, primary.date)
+      }
+    }))
+    data.plys$odd.date.group <- date_groups$odd.date.group
+    data.plys$even.date.group <- date_groups$even.date.group
 
     # filter out dates that don't ever appear on their own - this especially weeds
     # out first and last dates that were probably meant just to be part of the
     # second or penultimate dates when the date range is >24
     date.pairings <- setNames(
-      unique(data.plys[, c('odd.date.group', 'even.date.group')]),
+      unique(data.plys[c('odd.date.group', 'even.date.group')]),
       c('a', 'b')
     )
     date.pairings <- rbind(date.pairings, setNames(date.pairings, c('b', 'a')))
@@ -326,7 +325,7 @@ mm_model_by_ply <- function(
       if (is.null(out) || nrow(out) == 0) {
         NULL
       } else {
-        data.frame(date = ply_date, out)
+        mutate(out, date = ply_date, .before = 1)
       }
     })
   }
@@ -351,7 +350,11 @@ mm_model_by_ply <- function(
       ),
       error = function(e) {
         # and if it REALLY doesn't work, just return an empty 1-column df
-        data.frame(date = as.Date(NA))[c(), ]
+        if (inherits(data, "tbl_df")) {
+          tibble::tibble(date = as.Date(character()))
+        } else {
+          data.frame(date = as.Date(character()))
+        }
       }
     )
   }
@@ -367,6 +370,6 @@ mm_model_by_ply <- function(
       }) |>
       which.max()
     out_example <- out_list[[example_choice]][FALSE, ]
-    bind_rows(c(list(out_example), out_list)) |> as.data.frame()
+    bind_rows(c(list(out_example), out_list))
   }
 }

@@ -12,9 +12,10 @@ Kmodel_aggregate_day(
 )
 }
 \arguments{
-\item{data_ply}{a data.frame containing all relevant, validated modeling data
-for a single ply of data. (1 ply ~= 1 date, although the day length has
-been specified by day_start and day_end and may not be exactly 24 hours)}
+\item{data_ply}{a data frame or tibble containing all relevant, validated
+modeling data for a single ply of data. (1 ply ~= 1 date, although the day
+length has been specified by day_start and day_end and may not be exactly
+24 hours)}
 
 \item{ply_validity}{the output of \code{mm_is_valid_day} as applied to this
 data_ply for those tests specified in \code{day_tests}. Those tests will

@@ -257,6 +257,21 @@ test_that("mm_filter_valid_days works", {
   )
 })
 
+test_that("mm_filter_valid_days preserves tibble inputs", {
+  dat <- tibble::as_tibble(data_metab("1", res = "30"))
+  dat_daily <- tibble::tibble(date = as.Date("2012-09-18"), value = 1)
+
+  out <- mm_filter_valid_days(
+    dat,
+    data_daily = dat_daily,
+    day_start = 4,
+    day_end = 28
+  )
+
+  expect_s3_class(out$data, "tbl_df")
+  expect_s3_class(out$data_daily, "tbl_df")
+})
+
 test_that("mm_filter_dates works", {
   start_time <- Sys.time()
   start_date <- as.Date(start_time)

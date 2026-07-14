@@ -4,11 +4,12 @@
 #' [mm_model_by_ply()] Other functions to be used as model_fun may
 #' call inheritParams to use the parameter definitions given here.
 #'
-#' @param data_ply a data.frame containing all relevant, validated modeling data
-#'   for a single ply of data. (1 ply ~= 1 date, although the day length has
-#'   been specified by day_start and day_end and may not be exactly 24 hours)
-#' @param data_daily_ply NULL or a data.frame containing inputs with a daily
-#'   timestep.
+#' @param data_ply a data frame or tibble containing all relevant, validated
+#'   modeling data for a single ply of data. (1 ply ~= 1 date, although the day
+#'   length has been specified by day_start and day_end and may not be exactly
+#'   24 hours)
+#' @param data_daily_ply `NULL` or a data frame or tibble containing inputs with
+#'   a daily timestep.
 #' @param day_start start time (inclusive) of a day's data in number of hours
 #'   from the midnight that begins the date. For example, day_start=-1.5
 #'   indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
@@ -49,12 +50,12 @@ mm_model_by_ply_prototype <- function(
   c(
     list(
       data_ply_start = if (!is.null(data_ply)) {
-        data_ply[1, 'solar.time']
+        data_ply[['solar.time']][1]
       } else {
         NA
       },
       data_ply_end = if (!is.null(data_ply)) {
-        data_ply[nrow(data_ply), 'solar.time']
+        data_ply[['solar.time']][nrow(data_ply)]
       } else {
         NA
       },

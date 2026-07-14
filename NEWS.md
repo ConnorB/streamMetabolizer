@@ -8,6 +8,8 @@
 
 * `lookup_usgs_elevation()` now uses the current USGS Elevation Point Query Service API, returns the numeric elevation directly, and no longer requires the legacy RCurl and XML packages.
 
+* `metab()`, `mm_model_by_ply()`, `mm_filter_valid_days()`, and `calc_light_merged()` now accept tibbles without coercing them to base data frames, and model data and prediction outputs preserve tibble classes.
+
 * improved RStan support with safe persistent compilation caching outside the
 installed package, cache validation and read-only-directory fallback,
 parameter-filtered summaries, serializable retained fits, array-aware posterior

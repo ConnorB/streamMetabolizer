@@ -4,9 +4,9 @@
 #' active radiation (PAR) for a series of date-times. You can also think about
 #' this as a way to smoothly interpolate a time series of observations.
 #'
-#' @param PAR.obs a 2-column data.frame with columns solar.time and light, as in
-#'   argument default, containing the full time series of observed light (should
-#'   be at a lower temporal resolution than `PAR.mod`)
+#' @param PAR.obs A two-column data frame or tibble with columns `solar.time`
+#'   and `light`, as in the argument default, containing the full time series of
+#'   observed light (should be at a lower temporal resolution than `PAR.mod`).
 #' @param solar.time a vector of mean solar times for which the light should be
 #'   modeled and merged with the values in PAR.obs
 #' @inheritParams calc_light
@@ -31,11 +31,11 @@
 #' PAR.obs <- tibble::tibble(
 #'   solar.time=seq(timebounds[1], timebounds[2], by=as.difftime(3, units='hours')),
 #'   light=c(0, 0, 85.9, 1160.5, 1539.0, 933.9, 0, 0)
-#' ) |> as.data.frame()
+#' )
 #' PAR.mod <- tibble::tibble(
 #'   solar.time=seq(timebounds[1], timebounds[2], by=as.difftime(0.25, units='hours')),
 #'   light=calc_light(solar.time, latitude=coords$lat, longitude=coords$lon)
-#' ) |> as.data.frame()
+#' )
 #' PAR.merged <- calc_light_merged(PAR.obs, PAR.mod$solar.time,
 #'   latitude=coords$lat, longitude=coords$lon, max.gap=as.difftime(20, units='hours'))
 #' ggplot(bind_rows(mutate(PAR.obs, type='obs'), mutate(PAR.mod, type='mod'),
@@ -63,8 +63,9 @@ calc_light_merged <- function(
   # set smart default for max.PAR to make the ts pretty
   if (is.na(max.PAR)) {
     # figure out what & when the max insolation is in the input data
-    date.max.obs <- PAR.obs[which.max(PAR.obs$light), 'solar.time'] # this is mean solar time; will also need apparent solar
-    max.obs <- PAR.obs[which.max(PAR.obs$light), 'light']
+    max_obs_row <- which.max(PAR.obs$light)
+    date.max.obs <- PAR.obs[['solar.time']][max_obs_row] # this is mean solar time; will also need apparent solar
+    max.obs <- PAR.obs[['light']][max_obs_row]
 
     # given some known value of old.max.PAR, what would the model predict for
     # solar insolation at the date when obs is at its maximum?

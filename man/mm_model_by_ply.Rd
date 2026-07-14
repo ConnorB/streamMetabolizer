@@ -23,13 +23,13 @@ accept the arguments \code{c(data, data_daily, ..., day_start, day_end, ply_date
 \code{data_daily} argument to \code{mm_model_by_ply} is missing or
 \code{NULL}}
 
-\item{data}{required. A data.frame to split into chunks by date, where a
-'date' begins on the hour day_start and ends at the hour day_end. The
-solar.time column must be present.}
+\item{data}{required. A data frame or tibble to split into chunks by date,
+where a 'date' begins on the hour day_start and ends at the hour day_end.
+The solar.time column must be present.}
 
-\item{data_daily}{optional. A data.frame containing inputs with a daily
-timestep, each row of which will be passed to the corresponding date chunk
-from \code{data}. The date column must be present.}
+\item{data_daily}{optional. A data frame or tibble containing inputs with a
+daily timestep, each row of which will be passed to the corresponding date
+chunk from \code{data}. The date column must be present.}
 
 \item{day_start}{start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
@@ -71,15 +71,18 @@ numeric as a specifically expected timestep length in days; for example, a
 \item{...}{other args to be passed through mm_model_by_ply to model_fun}
 }
 \value{
-a data.frame of model results
+A data frame or tibble of model results. The class returned by
+\code{model_fun} is preserved.
 }
 \description{
-Splits up to two data.frames, data and data_daily, into date-specific chunks.
+Splits up to two data frames or tibbles, \code{data} and \code{data_daily}, into
+date-specific chunks.
 These are passed to model_fun. If \code{day_tests} is not empty, those
 validity checks are run and the results are also passed to model_fun (in
-\code{validity}). The results of model_fun (which must be a data.frame) are
-modified to include the data as a first column, then row-bound together into
-a single data.frame containing results from all days.
+\code{validity}). The results of \code{model_fun} (which must be data frames or
+tibbles) are modified to include the date as the first column, then row-bound
+together into a single object containing results from all days. Tibble
+inputs and outputs retain their tibble class.
 }
 \examples{
 dat <- data_metab('10')

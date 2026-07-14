@@ -11,6 +11,16 @@ test_that("metab_night models can be created", {
   expect_type(slot(mm, "pkg_version"), "character")
 })
 
+test_that("metab_night accepts tibble data", {
+  dat <- data_metab("1", res = "30", day_start = 12, day_end = 36) |>
+    tibble::as_tibble()
+  mm <- metab_night(data = dat)
+
+  expect_s3_class(get_data(mm), "tbl_df")
+  expect_s3_class(predict_DO(mm), "tbl_df")
+  expect_s3_class(predict_metab(mm), "tbl_df")
+})
+
 test_that("metab_night predictions (predict_metab, predict_DO) make sense", {
   # 1 day
   mm <- metab_night(

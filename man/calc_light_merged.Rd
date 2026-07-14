@@ -15,9 +15,9 @@ calc_light_merged(
 )
 }
 \arguments{
-\item{PAR.obs}{a 2-column data.frame with columns solar.time and light, as in
-argument default, containing the full time series of observed light (should
-be at a lower temporal resolution than \code{PAR.mod})}
+\item{PAR.obs}{A two-column data frame or tibble with columns \code{solar.time}
+and \code{light}, as in the argument default, containing the full time series of
+observed light (should be at a lower temporal resolution than \code{PAR.mod}).}
 
 \item{solar.time}{a vector of mean solar times for which the light should be
 modeled and merged with the values in PAR.obs}
@@ -56,11 +56,11 @@ coords <- list(lat=32.4, lon=-96.5)
 PAR.obs <- tibble::tibble(
   solar.time=seq(timebounds[1], timebounds[2], by=as.difftime(3, units='hours')),
   light=c(0, 0, 85.9, 1160.5, 1539.0, 933.9, 0, 0)
-) |> as.data.frame()
+)
 PAR.mod <- tibble::tibble(
   solar.time=seq(timebounds[1], timebounds[2], by=as.difftime(0.25, units='hours')),
   light=calc_light(solar.time, latitude=coords$lat, longitude=coords$lon)
-) |> as.data.frame()
+)
 PAR.merged <- calc_light_merged(PAR.obs, PAR.mod$solar.time,
   latitude=coords$lat, longitude=coords$lon, max.gap=as.difftime(20, units='hours'))
 ggplot(bind_rows(mutate(PAR.obs, type='obs'), mutate(PAR.mod, type='mod'),

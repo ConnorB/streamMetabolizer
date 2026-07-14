@@ -101,3 +101,25 @@ test_that("mm_model_by_ply creates intuitive ply_dates from day_start and day_en
     error = TRUE
   )
 })
+
+test_that("mm_model_by_ply preserves tibble inputs and outputs", {
+  dat <- tibble::as_tibble(data_metab("1", res = "30"))
+  dat_daily <- tibble::tibble(date = as.Date("2012-09-18"), value = 1)
+
+  out <- mm_model_by_ply(
+    function(data_ply, data_daily_ply, ...) {
+      expect_s3_class(data_ply, "tbl_df")
+      expect_s3_class(data_daily_ply, "tbl_df")
+      tibble::tibble(n = nrow(data_ply), value = data_daily_ply$value)
+    },
+    data = dat,
+    data_daily = dat_daily,
+    day_start = 4,
+    day_end = 28,
+    day_tests = character()
+  )
+
+  expect_s3_class(out, "tbl_df")
+  expect_equal(out$n, 48)
+  expect_equal(out$value, 1)
+})

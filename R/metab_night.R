@@ -159,7 +159,7 @@ nightreg_1ply <- function(
           tz = lubridate::tz(data_ply$solar.time)
         )
         night_hours <- as.numeric(
-          data_ply[which_twilight + c(1, -1), 'solar.time'] - date_start,
+          data_ply[['solar.time']][which_twilight + c(1, -1)] - date_start,
           units = 'hours'
         )
         night_start <- if (has_sunset) {

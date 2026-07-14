@@ -7,6 +7,25 @@ test_that("high-level light function works", {
   expect_equal(calc_light(stimes[1], 40, -120), 0)
 })
 
+test_that("calc_light_merged accepts tibble observations", {
+  solar_time <- as.POSIXct("2012-06-01", tz = "UTC") + 3600 * 6:18
+  observed <- tibble::tibble(
+    solar.time = solar_time,
+    light = calc_light(solar_time, latitude = 45, longitude = -90)
+  )
+
+  merged <- calc_light_merged(
+    PAR.obs = observed,
+    solar.time = solar_time,
+    latitude = 45,
+    longitude = -90,
+    max.gap = NA
+  )
+
+  expect_equal(nrow(merged), nrow(observed))
+  expect_named(merged, c("solar.time", "light"))
+})
+
 test_that("can generate light predictions from basic light model", {
   library(dplyr)
 

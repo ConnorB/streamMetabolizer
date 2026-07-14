@@ -50,7 +50,7 @@ mm_is_valid_day <- function(
   ),
   required_timestep = NA,
   ply_date = as.Date(format(
-    data_ply[max(1, nrow(data_ply) / 2), 'solar.time'],
+    data_ply[['solar.time']][max(1, nrow(data_ply) / 2)],
     "%Y-%m-%d"
   )),
   timestep_days = NA

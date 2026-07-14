@@ -15,11 +15,12 @@ mm_filter_valid_days(
 )
 }
 \arguments{
-\item{data}{data.frame of instantaneous observations, to be filtered to only
-those points on days that pass the specified tests in mm_is_valid_day}
+\item{data}{A data frame or tibble of instantaneous observations, to be
+filtered to only those points on days that pass the specified tests in
+\code{\link[=mm_is_valid_day]{mm_is_valid_day()}}.}
 
-\item{data_daily}{data.frame of daily estimates/statistics, to be filtered in
-accordance with the filtering of data}
+\item{data_daily}{A data frame or tibble of daily estimates/statistics, to be
+filtered in accordance with the filtering of data.}
 
 \item{day_start}{start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
@@ -59,8 +60,9 @@ numeric as a specifically expected timestep length in days; for example, a
 1-hour timestep is 1/24 is 0.0416667.}
 }
 \value{
-list of data and data_daily with same structure as inputs but with
-invalid days removed, plus a third data.frame of dates that were removed
+A list of data and data_daily with the same structure as the inputs
+but with invalid days removed, plus a third data frame of dates that were
+removed.
 }
 \description{
 Filter out any data rows that don't pass the specified tests for completeness
