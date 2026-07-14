@@ -32,11 +32,11 @@ calc_light <- function(
   }
 
   coef.SW.to.PAR <- formals(convert_SW_to_PAR)$coef # shouldn't really matter what is b/c we convert out and back
-  app.solar.time <- solar.time %>%
+  app.solar.time <- solar.time |>
     convert_solartime_to_UTC(
       longitude = longitude,
       time.type = 'mean solar'
-    ) %>%
+    ) |>
     convert_UTC_to_solartime(
       longitude = longitude,
       time.type = 'apparent solar'

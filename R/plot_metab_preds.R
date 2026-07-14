@@ -63,7 +63,7 @@ plot_metab_preds <- function(
   )
 
   var <- '.dplyr.var'
-  metab_preds_all <- bind_rows(metab_preds_GPP, metab_preds_ER) %>%
+  metab_preds_all <- bind_rows(metab_preds_GPP, metab_preds_ER) |>
     mutate(
       var = ordered(var, c(GPP = 'GPP (g m^-2 d^-1)', ER = 'ER (g m^-2 d^-1)'))
     )
@@ -73,17 +73,20 @@ plot_metab_preds <- function(
     'ggplot2' = {
       if (!requireNamespace("ggplot2", quietly = TRUE)) {
         .cli_abort(
-          "call install.packages('ggplot2') before plotting with style='ggplot2'"
+          c(
+            "{.pkg ggplot2} is required for {.arg style} = {.val ggplot2}.",
+            "i" = "Install it with {.run install.packages('ggplot2')}."
+          )
         )
       }
 
       . <- fit <- upr <- lwr <- date <- col1 <- col2 <- '.ggplot.var'
-      preds_ggplot <- metab_preds_all %>%
-        filter(as %in% y_var) %>%
-        group_by(as) %>%
+      preds_ggplot <- metab_preds_all |>
+        filter(as %in% y_var) |>
+        group_by(as) |>
         do({
           if (all(is.na(.$fit))) .[FALSE, ] else .
-        }) %>%
+        }) |>
         ungroup()
       if ('GPP' %in% names(y_lim)) {
         lim <- y_lim[['GPP']][1]
@@ -138,16 +141,22 @@ plot_metab_preds <- function(
     'dygraphs' = {
       if (!requireNamespace("dygraphs", quietly = TRUE)) {
         .cli_abort(
-          "call install.packages('dygraphs') before plotting with style='dygraphs'"
+          c(
+            "{.pkg dygraphs} is required for {.arg style} = {.val dygraphs}.",
+            "i" = "Install it with {.run install.packages('dygraphs')}."
+          )
         )
       }
       if (!requireNamespace("xts", quietly = TRUE)) {
         .cli_abort(
-          "call install.packages('xts') before plotting with style='dygraphs'"
+          c(
+            "{.pkg xts} is required for {.arg style} = {.val dygraphs}.",
+            "i" = "Install it with {.run install.packages('xts')}."
+          )
         )
       }
 
-      .cli_abort("no dygraphs option yet")
+      .cli_abort("{.arg style} = {.val dygraphs} is not yet supported.")
     }
   )
 

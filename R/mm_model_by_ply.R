@@ -79,22 +79,24 @@ mm_model_by_ply <- function(
 ) {
   # avoid some ugly edge cases
   if (missing(day_start) || is.null(day_start)) {
-    .cli_abort('day_start must be specified')
+    .cli_abort("{.arg day_start} must be specified.")
   }
   if (missing(day_end) || is.null(day_end)) {
-    .cli_abort('day_end must be specified')
+    .cli_abort("{.arg day_end} must be specified.")
   }
   if (day_end < day_start) {
-    .cli_abort("day_end must be greater than or equal to day_start")
+    .cli_abort(
+      "{.arg day_end} must be greater than or equal to {.arg day_start}."
+    )
   }
   if (day_end - day_start > 48) {
-    .cli_abort("day_end - day_start must not be > 48")
+    .cli_abort("{.arg day_end} - {.arg day_start} cannot exceed 48 hours.")
   } # would break our odd/even algorithm
   if (-24 >= day_start || day_start >= 24) {
-    .cli_abort("day_start must be in (-24,24)")
+    .cli_abort("{.arg day_start} must be between -24 and 24.")
   }
   if (0 >= day_end || day_end >= 48) {
-    .cli_abort("day_end must be in (0,48)")
+    .cli_abort("{.arg day_end} must be between 0 and 48.")
   }
 
   #### Order data and daily data by solar.time/date, if not getting error
@@ -122,10 +124,10 @@ mm_model_by_ply <- function(
   # two additional columns (odd.- and even.- date.groups)
   data.plys <- as.data.frame(data)
   if (!('solar.time' %in% names(data.plys))) {
-    .cli_abort("data must contain a 'solar.time' column")
+    .cli_abort("{.arg data} must contain a {.var solar.time} column.")
   }
   if (any(is.na(data.plys$solar.time))) {
-    .cli_abort("no values in solar.time may be NA")
+    .cli_abort("{.var solar.time} cannot contain missing values.")
   }
   min_timestep <- mm_get_timestep(data$solar.time, format = 'unique')[1]
   if (
@@ -133,23 +135,18 @@ mm_model_by_ply <- function(
   ) {
     timesteps <- as.numeric(diff(data$solar.time), units = "days")
     timegoof <- which.min(timesteps) + c(0, 1)
+    start_time <- data$solar.time[timegoof[1]]
+    end_time <- data$solar.time[timegoof[2]]
     .cli_abort(
-      "min timestep is <= 0: ",
-      format(min_timestep, digits = 3),
-      " days from ",
-      data$solar.time[timegoof[1]],
-      " (row ",
-      timegoof[1],
-      ") to ",
-      data$solar.time[timegoof[2]],
-      " (row ",
-      timegoof[2],
-      ")"
+      c(
+        "Timestamps in {.arg data} must increase.",
+        "x" = "Minimum timestep is {format(min_timestep, digits = 3)} days from {.val {start_time}} (row {timegoof[1]}) to {.val {end_time}} (row {timegoof[2]})."
+      )
     )
   }
   if (!is.null(data_daily)) {
     if (!('date' %in% names(data_daily))) {
-      .cli_abort("data_daily must contain a 'date' column")
+      .cli_abort("{.arg data_daily} must contain a {.var date} column.")
     }
     min_datestep <- mm_get_timestep(data_daily$date, format = 'unique')
     if (
@@ -159,18 +156,13 @@ mm_model_by_ply <- function(
     ) {
       timesteps <- as.numeric(diff(data_daily$date), units = "days")
       timegoof <- which.min(timesteps) + c(0, 1)
+      start_date <- data_daily$date[timegoof[1]]
+      end_date <- data_daily$date[timegoof[2]]
       .cli_abort(
-        "min datestep is <= 0: ",
-        min_datestep,
-        " days from ",
-        data_daily$date[timegoof[1]],
-        " (row ",
-        timegoof[1],
-        ") to ",
-        data_daily$date[timegoof[2]],
-        " (row ",
-        timegoof[2],
-        ")"
+        c(
+          "Dates in {.arg data_daily} must increase.",
+          "x" = "Minimum date step is {min_datestep} days from {.val {start_date}} (row {timegoof[1]}) to {.val {end_date}} (row {timegoof[2]})."
+        )
       )
     }
   }
@@ -191,12 +183,12 @@ mm_model_by_ply <- function(
   # to sequential runs of values in date.group that have the same value.
   get_runs <- function(date.group) {
     values <- start <- end <- '.dplyr.var'
-    replace(date.group, is.na(date.group), '') %>%
-      rle() %>%
-      unclass %>%
-      as_tibble %>%
-      mutate(end = cumsum(lengths), start = c(1, 1 + end[-n()])) %>%
-      filter(values != '') %>%
+    replace(date.group, is.na(date.group), '') |>
+      rle() |>
+      unclass() |>
+      as_tibble() |>
+      mutate(end = cumsum(lengths), start = c(1, 1 + end[-n()])) |>
+      filter(values != '') |>
       select(date = values, start, end)
   }
   # Determine which rows go with which date, and label dates as either odd or
@@ -253,7 +245,7 @@ mm_model_by_ply <- function(
           #data.plys[data.plys.rows, c('odd.date.group','even.date.group')] <- c(secondary.date, primary.date)
         }
       }))
-    ) %>%
+    ) |>
       as.data.frame(stringsAsFactors = FALSE)
 
     # filter out dates that don't ever appear on their own - this especially weeds
@@ -275,12 +267,12 @@ mm_model_by_ply <- function(
     runs <- bind_rows(
       get_runs(data.plys$odd.date.group),
       get_runs(data.plys$even.date.group)
-    ) %>%
-      filter(date %in% unique.dates) %>%
-      arrange(date) %>%
+    ) |>
+      filter(date %in% unique.dates) |>
+      arrange(date) |>
       mutate(date = as.Date(date, tz = tz(data$solar.time)))
     hour <- odd.date.group <- even.date.group <- '.dplyr.var'
-    data_plys <- data.plys %>%
+    data_plys <- data.plys |>
       select(-date, -hour, -odd.date.group, -even.date.group)
     out_list <- lapply(seq_along(runs$date), function(dt) {
       # pick out the inst & daily plys for this date
@@ -298,7 +290,7 @@ mm_model_by_ply <- function(
       # FALSE or NA, it will be passed as NA to the model_fun and only computed
       # there if needed for specific tests
       if (length(timestep_days) > 1) {
-        .cli_abort("expecting no more than 1 value in timestep_days")
+        .cli_abort("{.var timestep_days} must contain at most one value.")
       }
       timestep_days <- if (isTRUE(timestep_days)) {
         mm_get_timestep(data_ply$solar.time, format = 'mean')
@@ -353,8 +345,8 @@ mm_model_by_ply <- function(
           ply_validity = NA,
           timestep_days = NA,
           ...
-        ) %>%
-          mutate(date = as.Date(NA)) %>%
+        ) |>
+          mutate(date = as.Date(NA)) |>
           select(date, everything())
       ),
       error = function(e) {
@@ -372,9 +364,9 @@ mm_model_by_ply <- function(
     example_choice <-
       sapply(out_list, function(out) {
         if (is.null(out)) 0 else ncol(out)
-      }) %>%
+      }) |>
       which.max()
     out_example <- out_list[[example_choice]][FALSE, ]
-    bind_rows(c(list(out_example), out_list)) %>% as.data.frame()
+    bind_rows(c(list(out_example), out_list)) |> as.data.frame()
   }
 }

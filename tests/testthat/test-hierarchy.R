@@ -18,14 +18,14 @@ manual_tests2 <- function() {
     site,
     disch = choose_data_source('disch', 'nwis_03259757'),
     model = 'metab_bayes'
-  ) %>%
-    filter(complete.cases(.))
+  ) |>
+    (\(x) filter(x, complete.cases(x)))()
   dat <- streamMetabolizer:::mm_filter_dates(
     datall,
     date_start = '2014-04-03',
     date_end = '2014-04-12'
   )
-  dat %>%
+  dat |>
     gather(
       variable,
       value,
@@ -35,7 +35,7 @@ manual_tests2 <- function() {
       temp.water,
       light,
       discharge
-    ) %>%
+    ) |>
     ggplot(aes(x = solar.time, y = value, color = variable)) +
     geom_line() +
     facet_grid(variable ~ ., scales = 'free_y') +
@@ -67,15 +67,13 @@ manual_tests2 <- function() {
     check_validity = FALSE,
     stringsAsFactors = FALSE
   )
-  stanfiles <- opts %>%
-    rowwise %>%
-    do(tibble::tibble(model_name = do.call(mm_name, .))) %>%
-    unlist(use.names = FALSE) %>%
-    sort %>%
-    {
-      .[!grepl('__', .)]
-    } %>%
-    .[. %in% mm_valid_names('bayes')]
+  stanfiles <- opts |>
+    rowwise() |>
+    do(tibble::tibble(model_name = do.call(mm_name, .))) |>
+    unlist(use.names = FALSE) |>
+    sort() |>
+    (\(x) x[!grepl('__', x)])() |>
+    (\(x) x[x %in% mm_valid_names('bayes')])()
 
   mms <- lapply(setNames(nm = stanfiles), function(sf) {
     message(sf)
@@ -96,7 +94,7 @@ manual_tests2 <- function() {
   # see issue #291 for periodic output reports
 
   # fitting times
-  sapply(mms, function(mm) get_fitting_time(mm)[['elapsed']])
+  sapply(mms, \(mm) get_fitting_time(mm)[['elapsed']])
 
   # K~Q relationship estimates
   kqfits <- lapply(mms, function(mm) {
@@ -242,7 +240,7 @@ manual_tests2 <- function() {
             lnQ_bin2 = get_mcmc_data(mm)$lnQ_bins[2, ],
             lnQ_bin_weights1 = get_mcmc_data(mm)$lnQ_bin_weights[1, ],
             lnQ_bin_weights2 = get_mcmc_data(mm)$lnQ_bin_weights[2, ]
-          ) %>%
+          ) |>
           mutate(
             lnQ_daily = K$lnQ[lnQ_bin1] *
               lnQ_bin_weights1 +
@@ -288,19 +286,19 @@ manual_tests2 <- function() {
   pars <-
     bind_rows(lapply(mms, function(mm) {
       modname <- get_specs(mm)$model_name
-      get_params(mm) %>%
-        mutate(model = modname) %>%
-        select(model, everything()) %>%
+      get_params(mm) |>
+        mutate(model = modname) |>
+        select(model, everything()) |>
         bind_cols(select(get_fit(mm)$daily, ends_with('Rhat')))
-    })) %>%
-    select(model, date, GPP.daily, ER.daily, K600.daily) %>%
+    })) |>
+    select(model, date, GPP.daily, ER.daily, K600.daily) |>
     arrange(date, model)
   pars
-  pars %>%
-    gather(param, estimate, GPP.daily, ER.daily, K600.daily) %>%
+  pars |>
+    gather(param, estimate, GPP.daily, ER.daily, K600.daily) |>
     mutate(
       param = ordered(param, levels = c('GPP.daily', 'ER.daily', 'K600.daily'))
-    ) %>%
+    ) |>
     ggplot(aes(x = date, y = estimate, color = model)) +
     geom_abline(intercept = 0, slope = 0, color = 'darkgrey') +
     geom_point() +
@@ -311,16 +309,16 @@ manual_tests2 <- function() {
   # daily metabolism preds
   preds <-
     bind_rows(lapply(mms, function(mm) {
-      predict_metab(mm) %>%
-        mutate(model = get_specs(mm)$model_name) %>%
+      predict_metab(mm) |>
+        mutate(model = get_specs(mm)$model_name) |>
         select(model, everything())
-    })) %>%
-    select(model, date, GPP, ER) %>%
+    })) |>
+    select(model, date, GPP, ER) |>
     arrange(date, model)
   preds
-  preds %>%
-    gather(pred, estimate, GPP, ER) %>%
-    mutate(pred = ordered(pred, levels = c('GPP', 'ER'))) %>%
+  preds |>
+    gather(pred, estimate, GPP, ER) |>
+    mutate(pred = ordered(pred, levels = c('GPP', 'ER'))) |>
     ggplot(aes(x = date, y = estimate, color = model)) +
     geom_abline(intercept = 0, slope = 0, color = 'darkgrey') +
     geom_point() +
@@ -415,7 +413,7 @@ manual_tests <- function() {
   x <- seq(0, 1, by = 0.01)
   plot(x = x, y = dgamma(x, shape = 1, rate = 10), type = 'l', ylim = c(0, 4))
   qgamma(p = c(0.001, 0.9), shape = 1, rate = 100)
-  sp <- mm_name('bayes', pool_K600 = 'normal') %>%
+  sp <- mm_name('bayes', pool_K600 = 'normal') |>
     specs(
       K600_daily_mu_mu = 30,
       K600_daily_mu_sigma = 30,
@@ -432,7 +430,7 @@ manual_tests <- function() {
     )
   mma <- metab(sp, data = dat)
   get_fitting_time(mma) # 877 sec
-  #mms <- replace(sp, 'split_dates', TRUE) %>% metab(data=dat)
+  #mms <- replace(sp, 'split_dates', TRUE) |> metab(data=dat)
   #get_fitting_time(mms) # 73 sec
 
   mn <- mm_name(

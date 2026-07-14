@@ -234,8 +234,8 @@ get_fitting_time(mm)
 
 # with chaining & customization
 library(dplyr)
-mm <- mm_name('mle', ode_method='euler') \%>\%
-  specs(init.GPP.daily=40) \%>\%
+mm <- mm_name('mle', ode_method='euler') |>
+  specs(init.GPP.daily=40) |>
   metab(data=dat)
 predict_metab(mm)
 \dontrun{

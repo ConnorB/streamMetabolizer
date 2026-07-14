@@ -178,7 +178,9 @@ sim_get_par <- function(
     # option d: spec is function; return output from call
     fitvals <- do.call(parsp, as.list(eval_env))
   } else {
-    .cli_abort(paste0("specs$", par_name, " must be numeric or a function"))
+    .cli_abort(
+      "{.code specs${par_name}} must be numeric or a function, not {.obj_type_friendly {parsp}}."
+    )
   }
 
   # determine whether data will come from data_daily and/or specs; set combovals
@@ -193,24 +195,17 @@ sim_get_par <- function(
     # competing data coming from both data_daily and specs; tell the user what
     # will happen, find the final coalesced values, and set fitvals to only
     # contain numbers on dates when data_daily doesn't supply a number
-    .cli_inform(paste0(
-      'non-NA values for data_daily$',
-      par.name,
-      ' will override numbers from specs$',
-      par_name
-    ))
+    .cli_inform(
+      "Non-missing values in {.code data_daily${par.name}} override values from {.code specs${par_name}}."
+    )
     combovals <- coalesce(as.numeric(ddvals), as.numeric(fitvals))
     fitvals[!is.na(ddvals)] <- NA
   }
   if (is.null(fitvals) && is.null(ddvals)) {
     if (required) {
-      .cli_abort(paste0(
-        "need column '",
-        par.name,
-        "' in data_daily or parameter '",
-        par_name,
-        "' in specs"
-      ))
+      .cli_abort(
+        "Provide column {.var {par.name}} in {.arg data_daily} or parameter {.arg {par_name}} in {.arg specs}."
+      )
     } else {
       combovals <- NULL
     }
@@ -417,7 +412,7 @@ sim_Kb <- function(
 ) {
   # check Q bins
   if (!is.numeric(K600_lnQ_nodes_centers)) {
-    .cli_abort("K600_lnQ_nodes_centers must be numeric")
+    .cli_abort("{.arg K600_lnQ_nodes_centers} must be numeric.")
   }
 
   # simulate piecewise (binned) relationship for lnK600 ~ lnQ

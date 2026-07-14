@@ -19,7 +19,7 @@ convert_k600_to_kGAS <- function(k600, temperature, gas = "O2") {
   bad_nans <- which(!is.na(k600) & !is.na(temperature) & is.nan(out))
   if (length(bad_nans) > 0) {
     .cli_warn(
-      'one or more k600 or temperature values are extreme, causing NaNs in the k600-kGAS conversion'
+      "One or more extreme {.arg k600} or {.arg temperature} values produced {.val NaN} in the k600-to-kGAS conversion."
     )
   }
 
@@ -44,7 +44,7 @@ convert_kGAS_to_k600 <- function(kGAS, temperature, gas = "O2") {
   bad_nans <- which(!is.na(temperature) & is.nan(conversion))
   if (length(bad_nans) > 0) {
     .cli_warn(
-      'one or more temperature values are extreme, causing NaNs in the kGAS-k600 conversion'
+      "One or more extreme {.arg temperature} values produced {.val NaN} in the kGAS-to-k600 conversion."
     )
   }
 

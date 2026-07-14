@@ -86,12 +86,12 @@ metab_bayes <- function(
       xor(num_discharge_cols > 0, pool_K600_type %in% c('linear', 'binned'))
     ) {
       .cli_abort(
-        'discharge data should be included if & only if pool_K600_type indicates hierarchy'
+        "Discharge data must be included if and only if {.code pool_K600_type} is {.val linear} or {.val binned}."
       )
     }
     if (num_discharge_cols > 1) {
       .cli_abort(
-        'either discharge or discharge.daily may be specified, but not both'
+        "Specify either {.var discharge} or {.var discharge.daily}, not both."
       )
     }
 
@@ -188,20 +188,20 @@ metab_bayes <- function(
     # check the format of keep_mcmcs (more checks, below, are split_dates-specific)
     if (is.logical(specs$keep_mcmcs)) {
       if (length(specs$keep_mcmcs) != 1) {
-        .cli_abort("if keep_mcmcs is logical, it must have length 1")
+        .cli_abort("Logical {.code specs$keep_mcmcs} must have length 1.")
       }
     } else if (specs$split_dates == FALSE) {
       .cli_abort(
-        "if split_dates==FALSE, keep_mcmcs must be a single logical value"
+        "{.code specs$keep_mcmcs} must be a single logical value when {.code specs$split_dates} is {.val FALSE}."
       )
     }
     if (is.logical(specs$keep_mcmc_data)) {
       if (length(specs$keep_mcmc_data) != 1) {
-        .cli_abort("if keep_mcmc_data is logical, it must have length 1")
+        .cli_abort("Logical {.code specs$keep_mcmc_data} must have length 1.")
       }
     } else if (specs$split_dates == FALSE) {
       .cli_abort(
-        "if split_dates==FALSE, keep_mcmc_data must be a single logical value"
+        "{.code specs$keep_mcmc_data} must be a single logical value when {.code specs$split_dates} is {.val FALSE}."
       )
     }
 
@@ -238,17 +238,11 @@ metab_bayes <- function(
         }
       }
       . <- '.dplyr.var'
-      compile_log <- extract_object_list('compile_log') %>%
-        {
-          .[!sapply(., is.null)]
-        } %>%
-        {
-          if (!is.null(.)) setNames(., 'Compilation') else .
-        }
-      log <- extract_object_list('log') %>%
-        {
-          setNames(., paste0('MCMC_', names(.)))
-        }
+      compile_log <- extract_object_list('compile_log') |>
+        (\(x) x[!vapply(x, is.null, logical(1))])() |>
+        (\(x) if (!is.null(x)) setNames(x, 'Compilation') else x)()
+      log <- extract_object_list('log') |>
+        (\(x) setNames(x, paste0('MCMC_', names(x))))()
       bayes_log <- c(compile_log, log)
       bayes_compile_time <- bayes_all_list[['compile_time']]
       bayes_mcmc <- extract_object_list('mcmcfit')
@@ -274,7 +268,7 @@ metab_bayes <- function(
           (specs$day_end - specs$day_start) > 24
       ) {
         .cli_warn(
-          "multi-day models should probably have day_end - day_start <= 24 hours"
+          "For multi-day models, {.code day_end - day_start} should not exceed 24 hours."
         )
       }
       bayes_all_list <- bayes_allply(
@@ -285,11 +279,9 @@ metab_bayes <- function(
       )
       # if we saved the modeling object(s) in the list, pull them out now
       . <- '.dplyr.var'
-      bayes_log <- bayes_all_list[c('compile_log', 'log')] %>%
-        setNames(c('Compilation', 'MCMC_All_Days')) %>%
-        {
-          .[!sapply(., is.null)]
-        }
+      bayes_log <- bayes_all_list[c('compile_log', 'log')] |>
+        setNames(c('Compilation', 'MCMC_All_Days')) |>
+        (\(x) x[!vapply(x, is.null, logical(1))])()
       bayes_compile_time <- bayes_all_list[['compile_time']]
       bayes_mcmc <- bayes_all_list$mcmcfit
       bayes_mcmc_data <- bayes_all_list$mcmc_data
@@ -324,19 +316,23 @@ metab_bayes <- function(
   if (success) {
     mm@data <- predict_DO(mm)
   } else {
-    warntxt <- paste0(
-      'Modeling failed\n',
-      if (length(bayes_all$warnings) > 0) {
-        paste0(
-          '  Warnings:\n',
-          paste0('    ', bayes_all$warnings, collapse = '\n')
+    failure_message <- "Modeling failed"
+    if (length(bayes_all$warnings) > 0) {
+      failure_message <- c(
+        failure_message,
+        stats::setNames(
+          bayes_all$warnings,
+          rep("!", length(bayes_all$warnings))
         )
-      },
-      if (length(bayes_all$errors) > 0) {
-        paste0('  Errors:\n', paste0('    ', bayes_all$errors, collapse = '\n'))
-      }
-    )
-    .cli_warn(warntxt)
+      )
+    }
+    if (length(bayes_all$errors) > 0) {
+      failure_message <- c(
+        failure_message,
+        stats::setNames(bayes_all$errors, rep("x", length(bayes_all$errors)))
+      )
+    }
+    .cli_warn(failure_message)
   }
 
   # Return
@@ -427,7 +423,7 @@ bayes_1ply <- function(
     warnings = paste0(trimws(unique(warn_strs)), collapse = "; "),
     errors = paste0(trimws(unique(stop_strs)), collapse = "; "),
     stringsAsFactors = FALSE
-  ) %>%
+  ) |>
     mutate(log = list(bayes_1day$log))
 
   # attach the compile_log, mcmcfit, & mcmcdata if requested/available
@@ -484,7 +480,7 @@ bayes_allply <- function(
     tryCatch(
       {
         if (is.null(data_all) || nrow(data_all) == 0) {
-          .cli_abort("no valid days of data")
+          .cli_abort("No valid days of data were available.")
         }
         # first: try to run the bayes fitting function
         data_list <- prepdata_bayes(
@@ -518,7 +514,7 @@ bayes_allply <- function(
     solar.time = data_all$solar.time,
     date_index = rep(seq_len(data_list$d), each = data_list$n),
     time_index = rep(seq_len(data_list$n), times = data_list$d)
-  ) %>%
+  ) |>
     left_join(date_df, by = 'date_index')
 
   # stop_strs may have accumulated during prepdata_bayes() or runstan_bayes()
@@ -554,31 +550,31 @@ bayes_allply <- function(
   } else {
     # match dates back to daily estimates, datetimes back to inst
     date_index <- time_index <- index <- '.dplyr.var'
-    bayes_allday$daily <- bayes_allday$daily %>%
-      left_join(date_df, by = 'date_index') %>%
-      select(-date_index, -time_index, -index) %>%
+    bayes_allday$daily <- bayes_allday$daily |>
+      left_join(date_df, by = 'date_index') |>
+      select(-date_index, -time_index, -index) |>
       select(date, everything())
     if (!is.null(bayes_allday$inst)) {
-      bayes_allday$inst <- bayes_allday$inst %>%
-        left_join(datetime_df, by = c('date_index', 'time_index')) %>%
-        select(-date_index, -time_index, -index) %>%
+      bayes_allday$inst <- bayes_allday$inst |>
+        left_join(datetime_df, by = c('date_index', 'time_index')) |>
+        select(-date_index, -time_index, -index) |>
         select(date, solar.time, everything())
     }
   }
 
   # add columns for compatibility with other dfs (e.g., removed) & methods
   # (e.g., predict_metab)
-  bayes_allday$daily <- bayes_allday$daily %>%
+  bayes_allday$daily <- bayes_allday$daily |>
     mutate(valid_day = TRUE, warnings = '', errors = '')
 
   # add back the dates that were removed during date filtering
   if (nrow(removed) > 0) {
     if (nrow(bayes_allday$daily) > 0) {
-      bayes_allday$daily <- bayes_allday$daily %>%
+      bayes_allday$daily <- bayes_allday$daily |>
         full_join(
           mutate(removed, valid_day = FALSE, warnings = ''),
           by = c('date', 'valid_day', 'warnings', 'errors')
-        ) %>%
+        ) |>
         arrange(date)
     } else {
       GPP_daily_2.5pct <- GPP_daily_50pct <- GPP_daily_97.5pct <- ER_daily_2.5pct <- ER_daily_50pct <- ER_daily_97.5pct <-
@@ -597,7 +593,7 @@ bayes_allply <- function(
           K600_daily_97.5pct = NA,
           valid_day = FALSE,
           warnings = ''
-        ) %>%
+        ) |>
         select(
           date,
           GPP_daily_2.5pct,
@@ -648,7 +644,7 @@ prepdata_bayes <- function(
 ) {
   # (formerly removed units here, no longer needed)
   if (length(ply_date) != 1) {
-    .cli_abort("ply_date must have length 1")
+    .cli_abort("{.arg ply_date} must have length 1.")
   }
   if (!is.na(ply_date)) {
     data$date <- as.Date(ply_date)
@@ -659,16 +655,20 @@ prepdata_bayes <- function(
   num_dates <- length(date_table)
   num_daily_obs <- unique(unname(date_table))
   if (length(num_daily_obs) > 1) {
-    .cli_warn(paste0(
-      sapply(num_daily_obs, function(ndo) {
-        tslabel <- paste(ndo, 'rows per day')
+    rows_by_date <- vapply(
+      num_daily_obs,
+      function(ndo) {
         tsdates <- names(date_table)[date_table == ndo]
-        paste0(tslabel, ': ', paste0(tsdates, collapse = ', '))
-      }),
-      collapse = '\n'
+        paste0(ndo, " rows per day: ", paste(tsdates, collapse = ", "))
+      },
+      character(1)
+    )
+    .cli_warn(c(
+      "Dates contain differing numbers of observations.",
+      stats::setNames(rows_by_date, rep("!", length(rows_by_date)))
     ))
     .cli_abort(
-      "dates have differing numbers of rows; observations cannot be combined in matrix"
+      "Observations cannot be combined because dates contain differing numbers of rows."
     )
   }
   time_by_date_matrix <- function(vec) {
@@ -682,7 +682,7 @@ prepdata_bayes <- function(
     unique(timevec)
   })
   if (!all.equal(unique_dates, names(date_table))) {
-    .cli_abort("couldn't fit given dates into matrix")
+    .cli_abort("Could not align the supplied dates in a matrix.")
   }
 
   # confirm that every day has the same modal timestep and put a value on that
@@ -701,7 +701,7 @@ prepdata_bayes <- function(
     require_unique = TRUE
   )
   if (length(unique(round(timestep_eachday, digits = 10))) != 1) {
-    .cli_abort("could not determine a single timestep for all observations")
+    .cli_abort("Could not determine a single timestep for all observations.")
   }
   timestep_days <- mean(timestep_eachday)
   n24 <- round(1 / timestep_days)
@@ -709,7 +709,7 @@ prepdata_bayes <- function(
   # give message if day length is too short
   if (n24 > num_daily_obs) {
     .cli_abort(
-      "day_end - day_start < 24 hours; aborting because daily metabolism could be wrong"
+      "{.arg day_end} - {.arg day_start} must span at least 24 hours for daily metabolism estimates."
     )
   }
 
@@ -726,13 +726,8 @@ prepdata_bayes <- function(
     })
     daily_light_totals <- colSums(mat_light * in_solar_day)
     if (any(daily_light_totals <= 0)) {
-      .cli_abort(
-        'daily light total is <= 0 on ',
-        paste(
-          names(date_table)[which(daily_light_totals <= 0)],
-          collapse = ', '
-        )
-      )
+      bad_dates <- names(date_table)[which(daily_light_totals <= 0)]
+      .cli_abort("Daily light total is not positive on {.val {bad_dates}}.")
     }
     light_frac <- sweep(
       mat_light,
@@ -792,12 +787,9 @@ prepdata_bayes <- function(
           })
           daily_totals <- colSums(mat_light * in_solar_day)
           if (any(daily_totals <= 0)) {
+            bad_dates <- names(date_table)[which(daily_totals <= 0)]
             .cli_abort(
-              'daily light total is <= 0 on ',
-              paste(
-                names(date_table)[which(daily_totals <= 0)],
-                collapse = ', '
-              )
+              "Daily light total is not positive on {.val {bad_dates}}."
             )
           }
           sweep(mat_light, MARGIN = 2, STATS = daily_totals, FUN = `/`) /
@@ -829,22 +821,23 @@ prepdata_bayes <- function(
           more_rows <- if (length(bad_rows) > 3) length(bad_rows) - 3 else NA
           bad_times <- data$solar.time[show_rows]
           bad_temps <- data$temp.water[show_rows]
-          .cli_abort(sprintf(
-            'NaNs in KO2-K600 conversion at %s%s',
-            paste0(
-              sprintf(
-                '%s (temp.water=%0.2f)',
-                format(bad_times, '%Y-%m-%d %H:%M:%S'),
-                bad_temps
-              ),
-              collapse = ', '
-            ),
-            if (!is.na(more_rows)) {
-              sprintf(', and %d more rows', more_rows)
-            } else {
-              ''
-            }
-          ))
+          bad_details <- paste0(
+            format(bad_times, '%Y-%m-%d %H:%M:%S'),
+            ' (temp.water=',
+            format(bad_temps, digits = 2),
+            ')'
+          )
+          failure_message <- c(
+            "The KO2-to-K600 conversion produced {.val NaN}.",
+            "x" = "Affected observation{?s}: {.val {bad_details}}."
+          )
+          if (!is.na(more_rows)) {
+            failure_message <- c(
+              failure_message,
+              "i" = "{more_rows} additional row{?s} {?was/were} affected."
+            )
+          }
+          .cli_abort(failure_message)
         }
         time_by_date_matrix(KO2_conv_vec)
       },
@@ -869,7 +862,7 @@ prepdata_bayes <- function(
   # check that the params_out are unique (non-unique messes up our parsing of
   # the stanfit output)
   if (length(specs$params_out) != length(unique(specs$params_out))) {
-    .cli_abort('params_out must all be unique')
+    .cli_abort("All values in {.code specs$params_out} must be unique.")
   }
 
   data_list
@@ -932,22 +925,14 @@ runstan_bayes <- function(
   n_cores <- min(tot_cores, n_cores)
   stan_engine <- match.arg(stan_engine)
   if (verbose) {
-    .cli_inform(paste0(
-      "MCMC (",
-      stan_engine,
-      "): requesting ",
-      n_chains,
-      " chains on ",
-      n_cores,
-      " of ",
-      tot_cores,
-      " available cores"
-    ))
+    .cli_inform(
+      "MCMC ({.val {stan_engine}}): requesting {n_chains} chain{?s} on {n_cores} of {tot_cores} available core{?s}."
+    )
   }
 
   if (stan_engine == 'rstan') {
     if (!requireNamespace("rstan", quietly = TRUE)) {
-      .cli_abort("the rstan package is required for Stan MCMC models")
+      .cli_abort("{.pkg rstan} is required for Stan MCMC models.")
     }
 
     compiled <- load_rstan_model(model_path, verbose = verbose)
@@ -966,7 +951,7 @@ runstan_bayes <- function(
     )
 
     if (verbose) {
-      .cli_inform("sampling Stan model")
+      .cli_inform("Sampling the Stan model.")
     }
     consolelog <- capture.output(
       runstan_out <- rstan::sampling(
@@ -987,7 +972,7 @@ runstan_bayes <- function(
     )
   } else {
     if (!requireNamespace('cmdstanr', quietly = TRUE)) {
-      .cli_abort('the cmdstanr package is required for Stan MCMC models')
+      .cli_abort("{.pkg cmdstanr} is required for Stan MCMC models.")
     }
     cmdstan_version <- cmdstanr::cmdstan_version(error_on_NA = FALSE)
     if (
@@ -996,8 +981,10 @@ runstan_bayes <- function(
         is.na(cmdstan_version)
     ) {
       .cli_abort(
-        'CmdStanR is installed, but CmdStan is not configured. ',
-        'Install it with cmdstanr::install_cmdstan() and then retry.'
+        c(
+          "CmdStan is not configured",
+          "i" = "Install it with {.fn cmdstanr::install_cmdstan} and try again."
+        )
       )
     }
     cache_dir <- cmdstan_cache_dir(model_path, cmdstan_version)
@@ -1027,27 +1014,31 @@ runstan_bayes <- function(
     return_codes <- runstan_out$return_codes()
     if (any(is.na(return_codes) | return_codes != 0)) {
       failed_chains <- which(is.na(return_codes) | return_codes != 0)
-      .cli_abort(
-        'CmdStan sampling failed for chain',
-        if (length(failed_chains) > 1) 's ' else ' ',
-        paste(failed_chains, collapse = ', '),
-        ' (return code',
-        if (length(failed_chains) > 1) 's ' else ' ',
-        paste(return_codes[failed_chains], collapse = ', '),
-        ').',
-        if (length(consolelog) > 0) {
-          paste0('\n', paste(tail(consolelog, 20), collapse = '\n'))
-        }
+      failed_return_codes <- return_codes[failed_chains]
+      failure_message <- c(
+        "CmdStan sampling failed",
+        "x" = "Failed chain indices: {.val {failed_chains}}; return codes: {.val {failed_return_codes}}."
       )
+      if (length(consolelog) > 0) {
+        console_tail <- paste(tail(consolelog, 20), collapse = '\n')
+        failure_message <- c(
+          failure_message,
+          "i" = "Last console output:\n{console_tail}"
+        )
+      }
+      .cli_abort(failure_message)
     }
   }
 
   # format output (but first detect and handle a failed model run)
   if (stan_engine == 'rstan') {
     if (runstan_out@mode == 2L) {
+      stan_output <- paste(capture.output(print(runstan_out)), collapse = '\n')
       .cli_abort(
-        'RStan sampling failed.\n',
-        paste(capture.output(print(runstan_out)), collapse = '\n')
+        c(
+          "RStan sampling failed",
+          "i" = "Sampler output:\n{stan_output}"
+        )
       )
     }
     stan_mat <- rstan::summary(
@@ -1147,14 +1138,23 @@ runstan_bayes <- function(
   return(stan_out)
 }
 
+rstan_stan_model <- function(...) {
+  rstan::stan_model(...)
+}
+
 #' Load or compile an RStan model using a persistent cache
 #'
 #' @param model_path Path to a Stan program.
+#' @param stan_model_fn Internal function used to compile the Stan model.
 #' @inheritParams runstan_bayes
 #' @return A list containing the `stanmodel`, compilation time, compilation
 #'   output, and cache file.
 #' @keywords internal
-load_rstan_model <- function(model_path, verbose = FALSE) {
+load_rstan_model <- function(
+  model_path,
+  verbose = FALSE,
+  stan_model_fn = rstan_stan_model
+) {
   cache_file <- rstan_cache_file(model_path)
   stan_mobj <- NULL
   if (file.exists(cache_file)) {
@@ -1165,7 +1165,7 @@ load_rstan_model <- function(model_path, verbose = FALSE) {
     if (!inherits(stan_mobj, 'stanmodel')) {
       stan_mobj <- NULL
     } else if (verbose) {
-      .cli_inform('loading cached RStan model')
+      .cli_inform("Loading the cached RStan model from {.file {cache_file}}.")
     }
   }
 
@@ -1173,10 +1173,10 @@ load_rstan_model <- function(model_path, verbose = FALSE) {
   compile_log <- NULL
   if (is.null(stan_mobj)) {
     if (verbose) {
-      .cli_inform('compiling RStan model')
+      .cli_inform("Compiling the RStan model in {.file {model_path}}.")
     }
     compile_time <- system.time({
-      stan_mobj <- rstan::stan_model(
+      stan_mobj <- stan_model_fn(
         file = model_path,
         save_dso = TRUE,
         auto_write = FALSE,
@@ -1201,7 +1201,9 @@ load_rstan_model <- function(model_path, verbose = FALSE) {
       error = function(e) FALSE
     )
     if (!cache_saved) {
-      .cli_warn('could not save the compiled RStan model cache at ', cache_file)
+      .cli_warn(
+        "Could not save the compiled RStan model cache at {.file {cache_file}}."
+      )
     }
   }
 
@@ -1260,7 +1262,9 @@ rstan_cache_file <- function(model_path) {
     writable <- cache_dir_is_writable(cache_dir)
   }
   if (!writable) {
-    .cli_abort('could not create a writable RStan model cache at ', cache_dir)
+    .cli_abort(
+      "Could not create a writable RStan model cache at {.path {cache_dir}}."
+    )
   }
   file.path(cache_dir, paste0(model_hash, '.rds'))
 }
@@ -1327,7 +1331,9 @@ cmdstan_cache_dir <- function(
     writable <- cache_dir_is_writable(cache_dir)
   }
   if (!writable) {
-    .cli_abort('could not create a writable CmdStan model cache at ', cache_dir)
+    .cli_abort(
+      "Could not create a writable CmdStan model cache at {.path {cache_dir}}."
+    )
   }
   cache_dir
 }
@@ -1341,12 +1347,12 @@ stan_model_hash <- function(model_path) {
       !file.exists(model_path) ||
       dir.exists(model_path)
   ) {
-    .cli_abort('model_path must identify an existing Stan file')
+    .cli_abort("{.arg model_path} must identify an existing Stan file.")
   }
 
   model_hash <- unname(tools::md5sum(model_path))
   if (length(model_hash) != 1 || is.na(model_hash)) {
-    .cli_abort('could not hash the Stan model at ', model_path)
+    .cli_abort("Could not hash the Stan model at {.file {model_path}}.")
   }
   model_hash
 }
@@ -1376,11 +1382,11 @@ format_mcmc_mat_split <- function(
   runmcmc_out
 ) {
   # format the matrix into a 1-row df
-  mcmc_out <- mcmc_mat %>%
-    t %>%
-    c %>% # get a 1D vector of GPP_daily_mean, GPP_sd, ..., ER_daily_mean, ER_daily_sd, ... etc
-    t %>%
-    as.data.frame() %>% # convert from 1D vector to 1-row data.frame
+  mcmc_out <- mcmc_mat |>
+    t() |>
+    c() |> # get a 1D vector of GPP_daily_mean, GPP_sd, ..., ER_daily_mean, ER_daily_sd, ... etc
+    t() |>
+    as.data.frame() |> # convert from 1D vector to 1-row data.frame
     setNames(paste0(names_params, "_", names_stats))
 
   # add the model object as a df column if requested
@@ -1518,14 +1524,14 @@ format_mcmc_mat_nosplit <- function(
       length(grep(paste0("^", dp, "(\\[|$)"), rownames(mcmc_mat)))
     })
 
-    tibble::as_tibble(mcmc_mat[dim_rows, , drop = FALSE]) %>%
-      mutate(rowname = rownames(mcmc_mat[dim_rows, , drop = FALSE])) %>%
-      select(rowname, everything()) %>%
+    tibble::as_tibble(mcmc_mat[dim_rows, , drop = FALSE]) |>
+      mutate(rowname = rownames(mcmc_mat[dim_rows, , drop = FALSE])) |>
+      select(rowname, everything()) |>
       tidyr::pivot_longer(
         cols = -rowname,
         names_to = 'stat',
         values_to = 'val'
-      ) %>%
+      ) |>
       mutate(
         variable = gsub("\\[[[:digit:]|,]+\\]", "", rowname),
         indexstr = if (1 %in% par_dims) {
@@ -1555,9 +1561,9 @@ format_mcmc_mat_nosplit <- function(
         },
         # determine the order of statistics for each variable (mean, se_mean, etc.)
         varstat = ordered(paste0(variable, '_', stat), varstat_order)
-      ) %>%
-      select(date_index, time_index, index, varstat, val) %>%
-      arrange(date_index, time_index, index) %>%
+      ) |>
+      select(date_index, time_index, index, varstat, val) |>
+      arrange(date_index, time_index, index) |>
       tidyr::pivot_wider(names_from = varstat, values_from = val)
   })
 
@@ -1661,7 +1667,7 @@ get_log.metab_bayes <- function(metab_model) {
     }
     class(out) <- c('logs_metab', class(out))
   } else {
-    .cli_inform('no log file(s) found')
+    .cli_inform("No log files were found.")
   }
   out
 }
@@ -1719,8 +1725,8 @@ predict_metab.metab_bayes <- function(
     c('50pct', '2.5pct', '97.5pct'),
     c('GPP', 'ER'),
     stringsAsFactors = FALSE
-  ) %>% #,'D'
-    select(Var2, Var1) %>% # variables were in their expand.grid order; now reshuffle them into their paste order
+  ) |> #,'D'
+    select(Var2, Var1) |> # variables were in their expand.grid order; now reshuffle them into their paste order
     apply(MARGIN = 1, FUN = function(row) {
       do.call(paste, c(as.list(row), list(sep = '_')))
     })
@@ -1728,8 +1734,8 @@ predict_metab.metab_bayes <- function(
     c('50pct', '2.5pct', '97.5pct'),
     c('GPP_daily', 'ER_daily'),
     stringsAsFactors = FALSE
-  ) %>% #,'D'
-    select(Var2, Var1) %>% # variables were in their expand.grid order; now reshuffle them into their paste order
+  ) |> #,'D'
+    select(Var2, Var1) |> # variables were in their expand.grid order; now reshuffle them into their paste order
     apply(MARGIN = 1, FUN = function(row) {
       do.call(paste, c(as.list(row), list(sep = '_')))
     })
@@ -1737,12 +1743,12 @@ predict_metab.metab_bayes <- function(
     c('', '.lower', '.upper'),
     c('GPP', 'ER'),
     stringsAsFactors = FALSE
-  ) %>% #,'D'
-    select(Var2, Var1) %>% # variables were in their expand.grid order; now reshuffle them into their paste order
+  ) |> #,'D'
+    select(Var2, Var1) |> # variables were in their expand.grid order; now reshuffle them into their paste order
     apply(MARGIN = 1, FUN = function(row) do.call(paste0, as.list(row)))
 
   # pull and retrieve the columns
-  fit <- metab_model@fit$daily %>%
+  fit <- metab_model@fit$daily |>
     mm_filter_dates(date_start = date_start, date_end = date_end)
   fit.names <- if (all(fit.names.metab %in% names(fit))) {
     fit.names.metab
@@ -1750,10 +1756,10 @@ predict_metab.metab_bayes <- function(
     fit.names.param
   } else {
     .cli_abort(
-      'could find neither GPP & ER nor GPP_daily & ER_daily in the model fit'
+      "The model fit contains neither {.var GPP} and {.var ER} nor {.var GPP_daily} and {.var ER_daily}."
     )
   }
-  preds <- fit[c('date', fit.names)] %>%
+  preds <- fit[c('date', fit.names)] |>
     setNames(c('date', metab.names)) # these errors & warnings will mostly be date validity notes, unless split_dates==T
 
   # add date-specific fitting warnings and errors as msgs.fit. though these
@@ -1766,8 +1772,8 @@ predict_metab.metab_bayes <- function(
   # separately here
   warnings <- errors <- '.dplyr.var'
   if (!is.null(fit) && all(c('date', 'warnings', 'errors') %in% names(fit))) {
-    messages <- fit %>%
-      select(date, warnings, errors) %>%
+    messages <- fit |>
+      select(date, warnings, errors) |>
       compress_msgs(
         'msgs.fit',
         warnings.overall = metab_model@fit$warnings,

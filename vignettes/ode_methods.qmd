@@ -68,7 +68,7 @@ ode_preds <- bind_rows(
   mutate(predict_DO(mm_euler), method='euler'),
   mutate(predict_DO(mm_trapezoid), method='trapezoid'),
   mutate(predict_DO(mm_rk4), method='rk4'),
-  mutate(predict_DO(mm_lsoda), method='lsoda')) %>%
+  mutate(predict_DO(mm_lsoda), method='lsoda')) |>
   mutate(DO.mod.diffeuler = DO.mod - DO.standard)
 ```
 

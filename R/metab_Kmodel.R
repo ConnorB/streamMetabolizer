@@ -45,7 +45,7 @@ NULL
 #' # create example data
 #' set.seed(24842)
 #' example_Ks <- data.frame(date=seq(as.Date("2012-08-15"),as.Date("2012-09-15"),
-#'   as.difftime(1,units='days')), discharge.daily=exp(rnorm(32,2,1)), K600.daily=rnorm(32,30,4)) %>%
+#'   as.difftime(1,units='days')), discharge.daily=exp(rnorm(32,2,1)), K600.daily=rnorm(32,30,4)) |>
 #'   mutate(K600.daily.lower=K600.daily-5, K600.daily.upper=K600.daily+6)
 #'
 #' # mean
@@ -84,13 +84,13 @@ NULL
 #'
 #' # fit a first-round MLE and extract the K estimates
 #' mm1 <- metab_mle(mle_specs, data=dat)
-#' K600_mm1 <- get_params(mm1, uncertainty='ci') %>%
+#' K600_mm1 <- get_params(mm1, uncertainty='ci') |>
 #'   select(date, K600.daily, K600.daily.lower, K600.daily.upper)
 #'
 #' # smooth the K600s
 #' mm2 <- metab_Kmodel(specs(mm_name('Kmodel', engine='mean'),
 #'   day_start=-1, day_end=23), data_daily=K600_mm1)
-#' K600_mm2 <- get_params(mm2) %>% select(date, K600.daily)
+#' K600_mm2 <- get_params(mm2) |> select(date, K600.daily)
 #'
 #' # refit the MLE with fixed K
 #' mm3 <- metab_mle(mle_specs, data=dat, data_daily=K600_mm2)
@@ -148,7 +148,9 @@ metab_Kmodel <- function(
         is.na(specs$transforms[['K600']]) ||
         isTRUE(specs$transforms[['K600']] == 'log'))
     ) {
-      .cli_abort("specs$transforms['K600'] should be NA or 'log'")
+      .cli_abort(
+        "{.code specs$transforms[['K600']]} must be {.val NA} or {.val log}."
+      )
     }
 
     # Check data for correct column names & units
@@ -236,7 +238,7 @@ prepdata_Kmodel <- function(
     ]
     if (length(columns) == 0) {
       .cli_abort(
-        "data arg is pointless without at least one of c('discharge', 'velocity')"
+        "{.arg data} must contain at least one of {.var discharge} and {.var velocity}."
       )
     }
     aggs_daily <- mm_model_by_ply(
@@ -261,14 +263,14 @@ prepdata_Kmodel <- function(
 
   # Rename the data so it's clear which K values are inputs and which are new model predictions
   if ('K600.daily.lower' %in% names(data_daily)) {
-    data_daily <- data_daily %>%
+    data_daily <- data_daily |>
       rename(
         K600.daily.obs = K600.daily,
         K600.daily.lower.obs = K600.daily.lower,
         K600.daily.upper.obs = K600.daily.upper
       )
   } else {
-    data_daily <- data_daily %>% rename(K600.daily.obs = K600.daily)
+    data_daily <- data_daily |> rename(K600.daily.obs = K600.daily)
   }
 
   # Set weights
@@ -279,10 +281,10 @@ prepdata_Kmodel <- function(
       )
     ) {
       .cli_abort(
-        "need 'K600.daily.lower', and 'K600.daily.upper' in data_daily to set weights by CI or CI/K600"
+        "{.arg data_daily} must contain {.var K600.daily.lower} and {.var K600.daily.upper} to use confidence-interval weights."
       )
     }
-    data_daily <- data_daily %>%
+    data_daily <- data_daily |>
       mutate(
         weight = switch(
           weights,
@@ -290,10 +292,10 @@ prepdata_Kmodel <- function(
           "K600/CI" = pmax(K600.daily.obs, 0) /
             (K600.daily.upper.obs - K600.daily.lower.obs)
         )
-      ) %>%
+      ) |>
       mutate(weight = weight / sum(weight, na.rm = TRUE))
   } else {
-    data_daily <- data_daily %>%
+    data_daily <- data_daily |>
       mutate(weight = 1 / length(which(!is.na(K600.daily.obs))))
   }
 
@@ -301,7 +303,7 @@ prepdata_Kmodel <- function(
 
   # Filter out undesired days. Indicate filtering by weights
   if (('CI.max' %in% names(filters)) && !isTRUE(is.na(filters[['CI.max']]))) {
-    data_daily <- data_daily %>%
+    data_daily <- data_daily |>
       mutate(
         weight = weight *
           if (
@@ -317,7 +319,7 @@ prepdata_Kmodel <- function(
     ('discharge.daily.max' %in% names(filters)) &&
       !isTRUE(is.na(filters[['discharge.daily.max']]))
   ) {
-    data_daily <- data_daily %>%
+    data_daily <- data_daily |>
       mutate(
         weight = weight *
           if (discharge.daily <= filters[['discharge.daily.max']]) 1 else 0
@@ -327,7 +329,7 @@ prepdata_Kmodel <- function(
     ('velocity.daily.max' %in% names(filters)) &&
       !isTRUE(is.na(filters[['velocity.daily.max']]))
   ) {
-    data_daily <- data_daily %>%
+    data_daily <- data_daily |>
       mutate(
         weight = weight *
           if (velocity.daily <= filters[['velocity.daily.max']]) 1 else 0
@@ -358,7 +360,7 @@ Kmodel_aggregate_day <- function(
   if (length(stop_strs) == 0) {
     cmeans_1day <- as.data.frame(t(colMeans(data_ply[columns])))
   } else {
-    cmeans_1day <- as.data.frame(t(rep(as.numeric(NA), length(columns)))) %>%
+    cmeans_1day <- as.data.frame(t(rep(as.numeric(NA), length(columns)))) |>
       setNames(columns)
   }
 
@@ -466,7 +468,9 @@ Kmodel_allply <- function(
     },
     'loess' = {
       if (length(predictors) < 1) {
-        .cli_abort("need at least one predictor for engine='loess'") # stop rather than stop_strs because it's a poorly formatted request
+        .cli_abort(
+          "At least one predictor is required for {.arg engine} = {.val loess}."
+        ) # stop rather than stop_strs because it's a poorly formatted request
       }
       formul <- formula(paste0(
         trans_preds["K600.daily.obs"],
@@ -549,10 +553,10 @@ get_params.metab_Kmodel <- function(
       is.list(metab_model@fit) &&
       exists('daily', metab_model@fit)
   ) {
-    params <- metab_model@fit$daily %>%
+    params <- metab_model@fit$daily |>
       mm_filter_dates(date_start = date_start, date_end = date_end)
   } else {
-    data_daily <- get_data_daily(metab_model) %>%
+    data_daily <- get_data_daily(metab_model) |>
       mm_filter_dates(date_start = date_start, date_end = date_end)
     ktrans <- get_specs(metab_model)$transforms[['K600']]
     do_ktrans <- !is.na(ktrans) && ktrans == 'log'
@@ -563,7 +567,7 @@ get_params.metab_Kmodel <- function(
     switch(
       engine,
       mean = {
-        params <- params %>%
+        params <- params |>
           mutate(
             K600.daily = fit[['mean']],
             K600.daily.sd = fit[['se']]
@@ -575,9 +579,9 @@ get_params.metab_Kmodel <- function(
           newdata = data_daily,
           interval = 'confidence',
           level = 0.95
-        ) %>%
+        ) |>
           as.data.frame()
-        params <- params %>%
+        params <- params |>
           mutate(
             K600.daily = preds[['fit']], # only the approx mean if ktrans=='log'
             K600.daily.sd = NA, # this shouldn't be necessary after resolving #238
@@ -588,7 +592,7 @@ get_params.metab_Kmodel <- function(
       },
       loess = {
         preds <- predict(fit, newdata = data_daily, se = TRUE)
-        params <- params %>%
+        params <- params |>
           mutate(
             K600.daily = {
               preds$fit
@@ -650,7 +654,10 @@ predict_metab.metab_Kmodel <- function(
   use_saved = TRUE
 ) {
   .cli_abort(
-    "can only predict K600.daily, not metabolism, from metab_Kmodel. try get_params() instead"
+    c(
+      "{.cls metab_Kmodel} objects cannot predict metabolism.",
+      "i" = "Use {.fn get_params} to retrieve predicted {.var K600.daily} values."
+    )
   )
 }
 
@@ -667,6 +674,9 @@ predict_DO.metab_Kmodel <- function(
   use_saved = TRUE
 ) {
   .cli_abort(
-    "can only predict K, not DO, from metab_Kmodel. try get_params() instead"
+    c(
+      "{.cls metab_Kmodel} objects cannot predict dissolved oxygen.",
+      "i" = "Use {.fn get_params} to retrieve predicted K values."
+    )
   )
 }

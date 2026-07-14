@@ -83,16 +83,16 @@ test_that('predict_metab works as expected for bad inputs', {
   )
   mm <- metab_sim(specs(mm_name('sim')), data = dat, data_daily = dat_daily)
   mp <- predict_metab(mm, use_saved = FALSE)
-  expect_true(is.na(mp[3, 'GPP']) && is.na(mp[3, 'ER']))
-  expect_true(is.na(mp[3, 'msgs.fit']))
+  expect_all_true(c(is.na(mp[3, c('GPP', 'ER')])))
+  expect_equal(mp[3, 'msgs.fit'], NA)
   expect_equal(mp[3, 'errors'], "data don't start when expected")
 
   # should NOT stop on fitting if we said not to test
   mm <- metab_mle(specs(mm_name('mle'), day_tests = c()), data = dat)
   mp <- predict_metab(mm)
-  expect_true(all(mp$msgs.fit == '       '))
-  expect_true(all(mp$warnings == ''))
-  expect_true(all(mp$errors == ''))
+  expect_all_true(mp$msgs.fit == '       ')
+  expect_all_true(mp$warnings == '')
+  expect_all_true(mp$errors == '')
   mm <- metab_sim(
     specs(mm_name('sim'), day_tests = c()),
     data = dat,
@@ -101,41 +101,38 @@ test_that('predict_metab works as expected for bad inputs', {
   mp <- predict_metab(mm)
   expect_equal(mp[3, 'GPP'], get_params(mm)[3, 'GPP.daily'])
   expect_equal(mp[3, 'ER'], get_params(mm)[3, 'ER.daily'])
-  expect_true(all(is.na(mp$msgs.fit)))
-  expect_true(all(mp$warnings == ''))
-  expect_true(all(mp$errors == ''))
+  expect_all_true(is.na(mp$msgs.fit))
+  expect_all_true(mp$warnings == '')
+  expect_all_true(mp$errors == '')
 
   # should give message and force day length to 24 hours for prediction
   dat <- data_metab('3', '30', day_start = 2)
   expect_message(
     mm <- metab_mle(specs(mm_name('mle'), day_start = 2), data = dat),
-    "differs from the model-fitting range"
+    "Daily metabolism predictions cover hours"
   )
   mp <- predict_metab(mm)
-  expect_true(all(!is.na(mp$GPP)))
-  expect_true(all(mp$msgs.fit == '       '))
-  expect_true(all(mp$warnings == ''))
-  expect_true(all(mp$warnings == ''))
-  expect_message(
-    expect_error(
-      predict_metab(mm, day_start = 20, day_end = 28, use_saved = FALSE),
-      'day_end - day_start < 24 hours'
-    ),
-    "differs from the model-fitting range"
+  expect_all_false(is.na(mp$GPP))
+  expect_all_true(mp$msgs.fit == '       ')
+  expect_all_true(mp$warnings == '')
+  expect_all_true(mp$errors == '')
+  expect_snapshot(
+    predict_metab(mm, day_start = 20, day_end = 28, use_saved = FALSE),
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     predict_metab(mm, day_start = 2, day_end = 28, use_saved = FALSE),
-    'day_end - day_start must not exceed 24 hours'
+    error = TRUE
   )
   # same for metab_night when requested day is too long
   dat <- data_metab('3', '30', day_start = 7, day_end = 36)
   expect_message(
     mm <- metab(specs(mm_name('night'), day_start = 7), data = dat),
-    "differs from the model-fitting range"
+    "Daily metabolism predictions cover hours"
   )
-  expect_error(
-    mp <- predict_metab(mm, day_start = 7, day_end = 36, use_saved = FALSE),
-    'day_end - day_start must not exceed 24 hours'
+  expect_snapshot(
+    predict_metab(mm, day_start = 7, day_end = 36, use_saved = FALSE),
+    error = TRUE
   )
   # but should allow <24 hours if needed for nighttime regression
   expect_message(
@@ -143,16 +140,13 @@ test_that('predict_metab works as expected for bad inputs', {
       specs(mm_name('night'), day_start = 12, day_end = 24),
       data = dat
     ),
-    "GPP estimates are 0 because they're for nighttime only"
+    "GPP estimates are zero because predictions cover nighttime only"
   )
   mp <- predict_metab(mm)
-  expect_true(all(!is.na(mp$ER)))
-  expect_true(all(mp$msgs.fit == '       '))
-  expect_true(all(mp$warnings == ''))
-  expect_true(all(mp$warnings == ''))
+  expect_all_false(is.na(mp$ER))
+  expect_all_true(mp$msgs.fit == '       ')
+  expect_all_true(mp$warnings == '')
+  expect_all_true(mp$errors == '')
   # and should notice if we're ignoring the day_start and day_end values
-  expect_warning(
-    mp <- predict_metab(mm, day_start = 7, day_end = 36),
-    'using saved daily metabolism values'
-  )
+  expect_snapshot(mp <- predict_metab(mm, day_start = 7, day_end = 36))
 })

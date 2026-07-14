@@ -4,12 +4,14 @@
 \alias{load_rstan_model}
 \title{Load or compile an RStan model using a persistent cache}
 \usage{
-load_rstan_model(model_path, verbose = FALSE)
+load_rstan_model(model_path, verbose = FALSE, stan_model_fn = rstan_stan_model)
 }
 \arguments{
 \item{model_path}{Path to a Stan program.}
 
 \item{verbose}{logical. give status messages?}
+
+\item{stan_model_fn}{Internal function used to compile the Stan model.}
 }
 \value{
 A list containing the \code{stanmodel}, compilation time, compilation

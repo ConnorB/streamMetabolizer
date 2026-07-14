@@ -31,15 +31,15 @@
 #' PAR.obs <- tibble::tibble(
 #'   solar.time=seq(timebounds[1], timebounds[2], by=as.difftime(3, units='hours')),
 #'   light=c(0, 0, 85.9, 1160.5, 1539.0, 933.9, 0, 0)
-#' ) %>% as.data.frame()
+#' ) |> as.data.frame()
 #' PAR.mod <- tibble::tibble(
 #'   solar.time=seq(timebounds[1], timebounds[2], by=as.difftime(0.25, units='hours')),
 #'   light=calc_light(solar.time, latitude=coords$lat, longitude=coords$lon)
-#' ) %>% as.data.frame()
+#' ) |> as.data.frame()
 #' PAR.merged <- calc_light_merged(PAR.obs, PAR.mod$solar.time,
 #'   latitude=coords$lat, longitude=coords$lon, max.gap=as.difftime(20, units='hours'))
 #' ggplot(bind_rows(mutate(PAR.obs, type='obs'), mutate(PAR.mod, type='mod'),
-#'                  mutate(PAR.merged, type='merged')) %>%
+#'                  mutate(PAR.merged, type='merged')) |>
 #'        mutate(type=ordered(type, levels=c('obs','mod','merged'))),
 #'   aes(x=solar.time, y=light, color=type)) + geom_line() + geom_point() + theme_bw()
 #' }
@@ -79,11 +79,9 @@ calc_light_merged <- function(
   }
 
   # join the tses, noting which solar.times apply to which ts
-  PAR.merged <- data.frame(solar.time, is.mod = TRUE, is.obs = NA) %>%
-    full_join(rename(PAR.obs, obs = light), by = 'solar.time') %>%
-    {
-      .[order(.$solar.time), ]
-    } %>%
+  PAR.merged <- data.frame(solar.time, is.mod = TRUE, is.obs = NA) |>
+    full_join(rename(PAR.obs, obs = light), by = 'solar.time') |>
+    arrange(solar.time) |>
     mutate(
       is.mod = ifelse(is.na(is.mod), FALSE, is.mod),
       is.obs = !is.na(obs)
@@ -122,7 +120,7 @@ calc_light_merged <- function(
 
   # compute the modeled values and then the residuals as both differences and
   # proportions, dealing with 0 specially
-  PAR.merged <- PAR.merged %>%
+  PAR.merged <- PAR.merged |>
     mutate(
       mod = calc_light(solar.time, latitude, longitude, max.PAR),
       resid.abs = obs - mod,
@@ -146,7 +144,7 @@ calc_light_merged <- function(
   )$y
 
   # do the correction from mod scale to obs scale
-  PAR.merged <- PAR.merged %>%
+  PAR.merged <- PAR.merged |>
     mutate(
       merged = ifelse(
         resid.prop.int <= 1,
@@ -156,8 +154,8 @@ calc_light_merged <- function(
     )
 
   # collect just the rows and cols we want
-  PAR.merged <- PAR.merged %>%
-    subset(is.mod) %>%
+  PAR.merged <- PAR.merged |>
+    subset(is.mod) |>
     select(solar.time, light = merged)
 
   # return

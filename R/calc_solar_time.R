@@ -24,12 +24,15 @@ calc_solar_time <- function(local.time, longitude) {
     if (!is.null(implied_tz) && !implied_tz$std_offset %in% -1:1) {
       # give some buffer. UTC longitudes vary with latitude
       .cli_warn(
-        'found non-UTC longitude for UTC timezone. Are you sure you passed in a local time?'
+        c(
+          "The longitude does not appear to use the UTC time zone.",
+          "i" = "Check that {.arg local.time} contains local clock time."
+        )
       )
     }
   }
 
-  local.time %>%
-    convert_localtime_to_UTC() %>%
+  local.time |>
+    convert_localtime_to_UTC() |>
     convert_UTC_to_solartime(longitude = longitude, time.type = 'mean solar')
 }

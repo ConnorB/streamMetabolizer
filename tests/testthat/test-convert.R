@@ -191,10 +191,9 @@ test_that("converting between UTC and solar time works", {
     adate + as.difftime(-4.661701, units = "mins"),
     tolerance = 0.0001
   )
-  expect_error(
+  expect_snapshot(
     convert_UTC_to_solartime(adate, longitude = 0, time.type = "not a type"),
-    "should be one of",
-    info = "only accept valid time.types"
+    error = TRUE
   )
   expect_lt(
     as.numeric(
@@ -269,10 +268,9 @@ test_that("converting between UTC and solar time works", {
     adate + as.difftime(+4.661701, units = "mins"),
     tolerance = 0.0001
   )
-  expect_error(
+  expect_snapshot(
     convert_solartime_to_UTC(adate, longitude = 0, time.type = "not a type"),
-    "should be one of",
-    info = "only accept valid time.types"
+    error = TRUE
   )
   expect_lt(
     as.numeric(
@@ -453,15 +451,14 @@ test_that("converting between UTC and local time works", {
     info = "different tz name"
   )
   #   error checking
-  expect_error(
+  expect_snapshot(
     convert_UTC_to_localtime(
       adate,
       latitude = 51.48,
       longitude = 0,
       time.type = "not a type"
     ),
-    'should be one of .standard local., .daylight local.',
-    info = "only accept valid time.types"
+    error = TRUE
   )
   #   real time changes
   # "POSIX has positive signs west of Greenwich" - https://opensource.apple.com/source/system_cmds/system_cmds-230/zic.tproj/datfiles/etcetera
@@ -573,10 +570,7 @@ test_that("common use-case conversions (calc_solar_time) works", {
   # the mismatch between -120 and Chicago or Fairbanks or GMT as well, without
   # being annoying...but for now, at least we're catching the most likley case
   # of user confusion between solar time and local time
-  expect_warning(
-    calc_solar_time(lubridate::with_tz(adate, 'UTC'), -120),
-    "Are you sure"
-  )
+  expect_snapshot(calc_solar_time(lubridate::with_tz(adate, 'UTC'), -120))
   expect_equal(
     calc_solar_time(adate, -120),
     calc_solar_time(lubridate::with_tz(adate, 'America/Chicago'), -120)

@@ -133,7 +133,7 @@ nightreg_1ply <- function(
         # it'd be meaningless to look at the diff from 1 night to the next 2 nights
         which_night <- which(data_ply$light < 0.1)
         if (length(which_night) == 0) {
-          .cli_abort("no nighttime rows in data_ply")
+          .cli_abort("{.arg data_ply} contains no nighttime rows.")
         }
         if (any(diff(which_night) > 1)) {
           stop_strs <- c(stop_strs, "need exactly one night per data_ply")
@@ -184,7 +184,7 @@ nightreg_1ply <- function(
         # actually stop if anything has broken so far; the tryCatch will catch it,
         # and our stop_strs will be retained for later reporting
         if (length(stop_strs) > 0) {
-          .cli_abort("")
+          .cli_abort(character(), class = "metab_night_validation")
         }
 
         # smooth DO data
@@ -258,8 +258,9 @@ nightreg_1ply <- function(
       },
       error = function(err) {
         # on error: give up, remembering error
-        if (nchar(err$message) > 0) {
-          stop_strs <<- c(stop_strs, err$message)
+        error_message <- conditionMessage(err)
+        if (nzchar(error_message)) {
+          stop_strs <<- c(stop_strs, error_message)
         }
         NA
       }
@@ -332,7 +333,7 @@ predict_DO.metab_night <- function(
   day_end <- specs$day_end
 
   # get the DO, temperature, etc. data; filter if requested
-  data <- get_data(metab_model) %>%
+  data <- get_data(metab_model) |>
     mm_filter_dates(
       date_start = date_start,
       date_end = date_end,
@@ -349,8 +350,8 @@ predict_DO.metab_night <- function(
 
   # get the metabolism (GPP, ER) data and estimates; filter if requested
   date <- ER.daily <- K600.daily <- row.first <- row.last <- ".dplyr.var"
-  metab_ests <- get_fit(metab_model) %>%
-    mm_filter_dates(date_start = date_start, date_end = date_end) %>%
+  metab_ests <- get_fit(metab_model) |>
+    mm_filter_dates(date_start = date_start, date_end = date_end) |>
     dplyr::select(date, ER.daily, K600.daily, row.first, row.last)
 
   # re-process the input data with the metabolism estimates to predict DO, using
@@ -364,7 +365,7 @@ predict_DO.metab_night <- function(
     day_tests = c(),
     required_timestep = NA, # for mm_model_by_ply
     model_name = specs$model_name
-  ) %>% # for mm_predict_DO_1ply
+  ) |> # for mm_predict_DO_1ply
     mm_filter_dates(date_start = date_start, date_end = date_end)
 }
 

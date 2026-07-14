@@ -63,8 +63,10 @@ calc_bins <- function(
   if (method != 'bounds') {
     if (!requireNamespace('ggplot2', quietly = TRUE)) {
       .cli_abort(
-        "need ggplot2 to calculate discharge bins when is.character(method). ",
-        "either install ggplot2 or switch to a numeric vector for method"
+        c(
+          "{.pkg ggplot2} is required to calculate discharge bins with {.arg method} = {.val {method}}",
+          "i" = "Install {.pkg ggplot2} or supply numeric bin boundaries."
+        )
       )
     }
     # run once with high dig.lab to parse the breaks from levels(cutvals) as numeric
@@ -74,10 +76,10 @@ calc_bins <- function(
       number = ggplot2::cut_number(vec, ..., dig.lab = 20),
       width = ggplot2::cut_width(vec, ...)
     ) # dig.lab is unavailable for width
-    bounds <- levels(cutvals) %>%
-      strsplit('\\[|\\(|\\]|,') %>%
-      lapply(function(lev) as.numeric(lev[2:3])) %>%
-      unlist() %>%
+    bounds <- levels(cutvals) |>
+      strsplit('\\[|\\(|\\]|,') |>
+      lapply(function(lev) as.numeric(lev[2:3])) |>
+      unlist() |>
       unique()
     bounds[c(1, length(bounds))] <- bounds[c(1, length(bounds))] +
       c(-1e-10, 1e-10) # add a fudge factor to the outer bounds

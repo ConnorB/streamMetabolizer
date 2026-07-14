@@ -1,18 +1,16 @@
 test_that('Stan model lookup rejects unsupported backend versions', {
-  testthat::local_mocked_bindings(
-    stan_version_for_engine = function(stan_engine) {
-      expect_equal(stan_engine, 'cmdstanr')
-      as.numeric_version('2.25.0')
-    },
-    .package = 'streamMetabolizer'
-  )
+  stan_version_fn <- function(stan_engine) {
+    expect_equal(stan_engine, 'cmdstanr')
+    as.numeric_version('2.25.0')
+  }
 
-  expect_error(
+  expect_snapshot(
     mm_locate_filename(
       'b_np_oi_tr_plrckm.stan',
-      stan_engine = 'cmdstanr'
+      stan_engine = 'cmdstanr',
+      stan_version_fn = stan_version_fn
     ),
-    'Stan version 2.25.0 is not supported'
+    error = TRUE
   )
 })
 
@@ -31,14 +29,14 @@ test_that('CmdStan draw selection respects indexed parameters', {
   second <- select_cmdstan_draws(draws, 'theta', 2)
   scalar <- select_cmdstan_draws(draws, 'sigma', 1)
 
-  expect_true(pooled$indexed)
+  expect_identical(pooled$indexed, TRUE)
   expect_equal(pooled$draws, as.vector(draws[,, 1:2, drop = FALSE]))
   expect_equal(second$draws, as.vector(draws[,, 2, drop = FALSE]))
-  expect_false(scalar$indexed)
+  expect_identical(scalar$indexed, FALSE)
   expect_equal(scalar$draws, as.vector(draws[,, 3, drop = FALSE]))
-  expect_error(
+  expect_snapshot(
     select_cmdstan_draws(draws, 'theta', 3),
-    'index does not select a valid element'
+    error = TRUE
   )
 })
 
@@ -88,23 +86,23 @@ test_that('CmdStan cache keys include the toolchain and model contents', {
   )
 
   expect_equal(first, same)
-  expect_false(identical(first, other_cmdstan))
-  expect_false(identical(first, other_cmdstanr))
-  expect_false(identical(first, other_platform))
-  expect_false(identical(first, changed))
-  expect_true(all(dir.exists(c(
+  expect_identical(identical(first, other_cmdstan), FALSE)
+  expect_identical(identical(first, other_cmdstanr), FALSE)
+  expect_identical(identical(first, other_platform), FALSE)
+  expect_identical(identical(first, changed), FALSE)
+  expect_all_true(dir.exists(c(
     first,
     other_cmdstan,
     other_cmdstanr,
     other_platform,
     changed
-  ))))
+  )))
 })
 
 test_that('CmdStan cache paths reject missing model files', {
-  expect_error(
+  expect_snapshot(
     cmdstan_cache_dir(tempfile(fileext = '.stan'), '2.39.0'),
-    'model_path must identify an existing Stan file'
+    error = TRUE
   )
 })
 
@@ -167,8 +165,8 @@ test_that('CmdStan summaries honor params_out while retained fits keep draws', {
   )
 
   expect_s3_class(result$mcmcfit, 'CmdStanMCMC')
-  expect_true(any(grepl('^err_obs_iid_sigma_', names(result$overall))))
-  expect_false(any(grepl('^extra_', names(result$overall))))
+  expect_gt(sum(grepl('^err_obs_iid_sigma_', names(result$overall))), 0)
+  expect_equal(sum(grepl('^extra_', names(result$overall))), 0)
   expect_equal(
     dim(result$mcmcfit$draws(variables = 'extra'))[[3]],
     1
@@ -177,7 +175,7 @@ test_that('CmdStan summaries honor params_out while retained fits keep draws', {
   saved_fit <- tempfile(fileext = '.rds')
   output_files <- result$mcmcfit$output_files()
   saveRDS(result$mcmcfit, saved_fit)
-  expect_true(all(file.remove(output_files)))
+  expect_all_true(file.remove(output_files))
   restored_fit <- readRDS(saved_fit)
   expect_equal(dim(restored_fit$draws(variables = 'extra'))[[3]], 1)
   expect_s3_class(restored_fit$sampler_diagnostics(), 'draws_array')

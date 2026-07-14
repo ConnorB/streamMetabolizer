@@ -32,10 +32,10 @@ load_french_creek <- function(attach.units = deprecated()) {
   . <- oxy <- temp <- station <- solar.time <- '.dplyr.var'
 
   # subset to 'low' site, remove NA oxys (1658) and remaining duplicates (n=1),  and ensure order by date
-  french <- french %>%
-    filter(station == 'low') %>% # subset to data from only one station (also, low has the cleanest data) (already subset in extdata)
-    filter(!is.na(oxy)) %>%
-    distinct() %>%
+  french <- french |>
+    filter(station == 'low') |> # subset to data from only one station (also, low has the cleanest data) (already subset in extdata)
+    filter(!is.na(oxy)) |>
+    distinct() |>
     arrange(solar.time)
 
   # rename DO.obs, temp.water
@@ -79,16 +79,18 @@ load_french_creek <- function(attach.units = deprecated()) {
     longitude = -106.3,
     time.type = 'apparent solar'
   )
-  french$light <- convert_PAR_to_SW(2326) %>%
-    calc_solar_insolation(
-      app.solar.time = french$app.solar.time,
-      latitude = 41.33,
-      max.insolation = .
-    ) %>%
+  french$light <- convert_PAR_to_SW(2326) |>
+    (\(max_insolation) {
+      calc_solar_insolation(
+        app.solar.time = french$app.solar.time,
+        latitude = 41.33,
+        max.insolation = max_insolation
+      )
+    })() |>
     convert_SW_to_PAR()
 
   # set columns
-  french <- french %>%
+  french <- french |>
     select(c(solar.time, DO.obs, DO.sat, depth, temp.water, light))
 
   return(french)

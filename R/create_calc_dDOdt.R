@@ -123,8 +123,8 @@
 #'   dDO.preds.dblGPP = apply_dDOdt(6, -5, 15),
 #'   dDO.preds.dblER = apply_dDOdt(3, -10, 15),
 #'   dDO.preds.dblK = apply_dDOdt(3, -5, 30))
-#' dDO.preds %>%
-#'   gather(key=dDO.series, value=dDO.dt, starts_with('dDO.preds')) %>%
+#' dDO.preds |>
+#'   gather(key=dDO.series, value=dDO.dt, starts_with('dDO.preds')) |>
 #'   ggplot(aes(x=solar.time, y=dDO.dt, color=dDO.series)) + geom_line() + theme_bw()
 #'
 #' # try simulating process eror
@@ -191,18 +191,23 @@ create_calc_dDOdt <- function(
     more_rows <- if (length(bad_rows) > 3) length(bad_rows) - 3 else NA
     bad_times <- data$solar.time[show_rows]
     bad_temps <- data$temp.water[show_rows]
-    .cli_warn(sprintf(
-      'NaNs in KO2-K600 conversion at %s%s',
-      paste0(
-        sprintf(
-          '%s (temp.water=%0.2f)',
-          format(bad_times, '%Y-%m-%d %H:%M:%S'),
-          bad_temps
-        ),
-        collapse = ', '
-      ),
-      if (!is.na(more_rows)) sprintf(', and %d more rows', more_rows) else ''
-    ))
+    bad_details <- paste0(
+      format(bad_times, '%Y-%m-%d %H:%M:%S'),
+      ' (temp.water=',
+      format(bad_temps, digits = 2),
+      ')'
+    )
+    warning_message <- c(
+      "The KO2-to-K600 conversion produced {.val NaN}.",
+      "!" = "Affected observation{?s}: {.val {bad_details}}."
+    )
+    if (!is.na(more_rows)) {
+      warning_message <- c(
+        warning_message,
+        "i" = "{more_rows} additional row{?s} {?was/were} affected."
+      )
+    }
+    .cli_warn(warning_message)
   }
   data$err.proc <- err.proc # get replication if needed
   if (integer.t) {
@@ -299,7 +304,7 @@ create_calc_dDOdt <- function(
         }
       }
     })(),
-    .cli_abort('unrecognized GPP_fun')
+    .cli_abort("Unrecognized {.arg GPP_fun}: {.val {GPP_fun}}.")
   )
 
   # ER: instantaneous ecosystem respiration at time t in d^-1
@@ -324,7 +329,7 @@ create_calc_dDOdt <- function(
         }
       }
     })(),
-    .cli_abort('unrecognized ER_fun')
+    .cli_abort("Unrecognized {.arg ER_fun}: {.val {ER_fun}}.")
   )
 
   # D: instantaneous reaeration rate at time t in gO2 m^-3 d^-1
@@ -355,7 +360,7 @@ create_calc_dDOdt <- function(
         }
       }
     })(),
-    .cli_abort('unrecognized deficit_src')
+    .cli_abort("Unrecognized {.arg deficit_src}: {.val {deficit_src}}.")
   )
 
   # dDOdt: instantaneous rate of change in DO at time t in gO2 m^-3 timestep^-1

@@ -28,7 +28,7 @@ mm_predict_metab_1ply <- function(
   skip_for <- c()
   if (nrow(data_daily_ply) == 0) {
     skip_for <- 'empty'
-  } else if (data_daily_ply %>% select(-date) %>% sapply(is.na) %>% all()) {
+  } else if (data_daily_ply |> select(-date) |> sapply(is.na) |> all()) {
     skip_for <- 'all_NA'
   } else if (length(stop_strs) > 0) {
     skip_for <- 'validity'
@@ -47,7 +47,7 @@ mm_predict_metab_1ply <- function(
     )
     out.df <- switch(
       skip_for,
-      'validity' = na.df %>%
+      'validity' = na.df |>
         mutate(
           warnings = paste0(unique(warn_strs), collapse = "; "),
           errors = paste0(unique(stop_strs), collapse = "; ")
@@ -68,7 +68,7 @@ mm_predict_metab_1ply <- function(
       ER_fun = features$ER_fun,
       deficit_src = features$deficit_src,
       err.proc = 0
-    ) %>%
+    ) |>
     environment()
   t <- env.dDOdt$data$t
 
@@ -108,7 +108,7 @@ mm_predict_metab_1ply <- function(
         error = function(e) NA
       )
     }
-    met.preds %>% setNames(paste0(met, c("", ".lower", ".upper")))
+    met.preds |> setNames(paste0(met, c("", ".lower", ".upper")))
   }))
 
   # return the modeled daily mean metabolism and reaeration rates

@@ -21,9 +21,11 @@ mm_valid_names <- function(type = c('bayes', 'mle', 'night', 'Kmodel', 'sim')) {
 
   # get lists of all common possibilities
   . <- '.dplyr.var'
-  all_ode_methods <- formals(mm_name)$ode_method %>% eval() %>% .[. != 'NA']
-  all_GPP_funs <- formals(mm_name)$GPP_fun %>% eval() %>% .[. != 'NA']
-  all_ER_funs <- formals(mm_name)$ER_fun %>% eval() %>% .[. != 'NA']
+  all_ode_methods <- formals(mm_name)$ode_method |>
+    eval() |>
+    (\(x) x[x != 'NA'])()
+  all_GPP_funs <- formals(mm_name)$GPP_fun |> eval() |> (\(x) x[x != 'NA'])()
+  all_ER_funs <- formals(mm_name)$ER_fun |> eval() |> (\(x) x[x != 'NA'])()
   all_deficit_srcs <- c('DO_mod', 'DO_obs')
 
   # if just one type is supplied, determine the list of acceptable names. method

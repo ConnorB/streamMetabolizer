@@ -45,8 +45,8 @@ mm <- metab(specs(mm_name('bayes')), data=data_metab('1', res='30'))
 plot_distribs(mm, 'GPP_daily', 1)
 
 # with modifications
-plot_distribs(mm, 'err_proc_iid_sigma') \%>\%
-  dygraphs::dyRangeSelector(dateWindow=c(-0.1,1.3)) \%>\%
+plot_distribs(mm, 'err_proc_iid_sigma') |>
+  dygraphs::dyRangeSelector(dateWindow=c(-0.1,1.3)) |>
   dygraphs::dyAxis(name='y', valueRange=c(0,15))
 }
 }

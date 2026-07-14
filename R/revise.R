@@ -31,7 +31,7 @@ revise <- function(specs, ..., delete) {
   )
   # require names
   if (is.null(names(args)) || any(names(args) == '')) {
-    .cli_abort("all arguments in ... must be named")
+    .cli_abort("All arguments passed through {.arg ...} must be named.")
   }
   # add/change specs
   for (a in names(args)) {

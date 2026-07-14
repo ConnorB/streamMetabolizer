@@ -22,8 +22,8 @@ zz_tabular <- function(df, bold_headers = TRUE, code = FALSE, ...) {
       },
       colname = as.list(names(df)),
       colvec = df
-    ) %>%
-    as.data.frame() %>%
+    ) |>
+    as.data.frame() |>
     lapply(format, ...)
 
   if (code) {
@@ -47,9 +47,9 @@ zz_tabular <- function(df, bold_headers = TRUE, code = FALSE, ...) {
     contents,
     "\n}\n",
     sep = ""
-  ) %>%
-    strsplit('\n') %>%
-    .[[1]]
+  ) |>
+    strsplit('\n') |>
+    (\(x) x[[1]])()
 }
 
 #' Generate doc text for the `metab()` documentation
@@ -147,8 +147,8 @@ zz_build_docs <- function() {
       })
     ),
     "}"
-  ) %>%
-    paste0("#' ", .)
+  ) |>
+    (\(x) paste0("#' ", x))()
   doc_text <- gsub('[ \t]+(?=\n|$)', '', doc_text, perl = TRUE)
   writeLines(doc_text, 'man-roxygen/metab_data.R')
 

@@ -39,8 +39,8 @@ get_params.metab_model <- function(
   param.names <- get_param_names(get_specs(metab_model)$model_name)
   metab.all <- unname(unlist(param.names))
   . <- '.dplyr.var'
-  metab.search <- c(paste0(c('date', 'warnings', 'errors'), '$'), metab.all) %>%
-    paste0('^', .) %>%
+  metab.search <- c(paste0(c('date', 'warnings', 'errors'), '$'), metab.all) |>
+    (\(x) paste0('^', x))() |>
     paste0(collapse = '|')
 
   # extract the daily parameters plus whatever else is daily (sds, gradients, etc.)
@@ -56,12 +56,9 @@ get_params.metab_model <- function(
     ) >
       0
   ) {
-    .cli_abort(paste0(
-      "can't find metabolism parameter",
-      if (length(missing.metabs) > 1) "s",
-      " ",
-      paste0(missing.metabs, collapse = ', ')
-    ))
+    .cli_abort(
+      "Could not find metabolism parameter{?s}: {.var {missing.metabs}}."
+    )
   }
 
   # combine all daily values into one data.frame. fit is .x, data_daily is .y
@@ -76,22 +73,16 @@ get_params.metab_model <- function(
       return(NULL)
     } # nothing available
   }
-  pars <- pars %>%
-    mm_filter_dates(date_start = date_start, date_end = date_end) %>%
-    {
-      .[grep(metab.search, names(.), value = TRUE)]
-    }
+  pars <- pars |>
+    mm_filter_dates(date_start = date_start, date_end = date_end) |>
+    (\(x) x[grep(metab.search, names(x), value = TRUE)])()
 
   # track provenance of each metab parameter. if any variables were available in
   # both x and y forms, combine them to minimize NAs
-  metab.fit <- names(fit) %>%
-    {
-      .[. %in% metab.all]
-    }
-  metab.ddat <- names(ddat) %>%
-    {
-      .[. %in% metab.all]
-    }
+  metab.fit <- names(fit) |>
+    (\(x) x[x %in% metab.all])()
+  metab.ddat <- names(ddat) |>
+    (\(x) x[x %in% metab.all])()
   metab.both <- intersect(metab.fit, metab.ddat)
   metab.either <- union(metab.fit, metab.ddat)
   for (a in metab.either) {
@@ -123,10 +114,8 @@ get_params.metab_model <- function(
       nrow = length(suffixes),
       byrow = FALSE
     )
-    metab.out <- c(rbind(metab.out, metab.uncert)) %>%
-      {
-        .[. %in% names(pars)]
-      }
+    metab.out <- c(rbind(metab.out, metab.uncert)) |>
+      (\(x) x[x %in% names(pars)])()
   }
 
   # add .fixed columns to the list of exported columns if requested
@@ -193,10 +182,8 @@ get_params.metab_model <- function(
       any(c('warnings', 'errors') %in% names(pars))
   ) {
     messages <- pars[
-      c('date', 'warnings', 'errors') %>%
-        {
-          .[. %in% names(pars)]
-        }
+      c('date', 'warnings', 'errors') |>
+        (\(x) x[x %in% names(pars)])()
     ]
     pretty_print_ddat
     params <- left_join(params, messages, by = 'date', copy = TRUE)

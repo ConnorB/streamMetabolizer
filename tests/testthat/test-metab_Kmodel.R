@@ -4,8 +4,8 @@ test_that("metab_Kmodel predictions (predict_metab, predict_DO) make sense", {
   # make up some data.frames of the right sizes
   set.seed(4438)
   # dat = data.frame of instantaneous solar.time and discharge
-  dat <- data_metab('3') %>%
-    select(solar.time) %>%
+  dat <- data_metab('3') |>
+    select(solar.time) |>
     mutate(discharge = exp(rnorm(length(solar.time))))
   # ddat = data.frame of daily date, discharge.daily, and K600 (made-up data)
   ddat <- data.frame(
@@ -16,7 +16,7 @@ test_that("metab_Kmodel predictions (predict_metab, predict_DO) make sense", {
     ),
     discharge.daily = exp(rnorm(32, 2, 1)),
     K600.daily = rnorm(32, 30, 4)
-  ) %>%
+  ) |>
     mutate(K600.daily.lower = K600.daily - 5, K600.daily.upper = K600.daily + 6)
   # ddat1 = data.frame of just one day of data
   ddat1 <- data.frame(
@@ -36,7 +36,7 @@ test_that("metab_Kmodel predictions (predict_metab, predict_DO) make sense", {
   expect_equal(get_fit(mm)$warnings, "omitting sd for weighted mean")
   expect_equal(get_params(mm)$K600.daily, ddat1$K600.daily)
   # test to try show the source of errors in the tests that follow ("0 (non-NA) cases", "invalid 'x'")
-  expect_error(
+  expect_snapshot(
     lm(
       log(K600.daily.obs) ~ log(discharge.daily),
       data = data.frame(
@@ -46,10 +46,9 @@ test_that("metab_Kmodel predictions (predict_metab, predict_DO) make sense", {
         weights = 1
       )
     ),
-    "0 (non-NA) cases",
-    fixed = TRUE
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     loess(
       log(K600.daily.obs) ~ as.numeric(date) + log(discharge.daily),
       data = data.frame(
@@ -59,27 +58,24 @@ test_that("metab_Kmodel predictions (predict_metab, predict_DO) make sense", {
         weights = 1
       )
     ),
-    "invalid 'x'",
-    fixed = TRUE
+    error = TRUE
   )
   # show that Kmodel(lm) and Kmodel(loess) do break, on model-specific errors
-  expect_error(
-    metab_Kmodel(
+  expect_snapshot(
+    suppressMessages(metab_Kmodel(
       data = dat,
       data_daily = ddat1,
       specs = specs(mm_name("Kmodel", engine = 'lm'))
-    ),
-    "0 (non-NA) cases",
-    fixed = TRUE
+    )),
+    error = TRUE
   )
-  expect_error(
-    metab_Kmodel(
+  expect_snapshot(
+    suppressMessages(metab_Kmodel(
       data = dat,
       data_daily = ddat1,
       specs = specs(mm_name("Kmodel", engine = 'loess'))
-    ),
-    "invalid 'x'",
-    fixed = TRUE
+    )),
+    error = TRUE
   )
 
   # mean
@@ -123,8 +119,8 @@ test_that("metab_Kmodel predictions (predict_metab, predict_DO) make sense", {
   )
 
   # Kmodel should refuse to predict metab or DO
-  expect_error(predict_metab(mm))
-  expect_error(predict_DO(mm))
+  expect_snapshot(predict_metab(mm), error = TRUE)
+  expect_snapshot(predict_DO(mm), error = TRUE)
 })
 
 test_that("try a complete PRK-K-PR workflow", {
@@ -132,7 +128,7 @@ test_that("try a complete PRK-K-PR workflow", {
 
   # fit a first-round MLE and extract the K estimates
   mm1 <- metab(specs(mm_name('mle'), day_start = -1, day_end = 25), data = dat)
-  K600_mm1 <- get_params(mm1, uncertainty = 'ci') %>%
+  K600_mm1 <- get_params(mm1, uncertainty = 'ci') |>
     select(date, K600.daily, K600.daily.lower, K600.daily.upper)
 
   # smooth the K600s
@@ -145,7 +141,7 @@ test_that("try a complete PRK-K-PR workflow", {
     ),
     data_daily = K600_mm1
   )
-  K600_mm2 <- get_params(mm2) %>% select(date, K600.daily)
+  K600_mm2 <- get_params(mm2) |> select(date, K600.daily)
 
   # refit the MLE with fixed K
   mm3 <- metab(

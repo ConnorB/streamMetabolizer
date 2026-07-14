@@ -1,7 +1,7 @@
 test_that("French Creek data are similar for streamMetabolizer & Bob Hall's code", {
   # load both datasets
   fx <- streamMetabolizer:::load_french_creek()
-  fy <- streamMetabolizer:::load_french_creek_std() # %>% arrange(solar.time)
+  fy <- streamMetabolizer:::load_french_creek_std() # |> arrange(solar.time)
   expect_equal(dim(fx), dim(fy))
   expect_equal(names(fx), names(fy))
   expect_equal(sapply(fx, class), sapply(fy, class))
@@ -81,7 +81,7 @@ test_that("French Creek predictions are similar for streamMetabolizer & Bob Hall
         data = vfrenchshort
       )
     },
-    "predictions are for the period"
+    "Daily metabolism predictions cover hours"
   )
   smest <- dplyr::select(
     get_fit(mm),

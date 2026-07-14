@@ -115,10 +115,10 @@ create_calc_DO <- function(
       Euler = ,
       pairmeans = 'euler', # we do the trapezoidy/pairmeansy stuff in calc_dDOdt
       .cli_abort(
-        "package deSolve is required for ode_method '",
-        ode_method,
-        "'.\n",
-        "  Either install deSolve or select ode_method from c('euler','trapezoid')"
+        c(
+          "{.pkg deSolve} is required for {.arg ode_method} = {.val {ode_method}}",
+          "i" = "Install {.pkg deSolve} or use {.val euler} or {.val trapezoid}."
+        )
       )
     )
 

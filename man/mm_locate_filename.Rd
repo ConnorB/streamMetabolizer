@@ -4,7 +4,11 @@
 \alias{mm_locate_filename}
 \title{Look for a model file}
 \usage{
-mm_locate_filename(model_name, stan_engine = NULL)
+mm_locate_filename(
+  model_name,
+  stan_engine = NULL,
+  stan_version_fn = stan_version_for_engine
+)
 }
 \arguments{
 \item{model_name}{a model file in the 'models' folder of the
@@ -14,6 +18,8 @@ file}
 \item{stan_engine}{The Stan interface whose compiler version should be
 validated. If \code{NULL}, CmdStanR is preferred when available, followed by
 RStan.}
+
+\item{stan_version_fn}{Internal function used to determine the Stan version.}
 }
 \value{
 a file path if the file exists or an error otherwise

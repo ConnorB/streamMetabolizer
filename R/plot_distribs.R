@@ -29,8 +29,8 @@
 #' plot_distribs(mm, 'GPP_daily', 1)
 #'
 #' # with modifications
-#' plot_distribs(mm, 'err_proc_iid_sigma') %>%
-#'   dygraphs::dyRangeSelector(dateWindow=c(-0.1,1.3)) %>%
+#' plot_distribs(mm, 'err_proc_iid_sigma') |>
+#'   dygraphs::dyRangeSelector(dateWindow=c(-0.1,1.3)) |>
 #'   dygraphs::dyAxis(name='y', valueRange=c(0,15))
 #' }
 plot_distribs <- function(
@@ -63,7 +63,7 @@ plot_distribs <- function(
   style <- match.arg(style)
   if (!class(dist_data)[1] %in% c('specs', 'metab_bayes')) {
     .cli_abort(
-      "can only plot distribs for models of class 'specs' or 'metab_bayes'"
+      "{.arg dist_data} must be a {.cls specs} or {.cls metab_bayes} object, not {.obj_type_friendly {dist_data}}."
     )
   }
 
@@ -93,7 +93,7 @@ plot_distribs <- function(
         " hyperparameters in get_specs(dist_data)."
       )
     }
-    .cli_abort(msg1, " try one of these: ", paste0(couldabeen, collapse = ', '))
+    .cli_abort(c(msg1, "i" = "Try {.val {couldabeen}}."))
   }
   hyperpars <- sp[hpspecs]
   names(hyperpars) <- substring(names(hyperpars), nchar(parname) + 2)
@@ -157,10 +157,10 @@ plot_distribs <- function(
           x = seq(xlim[1], xlim[2], length.out = 1000),
           y = dcauchy(x, location = 0, scale = hyperpars$scale)
         ),
-        (rcauchy(1000000, 0, 1) * hyperpars$scale) %>%
-          density(from = xlim[1], to = xlim[2]) %>%
-          .[c('x', 'y')] %>%
-          as.data.frame() %>%
+        (rcauchy(1000000, 0, 1) * hyperpars$scale) |>
+          density(from = xlim[1], to = xlim[2]) |>
+          (\(x) x[c('x', 'y')])() |>
+          as.data.frame() |>
           mutate(dist = 'prior_rescaled')
       )
     },
@@ -186,7 +186,7 @@ plot_distribs <- function(
         indexed_prior <- TRUE
         if (!isTRUE(index)) {
           if (length(index) > 1) {
-            .cli_warn('only using index[1] for the prior')
+            .cli_warn("Using only {.code index[1]} for the prior.")
           }
           if (length(hyperpars$meanlog) > 1) {
             hyperpars$meanlog <- hyperpars$meanlog[index[1]]
@@ -196,7 +196,7 @@ plot_distribs <- function(
           }
         } else {
           .cli_warn(
-            'multiple priors for this parameter; only showing the first'
+            "Multiple priors are available for {.arg parname}; showing only the first."
           )
           hyperpars$meanlog <- hyperpars$meanlog[1]
           hyperpars$sdlog <- hyperpars$sdlog[1]
@@ -213,13 +213,11 @@ plot_distribs <- function(
           x = exp(seq(log(xlim[1]), log(xlim[2]), length.out = 1000)),
           y = dlnorm(x, meanlog = hyperpars$meanlog, sdlog = hyperpars$sdlog)
         ),
-        exp(hyperpars$meanlog + rnorm(1000000, 0, 1) * hyperpars$sdlog) %>%
-          {
-            .[. < xlim[2]]
-          } %>%
-          density(n = 512 * 12, from = xlim[1], to = xlim[2]) %>%
-          .[c('x', 'y')] %>%
-          as.data.frame() %>%
+        exp(hyperpars$meanlog + rnorm(1000000, 0, 1) * hyperpars$sdlog) |>
+          (\(x) x[x < xlim[2]])() |>
+          density(n = 512 * 12, from = xlim[1], to = xlim[2]) |>
+          (\(x) x[c('x', 'y')])() |>
+          as.data.frame() |>
           mutate(dist = 'prior_rescaled')
       )
     },
@@ -240,7 +238,7 @@ plot_distribs <- function(
       )
     },
 
-    .cli_abort('unrecognized distribution function')
+    .cli_abort("Unrecognized distribution function {.val {distrib}}.")
   )
   plot_prior_rescaled <- plot_prior_rescaled &&
     ('prior_rescaled' %in% densdf$dist)
@@ -256,7 +254,7 @@ plot_distribs <- function(
     if (inherits(mc, 'stanfit')) {
       if (!requireNamespace('rstan', quietly = TRUE)) {
         .cli_abort(
-          'the rstan package is required to investigate Stan MCMC models'
+          "{.pkg rstan} is required to inspect Stan MCMC models."
         )
       }
       draws <- rstan::extract(mc, pars = parname)[[parname]]
@@ -269,24 +267,24 @@ plot_distribs <- function(
       draws <- selected$draws
       indexed_posterior <- selected$indexed
     } else {
-      .cli_abort('unknown mcmc object class')
+      .cli_abort("Unknown MCMC object class: {.cls {class(mc)}}.")
     }
     # generate density w/ 1000 points along the line
-    post <- density(draws, n = 1000)[c('x', 'y')] %>%
-      tibble::as_tibble() %>%
-      mutate(dist = 'posterior') %>%
+    post <- density(draws, n = 1000)[c('x', 'y')] |>
+      tibble::as_tibble() |>
+      mutate(dist = 'posterior') |>
       select(dist, x, y)
     densdf <- bind_rows(densdf, post)
     if (!indexed_prior && !indexed_posterior && !missing(index)) {
       .cli_warn(
-        'index will be ignored because prior & posterior are not indexed'
+        "{.arg index} is ignored because neither the prior nor posterior is indexed."
       )
     }
   } else {
     indexed_posterior <- FALSE
     if (!indexed_prior && !missing(index)) {
       .cli_warn(
-        'index will be ignored because prior is unindexed and posterior is unavailable'
+        "{.arg index} is ignored because the prior is unindexed and the posterior is unavailable."
       )
     }
   }
@@ -318,7 +316,10 @@ plot_distribs <- function(
     ggplot2 = {
       if (!requireNamespace("ggplot2", quietly = TRUE)) {
         .cli_abort(
-          "call install.packages('ggplot2') before plotting with style='ggplot2'"
+          c(
+            "{.pkg ggplot2} is required for {.arg style} = {.val ggplot2}.",
+            "i" = "Install it with {.run install.packages('ggplot2')}."
+          )
         )
       }
       dist <- x <- y <- '.ggplot2Var'
@@ -335,7 +336,10 @@ plot_distribs <- function(
     dygraphs = {
       if (!requireNamespace("dygraphs", quietly = TRUE)) {
         .cli_abort(
-          "call install.packages('dygraphs') before plotting with style='dygraphs'"
+          c(
+            "{.pkg dygraphs} is required for {.arg style} = {.val dygraphs}.",
+            "i" = "Install it with {.run install.packages('dygraphs')}."
+          )
         )
       }
       # prepare the data for dygraphs. if the distributions overlap on the x
@@ -348,31 +352,31 @@ plot_distribs <- function(
       )
       if (plot_prior_rescaled || plot_posterior) {
         prior <- prior_rescaled <- posterior <- '.dplyr.var'
-        dydensdf <- dydensdf %>%
-          arrange(x) %>%
+        dydensdf <- dydensdf |>
+          arrange(x) |>
           mutate(prior = approx(x = x, y = prior, xout = x)$y)
         if (plot_prior_rescaled) {
-          dydensdf <- dydensdf %>%
+          dydensdf <- dydensdf |>
             mutate(
               prior_rescaled = approx(x = x, y = prior_rescaled, xout = x)$y
             )
         }
         if (plot_posterior) {
-          dydensdf <- dydensdf %>%
+          dydensdf <- dydensdf |>
             mutate(posterior = approx(x = x, y = posterior, xout = x)$y)
         }
       }
-      d <- dygraphs::dygraph(dydensdf, main = ptitle) %>%
-        dygraphs::dyAxis('x', rangePad = 5) %>%
-        dygraphs::dyOptions(fillAlpha = 0.4) %>%
-        dygraphs::dyRangeSelector(height = 20) %>%
+      d <- dygraphs::dygraph(dydensdf, main = ptitle) |>
+        dygraphs::dyAxis('x', rangePad = 5) |>
+        dygraphs::dyOptions(fillAlpha = 0.4) |>
+        dygraphs::dyRangeSelector(height = 20) |>
         dygraphs::dySeries(
           'prior',
           color = colorvals[['prior']],
           fillGraph = TRUE
         )
       if (plot_prior_rescaled) {
-        d <- d %>%
+        d <- d |>
           dygraphs::dySeries(
             'prior_rescaled',
             color = colorvals[['prior_rescaled']],
@@ -380,7 +384,7 @@ plot_distribs <- function(
           )
       }
       if (plot_posterior) {
-        d <- d %>%
+        d <- d |>
           dygraphs::dySeries(
             'posterior',
             color = colorvals[['posterior']],
@@ -418,7 +422,9 @@ select_rstan_draws <- function(extracted_draws, parname, index = TRUE) {
       any(is.na(selected)) ||
       !all(selected %in% available)
   ) {
-    .cli_abort('index does not select a valid element of ', parname)
+    .cli_abort(
+      "{.arg index} does not select a valid element of {.var {parname}}."
+    )
   }
 
   list(
@@ -450,11 +456,13 @@ select_cmdstan_draws <- function(draws_array, parname, index = TRUE) {
         any(is.na(selected_names)) ||
         !all(selected_names %in% variable_names)
     ) {
-      .cli_abort('index does not select a valid element of ', parname)
+      .cli_abort(
+        "{.arg index} does not select a valid element of {.var {parname}}."
+      )
     }
   } else {
     if (!(parname %in% variable_names)) {
-      .cli_abort('could not find ', parname, ' in the CmdStan draws')
+      .cli_abort("Could not find {.var {parname}} in the CmdStan draws.")
     }
     selected_names <- parname
   }

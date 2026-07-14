@@ -26,8 +26,8 @@ mm_predict_DO_1ply <- function(
   # prepare arguments to DO prediction function. enable 3 possible sources for
   # DO.mod.1: (1) fitted params or (2) data_daily (both passed via get_params to
   # data_daily_ply) or (3) data_ply$DO.obs[1]
-  metab.pars <- data_daily_ply %>%
-    select(-date) %>%
+  metab.pars <- data_daily_ply |>
+    select(-date) |>
     bind_cols(
       if (!exists('DO.mod.1', data_daily_ply)) {
         data.frame(DO.mod.1 = data_ply$DO.obs[1])

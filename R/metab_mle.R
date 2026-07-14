@@ -70,7 +70,7 @@ metab_mle <- function(
       c('lsoda', 'lsodes', 'lsodar')
   ) {
     .cli_warn(
-      "we've seen bad results with ODE methods 'lsoda', 'lsodes', and 'lsodar'. Use at your own risk"
+      "ODE methods {.val lsoda}, {.val lsodes}, and {.val lsodar} may produce unreliable results."
     )
   }
 
@@ -153,10 +153,8 @@ mle_1ply <- function(
     K600 <- NULL
     . <- '.dplyr.var'
     if (!is.null(data_daily_ply)) {
-      daily.inits <- names(init.vals) %>%
-        {
-          .[. %in% names(data_daily_ply)]
-        }
+      daily.inits <- names(init.vals) |>
+        (\(x) x[x %in% names(data_daily_ply)])()
       if (nrow(data_daily_ply) == 0) {
         if (length(daily.inits) > 0) {
           warn_strs <- c(
@@ -238,10 +236,8 @@ mle_1ply <- function(
       err_proc_iid = features$err_proc_iid
     )
     if (fix_K600) {
-      environment(NLL)$par.names <- environment(NLL)$par.names %>%
-        {
-          .[. != 'K600.daily']
-        } # remove the K600 parameter if we're fixing K600
+      environment(NLL)$par.names <- environment(NLL)$par.names |>
+        (\(x) x[x != 'K600.daily'])() # remove the K600 parameter if we're fixing K600
     }
 
     # package nlm arguments in a list. estimate of fscale is based on comparison
@@ -312,20 +308,20 @@ mle_1ply <- function(
   ) # trust nlm to return the parameters in the same order we passed them in
   goodness.names <- c('minimum', 'iterations', 'code')
   if (length(stop_strs) > 0) {
-    valstat.cols <- as.list(rep(as.numeric(NA), length(valstat.names))) %>%
-      as.data.frame() %>%
+    valstat.cols <- as.list(rep(as.numeric(NA), length(valstat.names))) |>
+      as.data.frame() |>
       setNames(valstat.names)
-    goodness.cols <- as.list(rep(as.numeric(NA), length(goodness.names))) %>%
-      as.data.frame() %>%
-      setNames(goodness.names) %>%
+    goodness.cols <- as.list(rep(as.numeric(NA), length(goodness.names))) |>
+      as.data.frame() |>
+      setNames(goodness.names) |>
       mutate(code.str = as.character(NA))
   } else {
-    valstat.cols <- c(do.call(rbind, mle.1d[stat.names])) %>%
-      as.list() %>%
-      as.data.frame() %>%
+    valstat.cols <- c(do.call(rbind, mle.1d[stat.names])) |>
+      as.list() |>
+      as.data.frame() |>
       setNames(valstat.names)
     code <- '.dplyr.var'
-    goodness.cols <- as.data.frame(mle.1d[goodness.names]) %>%
+    goodness.cols <- as.data.frame(mle.1d[goodness.names]) |>
       # code interpretations are from the Value section of the ?nlm page
       mutate(
         code.str = c(

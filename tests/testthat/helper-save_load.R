@@ -79,13 +79,13 @@ save_load_timing <- function(dat, reps = 10, ...) {
       roundtrip(dat, xzfile, reps = reps, compression = 9),
       stringsAsFactors = FALSE
     )
-  ) %>%
+  ) |>
     dplyr::mutate(
       total = save + load,
       typelevel = paste0(type, level),
       timesize = (total / max(total)) + (size / max(size))
-    ) %>%
-    dplyr::arrange(timesize) %>%
+    ) |>
+    dplyr::arrange(timesize) |>
     dplyr::mutate(typelevel = ordered(typelevel, typelevel))
 }
 plot_save_load_timing <- function(times) {

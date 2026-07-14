@@ -3,9 +3,8 @@
 #' @keywords internal
 .onAttach <- function(libname, pkgname) {
   .cli_inform(
-    "streamMetabolizer fork maintained at ",
-    "https://github.com/ConnorB/streamMetabolizer",
-    .class = "packageStartupMessage"
+    "{.pkg streamMetabolizer} fork maintained at {.url https://github.com/ConnorB/streamMetabolizer}",
+    class = "packageStartupMessage"
   )
 
   # Load deSolve because otherwise after a few model runs we're likely to get

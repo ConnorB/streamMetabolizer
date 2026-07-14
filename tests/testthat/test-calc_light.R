@@ -23,7 +23,7 @@ test_that("can generate light predictions from basic light model", {
       format = "radia"
     )
   )
-  expect_true(all(!is.na(decdf$dec)), "valid return for days between 1 and 366")
+  expect_all_false(is.na(decdf$dec))
   equinox <- which(
     decdf$jday == as.numeric(format(as.Date("2015-03-20"), "%j"))
   )
@@ -72,17 +72,16 @@ test_that("can generate light predictions from basic light model", {
       lat = rep(c(0, 20, 40, 60, 80), each = 365),
       jday = rep(1:365, times = 5),
       hour = 12
-    ) %>%
+    ) |>
     transform(
       dec = streamMetabolizer:::calc_declination_angle(jday),
       hragl = streamMetabolizer:::calc_hour_angle(hour)
-    ) %>%
+    ) |>
     transform(
       zen = streamMetabolizer:::calc_zenith_angle(lat, dec, hragl)
     )
-  expect_true(
-    all(zendf[zendf$lat == 80, "zen"] > zendf[zendf$lat == 40, "zen"]),
-    "higher latitude, higher zenith angle (lower sun)"
+  expect_all_true(
+    zendf[zendf$lat == 80, "zen"] > zendf[zendf$lat == 40, "zen"]
   )
 
   # insolation
@@ -105,20 +104,17 @@ test_that("can generate light predictions from basic light model", {
   )
   insdf <- transform(insdf, ins = calc_solar_insolation(datetime, lat))
   #ggplot(mutate(insdf,date=format(streamMetabolizer:::convert_doyhr_to_date(jday, 2015), "%Y-%m-%d")), aes(x=hour, y=ins, color=factor(lat), group=factor(lat))) + geom_line() + facet_wrap(~date) + scale_color_discrete("Latitude") + ylab("Solar Insolation") + xlab("Hour of Day")
-  expect_true(all(insdf$ins >= 0), "non-negative insolation, always")
-  expect_true(
-    all(
-      (insdf %>%
-        select(lat, jday, ins) %>%
-        group_by(lat, jday) %>%
-        dplyr::summarize(daily_peak = max(ins)) %>%
-        dplyr::summarize(
-          summer_more_than_winter = all(
-            daily_peak[jday == 201] >= daily_peak[jday == 1]
-          )
-        ))$summer_more_than_winter
-    ),
-    info = "summertime noon insolation exceeds wintertime noon insolation at all latitudes"
+  expect_all_true(insdf$ins >= 0)
+  expect_all_true(
+    (insdf |>
+      select(lat, jday, ins) |>
+      group_by(lat, jday) |>
+      dplyr::summarize(daily_peak = max(ins)) |>
+      dplyr::summarize(
+        summer_more_than_winter = all(
+          daily_peak[jday == 201] >= daily_peak[jday == 1]
+        )
+      ))$summer_more_than_winter
   )
 })
 
@@ -127,7 +123,7 @@ test_that("calc_solar_insolation has consistent output with that of calc_sun_ris
   insdf <- data.frame(
     lat = rep(c(0, 20, 40, 60, 80), each = 18),
     jday = rep(seq(1, 360, by = 20), times = 5)
-  ) %>%
+  ) |>
     mutate(
       date = as.Date(sprintf("2000-%d", jday), format = "%Y-%j"),
       app.solar.time = as.POSIXct(
@@ -136,8 +132,8 @@ test_that("calc_solar_insolation has consistent output with that of calc_sun_ris
       ),
       lm_sunrise = suppressWarnings(calc_sun_rise_set(date, lat))[, 1],
       lm_sunset = suppressWarnings(calc_sun_rise_set(date, lat))[, 2]
-    ) %>%
-    group_by(jday, lat) %>%
+    ) |>
+    group_by(jday, lat) |>
     do(with(., {
       # compare to streamMetabolizer method, which determines light at any given time
       hours <- seq(0, 23.95, by = 0.05)
@@ -178,9 +174,9 @@ test_that("calc_solar_insolation has consistent output with that of calc_sun_ris
 
   # Visual inspection
   # library(tidyr)
-  # instidy <- suppressWarnings(insdf %>%
-  #   gather(pkg, sunrise, lm_sunrise, sm_sunrise) %>%
-  #   gather(pkg, sunset, lm_sunset, sm_sunset)) %>%
+  # instidy <- suppressWarnings(insdf |>
+  #   gather(pkg, sunrise, lm_sunrise, sm_sunrise) |>
+  #   gather(pkg, sunset, lm_sunset, sm_sunset)) |>
   #   transform(
   #     sunrise=as.numeric(as.POSIXct(sunrise, origin="1970-01-01", tz="UTC") - trunc(as.POSIXct(sunrise, origin="1970-01-01", tz="UTC"), "day"), units="hours"),
   #     sunset=as.numeric(as.POSIXct(sunset, origin="1970-01-01", tz="UTC") - trunc(as.POSIXct(sunset, origin="1970-01-01", tz="UTC"), "day"), units="hours"))
@@ -188,12 +184,12 @@ test_that("calc_solar_insolation has consistent output with that of calc_sun_ris
   # ggplot(instidy, aes(x=app.solar.time, y=sunrise, color=pkg, linetype=factor(lat))) + geom_line() + geom_point() + theme_bw()
 
   # expect_that inspection
-  diffs <- insdf %>%
+  diffs <- insdf |>
     transform(
       diff_sunrise = as.numeric(sm_sunrise - lm_sunrise, units = "mins"),
       diff_sunset = as.numeric(sm_sunset - lm_sunset, units = "mins")
-    ) %>%
-    group_by(lat) %>%
+    ) |>
+    group_by(lat) |>
     dplyr::summarize(
       max_diff_sunrise = max(abs(diff_sunrise), na.rm = TRUE),
       max_diff_sunset = max(abs(diff_sunset), na.rm = TRUE)

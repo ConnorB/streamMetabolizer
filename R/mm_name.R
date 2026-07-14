@@ -217,8 +217,8 @@ mm_name <- function(
   # set type-specific defaults where values weren't specified
   . <- '.dplyr.var'
   if (type != 'Kmodel') {
-    relevant_args <- names(formals(mm_name)) %>%
-      .[!(. %in% c('type', 'check_validity'))]
+    relevant_args <- names(formals(mm_name)) |>
+      (\(x) x[!x %in% c('type', 'check_validity')])()
   } else {
     # only one argument allowed for Kmodel
     relevant_args <- 'engine'
@@ -251,27 +251,31 @@ mm_name <- function(
     pool_K600 <- match.arg(pool_K600)
     pool_all <- if (pool_K600 == 'none') 'none' else 'partial'
     if (!is.logical(err_obs_iid) || length(err_obs_iid) != 1) {
-      .cli_abort("need err_obs_iid to be a logical of length 1")
+      .cli_abort("{.arg err_obs_iid} must be a logical value of length 1.")
     }
     if (!is.logical(err_proc_acor) || length(err_proc_acor) != 1) {
-      .cli_abort("need err_proc_acor to be a logical of length 1")
+      .cli_abort("{.arg err_proc_acor} must be a logical value of length 1.")
     }
     if (!is.logical(err_proc_acor_light) || length(err_proc_acor_light) != 1) {
-      .cli_abort("need err_proc_acor_light to be a logical of length 1")
+      .cli_abort(
+        "{.arg err_proc_acor_light} must be a logical value of length 1."
+      )
     }
     if (err_proc_acor_light && !err_proc_acor) {
-      .cli_abort("err_proc_acor_light requires err_proc_acor=TRUE")
+      .cli_abort(
+        "{.arg err_proc_acor_light} requires {.arg err_proc_acor} = {.code TRUE}."
+      )
     }
     if (!is.logical(err_proc_iid) || length(err_proc_iid) != 1) {
-      .cli_abort("need err_proc_iid to be a logical of length 1")
+      .cli_abort("{.arg err_proc_iid} must be a logical value of length 1.")
     }
     if (!is.logical(err_proc_GPP) || length(err_proc_GPP) != 1) {
-      .cli_abort("need err_proc_GPP to be a logical of length 1")
+      .cli_abort("{.arg err_proc_GPP} must be a logical value of length 1.")
     }
     ode_method <- match.arg(ode_method)
     if (ode_method %in% c('Euler', 'pairmeans')) {
       .cli_warn(
-        "for ode_method, 'Euler' and 'pairmeans' are deprecated in favor of 'euler' and 'trapezoid'"
+        "For {.arg ode_method}, {.val Euler} and {.val pairmeans} are deprecated; use {.val euler} and {.val trapezoid}."
       )
     }
     GPP_fun <- match.arg(GPP_fun)
@@ -280,7 +284,7 @@ mm_name <- function(
   } else {
     if (any(!(given_args %in% c('type', 'engine', 'check_validity')))) {
       .cli_abort(
-        "for Kmodel, only type, engine, and check_validity may be specified"
+        "For {.val Kmodel}, only {.arg type}, {.arg engine}, and {.arg check_validity} may be specified."
       )
     }
   }
@@ -295,7 +299,9 @@ mm_name <- function(
         sim = 'rnorm'
       )[[type]])
   ) {
-    .cli_abort("mismatch between type (", type, ") and engine (", engine, ")")
+    .cli_abort(
+      "Model type {.val {type}} is incompatible with engine {.val {engine}}."
+    )
   }
 
   # make the name
@@ -358,7 +364,7 @@ mm_name <- function(
 
   # check validity if requested
   check_validity <- if (!is.logical(check_validity)) {
-    .cli_abort("need check_validity to be a logical of length 1")
+    .cli_abort("{.arg check_validity} must be a logical value of length 1.")
   } else {
     check_validity[1]
   }

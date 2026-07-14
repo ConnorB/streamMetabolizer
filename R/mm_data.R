@@ -163,7 +163,9 @@ mm_data <- function(..., optional = 'none') {
       several.ok = TRUE
     )
     if (any(c('all', 'none') %in% optional) && length(optional) != 1) {
-      .cli_abort("if optional is 'all' or 'none', it should be length 1")
+      .cli_abort(
+        "{.arg optional} must have length 1 when it contains {.val all} or {.val none}."
+      )
     }
     if (all(names(dat) %in% opt)) {
       opt <- 'all'

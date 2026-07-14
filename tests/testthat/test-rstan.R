@@ -8,18 +8,18 @@ test_that('RStan draw selection handles vectors and arrays', {
   vector_second <- select_rstan_draws(vector, 'theta', 2)
   array_selected <- select_rstan_draws(array_draws, 'theta', c(2, 5))
 
-  expect_false(scalar_selected$indexed)
+  expect_identical(scalar_selected$indexed, FALSE)
   expect_equal(scalar_selected$draws, scalar)
-  expect_true(vector_pooled$indexed)
+  expect_identical(vector_pooled$indexed, TRUE)
   expect_equal(vector_pooled$draws, as.vector(vector))
   expect_equal(vector_second$draws, vector[, 2])
   expect_equal(
     array_selected$draws,
     as.vector(matrix(array_draws, nrow = 8)[, c(2, 5), drop = FALSE])
   )
-  expect_error(
+  expect_snapshot(
     select_rstan_draws(vector, 'theta', 4),
-    'index does not select a valid element'
+    error = TRUE
   )
 })
 
@@ -38,14 +38,14 @@ test_that('RStan cache keys include model contents', {
   changed <- rstan_cache_file(stan_file)
 
   expect_equal(first, same)
-  expect_false(identical(first, changed))
-  expect_true(dir.exists(dirname(first)))
+  expect_identical(identical(first, changed), FALSE)
+  expect_identical(dir.exists(dirname(first)), TRUE)
 })
 
 test_that('RStan cache paths reject missing model files', {
-  expect_error(
+  expect_snapshot(
     rstan_cache_file(tempfile(fileext = '.stan')),
-    'model_path must identify an existing Stan file'
+    error = TRUE
   )
 })
 
@@ -57,9 +57,12 @@ test_that('RStan cache keys tolerate missing optional toolchain packages', {
 })
 
 test_that('RStan compilation is skipped on R-devel', {
-  expect_false(rstan_compilation_is_available(
-    'R Under development (unstable) (2026-06-21 r90185)'
-  ))
+  expect_identical(
+    rstan_compilation_is_available(
+      'R Under development (unstable) (2026-06-21 r90185)'
+    ),
+    FALSE
+  )
   expect_identical(
     rstan_compilation_is_available('R version 4.6.1'),
     rstan_is_available()
@@ -75,8 +78,8 @@ test_that('the default RStan cache always resolves to a writable directory', {
   on.exit(options(old_options), add = TRUE)
 
   cache_file <- rstan_cache_file(stan_file)
-  expect_true(dir.exists(dirname(cache_file)))
-  expect_true(file.access(dirname(cache_file), mode = 2) == 0)
+  expect_identical(dir.exists(dirname(cache_file)), TRUE)
+  expect_equal(unname(file.access(dirname(cache_file), mode = 2)), 0)
 })
 
 test_that('RStan syntax checking does not require C++ compilation', {
@@ -99,12 +102,15 @@ test_that('RStan compilation preserves the original compiler error', {
   old_options <- options(streamMetabolizer.rstan_cache_dir = cache_root)
   on.exit(options(old_options), add = TRUE)
   writeLines('parameters { real y; } model { y ~ normal(0, 1); }', stan_file)
-  local_mocked_bindings(
-    stan_model = function(...) stop('compiler exploded'),
-    .package = 'rstan'
+  expect_snapshot(
+    suppressMessages(
+      load_rstan_model(
+        stan_file,
+        stan_model_fn = \(...) stop('compiler exploded')
+      )
+    ),
+    error = TRUE
   )
-
-  expect_error(load_rstan_model(stan_file), 'compiler exploded')
 })
 
 test_that('RStan caches models and retained fits survive serialization', {
@@ -146,9 +152,9 @@ test_that('RStan caches models and retained fits survive serialization', {
 
   expect_s4_class(result$mcmcfit, 'stanfit')
   expect_s4_class(readRDS(cache_file), 'stanmodel')
-  expect_true(any(grepl('^err_obs_iid_sigma_', names(result$overall))))
-  expect_false(any(grepl('^extra_', names(result$overall))))
-  expect_false('extra' %in% result$mcmcfit@sim$pars_oi)
+  expect_gt(sum(grepl('^err_obs_iid_sigma_', names(result$overall))), 0)
+  expect_equal(sum(grepl('^extra_', names(result$overall))), 0)
+  expect_equal(intersect('extra', result$mcmcfit@sim$pars_oi), character())
 
   cached <- load_rstan_model(stan_file)
   expect_s4_class(cached$model, 'stanmodel')
@@ -162,5 +168,5 @@ test_that('RStan caches models and retained fits survive serialization', {
     pars = 'err_obs_iid_sigma'
   )$err_obs_iid_sigma
   expect_length(restored_draws, 800)
-  expect_true(all(is.finite(restored_draws)))
+  expect_all_true(c(is.finite(restored_draws)))
 })

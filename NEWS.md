@@ -1,5 +1,7 @@
 # streamMetabolizer 0.12.1.9000
 
+* Messages, errors, and warnings now use structured cli formatting to make diagnostics clearer and more actionable.
+
 * `calc_DO_at_sat()`, `calc_DO_deficit()`, `calc_is_daytime()`, and `calc_sun_rise_set()` now use lifecycle deprecation warnings.
 
 * improved package maintenance with writable Stan-cache fallbacks, modernized dependencies, concise startup output, and automated R CMD check coverage

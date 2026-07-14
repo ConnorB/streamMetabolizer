@@ -25,13 +25,13 @@ test_that("mm_data works", {
   )
 
   # 'optional' attribute is checked
-  expect_error(
+  expect_snapshot(
     mm_data(solar.time, DO.obs, optional = 'DO.sat'),
-    "'arg' should be one of"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     mm_data(solar.time, DO.obs, optional = c('DO.obs', 'all')),
-    "should be length 1"
+    error = TRUE
   )
 })
 
@@ -88,29 +88,29 @@ test_that("mm_validate_data works", {
 
   # notices missing, extra, badly unitted columns in data; accepts non-unitted data
   ok_data <- eval(formals(metab_mle)$data)
-  expect_error(
+  expect_snapshot(
     mm_validate_data(NULL, NULL, "metab_mle"),
-    "data is NULL but required"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     mm_validate_data(data.frame(), NULL, "metab_mle"),
-    "data is missing these columns: solar.time, DO.obs, DO.sat, depth, temp.water, light"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     mm_validate_data(
       ok_data[names(ok_data) != 'temp.water'],
       NULL,
       "metab_mle"
     ),
-    "data is missing these columns: temp.water"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     mm_validate_data(
       dplyr::mutate(ok_data, temp.air = 9),
       mm_data('temp.air'),
       "metab_mle"
     ),
-    "data should omit these extra columns: temp.air"
+    error = TRUE
   )
   # units checking removed (unitted package dependency removed)
   expect_type(mm_validate_data(ok_data, NULL, "metab_mle"), 'list')
@@ -118,17 +118,17 @@ test_that("mm_validate_data works", {
   # notices missing, extra, badly unitted columns in data_daily
   ok_data_daily <- eval(formals(metab_mle)$data_daily)
   expect_type(mm_validate_data(ok_data, NULL, "metab_mle"), 'list')
-  expect_error(
+  expect_snapshot(
     mm_validate_data(ok_data, data.frame(), "metab_mle"),
-    "found 0 possible timestamp columns"
+    error = TRUE
   )
-  expect_error(
+  expect_snapshot(
     mm_validate_data(
       ok_data,
       dplyr::mutate(ok_data_daily, temp.air = 9),
       "metab_mle"
     ),
-    "data_daily should omit these extra columns: temp.air"
+    error = TRUE
   )
   # units checking removed (unitted package dependency removed)
   expect_type(mm_validate_data(ok_data, ok_data_daily, "metab_mle"), 'list')
@@ -151,7 +151,10 @@ test_that("mm_is_valid_day works", {
   )
 
   # test and pass
-  expect_true(mm_is_valid_day(good_day, day_start = -1.5, day_end = 30))
+  expect_identical(
+    mm_is_valid_day(good_day, day_start = -1.5, day_end = 30),
+    TRUE
+  )
 
   # test faulty timestep
   dateless_day <- good_day
@@ -198,7 +201,10 @@ test_that("mm_is_valid_day works", {
 
   # test for positive discharge
   good_day$discharge <- seq(1, 3, length.out = nrow(good_day))
-  expect_true(mm_is_valid_day(good_day, day_start = -1.5, day_end = 30))
+  expect_identical(
+    mm_is_valid_day(good_day, day_start = -1.5, day_end = 30),
+    TRUE
+  )
   pretty_good_day <- good_day
   pretty_good_day$discharge <- seq(-1, 1, length.out = nrow(pretty_good_day))
   expect_equal(
@@ -218,9 +224,9 @@ test_that("mm_filter_valid_days works", {
     day_start = 6,
     day_end = 14
   )
-  expect_error(
+  expect_snapshot(
     mm_filter_valid_days(french, day_start = 10, day_end = 12),
-    "min timestep is <= 0"
+    error = TRUE
   )
 
   # filter to specified hours

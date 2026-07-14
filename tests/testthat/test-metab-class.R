@@ -5,9 +5,9 @@ test_that("metab_model objects can be created and accessed", {
     print(slot(mm, "fit")),
     "generic metab_model class; no actual fit"
   )
-  expect_true(
-    all(names(formals(metab)) %in% names(getSlots('metab_model'))),
-    info = "slots should match args to metab()"
+  expect_contains(
+    names(getSlots('metab_model')),
+    names(formals(metab))
   )
   expect_s3_class(
     slot(mm, "fitting_time"),
@@ -48,10 +48,7 @@ manual_test <- function() {
 
     # see if saveRDS with gzfile, compression=9 works well
     rdstimes <- save_load_timing(mm, reps = 1) # autoloaded b/c script begins with 'helper' and is in this directory
-    expect_true(
-      'gz6' %in% rdstimes$typelevel[1:3],
-      info = "gz6 is reasonably efficient for saveRDS"
-    )
+    expect_contains(rdstimes$typelevel[1:3], 'gz6')
     plot_save_load_timing(rdstimes)
 
     # save and load the mm, make sure it stays the same

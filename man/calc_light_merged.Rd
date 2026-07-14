@@ -56,15 +56,15 @@ coords <- list(lat=32.4, lon=-96.5)
 PAR.obs <- tibble::tibble(
   solar.time=seq(timebounds[1], timebounds[2], by=as.difftime(3, units='hours')),
   light=c(0, 0, 85.9, 1160.5, 1539.0, 933.9, 0, 0)
-) \%>\% as.data.frame()
+) |> as.data.frame()
 PAR.mod <- tibble::tibble(
   solar.time=seq(timebounds[1], timebounds[2], by=as.difftime(0.25, units='hours')),
   light=calc_light(solar.time, latitude=coords$lat, longitude=coords$lon)
-) \%>\% as.data.frame()
+) |> as.data.frame()
 PAR.merged <- calc_light_merged(PAR.obs, PAR.mod$solar.time,
   latitude=coords$lat, longitude=coords$lon, max.gap=as.difftime(20, units='hours'))
 ggplot(bind_rows(mutate(PAR.obs, type='obs'), mutate(PAR.mod, type='mod'),
-                 mutate(PAR.merged, type='merged')) \%>\%
+                 mutate(PAR.merged, type='merged')) |>
        mutate(type=ordered(type, levels=c('obs','mod','merged'))),
   aes(x=solar.time, y=light, color=type)) + geom_line() + geom_point() + theme_bw()
 }

@@ -63,7 +63,7 @@ mm_filter_dates <- function(
     date_col,
     'solar.time' = {
       # format dates
-      data %>%
+      data |>
         dplyr::filter(
           if (!is.na(date_start)) {
             solar.time >= (date_start + as.difftime(day_start, units = "hours"))
@@ -78,7 +78,7 @@ mm_filter_dates <- function(
         )
     },
     'date' = {
-      data %>%
+      data |>
         dplyr::filter(
           if (!is.na(date_start)) date >= date_start else TRUE,
           if (!is.na(date_end)) date <= date_end else TRUE

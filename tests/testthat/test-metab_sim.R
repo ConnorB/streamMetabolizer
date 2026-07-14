@@ -53,44 +53,44 @@ test_that("metab_sim predictions (predict_metab, predict_DO) make sense", {
 
   # predict_DO - DO.mod.1 should follow specifications
   expect_equal(
-    predict_DO(mm) %>%
-      group_by(date) %>%
-      summarize(first.DO.mod = DO.mod[1]) %>%
-      .$first.DO.mod,
-    dd %>%
-      .$DO.mod.1 %>%
-      {
-        . * c(NA, 1, 1)
-      }
+    predict_DO(mm) |>
+      group_by(date) |>
+      summarize(first.DO.mod = DO.mod[1]) |>
+      pull(first.DO.mod),
+    dd$DO.mod.1 * c(NA, 1, 1)
   )
   expect_equal(
-    predict_DO(mm2) %>%
-      group_by(date) %>%
-      summarize(first.DO.mod = DO.mod[1]) %>%
-      .$first.DO.mod,
-    dat %>%
-      filter(format(solar.time, '%H:%M') == '04:00') %>%
-      .$DO.obs %>%
-      {
-        . * c(NA, 1, 1)
-      }
+    predict_DO(mm2) |>
+      group_by(date) |>
+      summarize(first.DO.mod = DO.mod[1]) |>
+      pull(first.DO.mod),
+    dat |>
+      filter(format(solar.time, '%H:%M') == '04:00') |>
+      pull(DO.obs) |>
+      (\(x) x * c(NA, 1, 1))()
   )
 
   # predict_DO - DO.mod (no error) and DO.obs (with any error) should still be pretty close
-  expect_true(
-    rmse_DO(predict_DO(mm)) < get_specs(mm)$err_obs_sigma * 1.5,
-    "DO.mod tracks DO.obs with not too much error"
+  expect_lt(
+    rmse_DO(predict_DO(mm)),
+    get_specs(mm)$err_obs_sigma * 1.5
   )
-  expect_true(
-    rmse_DO(predict_DO(mm2)) < get_specs(mm2)$err_obs_sigma * 1.5,
-    "DO.mod tracks DO.obs with not too much error"
+  expect_lt(
+    rmse_DO(predict_DO(mm2)),
+    get_specs(mm2)$err_obs_sigma * 1.5
   )
   # plot_DO_preds(predict_DO(mm))
 
   # predict_DO - DO.obs & DO.mod should be different each time unless seed is set. DO.pure should always be the same
-  expect_true(!isTRUE(all.equal(predict_DO(mm)$DO.obs, predict_DO(mm)$DO.obs)))
-  expect_true(!isTRUE(all.equal(predict_DO(mm)$DO.mod, predict_DO(mm)$DO.mod)))
-  expect_true(isTRUE(all.equal(predict_DO(mm)$DO.pure, predict_DO(mm)$DO.pure)))
+  expect_identical(
+    isTRUE(all.equal(predict_DO(mm)$DO.obs, predict_DO(mm)$DO.obs)),
+    FALSE
+  )
+  expect_identical(
+    isTRUE(all.equal(predict_DO(mm)$DO.mod, predict_DO(mm)$DO.mod)),
+    FALSE
+  )
+  expect_equal(predict_DO(mm)$DO.pure, predict_DO(mm)$DO.pure)
   mm <- metab_sim(
     data = dat,
     data_daily = select(dd, -DO.mod.1),
@@ -105,8 +105,8 @@ test_that("metab_sim predictions (predict_metab, predict_DO) make sense", {
       day_end = 23
     )
   )
-  expect_true(isTRUE(all.equal(predict_DO(mm)$DO.obs, predict_DO(mm)$DO.obs)))
-  expect_true(isTRUE(all.equal(predict_DO(mm)$DO.mod, predict_DO(mm)$DO.mod)))
+  expect_equal(predict_DO(mm)$DO.obs, predict_DO(mm)$DO.obs)
+  expect_equal(predict_DO(mm)$DO.mod, predict_DO(mm)$DO.mod)
 
   # predict_DO - using default (just err_obs_sigma), should have basically no autocorrelation in errors
   mm <- metab_sim(sp, data = select(dat, -DO.obs), data_daily = dd)
@@ -179,20 +179,20 @@ test_that("metab_sim predictions (predict_metab, predict_DO) make sense", {
     K600_daily = function(n, K600_daily_predlog = log(16), ...) {
       pmax(1, rnorm(n, exp(K600_daily_predlog), 2))
     },
-    GPP_daily = function(n, ...) pmax(0, rnorm(n, 2, 1)),
-    ER_daily = function(n, ...) pmin(0, rnorm(n, -4, 1)),
+    GPP_daily = \(n, ...) pmax(0, rnorm(n, 2, 1)),
+    ER_daily = \(n, ...) pmin(0, rnorm(n, -4, 1)),
     err_proc_sigma = 2,
     sim_seed = 9185
   )
   msim <- metab(sp, dat)
   #plot_DO_preds(msim)
   msim@data_daily <- mm_model_by_ply(
-    function(data_ply, ...) data.frame(DO.mod.n = tail(data_ply$DO.mod, 1)),
+    \(data_ply, ...) data.frame(DO.mod.n = tail(data_ply$DO.mod, 1)),
     data = predict_DO(msim),
     day_start = msim@specs$day_start,
     day_end = msim@specs$day_end
-  ) %>%
-    mutate(DO.mod.1 = DO.mod.n[c(n(), seq_len(n() - 1))]) %>%
+  ) |>
+    mutate(DO.mod.1 = DO.mod.n[c(n(), seq_len(n() - 1))]) |>
     select(date, DO.mod.1)
   #plot_DO_preds(msim)
   diffs <- mm_model_by_ply(
@@ -205,7 +205,7 @@ test_that("metab_sim predictions (predict_metab, predict_DO) make sense", {
     data = predict_DO(msim),
     day_start = msim@specs$day_start,
     day_end = msim@specs$day_end
-  ) %>%
+  ) |>
     mutate(DO.mod.1 = DO.mod.n[c(n(), seq_len(n() - 1))])
   expect_equal(
     diffs$DO.mod.1[c(2:nrow(diffs), 1)],

@@ -18,10 +18,7 @@ test_that("metab_night predictions (predict_metab, predict_DO) make sense", {
   )
   metab <- predict_metab(mm)
   DO_preds <- predict_DO(mm)
-  expect_true(
-    rmse_DO(DO_preds) < 0.1,
-    info = "DO.mod tracks DO.obs with not too much error"
-  )
+  expect_lt(rmse_DO(DO_preds), 0.1)
   # plot_DO_preds(DO_preds)
 
   # 10 days
@@ -30,18 +27,16 @@ test_that("metab_night predictions (predict_metab, predict_DO) make sense", {
   )
   metab <- predict_metab(mm)
   DO_preds <- predict_DO(mm)
-  expect_true(
-    rmse_DO(DO_preds) < 0.1,
-    info = "DO.mod tracks DO.obs with not too much error"
-  )
+  expect_lt(rmse_DO(DO_preds), 0.1)
   # plot_DO_preds(DO_preds)
 })
 
 test_that("day_tests=c('full_day','include_sunset') get handled appropriately", {
   # specs should include both tests by default
-  expect_true(all(
-    c('full_day', 'include_sunset') %in% specs(mm_name('night'))$day_tests
-  ))
+  expect_contains(
+    specs(mm_name('night'))$day_tests,
+    c('full_day', 'include_sunset')
+  )
 
   # when the date bounds match & span the full night, definitely no errors
   mm <- metab_night(
@@ -105,12 +100,13 @@ test_that("day_tests=c('full_day','include_sunset') get handled appropriately", 
     ))$errors,
     "data don't include day-night transition"
   )
-  expect_true(is.na(
+  expect_equal(
     predict_metab(metab_night(
       replace(sp, 'day_tests', 'include_sunset'),
       data = dat
-    ))$errors
-  ))
+    ))$errors,
+    NA_character_
+  )
   # plot_DO_preds(predict_DO(metab_night(replace(sp, 'day_tests', 'full_day'), data=dat)))
 
   # full_day & include_sunset are OK if day starts after day_start but before/on dusk
@@ -136,7 +132,10 @@ test_that("day_tests=c('full_day','include_sunset') get handled appropriately", 
     get_params(metab_night(sp, data = dat))$errors,
     "data don't end when expected"
   )
-  expect_true(is.na(predict_metab(metab_night(sp, data = dat))$errors))
+  expect_equal(
+    predict_metab(metab_night(sp, data = dat))$errors,
+    NA_character_
+  )
 
   # full_day is great if day ends after dawn, no matter whether it ends before or on day_end
   sp <- specs(mm_name('night'), day_start = 12, day_end = 36)
@@ -159,10 +158,7 @@ test_that("metab_night predictions can be passed back into metab_mle", {
     data_daily = get_params(mmk)[c('date', 'K600.daily')]
   )
   expect_equal(get_params(mm)$K600.daily, get_params(mmk)$K600.daily)
-  expect_true(
-    rmse_DO(predict_DO(mm)) < 0.2,
-    info = "DO.mod tracks DO.obs with not too much error"
-  )
+  expect_lt(rmse_DO(predict_DO(mm)), 0.2)
   # plot_metab_preds(mm)
   # plot_DO_preds(mm)
 })

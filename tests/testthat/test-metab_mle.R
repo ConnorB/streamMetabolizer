@@ -20,25 +20,24 @@ test_that("metab_mle works with fancy GPP, ER functions", {
 
   # specs should contain inits for the relevant parameters
   sp <- specs(mm_name('mle', GPP_fun = 'satlight', ER_fun = 'q10temp'))
-  expect_true(all(paste0('init.', satlight_q10temp_params) %in% names(sp)))
+  expect_contains(names(sp), paste0('init.', satlight_q10temp_params))
 
   # model fitting should run without error
   mm <- metab_mle(sp, dat)
 
   # get_params should return values for the relevant parameters
-  expect_true(all(satlight_q10temp_params %in% names(get_params(mm))))
+  expect_contains(names(get_params(mm)), satlight_q10temp_params)
 
   # predict_metab should return values
   mp <- predict_metab(mm)
-  expect_true(!is.na(mp$GPP))
-  expect_true(!is.na(mp$ER))
+  expect_all_false(is.na(c(mp$GPP, mp$ER)))
 })
 
 test_that("metab_mle treats data flaws correctly", {
   # missing end
   dat <- data_metab('3', '15', flaws = 'missing end')
   mm <- metab_mle(data = dat)
-  expect_true(is.na(get_params(mm)$GPP.daily[3]))
+  expect_equal(get_params(mm)$GPP.daily[3], NA_real_)
   expect_equal(get_params(mm)$errors[3], "data don't start when expected")
 })
 
@@ -50,10 +49,7 @@ test_that("metab_mle predictions (predict_metab, predict_DO) make sense", {
   )
   metab <- predict_metab(mm)
   DO_preds <- predict_DO(mm)
-  expect_true(
-    rmse_DO(DO_preds) < 0.2,
-    info = "DO.mod tracks DO.obs with not too much error"
-  )
+  expect_lt(rmse_DO(DO_preds), 0.2)
   # plot_DO_preds(DO_preds)
 
   # 10 days
@@ -63,10 +59,7 @@ test_that("metab_mle predictions (predict_metab, predict_DO) make sense", {
   )
   metab <- predict_metab(mm)
   DO_preds <- predict_DO(mm)
-  expect_true(
-    rmse_DO(DO_preds) < 0.2,
-    info = "DO.mod tracks DO.obs with not too much error"
-  )
+  expect_lt(rmse_DO(DO_preds), 0.2)
   # plot_DO_preds(DO_preds)
 
   # compare ODE methods (3 days, default day_start&end)
@@ -145,10 +138,7 @@ test_that("metab_models can be saved & reloaded efficiently (see helper-save_loa
 
   # see if saveRDS with gzfile, compression=9 works well
   rdstimes <- save_load_timing(mm, reps = 1) # autoloaded b/c script begins with 'helper' and is in this directory
-  expect_true(
-    'gz6' %in% rdstimes$typelevel[1:3],
-    info = "gz6 is reasonably efficient for saveRDS"
-  )
+  expect_contains(rdstimes$typelevel[1:3], 'gz6')
   # plot_save_load_timing(rdstimes)
 })
 

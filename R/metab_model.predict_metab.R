@@ -36,10 +36,10 @@ predict_metab.metab_model <- function(
           day_end != min(day_start + 24, get_specs(metab_model)$day_end))
     ) {
       .cli_warn(
-        "using saved daily metabolism values and so ignoring new day_start and/or day_end values"
+        "Using saved daily metabolism values; new {.arg day_start} or {.arg day_end} values are ignored."
       )
     }
-    preds <- metab_model@metab_daily %>%
+    preds <- metab_model@metab_daily |>
       mm_filter_dates(date_start = date_start, date_end = date_end)
   } else {
     # otherwise predict them now
@@ -65,26 +65,20 @@ predict_metab.metab_model <- function(
     if (specs$day_start != day_start || specs$day_end != day_end) {
       if (day_start < specs$day_start) {
         .cli_abort(
-          "day_start may not be earlier than the day_start stored in metab_model@specs"
+          "{.arg day_start} cannot be earlier than the value stored in {.code metab_model@specs}."
         )
       }
       if (day_end > specs$day_end) {
         .cli_abort(
-          "day_end may not be later than the day_end stored in metab_model@specs"
+          "{.arg day_end} cannot be later than the value stored in {.code metab_model@specs}."
         )
       }
-      .cli_inform(paste(
-        "daily metabolism predictions are for the period from",
-        day_start,
-        "to",
-        day_end,
-        "hours on each date\n",
-        "(differs from the model-fitting range of",
-        specs$day_start,
-        "to",
-        specs$day_end,
-        "hours)"
-      ))
+      .cli_inform(
+        c(
+          "Daily metabolism predictions cover hours {.val {day_start}} to {.val {day_end}} on each date.",
+          "i" = "The model-fitting range was {.val {specs$day_start}} to {.val {specs$day_end}} hours."
+        )
+      )
     }
     if (day_end - day_start > 24) {
       # give error mostly because mm_model_by_ply can't currently handle this,
@@ -92,7 +86,7 @@ predict_metab.metab_model <- function(
       # other than 24 hours, given that light and temperature and DO deficits
       # all vary systematically with time of day
       .cli_abort(
-        "day_end - day_start must not exceed 24 hours for metabolism prediction"
+        "{.arg day_end} - {.arg day_start} cannot exceed 24 hours for metabolism prediction."
       )
     } else if ((day_end - day_start) < 24) {
       if (mm_parse_name(specs$model_name)$type != 'night') {
@@ -104,7 +98,7 @@ predict_metab.metab_model <- function(
         # safe side by requiring what most people will want anyway (a
         # 24-hour-period prediction)
         .cli_abort(
-          "day_end - day_start < 24 hours; this is unacceptable except for metab_night"
+          "{.arg day_end} - {.arg day_start} must equal 24 hours except for {.cls metab_night} models."
         )
       } else {
         # but metab_night may not have 24-hour periods available, and
@@ -113,7 +107,7 @@ predict_metab.metab_model <- function(
         # really fine - metab_night will give the correct answers (within its
         # abilities) regardless of the period of time specified here
         .cli_inform(
-          "for metab_night, GPP estimates are 0 because they're for nighttime only "
+          "For {.cls metab_night} models, GPP estimates are zero because predictions cover nighttime only."
         )
       }
     }
@@ -125,7 +119,7 @@ predict_metab.metab_model <- function(
       date_start = date_start,
       date_end = date_end,
       use_saved = TRUE
-    ) %>%
+    ) |>
       mm_filter_hours(day_start = day_start, day_end = day_end)
 
     # re-process the input data with the metabolism estimates to predict daily
@@ -162,8 +156,8 @@ predict_metab.metab_model <- function(
     )
     fit <- get_fit(metab_model)
     if (!is.null(fit) && all(c('date', 'warnings', 'errors') %in% names(fit))) {
-      messages <- fit %>%
-        select(date, warnings, errors) %>%
+      messages <- fit |>
+        select(date, warnings, errors) |>
         compress_msgs('msgs.fit')
       preds <- full_join(preds, messages, by = 'date', copy = TRUE)
     } else {

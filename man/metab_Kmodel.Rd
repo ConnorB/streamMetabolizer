@@ -76,7 +76,7 @@ library(dplyr)
 # create example data
 set.seed(24842)
 example_Ks <- data.frame(date=seq(as.Date("2012-08-15"),as.Date("2012-09-15"),
-  as.difftime(1,units='days')), discharge.daily=exp(rnorm(32,2,1)), K600.daily=rnorm(32,30,4)) \%>\%
+  as.difftime(1,units='days')), discharge.daily=exp(rnorm(32,2,1)), K600.daily=rnorm(32,30,4)) |>
   mutate(K600.daily.lower=K600.daily-5, K600.daily.upper=K600.daily+6)
 
 # mean
@@ -115,13 +115,13 @@ mle_specs <- specs(mm_name('mle'))
 
 # fit a first-round MLE and extract the K estimates
 mm1 <- metab_mle(mle_specs, data=dat)
-K600_mm1 <- get_params(mm1, uncertainty='ci') \%>\%
+K600_mm1 <- get_params(mm1, uncertainty='ci') |>
   select(date, K600.daily, K600.daily.lower, K600.daily.upper)
 
 # smooth the K600s
 mm2 <- metab_Kmodel(specs(mm_name('Kmodel', engine='mean'),
   day_start=-1, day_end=23), data_daily=K600_mm1)
-K600_mm2 <- get_params(mm2) \%>\% select(date, K600.daily)
+K600_mm2 <- get_params(mm2) |> select(date, K600.daily)
 
 # refit the MLE with fixed K
 mm3 <- metab_mle(mle_specs, data=dat, data_daily=K600_mm2)

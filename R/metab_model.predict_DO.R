@@ -30,7 +30,7 @@ predict_DO.metab_model <- function(
   day_end <- specs$day_end
 
   # get the input data; filter if requested
-  data <- get_data(metab_model) %>%
+  data <- get_data(metab_model) |>
     mm_filter_dates(
       date_start = date_start,
       date_end = date_end,
@@ -74,7 +74,7 @@ predict_DO.metab_model <- function(
     timestep_days = FALSE,
     required_timestep = NA, # for mm_model_by_ply
     model_name = specs$model_name
-  ) %>% # for mm_predict_DO_1ply
+  ) |> # for mm_predict_DO_1ply
     mm_filter_dates(date_start = date_start, date_end = date_end) # trim off the extra
 
   preds

@@ -188,8 +188,8 @@ dDO.preds <- tibble::tibble(
   dDO.preds.dblGPP = apply_dDOdt(6, -5, 15),
   dDO.preds.dblER = apply_dDOdt(3, -10, 15),
   dDO.preds.dblK = apply_dDOdt(3, -5, 30))
-dDO.preds \%>\%
-  gather(key=dDO.series, value=dDO.dt, starts_with('dDO.preds')) \%>\%
+dDO.preds |>
+  gather(key=dDO.series, value=dDO.dt, starts_with('dDO.preds')) |>
   ggplot(aes(x=solar.time, y=dDO.dt, color=dDO.series)) + geom_line() + theme_bw()
 
 # try simulating process eror

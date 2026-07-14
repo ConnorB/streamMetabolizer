@@ -13,9 +13,9 @@ test_that("AR process-error models prepare normalized light fractions", {
 
   stan_data <- prepdata_bayes(dat, NULL, specs = model_specs)
 
-  expect_true('light_frac' %in% names(stan_data))
-  expect_true(all(stan_data$light_frac >= 0))
-  expect_true(all(stan_data$light_frac <= 1))
+  expect_contains(names(stan_data), 'light_frac')
+  expect_all_true(c(stan_data$light_frac >= 0))
+  expect_all_true(c(stan_data$light_frac <= 1))
   expect_equal(
     colSums(stan_data$light_frac[seq_len(stan_data$n24), , drop = FALSE]),
     1
@@ -31,26 +31,41 @@ test_that("generated AR process-error Stan models use one-step residuals", {
     'b_np_pclv_tr_plrcko.stan'
   ))
 
-  expect_true(any(grepl(
-    'err_proc_acor\\[i\\] = DO_obs\\[i\\+1\\] - DO_mod\\[i\\+1\\]',
-    constant_model
-  )))
-  expect_true(any(grepl(
-    'err_proc_acor_phi \\* err_proc_acor\\[i-1\\]',
-    constant_model
-  )))
-  expect_true(any(grepl(
-    'err_proc_acor_phi \\* err_proc_acor\\[n-1,j-1\\]',
-    constant_model
-  )))
-  expect_true(any(grepl(
-    'err_proc_acor_light_alpha \\* light_frac\\[i\\+1\\]',
-    light_model
-  )))
-  expect_true(any(grepl(
-    'err_proc_acor_light_alpha \\* light_frac\\[1,j\\]',
-    light_model
-  )))
+  expect_gt(
+    sum(grepl(
+      'err_proc_acor\\[i\\] = DO_obs\\[i\\+1\\] - DO_mod\\[i\\+1\\]',
+      constant_model
+    )),
+    0
+  )
+  expect_gt(
+    sum(grepl(
+      'err_proc_acor_phi \\* err_proc_acor\\[i-1\\]',
+      constant_model
+    )),
+    0
+  )
+  expect_gt(
+    sum(grepl(
+      'err_proc_acor_phi \\* err_proc_acor\\[n-1,j-1\\]',
+      constant_model
+    )),
+    0
+  )
+  expect_gt(
+    sum(grepl(
+      'err_proc_acor_light_alpha \\* light_frac\\[i\\+1\\]',
+      light_model
+    )),
+    0
+  )
+  expect_gt(
+    sum(grepl(
+      'err_proc_acor_light_alpha \\* light_frac\\[1,j\\]',
+      light_model
+    )),
+    0
+  )
 })
 
 # # NB: these lines work within testthat() calls:
@@ -87,15 +102,13 @@ manual_test4 <- function() {
     check_validity = FALSE,
     stringsAsFactors = FALSE
   )
-  stanfiles <- opts %>%
-    rowwise %>%
-    do(tibble::tibble(model_name = do.call(mm_name, .))) %>%
-    unlist(use.names = FALSE) %>%
-    sort %>%
-    {
-      .[!grepl('__', .)]
-    } %>%
-    .[. %in% mm_valid_names('bayes')]
+  stanfiles <- opts |>
+    rowwise() |>
+    do(tibble::tibble(model_name = do.call(mm_name, .))) |>
+    unlist(use.names = FALSE) |>
+    sort() |>
+    (\(x) x[!grepl('__', x)])() |>
+    (\(x) x[x %in% mm_valid_names('bayes')])()
   stanfiles
 
   mms <- lapply(setNames(nm = stanfiles[7]), function(sf) {
@@ -111,9 +124,9 @@ manual_test4 <- function() {
   sapply(mms, get_fitting_time)
 
   bind_rows(lapply(mms, function(mm) {
-    get_params(mm) %>%
-      mutate(model = get_specs(mm)$model_name) %>%
-      select(model, everything()) %>%
+    get_params(mm) |>
+      mutate(model = get_specs(mm)$model_name) |>
+      select(model, everything()) |>
       bind_cols(select(get_fit(mm)$daily, ends_with('Rhat')))
   }))
 
@@ -126,7 +139,7 @@ manual_test4 <- function() {
   mm_run <- substring(gsub('\\.Rds', '.stan', basename(mm_files)), 8)
   mm_unrun <- sort(setdiff(stanfiles, mm_run))
   mms <- lapply(mm_files, readRDS)
-  mm_failures <- mm_run[sapply(mms, function(mm) is.null(get_mcmc(mm)))]
+  mm_failures <- mm_run[sapply(mms, \(mm) is.null(get_mcmc(mm)))]
   setdiff(mm_run, mm_failures)
 
   library(gridExtra)
@@ -183,13 +196,13 @@ manual_test1 <- function() {
     dat <- data_metab('1', res = '30')
 
     # 1-core model
-    mm <- mm_name('bayes', err_proc_acor = FALSE, err_proc_iid = FALSE) %>%
+    mm <- mm_name('bayes', err_proc_acor = FALSE, err_proc_iid = FALSE) |>
       specs(
         n_chains = 1,
         n_cores = 1,
         burnin_steps = 300,
         saved_steps = 100
-      ) %>%
+      ) |>
       metab(data = dat)
 
     # run the model through its interface paces
@@ -207,13 +220,13 @@ manual_test1 <- function() {
     traceplot(get_mcmc(mm), pars = 'GPP_daily')
 
     # 4-core model
-    mm <- mm_name('bayes', err_proc_acor = FALSE, err_proc_iid = FALSE) %>%
+    mm <- mm_name('bayes', err_proc_acor = FALSE, err_proc_iid = FALSE) |>
       specs(
         n_chains = 2,
         n_cores = 4,
         burnin_steps = 300,
         saved_steps = 100
-      ) %>%
+      ) |>
       metab(data = dat)
 
     # run the model through its interface paces
@@ -252,41 +265,35 @@ manual_test1 <- function() {
     nosplit <- metab(sp(split_dates = FALSE), dat)
     split <- metab(sp(split_dates = TRUE), dat)
     # expect the same fitted parameter dimensions and similar estimates by either method
-    expect_true(all(dim(get_params(nosplit)) == dim(get_params(split))))
-    expect_true(
+    expect_equal(dim(get_params(nosplit)), dim(get_params(split)))
+    expect_lt(
       max(abs(
         get_params(nosplit)[c('GPP.daily', 'ER.daily', 'K600.daily')] /
           get_params(split)[c('GPP.daily', 'ER.daily', 'K600.daily')] -
           1
-      )) <
-        0.2
+      )),
+      0.2
     )
 
     dat <- data_metab('3', res = '30')
     nosplit <- metab(sp(split_dates = FALSE), dat)
     split <- metab(sp(split_dates = TRUE), dat)
     # expect the same fitted parameter dimensions and similar estimates by either method
-    expect_true(all(dim(get_params(nosplit)) == dim(get_params(split))))
-    expect_true(
+    expect_equal(dim(get_params(nosplit)), dim(get_params(split)))
+    expect_lt(
       max(abs(
         get_params(nosplit)[c('GPP.daily', 'ER.daily', 'K600.daily')] /
           get_params(split)[c('GPP.daily', 'ER.daily', 'K600.daily')] -
           1
-      )) <
-        0.2
+      )),
+      0.2
     )
   })
 
   test_that("error and warning messages are printed with the mm object if present", {
     dat <- data_metab('1', res = '30', flaws = c('missing start'))
-    expect_warning(
-      metab(sp(FALSE), dat),
-      "Modeling failed: no valid days of data"
-    )
-    expect_warning(
-      metab(sp(TRUE), dat),
-      "Modeling failed: no valid days of data"
-    )
+    expect_snapshot(metab(sp(FALSE), dat))
+    expect_snapshot(metab(sp(TRUE), dat))
 
     dat <- data_metab('3', res = '30', flaws = c('missing middle'))
     expect_equal(
@@ -358,7 +365,7 @@ manual_test3 <- function() {
     keep_mcmcs = TRUE,
     K600_daily_beta_mu = c(intercept = 1, slope = 2.3),
     K600_daily_beta_sigma = c(intercept = 0.3, slope = 0.3)
-  ) %>%
+  ) |>
     revise(
       model_name = 'inst/models/b_Kl_pcpi_pm_plrcko_sfs2loglog.stan',
       K600_daily_sigma_rate = 2,
@@ -424,7 +431,7 @@ manual_test3 <- function() {
     saved_steps = 100,
     keep_mcmcs = TRUE
   )
-  sp <- sp %>%
+  sp <- sp |>
     revise(params_out = sp$params_out[-which(sp$params_out == 'err_proc_iid')])
   mm_old <- metab(specs = sp, data = dat) # 0:18 but magnitudes are all off by about 10 or 15
   sp <- specs(
@@ -437,7 +444,7 @@ manual_test3 <- function() {
     keep_mcmc_data = TRUE,
     K600_daily_beta_mu = c(intercept = 1, slope = 2.3),
     K600_daily_beta_sigma = c(intercept = 0.3, slope = 0.3)
-  ) %>%
+  ) |>
     revise(
       model_name = 'inst/models/b_Kl_oipi_pm_plrckm_sfs2loglog.stan',
       K600_daily_sigma_rate = 0.2,
@@ -501,7 +508,7 @@ manual_test3 <- function() {
     keep_mcmc_data = TRUE,
     K600_daily_beta_mu = c(intercept = 1, slope = 2.3),
     K600_daily_beta_sigma = c(intercept = 0.3, slope = 0.3)
-  ) %>%
+  ) |>
     revise(
       model_name = 'inst/models/b_Kl_oipi_pm_plrckm_sfs3loglog.stan',
       K600_daily_sigma_rate = 0.2,
@@ -563,7 +570,7 @@ manual_test3 <- function() {
     keep_mcmcs = TRUE
   )
   mm_old_cim <- metab(specs = sp, data = dat) # 11 seconds for 200/100
-  get_fit(mm_old_cim)$daily %>% select(ends_with('Rhat'))
+  get_fit(mm_old_cim)$daily |> select(ends_with('Rhat'))
   predict_metab(mm_old_cim)
   plot_metab_preds(mm_old_cim)
   plot_DO_preds(mm_old_cim)
@@ -601,7 +608,7 @@ manual_test3 <- function() {
     keep_mcmc_data = FALSE,
     K600_daily_beta_mu = c(intercept = 1, slope = 2.3),
     K600_daily_beta_sigma = c(intercept = 0.3, slope = 0.3)
-  ) %>%
+  ) |>
     revise(
       K600_daily_sigma_rate = 1,
       err_proc_iid_sigma_rate = 0.03,
@@ -648,7 +655,7 @@ manual_test3 <- function() {
   )
   mm_slow <- metab(specs = sp, data = dat) # 9 sec
   # SFS version
-  mm_fast <- sp %>%
+  mm_fast <- sp |>
     revise(
       err_obs_iid_sigma_rate = 0.2,
       model_name = 'b_np_oi_pm_plrckm_faster.stan',
@@ -657,7 +664,7 @@ manual_test3 <- function() {
         c(params_in, 'err_obs_iid_sigma_rate'),
         c('err_obs_iid_sigma_scale')
       )
-    ) %>%
+    ) |>
     metab(data = dat) # 51 sec w/ new compilation, 16-17 sec w/ err_obs_sigma_rate at 0.2 or 2 or 0.02
   mm <- mm_fast
   get_fitting_time(mm)
@@ -690,7 +697,7 @@ manual_test3 <- function() {
     specs = revise(sp, model_name = 'inst/models/b_Kl_oi_tr_plrckm.stan'),
     data = dat
   ) # 20 sec - baseline after june 2016 speed-ups
-  sp2 <- sp %>%
+  sp2 <- sp |>
     revise(
       params_in = c(
         'GPP_daily_mu',
@@ -712,7 +719,7 @@ manual_test3 <- function() {
         "err_obs_iid_sigma_scale"
       )
     )
-  sp3 <- sp2 %>%
+  sp3 <- sp2 |>
     revise(
       K600_daily_beta_mu = c(intercept = 10, slope = 3),
       K600_daily_beta_sigma = c(intercept = 8, slope = 2)
@@ -750,17 +757,14 @@ test_that("test that metab_models can be saved & reloaded (see helper-save_load.
     err_proc_acor = FALSE,
     err_proc_iid = FALSE,
     engine = 'stan'
-  ) %>%
-    specs(n_chains = 1, n_cores = 1, burnin_steps = 300, saved_steps = 100) %>%
+  ) |>
+    specs(n_chains = 1, n_cores = 1, burnin_steps = 300, saved_steps = 100) |>
     metab(data = dat)
   mm <- mmb
 
   # see if saveRDS with gzfile, compression=9 works well
   rdstimes <- save_load_timing(mm, reps = 1)
-  expect_true(
-    'gz6' %in% rdstimes$typelevel[1:3],
-    info = "gz6 is reasonably efficient for saveRDS"
-  )
+  expect_contains(rdstimes$typelevel[1:3], 'gz6')
   plot_save_load_timing(rdstimes)
 
   # save and load the mm, make sure it stays the same

@@ -143,7 +143,9 @@ mm_is_valid_day <- function(
   # required_timestep (within tolerance ocf 0.2% of required_timestep length)
   if (!isTRUE(is.na(required_timestep)) && is.finite(timestep.days)) {
     if (length(required_timestep) != 1 || !is.numeric(required_timestep)) {
-      .cli_abort('expecting required_timestep as single numeric value (or NA)')
+      .cli_abort(
+        "{.arg required_timestep} must be a single numeric value or {.val NA}."
+      )
     }
     if (
       !isTRUE(all.equal(

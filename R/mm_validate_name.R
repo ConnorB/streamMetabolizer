@@ -21,7 +21,10 @@ mm_validate_name <- function(model_name) {
   parsed <- tryCatch(
     mm_parse_name(model_name),
     error = function(e) {
-      parse_problem <<- "could not parse model name. try constructing with mm_name()"
+      parse_problem <<- c(
+        "Could not parse model name {.val {model_name}}.",
+        "i" = "Construct the name with {.fn mm_name}."
+      )
     }
   )
   if (length(parse_problem) > 0) {
@@ -33,9 +36,10 @@ mm_validate_name <- function(model_name) {
   valid_types <- eval(formals(mm_name)$type)
   if (is.na(type) || !(type %in% valid_types)) {
     .cli_abort(
-      'model name implies unknown model type (',
-      type,
-      '). try constructing with mm_name()'
+      c(
+        "Model name implies unknown model type {.val {type}}.",
+        "i" = "Construct the name with {.fn mm_name}."
+      )
     )
   }
 
@@ -45,11 +49,11 @@ mm_validate_name <- function(model_name) {
     mm_locate_filename(model_name)
   } else if (!(model_name %in% valid_names)) {
     .cli_abort(
-      "model_name (",
-      model_name,
-      ") is not among valid ",
-      type,
-      sprintf(" model_names (see mm_valid_names('%s'))", type)
+      c(
+        "{.arg model_name} is not valid for type {.val {type}}.",
+        "x" = "Received {.val {model_name}}.",
+        "i" = "See {.fn mm_valid_names} for valid names."
+      )
     )
   }
 

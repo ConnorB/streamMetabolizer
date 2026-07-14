@@ -4,7 +4,7 @@ cmdstan_is_available <- function() {
   }
   version <- tryCatch(
     cmdstanr::cmdstan_version(error_on_NA = FALSE),
-    error = function(e) NULL
+    error = \(e) NULL
   )
   !is.null(version) && length(version) == 1 && !is.na(version)
 }

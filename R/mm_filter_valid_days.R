@@ -74,7 +74,7 @@ mm_filter_valid_days <- function(
       errors = rep("date in data_daily but not data", length(daily_unmatched)),
       stringsAsFactors = FALSE
     )
-    removed <- bind_rows(removed, daily_removed) %>%
+    removed <- bind_rows(removed, daily_removed) |>
       arrange(date)
     rownames(removed) <- NULL
     data_daily_filtered <- data_daily[

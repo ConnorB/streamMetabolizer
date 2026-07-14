@@ -9,20 +9,23 @@
 #' @param stan_engine The Stan interface whose compiler version should be
 #'   validated. If `NULL`, CmdStanR is preferred when available, followed by
 #'   RStan.
+#' @param stan_version_fn Internal function used to determine the Stan version.
 #' @return a file path if the file exists or an error otherwise
 #' @keywords internal
-mm_locate_filename <- function(model_name, stan_engine = NULL) {
+mm_locate_filename <- function(
+  model_name,
+  stan_engine = NULL,
+  stan_version_fn = stan_version_for_engine
+) {
   package_dir <- system.file("models", package = "streamMetabolizer")
   package_path <- file.path(package_dir, model_name)
   other_path <- model_name
 
-  stan_version <- stan_version_for_engine(stan_engine)
+  stan_version <- stan_version_fn(stan_engine)
 
   if (!is.na(stan_version) && stan_version < "2.26.0") {
     .cli_abort(
-      "Stan version ",
-      stan_version,
-      " is not supported; version 2.26.0 or later is required"
+      "Stan version {.val {stan_version}} is not supported; version 2.26.0 or later is required."
     )
   }
 
@@ -36,14 +39,14 @@ mm_locate_filename <- function(model_name, stan_engine = NULL) {
   # Final fallback: warn if engine is unknown
   if (is.na(stan_version)) {
     .cli_warn(
-      "Neither RStan nor a configured CmdStanR installation was detected"
+      "Neither RStan nor a configured CmdStanR installation was detected."
     )
   }
   .cli_abort(
-    "Could not locate the model file at ",
-    file.path(package_dir, model_name),
-    " or ",
-    other_path
+    c(
+      "Could not locate the model file",
+      "x" = "Not found at {.file {package_path}} or {.file {other_path}}."
+    )
   )
 }
 

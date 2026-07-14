@@ -190,7 +190,7 @@ compress_msgs <- function(
   dateerr <- gsub("overall errors(;)*", "", ddat$errors)
   datewarn <- gsub("overall warnings(;)*", "", ddat$warnings)
   messages <- errors <- warnings <- '.dplyr.var'
-  ddat %>%
+  ddat |>
     mutate(
       messages = paste(
         # general errors and warnings
@@ -206,8 +206,8 @@ compress_msgs <- function(
           ifelse(datewarn != '', 'W  ', '   ')
         )
       )
-    ) %>%
-    select(-warnings, -errors) %>%
+    ) |>
+    select(-warnings, -errors) |>
     rename_with(~colname, messages)
 }
 
@@ -225,9 +225,9 @@ pretty_print_ddat <- function(ddat, msg.col) {
   if (!exists('errors', ddat)) {
     ddat$errors <- NA
   }
-  ddat %>%
-    head(10) %>%
-    compress_msgs(colname = msg.col) %>%
+  ddat |>
+    head(10) |>
+    compress_msgs(colname = msg.col) |>
     print()
   if (nrow(ddat) > 10) cat("  ...\n")
 }

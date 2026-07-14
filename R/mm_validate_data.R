@@ -26,7 +26,7 @@ mm_validate_data <- function(
     dat <- get(data_type)
 
     # the data expectation is set by the default data argument to the specific metabolism class
-    expected.data <- formals(metab_class)[[data_type]] %>% eval()
+    expected.data <- formals(metab_class)[[data_type]] |> eval()
     optional.data <- if (is.null(expected.data)) {
       'all'
     } else {
@@ -41,7 +41,10 @@ mm_validate_data <- function(
       if ('all' %in% optional.data) {
         return(dat)
       } else {
-        .cli_abort(paste0(data_type, " is NULL but required"), call. = FALSE)
+        .cli_abort(
+          "{.arg {data_type}} is required and cannot be {.val NULL}.",
+          call = NULL
+        )
       }
     }
 
@@ -51,12 +54,8 @@ mm_validate_data <- function(
       missing.columns <- setdiff(missing.columns, optional.data) # optional cols don't count
       if (length(missing.columns) > 0) {
         .cli_abort(
-          paste0(
-            data_type,
-            " is missing these columns: ",
-            paste0(missing.columns, collapse = ", ")
-          ),
-          call. = FALSE
+          "{.arg {data_type}} is missing column{?s}: {.var {missing.columns}}.",
+          call = NULL
         )
       }
     }
@@ -64,12 +63,8 @@ mm_validate_data <- function(
       extra.columns <- setdiff(names(dat), names(expected.data))
       if (length(extra.columns) > 0) {
         .cli_abort(
-          paste0(
-            data_type,
-            " should omit these extra columns: ",
-            paste0(extra.columns, collapse = ", ")
-          ),
-          call. = FALSE
+          "{.arg {data_type}} must omit extra column{?s}: {.var {extra.columns}}.",
+          call = NULL
         )
       }
     }
@@ -82,29 +77,21 @@ mm_validate_data <- function(
       timecol <- grep('date|time', names(dat), value = TRUE)
       if (length(timecol) != 1) {
         .cli_abort(
-          "in ",
-          data_type,
-          " found ",
-          length(timecol),
-          " possible timestamp columns",
-          call. = FALSE
+          "Found {length(timecol)} possible timestamp column{?s} in {.arg {data_type}}; expected exactly one.",
+          call = NULL
         )
       }
       na.times <- which(is.na(dat[[timecol]]))
       if (length(na.times) > 0) {
         .cli_abort(
-          paste0(
-            data_type,
-            " has NA date stamps in these rows: ",
-            paste0(na.times, collapse = ", ")
-          ),
-          call. = FALSE
+          "{.arg {data_type}} has missing timestamps in row{?s} {.val {na.times}}.",
+          call = NULL
         )
       }
       if (timecol == 'solar.time' && !lubridate::is.POSIXct(dat[[timecol]])) {
         .cli_abort(
-          "expecting 'solar.time' to be of class 'POSIXct'",
-          call. = FALSE
+          "{.var solar.time} must be a {.cls POSIXct} vector.",
+          call = NULL
         )
       }
       if (
@@ -112,12 +99,12 @@ mm_validate_data <- function(
           !(lubridate::tz(dat[[timecol]]) %in% c('UTC', 'GMT'))
       ) {
         .cli_abort(
-          "expecting 'solar.time' to have timezone 'UTC'",
-          call. = FALSE
+          "{.var solar.time} must use the {.val UTC} time zone.",
+          call = NULL
         )
       }
       if (timecol == 'date' && !lubridate::is.Date(dat[[timecol]])) {
-        .cli_abort("expecting 'date' to be of class 'Date'", call. = FALSE)
+        .cli_abort("{.var date} must be a {.cls Date} vector.", call = NULL)
       }
     }
 

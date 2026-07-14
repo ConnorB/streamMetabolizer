@@ -28,13 +28,13 @@ load_spring_creek <- function(attach.units = deprecated()) {
     package = "streamMetabolizer"
   ) # data from Spring Creek, Laramie, WY
   time <- utc.time <- oxy <- temp <- solar.time <- app.solar.time <- ".dplyr.var"
-  spring <- read.csv(file.name, stringsAsFactors = FALSE, header = TRUE) %>%
+  spring <- read.csv(file.name, stringsAsFactors = FALSE, header = TRUE) |>
     transmute(
       utc.time = as.POSIXct(time, origin = "1970-01-01", tz = "UTC"),
       local.time = with_tz(utc.time, "America/Denver"),
       DO.obs = oxy,
       temp.water = temp
-    ) %>%
+    ) |>
     mutate(
       DO.sat = calc_DO_sat(
         temp.water = temp.water,

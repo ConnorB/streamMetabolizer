@@ -98,7 +98,7 @@ plot_DO_preds <- function(
         as.numeric(diff(DO_preds$solar.time), units = "days"),
       obs = diff(DO_preds$DO.obs) /
         as.numeric(diff(DO_preds$solar.time), units = "days")
-    ) %>%
+    ) |>
     mutate(
       pure = ifelse(diff(DO_preds$date) == 0, pure, NA),
       mod = ifelse(diff(DO_preds$date) == 0, mod, NA),
@@ -106,7 +106,7 @@ plot_DO_preds <- function(
     )
 
   var <- '.dplyr.var'
-  DO_preds_all <- bind_rows(DO_preds_conc, DO_preds_pctsat, DO_preds_ddodt) %>%
+  DO_preds_all <- bind_rows(DO_preds_conc, DO_preds_pctsat, DO_preds_ddodt) |>
     mutate(
       var = ordered(
         var,
@@ -121,12 +121,15 @@ plot_DO_preds <- function(
     'ggplot2' = {
       if (!requireNamespace("ggplot2", quietly = TRUE)) {
         .cli_abort(
-          "call install.packages('ggplot2') before plotting with style='ggplot2'"
+          c(
+            "{.pkg ggplot2} is required for {.arg style} = {.val ggplot2}.",
+            "i" = "Install it with {.run install.packages('ggplot2')}."
+          )
         )
       }
 
       . <- solar.time <- pure <- mod <- date <- col.pure <- col.mod <- col.obs <- obs <- '.ggplot.var'
-      preds_ggplot <- DO_preds_all %>%
+      preds_ggplot <- DO_preds_all |>
         filter(as %in% y_var)
       if ('conc' %in% names(y_lim)) {
         lim <- y_lim[['conc']][1]
@@ -209,41 +212,49 @@ plot_DO_preds <- function(
     'dygraphs' = {
       if (!requireNamespace("dygraphs", quietly = TRUE)) {
         .cli_abort(
-          "call install.packages('dygraphs') before plotting with style='dygraphs'"
+          c(
+            "{.pkg dygraphs} is required for {.arg style} = {.val dygraphs}.",
+            "i" = "Install it with {.run install.packages('dygraphs')}."
+          )
         )
       }
       if (!requireNamespace("xts", quietly = TRUE)) {
         .cli_abort(
-          "call install.packages('xts') before plotting with style='dygraphs'"
+          c(
+            "{.pkg xts} is required for {.arg style} = {.val dygraphs}.",
+            "i" = "Install it with {.run install.packages('xts')}."
+          )
         )
       }
 
       . <- '.dplyr.var'
-      preds_xts <- DO_preds_all %>%
-        filter(as %in% y_var) %>%
-        arrange(solar.time) %>%
-        group_by(date) %>%
-        do(., {
+      preds_xts <- DO_preds_all |>
+        filter(as %in% y_var) |>
+        arrange(solar.time) |>
+        group_by(date) |>
+        do({
           out <- .[c(seq_len(nrow(.)), nrow(.)), ]
           out[nrow(.) + 1, c('pure', 'mod', 'obs')] <- NA
           out
-        }) %>%
+        }) |>
         ungroup()
 
       prep_dygraph <- function(y_var) {
         . <- solar.time <- pure <- mod <- obs <- '.dplyr.var'
-        prepped <- preds_xts %>%
-          filter(as == y_var) %>%
-          select(pure, mod, obs, solar.time) %>%
+        prepped <- preds_xts |>
+          filter(as == y_var) |>
+          select(pure, mod, obs, solar.time) |>
           mutate(
             solar.time = lubridate::force_tz(solar.time, Sys.getenv("TZ"))
-          ) %>% # dygraphs makes some funky tz assumptions. this seems to help.
-          xts::xts(
-            x = select(., -solar.time),
-            order.by = .$solar.time,
-            unique = FALSE,
-            tzone = Sys.getenv("TZ")
-          )
+          ) |> # dygraphs makes some funky tz assumptions. this seems to help.
+          (\(x) {
+            xts::xts(
+              x = select(x, -solar.time),
+              order.by = x$solar.time,
+              unique = FALSE,
+              tzone = Sys.getenv("TZ")
+            )
+          })()
         if (all(is.na(prepped[, 'pure']))) {
           prepped <- prepped[, c('mod', 'obs')]
         }
@@ -252,14 +263,13 @@ plot_DO_preds <- function(
       if (length(y_var) > 1) {
         y_var <- y_var[1]
         .cli_warn(
-          "can only plot one dygraph y_var at a time for now; plotting ",
-          y_var
+          "Only one {.arg y_var} can be plotted in a dygraph; plotting {.val {y_var}}."
         )
       }
-      y_var_long <- preds_xts %>%
-        filter(as == y_var) %>%
-        slice(1) %>%
-        .[['var']] %>%
+      y_var_long <- preds_xts |>
+        filter(as == y_var) |>
+        slice(1) |>
+        (\(x) x[['var']])() |>
         as.character()
       y_var_col <- params$colors[[y_var]]
       dat <- prep_dygraph(y_var)
@@ -278,7 +288,7 @@ plot_DO_preds <- function(
         group = 'plot_DO_preds'
       )
       if (ncol(dat) == 3) {
-        d <- d %>%
+        d <- d |>
           dygraphs::dySeries(
             'pure',
             drawPoints = FALSE,
@@ -286,26 +296,26 @@ plot_DO_preds <- function(
             color = y_var_col[1]
           )
       }
-      d %>%
+      d |>
         dygraphs::dySeries(
           'mod',
           drawPoints = FALSE,
           label = paste0("Modeled ", y_var_long),
           color = y_var_col[2]
-        ) %>%
+        ) |>
         dygraphs::dySeries(
           'obs',
           drawPoints = TRUE,
           strokeWidth = 0,
           label = paste0("Observed ", y_var_long),
           color = y_var_col[3]
-        ) %>%
+        ) |>
         dygraphs::dyAxis(
           'y',
           valueRange = (c(ymin, ymax) + (ymax - ymin) * c(-0.05, 0.15))
-        ) %>%
-        dygraphs::dyOptions(colorSaturation = 1) %>%
-        dygraphs::dyLegend(labelsSeparateLines = TRUE, width = 300) %>%
+        ) |>
+        dygraphs::dyOptions(colorSaturation = 1) |>
+        dygraphs::dyLegend(labelsSeparateLines = TRUE, width = 300) |>
         dygraphs::dyRangeSelector(height = 20)
     }
   )

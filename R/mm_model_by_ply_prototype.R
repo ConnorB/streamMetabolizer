@@ -72,6 +72,6 @@ mm_model_by_ply_prototype <- function(
     lapply(list(...), function(arg) {
       if (is.atomic(arg)) arg[1] else paste0('len=', length(arg))
     })
-  ) %>%
+  ) |>
     as_tibble()
 }

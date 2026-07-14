@@ -37,7 +37,7 @@ test_that('get_params options are honored (for MLE models): fixed', {
     c('GPP.daily.fixed', 'ER.daily.fixed', 'K600.daily.fixed')
   )
   ps <- get_params(mm2, fixed = 'stars')
-  expect_true(all(sapply(dplyr::select(ps, -date), is.character)))
+  expect_all_true(sapply(dplyr::select(ps, -date), is.character))
   expect_equal(grep('\\*', ps), match('K600.daily', names(ps)))
 })
 
@@ -78,11 +78,16 @@ test_that('get_params options are honored (for MLE models): uncertainty+fixed', 
 
 test_that('get_params options are honored (for MLE models): messages', {
   # messages
-  expect_true(all(
-    c('warnings', 'errors') %in% names(get_params(mm, messages = TRUE))
-  ))
-  expect_true(
-    !any(c('warnings', 'errors') %in% names(get_params(mm, messages = FALSE)))
+  expect_contains(
+    names(get_params(mm, messages = TRUE)),
+    c('warnings', 'errors')
+  )
+  expect_equal(
+    intersect(
+      c('warnings', 'errors'),
+      names(get_params(mm, messages = FALSE))
+    ),
+    character()
   )
 })
 

@@ -29,7 +29,7 @@ mm_parse_name <- function(model_name, expand = FALSE) {
     if (length(matches) == 0) {
       'NA'
     } else if (length(matches) > 1) {
-      .cli_abort('found too many matches in PRK terms')
+      .cli_abort("Found too many matches while parsing the PRK terms.")
     } else {
       matches
     }
@@ -39,7 +39,9 @@ mm_parse_name <- function(model_name, expand = FALSE) {
   parsed <- strsplit(basename(model_name), "_|\\.")
   sapply(1:length(parsed), function(pnum) {
     if (length(parsed[[pnum]]) <= 5) {
-      .cli_abort('missing one or more pieces in name: ', model_name[pnum])
+      .cli_abort(
+        "Model name {.val {model_name[pnum]}} is missing one or more pieces."
+      )
     }
   })
   type <- unname(c(

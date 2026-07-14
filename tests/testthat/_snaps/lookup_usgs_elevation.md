@@ -4,4 +4,4 @@
       lookup_usgs_elevation(39, -96)
     Condition
       Error in `lookup_usgs_elevation()`:
-      ! the USGS Elevation Point Query Service returned no elevation
+      ! The USGS Elevation Point Query Service returned no elevation for latitude 39 and longitude -96.

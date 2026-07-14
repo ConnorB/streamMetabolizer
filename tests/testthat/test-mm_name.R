@@ -26,19 +26,19 @@ test_that("mm_name can generate names", {
     ),
     "b_np_pclv_tr_plrcko.stan"
   )
-  expect_error(
+  expect_snapshot(
     mm_name('bayes', err_proc_acor_light = TRUE),
-    'requires err_proc_acor=TRUE'
+    error = TRUE
   )
 
   # catches bad arg combos
-  expect_error(
+  expect_snapshot(
     mm_name('b', pool_K600 = 'none', err_proc_acor = TRUE, engine = 'nlm'),
-    'mismatch'
+    error = TRUE
   )
-  expect_error(mm_name('m', err_proc_iid = TRUE), 'not among valid')
-  expect_error(mm_name('s', err_proc_iid = FALSE), 'not among valid')
-  expect_error(mm_name('n', ode_method = 'trapezoid'), 'not among valid')
+  expect_snapshot(mm_name('m', err_proc_iid = TRUE), error = TRUE)
+  expect_snapshot(mm_name('s', err_proc_iid = FALSE), error = TRUE)
+  expect_snapshot(mm_name('n', ode_method = 'trapezoid'), error = TRUE)
 })
 
 test_that("mm_parse_name can parse names", {
@@ -48,7 +48,10 @@ test_that("mm_parse_name can parse names", {
   expect_equal(mm_parse_name("n_np_pi_eu_rckf.lm")$ode_method, "euler")
   expect_equal(mm_parse_name("s_np_oipcpi_eu_plrckm.rnorm")$pool_K600, "none")
   expect_equal(mm_parse_name("b_Kl_oipcpi_eu_plrcko.rnorm")$pool_K600, "linear")
-  expect_true(mm_parse_name("b_np_pclv_tr_plrcko.stan")$err_proc_acor_light)
+  expect_identical(
+    mm_parse_name("b_np_pclv_tr_plrcko.stan")$err_proc_acor_light,
+    TRUE
+  )
   expect_equal(
     mm_parse_name(mm_valid_names("Kmodel"))$engine,
     c('lm', 'mean', 'loess')
@@ -82,7 +85,7 @@ test_that("mm_valid_names and mm_validate_names check model names", {
     "models/b_np_oipi_eu_plrcko.stan",
     package = "streamMetabolizer"
   )
-  expect_true(file.exists(mname)) # separate test that the file is there in the current run environment
+  expect_identical(file.exists(mname), TRUE) # separate test that the file is there in the current run environment
   expect_equal(mm_validate_name(mname), mname) # now test that validation is OK with a filepath
 })
 

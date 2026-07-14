@@ -41,16 +41,19 @@ load_french_creek_std <- function(attach.units = deprecated()) {
   oxy <- temp <- station <- solar.time <- '.dplyr.var'
 
   # subset to 'low' site, remove NA oxys (1658) and remaining duplicates (n=1),  and ensure order by date
-  french <- french %>%
-    filter(station == 'low') %>% # subset to data from only one station (also, low has the cleanest data) (already subset in extdata)
-    filter(!is.na(oxy)) %>%
-    distinct() %>%
+  french <- french |>
+    filter(station == 'low') |> # subset to data from only one station (also, low has the cleanest data) (already subset in extdata)
+    filter(!is.na(oxy)) |>
+    distinct() |>
     arrange(solar.time)
 
   # datetime
   if (!requireNamespace("chron", quietly = TRUE)) {
     .cli_abort(
-      "chron package is needed for this function. Try install.packages('chron')"
+      c(
+        "{.pkg chron} is required by {.fn load_french_creek_std}.",
+        "i" = "Install it with {.run install.packages('chron')}."
+      )
     )
   }
   french$dtime <- chron::chron(
@@ -187,7 +190,10 @@ load_french_creek_std_mle <- function(
   # require chron package
   if (!requireNamespace("chron", quietly = TRUE)) {
     .cli_abort(
-      "chron package is needed for this function. Try install.packages('chron')"
+      c(
+        "{.pkg chron} is required by {.fn load_french_creek_std}.",
+        "i" = "Install it with {.run install.packages('chron')}."
+      )
     )
   }
 

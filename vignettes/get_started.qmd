@@ -148,7 +148,7 @@ get_params(mm)
 Here are the first few dissolved oxygen predictions from the model (`DO.mod`).
 They are returned along with the input data for convenience.
 ```{r bayes_pdo_tbl, results='asis', eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
-predict_DO(mm) %>% head()
+predict_DO(mm) |> head()
 ```
 
 And here are the dissolved oxygen predictions in a figure:
@@ -173,13 +173,13 @@ and convergence. Here are just the overall metrics of model convergence
 (`Rhat`s, or potential scale reduction statistics; see Gelman and Rubin 1992 or
 Brooks and Gelman 1998):
 ```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
-get_fit(mm)$overall %>%
+get_fit(mm)$overall |>
   select(ends_with('Rhat'))
 ```
 
 And here is a list of all column names available through `get_fit()`:
 ```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
-get_fit(mm) %>%
+get_fit(mm) |>
   lapply(names)
 ```
 

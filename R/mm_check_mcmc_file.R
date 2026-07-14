@@ -15,20 +15,24 @@ mm_check_mcmc_file <- function(
     model_file <- mm_locate_filename(model_file, stan_engine = stan_engine)
   }
   if (engine != 'stan') {
-    .cli_abort('need to add handling for engines other than stan')
+    .cli_abort(
+      "Only Stan model files can be checked, not engine {.val {engine}}."
+    )
   }
 
   if (stan_engine == 'rstan' && !requireNamespace('rstan', quietly = TRUE)) {
-    .cli_abort('the rstan package is required to check Stan MCMC models')
+    .cli_abort("{.pkg rstan} is required to check Stan MCMC models.")
   }
   if (stan_engine == 'cmdstanr') {
     if (!requireNamespace('cmdstanr', quietly = TRUE)) {
-      .cli_abort('the cmdstanr package is required to check Stan MCMC models')
+      .cli_abort("{.pkg cmdstanr} is required to check Stan MCMC models.")
     }
     if (is.na(stan_version_for_engine('cmdstanr'))) {
       .cli_abort(
-        'CmdStanR is installed, but CmdStan is not configured. ',
-        'Install it with cmdstanr::install_cmdstan() and then retry.'
+        c(
+          "CmdStan is not configured",
+          "i" = "Install it with {.fn cmdstanr::install_cmdstan} and try again."
+        )
       )
     }
   }
@@ -37,7 +41,7 @@ mm_check_mcmc_file <- function(
       if (stan_engine == 'rstan') {
         stanc_result <- rstan::stanc(file = model_file)
         if (!isTRUE(stanc_result$status)) {
-          .cli_abort('RStan could not translate the Stan program')
+          .cli_abort("RStan could not translate {.file {model_file}}.")
         }
       } else {
         cmdstan_model <- cmdstanr::cmdstan_model(model_file, compile = FALSE)
@@ -86,7 +90,7 @@ mm_check_mcmc_files <- function(
     } else {
       "OK!"
     }
-    .cli_inform("checking ", m, "...", status_message)
+    .cli_inform("Checking {.file {m}}: {status_message}")
     model_status
   })
 }
