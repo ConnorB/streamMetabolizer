@@ -79,7 +79,7 @@ create_calc_DO <- function(
   err.obs = 0
 ) {
   # pull out info from the calc_dDOdt closure (all from data)
-  DO.obs.1 <- environment(calc_dDOdt)$data$DO.obs[1]
+  DO.obs.1 <- environment(calc_dDOdt)$data[["DO.obs"]][1]
   t <- environment(calc_dDOdt)$data$t
 
   if (!(ode_method %in% c('Euler', 'pairmeans'))) {

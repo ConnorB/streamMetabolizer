@@ -1,13 +1,13 @@
 #' Load a short dataset from Spring Creek
 #'
 #' @import dplyr
-#' @importFrom utils read.csv
 #' @importFrom lubridate with_tz
 #' @importFrom lifecycle deprecated is_present
+#' @importFrom readr read_csv
 #' @param attach.units (deprecated, effectively FALSE in future) logical,
 #'   default TRUE for backward compatibility. Should units be attached to the
 #'   data.frame?
-#' @return a data.frame, unitted if attach.units==TRUE
+#' @return A tibble.
 load_spring_creek <- function(attach.units = deprecated()) {
   # check units arguments
   if (lifecycle::is_present(attach.units)) {
@@ -28,7 +28,7 @@ load_spring_creek <- function(attach.units = deprecated()) {
     package = "streamMetabolizer"
   ) # data from Spring Creek, Laramie, WY
   time <- utc.time <- oxy <- temp <- solar.time <- app.solar.time <- ".dplyr.var"
-  spring <- read.csv(file.name, stringsAsFactors = FALSE, header = TRUE) |>
+  spring <- read_csv(file.name, show_col_types = FALSE) |>
     transmute(
       utc.time = as.POSIXct(time, origin = "1970-01-01", tz = "UTC"),
       local.time = with_tz(utc.time, "America/Denver"),
@@ -58,5 +58,6 @@ load_spring_creek <- function(attach.units = deprecated()) {
       ))
     )
 
-  spring[c("solar.time", "DO.obs", "DO.sat", "depth", "temp.water", "light")]
+  spring |>
+    select(solar.time, DO.obs, DO.sat, depth, temp.water, light)
 }

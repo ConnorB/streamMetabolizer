@@ -53,13 +53,13 @@ depend on the model \code{type}, as follows.
 \item{\code{mle} or \code{night}}{
 \tabular{llll}{
 \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-solar.time        \tab POSIXct,POSIXt  \tab NA              \tab required      \cr
-DO.obs            \tab numeric         \tab NA              \tab required      \cr
-DO.sat            \tab numeric         \tab NA              \tab required      \cr
-depth             \tab numeric         \tab NA              \tab required      \cr
-temp.water        \tab numeric         \tab NA              \tab required      \cr
-light             \tab numeric         \tab NA              \tab required      \cr
-discharge         \tab numeric         \tab NA              \tab optional
+solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
+DO.obs            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
+DO.sat            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
+depth             \tab numeric         \tab m               \tab required      \cr
+temp.water        \tab numeric         \tab degC            \tab required      \cr
+light             \tab numeric         \tab umol m^-2 s^-1  \tab required      \cr
+discharge         \tab numeric         \tab m^3 s^-1        \tab optional
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
@@ -73,13 +73,13 @@ discharge         \tab numeric         \tab NA              \tab optional
 \item{\code{bayes}}{
 \tabular{llll}{
 \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-solar.time        \tab POSIXct,POSIXt  \tab NA              \tab required      \cr
-DO.obs            \tab numeric         \tab NA              \tab required      \cr
-DO.sat            \tab numeric         \tab NA              \tab required      \cr
-depth             \tab numeric         \tab NA              \tab required      \cr
-temp.water        \tab numeric         \tab NA              \tab required      \cr
-light             \tab numeric         \tab NA              \tab required      \cr
-discharge         \tab numeric         \tab NA              \tab optional
+solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
+DO.obs            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
+DO.sat            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
+depth             \tab numeric         \tab m               \tab required      \cr
+temp.water        \tab numeric         \tab degC            \tab required      \cr
+light             \tab numeric         \tab umol m^-2 s^-1  \tab required      \cr
+discharge         \tab numeric         \tab m^3 s^-1        \tab optional
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
@@ -93,9 +93,9 @@ discharge         \tab numeric         \tab NA              \tab optional
 \item{\code{Kmodel}}{
 \tabular{llll}{
 \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-solar.time        \tab POSIXct,POSIXt  \tab NA              \tab optional      \cr
-discharge         \tab numeric         \tab NA              \tab optional      \cr
-velocity          \tab numeric         \tab NA              \tab optional
+solar.time        \tab POSIXct,POSIXt  \tab                 \tab optional      \cr
+discharge         \tab numeric         \tab m^3 s^-1        \tab optional      \cr
+velocity          \tab numeric         \tab m s^-1          \tab optional
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
@@ -109,12 +109,12 @@ velocity          \tab numeric         \tab NA              \tab optional
 \item{\code{sim}}{
 \tabular{llll}{
 \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-solar.time        \tab POSIXct,POSIXt  \tab NA              \tab required      \cr
-DO.obs            \tab numeric         \tab NA              \tab optional      \cr
-DO.sat            \tab numeric         \tab NA              \tab required      \cr
-depth             \tab numeric         \tab NA              \tab required      \cr
-temp.water        \tab numeric         \tab NA              \tab required      \cr
-light             \tab numeric         \tab NA              \tab required
+solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
+DO.obs            \tab numeric         \tab mgO2 L^-1       \tab optional      \cr
+DO.sat            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
+depth             \tab numeric         \tab m               \tab required      \cr
+temp.water        \tab numeric         \tab degC            \tab required      \cr
+light             \tab numeric         \tab umol m^-2 s^-1  \tab required
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
@@ -141,15 +141,15 @@ depend on the model \code{type}, as follows.
 }
 \item{\code{mle}}{
 \tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-date              \tab Date            \tab NA              \tab optional      \cr
-K600.daily        \tab numeric         \tab NA              \tab optional      \cr
-init.GPP.daily    \tab numeric         \tab NA              \tab optional      \cr
-init.Pmax         \tab numeric         \tab NA              \tab optional      \cr
-init.alpha        \tab numeric         \tab NA              \tab optional      \cr
-init.ER.daily     \tab numeric         \tab NA              \tab optional      \cr
-init.ER20         \tab numeric         \tab NA              \tab optional      \cr
-init.K600.daily   \tab numeric         \tab NA              \tab optional
+\strong{colname} \tab \strong{class} \tab \strong{units}    \tab \strong{need}\cr
+date              \tab Date            \tab                    \tab optional      \cr
+K600.daily        \tab numeric         \tab d^-1               \tab optional      \cr
+init.GPP.daily    \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+init.Pmax         \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+init.alpha        \tab numeric         \tab gO2 s d^-1 umol^-1 \tab optional      \cr
+init.ER.daily     \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+init.ER20         \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+init.K600.daily   \tab numeric         \tab d^-1               \tab optional
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
@@ -163,8 +163,8 @@ init.K600.daily   \tab numeric         \tab NA              \tab optional
 \item{\code{bayes}}{
 \tabular{llll}{
 \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-date              \tab Date            \tab NA              \tab optional      \cr
-discharge.daily   \tab numeric         \tab NA              \tab optional
+date              \tab Date            \tab                 \tab optional      \cr
+discharge.daily   \tab numeric         \tab m^3 s^-1        \tab optional
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
@@ -178,12 +178,12 @@ discharge.daily   \tab numeric         \tab NA              \tab optional
 \item{\code{Kmodel}}{
 \tabular{llll}{
 \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-date              \tab Date            \tab NA              \tab required      \cr
-K600.daily        \tab numeric         \tab NA              \tab required      \cr
-K600.daily.lower  \tab numeric         \tab NA              \tab optional      \cr
-K600.daily.upper  \tab numeric         \tab NA              \tab optional      \cr
-discharge.daily   \tab numeric         \tab NA              \tab optional      \cr
-velocity.daily    \tab numeric         \tab NA              \tab optional
+date              \tab Date            \tab                 \tab required      \cr
+K600.daily        \tab numeric         \tab d^-1            \tab required      \cr
+K600.daily.lower  \tab numeric         \tab d^-1            \tab optional      \cr
+K600.daily.upper  \tab numeric         \tab d^-1            \tab optional      \cr
+discharge.daily   \tab numeric         \tab m^3 s^-1        \tab optional      \cr
+velocity.daily    \tab numeric         \tab m s^-1          \tab optional
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
@@ -196,20 +196,20 @@ velocity.daily    \tab numeric         \tab NA              \tab optional
 }
 \item{\code{sim}}{
 \tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-date              \tab Date            \tab NA              \tab optional      \cr
-discharge.daily   \tab numeric         \tab NA              \tab optional      \cr
-DO.mod.1          \tab numeric         \tab NA              \tab optional      \cr
-K600.daily        \tab numeric         \tab NA              \tab optional      \cr
-GPP.daily         \tab numeric         \tab NA              \tab optional      \cr
-Pmax              \tab numeric         \tab NA              \tab optional      \cr
-alpha             \tab numeric         \tab NA              \tab optional      \cr
-ER.daily          \tab numeric         \tab NA              \tab optional      \cr
-ER20              \tab numeric         \tab NA              \tab optional      \cr
-err.obs.sigma     \tab numeric         \tab NA              \tab optional      \cr
-err.obs.phi       \tab numeric         \tab NA              \tab optional      \cr
-err.proc.sigma    \tab numeric         \tab NA              \tab optional      \cr
-err.proc.phi      \tab numeric         \tab NA              \tab optional
+\strong{colname} \tab \strong{class} \tab \strong{units}    \tab \strong{need}\cr
+date              \tab Date            \tab                    \tab optional      \cr
+discharge.daily   \tab numeric         \tab m^3 s^-1           \tab optional      \cr
+DO.mod.1          \tab numeric         \tab mgO2 L^-1          \tab optional      \cr
+K600.daily        \tab numeric         \tab d^-1               \tab optional      \cr
+GPP.daily         \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+Pmax              \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+alpha             \tab numeric         \tab gO2 s d^-1 umol^-1 \tab optional      \cr
+ER.daily          \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+ER20              \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+err.obs.sigma     \tab numeric         \tab mgO2 L^-1          \tab optional      \cr
+err.obs.phi       \tab numeric         \tab                    \tab optional      \cr
+err.proc.sigma    \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
+err.proc.phi      \tab numeric         \tab                    \tab optional
 }
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:

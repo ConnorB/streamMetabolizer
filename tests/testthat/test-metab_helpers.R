@@ -35,6 +35,57 @@ test_that("mm_data works", {
   )
 })
 
+test_that("mm_data units are available for documentation", {
+  expected <- c(
+    solar.time = NA_character_,
+    DO.obs = "mgO2 L^-1",
+    DO.sat = "mgO2 L^-1",
+    depth = "m",
+    temp.water = "degC",
+    light = "umol m^-2 s^-1",
+    discharge = "m^3 s^-1",
+    velocity = "m s^-1",
+    date = NA_character_,
+    DO.mod.1 = "mgO2 L^-1",
+    err.obs.sigma = "mgO2 L^-1",
+    err.obs.phi = NA_character_,
+    err.proc.sigma = "gO2 m^-2 d^-1",
+    err.proc.phi = NA_character_,
+    GPP.daily = "gO2 m^-2 d^-1",
+    Pmax = "gO2 m^-2 d^-1",
+    alpha = "gO2 s d^-1 umol^-1",
+    ER.daily = "gO2 m^-2 d^-1",
+    ER20 = "gO2 m^-2 d^-1",
+    K600.daily = "d^-1",
+    K600.daily.lower = "d^-1",
+    K600.daily.upper = "d^-1",
+    init.GPP.daily = "gO2 m^-2 d^-1",
+    init.Pmax = "gO2 m^-2 d^-1",
+    init.alpha = "gO2 s d^-1 umol^-1",
+    init.ER.daily = "gO2 m^-2 d^-1",
+    init.ER20 = "gO2 m^-2 d^-1",
+    init.K600.daily = "d^-1",
+    discharge.daily = "m^3 s^-1",
+    velocity.daily = "m s^-1",
+    GPP = "gO2 m^-2 d^-1",
+    GPP.lower = "gO2 m^-2 d^-1",
+    GPP.upper = "gO2 m^-2 d^-1",
+    ER = "gO2 m^-2 d^-1",
+    ER.lower = "gO2 m^-2 d^-1",
+    ER.upper = "gO2 m^-2 d^-1",
+    D = "gO2 m^-3 d^-1",
+    D.lower = "gO2 m^-3 d^-1",
+    D.upper = "gO2 m^-3 d^-1"
+  )
+
+  expect_equal(mm_data_units(), expected)
+  expect_equal(names(mm_data_units()), names(mm_data()))
+  expect_equal(
+    metab_inputs("mle", "data")$units,
+    c("", "mgO2 L^-1", "mgO2 L^-1", "m", "degC", "umol m^-2 s^-1", "m^3 s^-1")
+  )
+})
+
 test_that("mm_validate_data works", {
   # runs and accepts the defaults without errors
   ignore <- mm_validate_data(

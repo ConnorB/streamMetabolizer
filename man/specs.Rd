@@ -151,31 +151,37 @@ of this test will be combined with the results of the tests listed in
 \code{day_tests} and reported to \code{model_fun} as the
 \code{ply_validity} argument to that function.}
 
-\item{init.GPP.daily}{the initial value of daily mean GPP (gO2 d^-1 m^-2) to
-use in the NLM fitting process. See the MLE Initial Values section under
+\item{init.GPP.daily}{the initial value of daily mean GPP
+(\eqn{g O_2 m^{-2} d^{-1}}) to use in the NLM fitting process. See the MLE
+Initial Values section under
 Details.}
 
-\item{init.Pmax}{the initial value of Pmax (gO2 d^-1 m^-2) to use in the GPP
-versus light relationship in the NLM fitting process. Pmax is the maximum
+\item{init.Pmax}{the initial value of Pmax (\eqn{g O_2 m^{-2} d^{-1}}) to use
+in the GPP versus light relationship in the NLM fitting process. Pmax is
+the maximum
 GPP value of the GPP-light curve. See the MLE Initial Values section under
 Details.}
 
-\item{init.alpha}{the initial value of alpha (gO2 s d^-1 umol^-1, i.e., units
-of GPP/light) to use in the GPP versus light relationship in the NLM
+\item{init.alpha}{the initial value of alpha
+(\eqn{g O_2 s d^{-1} umol^{-1}}, i.e., units of GPP/light) to use in the
+GPP versus light relationship in the NLM
 fitting process. alpha is the initial slope of the GPP-light curve. See the
 MLE Initial Values section under Details.}
 
-\item{init.ER.daily}{the initial value of daily mean ER (gO2 d^-1 m^-2) to use
-in the NLM fitting process. See the MLE Initial Values section under
+\item{init.ER.daily}{the initial value of daily mean ER
+(\eqn{g O_2 m^{-2} d^{-1}}) to use in the NLM fitting process. See the MLE
+Initial Values section under
 Details.}
 
-\item{init.ER20}{the initial value of ER20 (gO2 d^-1 m^-2) to use in the ER
-versus temperature relationship in the NLM fitting process. ER20 is the
+\item{init.ER20}{the initial value of ER20 (\eqn{g O_2 m^{-2} d^{-1}}) to use
+in the ER versus temperature relationship in the NLM fitting process.
+ER20 is the
 respiration rate at 20 degrees C. See the MLE Initial Values section under
 Details.}
 
-\item{init.K600.daily}{the initial value of daily mean K600 (d^-1) to use in
-the NLM fitting process. Ignored if K600 is supplied in data_daily, except
+\item{init.K600.daily}{the initial value of daily mean K600 (\eqn{d^{-1}}) to
+use in the NLM fitting process. Ignored if K600 is supplied in data_daily,
+except
 for those dates where K600 is NA. If there are any such dates, K600_init
 must have a numeric (non-NA) value, as this will be used to estimate K600
 for those dates. See the MLE Initial Values section under Details.}
@@ -411,8 +417,8 @@ of lnK600 at each node. The default value of this spec is a function that
 computes lnK600s based on simulated K~Q relationships.}
 
 \item{discharge_daily}{Daily values, or a function to generate daily values,
-of mean daily discharge in m^3 s^-1. Fixed values may alternatively be
-specified as discharge.daily in the data_daily passed to
+of mean daily discharge in \eqn{m^3 s^{-1}}. Fixed values may alternatively
+be specified as discharge.daily in the data_daily passed to
 \code{\link[=metab]{metab()}}.}
 
 \item{DO_mod_1}{Daily values, or a function to generate daily values, of the

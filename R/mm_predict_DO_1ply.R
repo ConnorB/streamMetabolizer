@@ -31,7 +31,7 @@ mm_predict_DO_1ply <- function(
     select(-date) |>
     bind_cols(
       if (!exists('DO.mod.1', data_daily_ply)) {
-        data.frame(DO.mod.1 = data_ply$DO.obs[1])
+        data.frame(DO.mod.1 = data_ply[["DO.obs"]][1])
       } else {
         NULL
       }

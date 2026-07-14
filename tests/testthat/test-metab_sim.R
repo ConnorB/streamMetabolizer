@@ -32,11 +32,15 @@ test_that("metab_sim predictions (predict_metab, predict_DO) make sense", {
 
   # predict_metab
   expect_equal(
-    select(get_params(mm)[2:3, ], GPP = GPP.daily, ER = ER.daily),
+    tibble::as_tibble(
+      select(get_params(mm)[2:3, ], GPP = GPP.daily, ER = ER.daily)
+    ),
     select(predict_metab(mm)[2:3, ], GPP, ER)
   )
   expect_equal(
-    select(get_params(mm2)[2:3, ], GPP = GPP.daily, ER = ER.daily),
+    tibble::as_tibble(
+      select(get_params(mm2)[2:3, ], GPP = GPP.daily, ER = ER.daily)
+    ),
     select(predict_metab(mm2)[2:3, ], GPP, ER)
   )
 
@@ -47,7 +51,9 @@ test_that("metab_sim predictions (predict_metab, predict_DO) make sense", {
     data_daily = dd
   )
   expect_equal(
-    select(get_params(mm3), GPP = GPP.daily, ER = ER.daily),
+    tibble::as_tibble(
+      select(get_params(mm3), GPP = GPP.daily, ER = ER.daily)
+    ),
     select(predict_metab(mm3), GPP, ER)
   )
 

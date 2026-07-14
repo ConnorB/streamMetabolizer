@@ -7,7 +7,7 @@
 #'
 #'   \itemize{
 #'
-#'   \item{ `solar.time` date-time values in mean solar time (see
+#'   \item{`solar.time` date-time values in mean solar time (see
 #'   [calc_solar_time()] and/or
 #'   [convert_UTC_to_solartime()]), in POSIXct format with a tzone
 #'   attribute of 'UTC'. May be approximated by local, non-daylight-savings
@@ -17,54 +17,54 @@
 #'   named "solar.time" are mean solar time, "app.solar.time" means apparent
 #'   solar time, and "any.solar.time" means either.}
 #'
-#'   \item{ `DO.obs` dissolved oxygen concentration observations, \eqn{mg
-#'   O[2] L^{-1}}{mg O2 / L}}
+#'   \item{`DO.obs` dissolved oxygen concentration observations, \eqn{mg
+#'   O_2 L^{-1}}{mg O2 / L}}
 #'
-#'   \item{ `DO.sat` dissolved oxygen concentrations if the water were at
-#'   equilibrium saturation \eqn{mg O[2] L^{-1}}{mg O2 / L}. Calculate using
+#'   \item{`DO.sat` dissolved oxygen concentrations if the water were at
+#'   equilibrium saturation \eqn{mg O_2 L^{-1}}{mg O2 / L}. Calculate using
 #'   [calc_DO_sat]}
 #'
-#'   \item{ `depth` stream depth, \eqn{m}{m}}.
+#'   \item{`depth` stream depth, \eqn{m}{m}}.
 #'
-#'   \item{ `temp.water` water temperature, \eqn{degC}}.
+#'   \item{`temp.water` water temperature, \eqn{^\circ}{ }C}
 #'
-#'   \item{ `light` photosynthetically active radiation, \eqn{\mu mol\
+#'   \item{`light` photosynthetically active radiation, \eqn{\mu mol\
 #'   m^{-2} s^{-1}}{micro mols / m^2 / s}}
 #'
-#'   \item{ `date` dates of interest in Date format}
+#'   \item{`date` dates of interest in Date format}
 #'
-#'   \item{ `err.obs.sigma` SD of observation error to use in simulating
+#'   \item{`err.obs.sigma` SD of observation error to use in simulating
 #'   data}
 #'
-#'   \item{ `err.obs.phi` autocorrelation of observation error to use in
+#'   \item{`err.obs.phi` autocorrelation of observation error to use in
 #'   simulating data}
 #'
-#'   \item{ `err.proc.sigma` SD of process error to use in simulating data}
+#'   \item{`err.proc.sigma` SD of process error to use in simulating data}
 #'
-#'   \item{ `err.proc.phi` autocorrelation of process error to use in
+#'   \item{`err.proc.phi` autocorrelation of process error to use in
 #'   simulating data}
 #'
-#'   \item{ `DO.obs` dissolved oxygen concentration observations, \eqn{mg
-#'   O[2] L^{-1}}{mg O2 / L}}
+#'   \item{`DO.obs` dissolved oxygen concentration observations, \eqn{mg
+#'   O_2 L^{-1}}{mg O2 / L}}
 #'
-#'   \item{ `GPP` daily estimates of GPP, \eqn{g O[2] m^-2 d^-1}}
+#'   \item{`GPP` daily estimates of GPP, \eqn{g O_2 m^{-2} d^{-1}}}
 #'
-#'   \item{ `ER` daily estimates of ER, \eqn{g O[2] m^-2 d^-1}}
+#'   \item{`ER` daily estimates of ER, \eqn{g O_2 m^{-2} d^{-1}}}
 #'
-#'   \item{ `K600` daily estimates of K600, \eqn{d^-1}}
+#'   \item{`K600` daily estimates of K600, \eqn{d^{-1}}}
 #'
-#'   \item{ `GPP.init` daily initial values of GPP, \eqn{g O[2] m^-2
-#'   d^-1}}, for use in maximum likelihood estimation
+#'   \item{`GPP.init` daily initial values of GPP, \eqn{g O_2 m^{-2}
+#'   d^{-1}}}, for use in maximum likelihood estimation
 #'
-#'   \item{ `ER.init` daily initial values of ER, \eqn{g O[2] m^-2 d^-1}},
+#'   \item{`ER.init` daily initial values of ER, \eqn{g O_2 m^{-2} d^{-1}}},
 #'   for use in maximum likelihood estimation
 #'
-#'   \item{ `K600.init` daily initial values of K600, \eqn{d^-1}}, for use
+#'   \item{`K600.init` daily initial values of K600, \eqn{d^{-1}}}, for use
 #'   in maximum likelihood estimation
 #'
-#'   \item{ `discharge.daily` daily mean river discharge, \eqn{m^3 s^-1}}
+#'   \item{`discharge.daily` daily mean river discharge, \eqn{m^3 s^{-1}}}
 #'
-#'   \item{ `velocity.daily` daily mean river flow velocity, \eqn{m s^-1}}
+#'   \item{`velocity.daily` daily mean river flow velocity, \eqn{m s^{-1}}}
 #'
 #'   }
 #'
@@ -176,6 +176,50 @@ mm_data <- function(..., optional = 'none') {
 
   # return
   dat
+}
+
+mm_data_units <- function() {
+  c(
+    solar.time = NA_character_,
+    DO.obs = "mgO2 L^-1",
+    DO.sat = "mgO2 L^-1",
+    depth = "m",
+    temp.water = "degC",
+    light = "umol m^-2 s^-1",
+    discharge = "m^3 s^-1",
+    velocity = "m s^-1",
+    date = NA_character_,
+    DO.mod.1 = "mgO2 L^-1",
+    err.obs.sigma = "mgO2 L^-1",
+    err.obs.phi = NA_character_,
+    err.proc.sigma = "gO2 m^-2 d^-1",
+    err.proc.phi = NA_character_,
+    GPP.daily = "gO2 m^-2 d^-1",
+    Pmax = "gO2 m^-2 d^-1",
+    alpha = "gO2 s d^-1 umol^-1",
+    ER.daily = "gO2 m^-2 d^-1",
+    ER20 = "gO2 m^-2 d^-1",
+    K600.daily = "d^-1",
+    K600.daily.lower = "d^-1",
+    K600.daily.upper = "d^-1",
+    init.GPP.daily = "gO2 m^-2 d^-1",
+    init.Pmax = "gO2 m^-2 d^-1",
+    init.alpha = "gO2 s d^-1 umol^-1",
+    init.ER.daily = "gO2 m^-2 d^-1",
+    init.ER20 = "gO2 m^-2 d^-1",
+    init.K600.daily = "d^-1",
+    discharge.daily = "m^3 s^-1",
+    velocity.daily = "m s^-1",
+    GPP = "gO2 m^-2 d^-1",
+    GPP.lower = "gO2 m^-2 d^-1",
+    GPP.upper = "gO2 m^-2 d^-1",
+    ER = "gO2 m^-2 d^-1",
+    ER.lower = "gO2 m^-2 d^-1",
+    ER.upper = "gO2 m^-2 d^-1",
+    D = "gO2 m^-3 d^-1",
+    D.lower = "gO2 m^-3 d^-1",
+    D.upper = "gO2 m^-3 d^-1"
+  )
 }
 
 # Because metab_models will call mm_data(...) to define their default data, it

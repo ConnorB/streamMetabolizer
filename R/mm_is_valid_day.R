@@ -181,7 +181,8 @@ mm_is_valid_day <- function(
 
   # Require depth to be positive at all times. Models break on 0 depth and misbehave on negative depth
   if ('pos_depth' %in% day_tests) {
-    if (any(data_ply$depth[which(!is.na(data_ply$depth))] <= 0)) {
+    depth <- data_ply[["depth"]]
+    if (!is.null(depth) && any(depth[!is.na(depth)] <= 0)) {
       stop_strs <- c(stop_strs, "depth <= 0")
     }
   }

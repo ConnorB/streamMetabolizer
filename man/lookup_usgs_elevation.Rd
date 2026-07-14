@@ -5,7 +5,13 @@
 \title{Use USGS API (USGS Elevation Point Query Service) to determine approximate
 local elevation}
 \usage{
-lookup_usgs_elevation(latitude, longitude, units = c("Meters", "Feet"))
+lookup_usgs_elevation(
+  latitude,
+  longitude,
+  units = "m",
+  timeout = 30,
+  max_tries = 3
+)
 }
 \arguments{
 \item{latitude}{degrees latitude (positive for north) of the location to look
@@ -14,8 +20,14 @@ up.}
 \item{longitude}{degrees longitude (positive for east) of the location to
 look up.}
 
-\item{units}{character, one of Meters or Feet, specifying the units in which
-to return the elevation}
+\item{units}{A single string specifying the elevation units. Accepts \code{"m"},
+\code{"meters"}, \code{"ft"}, or \code{"feet"}, case-insensitively.}
+
+\item{timeout}{A single positive number giving the request timeout in
+seconds.}
+
+\item{max_tries}{A single positive integer giving the maximum number of
+request attempts.}
 }
 \value{
 The numeric elevation in the requested units.
@@ -36,7 +48,7 @@ elevation_m
 elevation_ft <- lookup_usgs_elevation(
   latitude = 39.102075,
   longitude = -96.594689,
-  units = "Feet"
+  units = "ft"
 )
 elevation_ft
 }

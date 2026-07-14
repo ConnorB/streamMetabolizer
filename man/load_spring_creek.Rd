@@ -12,7 +12,7 @@ default TRUE for backward compatibility. Should units be attached to the
 data.frame?}
 }
 \value{
-a data.frame, unitted if attach.units==TRUE
+A tibble.
 }
 \description{
 Load a short dataset from Spring Creek

@@ -231,13 +231,7 @@ plot_DO_preds <- function(
       preds_xts <- DO_preds_all |>
         filter(as %in% y_var) |>
         arrange(solar.time) |>
-        group_by(date) |>
-        do({
-          out <- .[c(seq_len(nrow(.)), nrow(.)), ]
-          out[nrow(.) + 1, c('pure', 'mod', 'obs')] <- NA
-          out
-        }) |>
-        ungroup()
+        append_plot_gaps()
 
       prep_dygraph <- function(y_var) {
         . <- solar.time <- pure <- mod <- obs <- '.dplyr.var'
@@ -321,4 +315,17 @@ plot_DO_preds <- function(
   )
 
   plot_out
+}
+
+append_plot_gaps <- function(data) {
+  data |>
+    reframe(
+      {
+        out <- pick(everything())
+        out <- out[c(seq_len(nrow(out)), nrow(out)), ]
+        out[nrow(out), c('pure', 'mod', 'obs')] <- NA
+        out
+      },
+      .by = date
+    )
 }

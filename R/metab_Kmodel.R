@@ -255,7 +255,7 @@ prepdata_Kmodel <- function(
       columns,
       '.daily'
     )
-    data_daily <- left_join(data_daily, aggs_daily, by = "date")
+    data_daily <- left_join(data_daily, aggs_daily, by = join_by(date))
   }
 
   # Avoid global variable warnings in R CMD check

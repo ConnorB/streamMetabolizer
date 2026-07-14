@@ -81,7 +81,7 @@ calc_light_merged <- function(
 
   # join the tses, noting which solar.times apply to which ts
   PAR.merged <- data.frame(solar.time, is.mod = TRUE, is.obs = NA) |>
-    full_join(rename(PAR.obs, obs = light), by = 'solar.time') |>
+    full_join(rename(PAR.obs, obs = light), by = join_by(solar.time)) |>
     arrange(solar.time) |>
     mutate(
       is.mod = ifelse(is.na(is.mod), FALSE, is.mod),

@@ -2,12 +2,12 @@
 #'
 #' @import dplyr
 #' @importFrom lifecycle deprecated is_present
-#' @importFrom utils read.csv
 #' @importFrom lubridate with_tz
+#' @importFrom readr read_csv
 #' @param attach.units (deprecated, effectively FALSE in future) logical,
 #'   default TRUE for backward compatibility. Should units be attached to the
 #'   data.frame?
-#' @return a data.frame, unitted if attach.units==TRUE
+#' @return A tibble.
 load_french_creek <- function(attach.units = deprecated()) {
   # check arguments
   if (lifecycle::is_present(attach.units)) {
@@ -27,7 +27,7 @@ load_french_creek <- function(attach.units = deprecated()) {
     "french.csv",
     package = "streamMetabolizer"
   ) # data from French Creek, Hotchkiss and Hall, In press, Ecology
-  french <- read.csv(file.name, stringsAsFactors = FALSE, header = TRUE)
+  french <- read_csv(file.name, show_col_types = FALSE)
 
   . <- oxy <- temp <- station <- solar.time <- '.dplyr.var'
 
@@ -91,7 +91,7 @@ load_french_creek <- function(attach.units = deprecated()) {
 
   # set columns
   french <- french |>
-    select(c(solar.time, DO.obs, DO.sat, depth, temp.water, light))
+    select(solar.time, DO.obs, DO.sat, depth, temp.water, light)
 
   return(french)
 }

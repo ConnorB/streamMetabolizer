@@ -83,11 +83,7 @@ plot_metab_preds <- function(
       . <- fit <- upr <- lwr <- date <- col1 <- col2 <- '.ggplot.var'
       preds_ggplot <- metab_preds_all |>
         filter(as %in% y_var) |>
-        group_by(as) |>
-        do({
-          if (all(is.na(.$fit))) .[FALSE, ] else .
-        }) |>
-        ungroup()
+        filter(!all(is.na(fit)), .by = as)
       if ('GPP' %in% names(y_lim)) {
         lim <- y_lim[['GPP']][1]
         if (!is.na(lim)) {

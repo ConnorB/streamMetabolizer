@@ -124,7 +124,8 @@
 #'   dDO.preds.dblER = apply_dDOdt(3, -10, 15),
 #'   dDO.preds.dblK = apply_dDOdt(3, -5, 30))
 #' dDO.preds |>
-#'   gather(key=dDO.series, value=dDO.dt, starts_with('dDO.preds')) |>
+#'   pivot_longer(starts_with('dDO.preds'), names_to='dDO.series',
+#'     values_to='dDO.dt') |>
 #'   ggplot(aes(x=solar.time, y=dDO.dt, color=dDO.series)) + geom_line() + theme_bw()
 #'
 #' # try simulating process eror
@@ -212,7 +213,7 @@ create_calc_dDOdt <- function(
   data$err.proc <- err.proc # get replication if needed
   if (integer.t) {
     # for indexing, converting df columns to vectors speeds things up by 40x
-    DO.obs <- data$DO.obs
+    DO.obs <- if (deficit_src == "DO_obs") data[["DO.obs"]] else NULL
     DO.sat <- data$DO.sat
     temp.water <- data$temp.water
     depth <- data$depth
@@ -223,7 +224,11 @@ create_calc_dDOdt <- function(
     # other methods require functions that can be applied at non-integer
     # values of t. approxfun is pretty darn fast and ever-so-slightly faster
     # with data$x than with independent vectors of t and a variable
-    DO.obs <- approxfun(data$t, data$DO.obs, rule = 2)
+    DO.obs <- if (deficit_src == "DO_obs") {
+      approxfun(data$t, data[["DO.obs"]], rule = 2)
+    } else {
+      NULL
+    }
     DO.sat <- approxfun(data$t, data$DO.sat, rule = 2)
     depth <- approxfun(data$t, data$depth, rule = 2)
     temp.water <- approxfun(data$t, data$temp.water, rule = 2)

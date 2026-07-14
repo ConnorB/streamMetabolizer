@@ -104,8 +104,8 @@ manual_test4 <- function() {
   )
   stanfiles <- opts |>
     rowwise() |>
-    do(tibble::tibble(model_name = do.call(mm_name, .))) |>
-    unlist(use.names = FALSE) |>
+    reframe(model_name = do.call(mm_name, as.list(pick(everything())))) |>
+    pull(model_name) |>
     sort() |>
     (\(x) x[!grepl('__', x)])() |>
     (\(x) x[x %in% mm_valid_names('bayes')])()

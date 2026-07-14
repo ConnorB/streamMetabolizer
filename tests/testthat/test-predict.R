@@ -69,11 +69,11 @@ test_that('predict_metab works as expected for bad inputs', {
   # don't bother predicting on days where we didn't get a model fit
   mm <- metab_mle(data = dat)
   mp <- predict_metab(mm)
-  expect_equal(mp[3, 'GPP'], NA_real_)
-  expect_equal(mp[3, 'ER'], NA_real_)
-  expect_equal(mp[3, 'msgs.fit'], '      E')
-  expect_equal(mp[3, 'warnings'], NA_character_)
-  expect_equal(get_params(mm)[3, 'errors'], "data don't start when expected")
+  expect_equal(mp$GPP[3], NA_real_)
+  expect_equal(mp$ER[3], NA_real_)
+  expect_equal(mp$msgs.fit[3], '      E')
+  expect_equal(mp$warnings[3], NA_character_)
+  expect_equal(get_params(mm)$errors[3], "data don't start when expected")
   # notice bad days for metab_sim, which won't have broken on model fitting
   dat_daily <- data.frame(
     date = as.Date(paste0("2012-09-", 18:20)),
@@ -84,8 +84,8 @@ test_that('predict_metab works as expected for bad inputs', {
   mm <- metab_sim(specs(mm_name('sim')), data = dat, data_daily = dat_daily)
   mp <- predict_metab(mm, use_saved = FALSE)
   expect_all_true(c(is.na(mp[3, c('GPP', 'ER')])))
-  expect_equal(mp[3, 'msgs.fit'], NA)
-  expect_equal(mp[3, 'errors'], "data don't start when expected")
+  expect_equal(mp$msgs.fit[3], NA)
+  expect_equal(mp$errors[3], "data don't start when expected")
 
   # should NOT stop on fitting if we said not to test
   mm <- metab_mle(specs(mm_name('mle'), day_tests = c()), data = dat)
@@ -99,8 +99,8 @@ test_that('predict_metab works as expected for bad inputs', {
     data_daily = dat_daily
   )
   mp <- predict_metab(mm)
-  expect_equal(mp[3, 'GPP'], get_params(mm)[3, 'GPP.daily'])
-  expect_equal(mp[3, 'ER'], get_params(mm)[3, 'ER.daily'])
+  expect_equal(mp$GPP[3], get_params(mm)$GPP.daily[3])
+  expect_equal(mp$ER[3], get_params(mm)$ER.daily[3])
   expect_all_true(is.na(mp$msgs.fit))
   expect_all_true(mp$warnings == '')
   expect_all_true(mp$errors == '')

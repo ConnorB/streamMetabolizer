@@ -14,6 +14,11 @@ metab_inputs(
 
 \item{input}{the name of an argument to pass into metab()}
 }
+\value{
+For \code{data} and \code{data_daily}, a tibble describing the required
+columns when the selected model accepts that input. Otherwise, returns
+\code{NULL} invisibly after displaying guidance with \code{\link[cli:cli_inform]{cli::cli_inform()}}.
+}
 \description{
 Describe the requirements for an argument to metab()
 }

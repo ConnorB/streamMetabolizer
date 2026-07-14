@@ -2,6 +2,7 @@ test_that("French Creek data are similar for streamMetabolizer & Bob Hall's code
   # load both datasets
   fx <- streamMetabolizer:::load_french_creek()
   fy <- streamMetabolizer:::load_french_creek_std() # |> arrange(solar.time)
+  expect_s3_class(fx, "tbl_df")
   expect_equal(dim(fx), dim(fy))
   expect_equal(names(fx), names(fy))
   expect_equal(sapply(fx, class), sapply(fy, class))
@@ -9,9 +10,10 @@ test_that("French Creek data are similar for streamMetabolizer & Bob Hall's code
   expect_equal(fx$solar.time, fy$solar.time)
 
   # combine for further comparison
-  fxy <- dplyr::full_join(fx, fy, by = "solar.time")
+  fxy <- dplyr::full_join(fx, fy, by = dplyr::join_by(solar.time))
   expect_equal(nrow(fx), nrow(fxy))
-  expect_equal(fxy$solar.time.x, fxy$solar.time.y)
+  expect_equal(fxy$solar.time, fx$solar.time)
+  expect_equal(fxy$solar.time, fy$solar.time)
 
   # check values that should be completely equal
   expect_equal(fxy$DO.obs.x, fxy$DO.obs.y)

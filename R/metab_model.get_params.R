@@ -63,7 +63,7 @@ get_params.metab_model <- function(
 
   # combine all daily values into one data.frame. fit is .x, data_daily is .y
   if (!is.null(fit) && !is.null(ddat) && nrow(ddat) > 0) {
-    pars <- full_join(fit, ddat, by = 'date', copy = TRUE)
+    pars <- full_join(fit, ddat, by = join_by(date), copy = TRUE)
   } else {
     if (!is.null(fit)) {
       pars <- fit
@@ -186,7 +186,7 @@ get_params.metab_model <- function(
         (\(x) x[x %in% names(pars)])()
     ]
     pretty_print_ddat
-    params <- left_join(params, messages, by = 'date', copy = TRUE)
+    params <- left_join(params, messages, by = join_by(date), copy = TRUE)
   }
 
   # return

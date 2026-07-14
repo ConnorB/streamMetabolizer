@@ -6,9 +6,13 @@
 
 * improved package maintenance with writable Stan-cache fallbacks, modernized dependencies, concise startup output, and automated R CMD check coverage
 
-* `lookup_usgs_elevation()` now uses the current USGS Elevation Point Query Service API, returns the numeric elevation directly, and no longer requires the legacy RCurl and XML packages.
+* `lookup_usgs_elevation()` now uses httr2 with coordinate and unit validation, configurable timeouts and retries, and clearer service errors; it returns the numeric elevation directly and no longer requires the legacy RCurl, XML, or jsonlite packages.
 
 * `metab()`, `mm_model_by_ply()`, `mm_filter_valid_days()`, and `calc_light_merged()` now accept tibbles without coercing them to base data frames, and model data and prediction outputs preserve tibble classes.
+
+* `metab_inputs()` now uses structured cli messages for model specifications, optional inputs, and model information guidance.
+
+* `plot_metab_data()` now provides a faceted quality-control plot for metabolism input data, including dissolved oxygen percent saturation when both dissolved oxygen columns are selected.
 
 * improved RStan support with safe persistent compilation caching outside the
 installed package, cache validation and read-only-directory fallback,

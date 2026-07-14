@@ -137,7 +137,7 @@ metab_bayes <- function(
         dat_list$data_daily <- full_join(
           dat_list$data_daily,
           dischdaily,
-          by = 'date'
+          by = join_by(date)
         )
       }
     }
@@ -515,7 +515,7 @@ bayes_allply <- function(
     date_index = rep(seq_len(data_list$d), each = data_list$n),
     time_index = rep(seq_len(data_list$n), times = data_list$d)
   ) |>
-    left_join(date_df, by = 'date_index')
+    left_join(date_df, by = join_by(date_index))
 
   # stop_strs may have accumulated during prepdata_bayes() or runstan_bayes()
   # calls. If failed, use dummy data to fill in the model output with NAs.
@@ -551,12 +551,12 @@ bayes_allply <- function(
     # match dates back to daily estimates, datetimes back to inst
     date_index <- time_index <- index <- '.dplyr.var'
     bayes_allday$daily <- bayes_allday$daily |>
-      left_join(date_df, by = 'date_index') |>
+      left_join(date_df, by = join_by(date_index)) |>
       select(-date_index, -time_index, -index) |>
       select(date, everything())
     if (!is.null(bayes_allday$inst)) {
       bayes_allday$inst <- bayes_allday$inst |>
-        left_join(datetime_df, by = c('date_index', 'time_index')) |>
+        left_join(datetime_df, by = join_by(date_index, time_index)) |>
         select(-date_index, -time_index, -index) |>
         select(date, solar.time, everything())
     }
@@ -573,7 +573,7 @@ bayes_allply <- function(
       bayes_allday$daily <- bayes_allday$daily |>
         full_join(
           mutate(removed, valid_day = FALSE, warnings = ''),
-          by = c('date', 'valid_day', 'warnings', 'errors')
+          by = join_by(date, valid_day, warnings, errors)
         ) |>
         arrange(date)
     } else {
@@ -1779,7 +1779,7 @@ predict_metab.metab_bayes <- function(
         warnings.overall = metab_model@fit$warnings,
         errors.overall = metab_model@fit$errors
       )
-    preds <- full_join(preds, messages, by = 'date', copy = TRUE)
+    preds <- full_join(preds, messages, by = join_by(date), copy = TRUE)
   } else {
     preds <- mutate(preds, msgs.fit = NA)
   }

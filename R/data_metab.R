@@ -52,9 +52,9 @@ data_metab <- function(
   french <- french[
     c(1:6352, rep(6353, 3), 6354:7772, rep(7773, 2), 7774:nrow(french)),
   ]
-  french[6354:6355, 'solar.time'] <- french[6353, 'solar.time'] +
+  french$solar.time[6354:6355] <- french$solar.time[6353] +
     as.difftime(c(5, 10), units = 'mins')
-  french[7776, 'solar.time'] <- french[7775, 'solar.time'] +
+  french$solar.time[7776] <- french$solar.time[7775] +
     as.difftime(5, units = 'mins')
 
   # save dates vec now to help with res changes later

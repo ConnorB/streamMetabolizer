@@ -35,14 +35,17 @@ Depends:
 Imports:
     cli,
     deSolve,
-    dplyr (>= 1.0.0),
-    jsonlite,
+    dplyr (>= 1.1.0),
+    ggplot2,
+    httr2,
     LakeMetabolizer (>= 1.4.1),
     lifecycle,
     lubridate,
     lutz,
     methods,
     parallel,
+    readr,
+    rlang,
     stats,
     tibble (>= 3.0.0),
     tidyr (>= 1.0.0)
@@ -52,7 +55,6 @@ Suggests:
     chron,
     cmdstanr,
     dygraphs,
-    ggplot2,
     gridExtra,
     knitr,
     microbenchmark,
@@ -146,6 +148,7 @@ Collate:
     'mm_validate_data.R'
     'plot_DO_preds.R'
     'plot_distribs.R'
+    'plot_metab_data.R'
     'plot_metab_preds.R'
     'revise.R'
     'specs.R'

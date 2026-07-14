@@ -159,7 +159,7 @@ predict_metab.metab_model <- function(
       messages <- fit |>
         select(date, warnings, errors) |>
         compress_msgs('msgs.fit')
-      preds <- full_join(preds, messages, by = 'date', copy = TRUE)
+      preds <- full_join(preds, messages, by = join_by(date), copy = TRUE)
     } else {
       preds <- mutate(preds, msgs.fit = NA)
     }

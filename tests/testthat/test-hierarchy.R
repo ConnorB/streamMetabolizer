@@ -12,29 +12,20 @@ manual_tests2 <- function() {
   source('tests/testthat/helper-rmse_DO.R')
 
   # test data
-  library(mda.streams)
-  site <- 'nwis_03259757'
-  datall <- get_metab_data(
-    site,
-    disch = choose_data_source('disch', 'nwis_03259757'),
-    model = 'metab_bayes'
-  ) |>
-    (\(x) filter(x, complete.cases(x)))()
+  datall <- streamMetabolizer:::load_french_creek() |>
+    mutate(
+      discharge = exp(seq(log(0.1), log(10), length.out = n()))
+    )
   dat <- streamMetabolizer:::mm_filter_dates(
     datall,
-    date_start = '2014-04-03',
-    date_end = '2014-04-12'
+    date_start = '2012-09-03',
+    date_end = '2012-09-12'
   )
   dat |>
-    gather(
-      variable,
-      value,
-      DO.obs,
-      DO.sat,
-      depth,
-      temp.water,
-      light,
-      discharge
+    pivot_longer(
+      c(DO.obs, DO.sat, depth, temp.water, light, discharge),
+      names_to = 'variable',
+      values_to = 'value'
     ) |>
     ggplot(aes(x = solar.time, y = value, color = variable)) +
     geom_line() +
@@ -69,8 +60,8 @@ manual_tests2 <- function() {
   )
   stanfiles <- opts |>
     rowwise() |>
-    do(tibble::tibble(model_name = do.call(mm_name, .))) |>
-    unlist(use.names = FALSE) |>
+    reframe(model_name = do.call(mm_name, as.list(pick(everything())))) |>
+    pull(model_name) |>
     sort() |>
     (\(x) x[!grepl('__', x)])() |>
     (\(x) x[x %in% mm_valid_names('bayes')])()
@@ -295,7 +286,11 @@ manual_tests2 <- function() {
     arrange(date, model)
   pars
   pars |>
-    gather(param, estimate, GPP.daily, ER.daily, K600.daily) |>
+    pivot_longer(
+      c(GPP.daily, ER.daily, K600.daily),
+      names_to = 'param',
+      values_to = 'estimate'
+    ) |>
     mutate(
       param = ordered(param, levels = c('GPP.daily', 'ER.daily', 'K600.daily'))
     ) |>
@@ -317,7 +312,7 @@ manual_tests2 <- function() {
     arrange(date, model)
   preds
   preds |>
-    gather(pred, estimate, GPP, ER) |>
+    pivot_longer(c(GPP, ER), names_to = 'pred', values_to = 'estimate') |>
     mutate(pred = ordered(pred, levels = c('GPP', 'ER'))) |>
     ggplot(aes(x = date, y = estimate, color = model)) +
     geom_abline(intercept = 0, slope = 0, color = 'darkgrey') +

@@ -87,7 +87,10 @@ test_that("metab_mle predictions (predict_metab, predict_DO) make sense", {
   )
   mmK <- metab_mle(get_specs(mmP), data = dat3, data_daily = K600)
   expect_equal(predict_metab(mmK)[1, 1:6], predict_metab(mmP)[1, 1:6]) # whole first date should be identical
-  expect_equal(get_params(mmK)[2:3, "K600.daily"], K600[2:3, "K600.daily"]) # K got fixed on days 2 & 3
+  expect_equal(
+    get_params(mmK)$K600.daily[2:3],
+    K600$K600.daily[2:3]
+  ) # K got fixed on days 2 & 3
   # plot_DO_preds(predict_DO(mmK), y_var="pctsat")
 })
 
@@ -105,8 +108,8 @@ test_that("metab_mle outputs look like Bob's", {
     start = c(dates = "09/17/12", times = "22:00:00"),
     end = c(dates = "09/19/12", times = "06:00:00")
   )
-  expect_equal(predict_metab(mms)[1, "GPP"], mmb[1, "GPP"], tolerance = 0.001) # we handle light slightly differently. i prefer the sM way
-  expect_equal(predict_metab(mms)[1, "ER"], mmb[1, "ER"], tolerance = 0.0001)
+  expect_equal(predict_metab(mms)$GPP[1], mmb$GPP[1], tolerance = 0.001) # we handle light slightly differently. i prefer the sM way
+  expect_equal(predict_metab(mms)$ER[1], mmb$ER[1], tolerance = 0.0001)
   expect_equal(
     get_params(mms)[1, "K600.daily"],
     mmb[1, "K"],
@@ -127,8 +130,8 @@ test_that("metab_mle outputs look like Bob's", {
     start = c(dates = "09/17/12", times = "22:00:00"),
     end = c(dates = "09/19/12", times = "06:00:00")
   )
-  expect_equal(predict_metab(mms)[1, "GPP"], mmb[1, "GPP"], tolerance = 0.001) # we handle light slightly differently. i prefer the sM way
-  expect_equal(predict_metab(mms)[1, "ER"], mmb[1, "ER"], tolerance = 0.00001)
+  expect_equal(predict_metab(mms)$GPP[1], mmb$GPP[1], tolerance = 0.001) # we handle light slightly differently. i prefer the sM way
+  expect_equal(predict_metab(mms)$ER[1], mmb$ER[1], tolerance = 0.00001)
   expect_equal(
     get_params(mms)[1, "K600.daily"],
     mmb[1, "K"],

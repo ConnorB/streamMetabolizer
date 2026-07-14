@@ -13,6 +13,25 @@ authors:
     href: https://www.ehu.eus/streamecology/maite-arroita.html
 template:
   bootstrap: 5
+  bslib:
+    base_font: {google: "Roboto"}
+    heading_font: {google: "Roboto Slab"}
+    code_font: {google: "Fira Code"}
   light-switch: true
+  math-rendering: mathjax
   params:
     ganalytics: "G-ELB0F4QNPS"
+reference:
+- title: Plotting
+- contents:
+  - plot_DO_preds
+  - plot_distribs
+  - plot_metab_data
+  - plot_metab_preds
+- title: Other
+- contents:
+  - matches(".")
+  - -plot_DO_preds
+  - -plot_distribs
+  - -plot_metab_data
+  - -plot_metab_preds

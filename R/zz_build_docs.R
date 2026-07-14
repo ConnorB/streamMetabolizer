@@ -121,7 +121,7 @@ zz_build_docs <- function() {
     "\\describe{",
     c(
       paste0("  \\item{\\code{night}}{"),
-      paste0("    ", "\\code{", metab_inputs('night', 'data_daily'), "}"),
+      "    \\code{NULL}",
       "  }"
     ),
     do.call(

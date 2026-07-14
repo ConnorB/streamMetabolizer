@@ -153,7 +153,10 @@ test_that("calc_solar_insolation has consistent output with that of calc_sun_ris
       lm_sunset = suppressWarnings(calc_sun_rise_set(date, lat))[, 2]
     ) |>
     group_by(jday, lat) |>
-    do(with(., {
+    group_modify(function(.x, .y) {
+      app.solar.time <- .x$app.solar.time[[1]]
+      lat <- .y$lat[[1]]
+
       # compare to streamMetabolizer method, which determines light at any given time
       hours <- seq(0, 23.95, by = 0.05)
       insol <- calc_solar_insolation(
@@ -182,20 +185,21 @@ test_that("calc_solar_insolation has consistent output with that of calc_sun_ris
       }
 
       # put together
-      data.frame(
-        .,
+      tibble::tibble(
+        .x,
         sm_sunrise = sm_daytime[1],
         sm_sunset = sm_daytime[2],
         id_sunrise = id_daytime[1],
         id_sunset = id_daytime[2]
       )
-    }))
+    }) |>
+    ungroup()
 
   # Visual inspection
   # library(tidyr)
   # instidy <- suppressWarnings(insdf |>
-  #   gather(pkg, sunrise, lm_sunrise, sm_sunrise) |>
-  #   gather(pkg, sunset, lm_sunset, sm_sunset)) |>
+  #   pivot_longer(c(lm_sunrise, sm_sunrise), names_to = "pkg", values_to = "sunrise") |>
+  #   pivot_longer(c(lm_sunset, sm_sunset), names_to = "pkg", values_to = "sunset")) |>
   #   transform(
   #     sunrise=as.numeric(as.POSIXct(sunrise, origin="1970-01-01", tz="UTC") - trunc(as.POSIXct(sunrise, origin="1970-01-01", tz="UTC"), "day"), units="hours"),
   #     sunset=as.numeric(as.POSIXct(sunset, origin="1970-01-01", tz="UTC") - trunc(as.POSIXct(sunset, origin="1970-01-01", tz="UTC"), "day"), units="hours"))
