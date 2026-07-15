@@ -13,6 +13,6 @@ test_that("metab_inputs returns tabular input requirements", {
   expect_named(requirements, c("colname", "class", "units", "need"))
   expect_equal(
     requirements$units,
-    c("", "mgO2 L^-1", "mgO2 L^-1", "m", "degC", "umol m^-2 s^-1", "m^3 s^-1")
+    c("", "mgO_2 L^-1", "mgO_2 L^-1", "m", "°C", "umol m^-2 s^-1", "m^3 s^-1")
   )
 })

@@ -42,187 +42,6 @@ model. This object can be inspected with the functions in the
 Runs the metabolism model specified by the \code{specs} argument. Returns a
 fitted model.
 }
-\section{Formatting \code{data}}{
-
-Unit-value model inputs passed via the \code{data} argument should
-be formatted as a data.frame with column names and values that
-depend on the model \code{type}, as follows.
-(If all columns are optional, \code{data} may equal \code{NULL}.)
-
-\describe{
-\item{\code{mle} or \code{night}}{
-\tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
-DO.obs            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
-DO.sat            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
-depth             \tab numeric         \tab m               \tab required      \cr
-temp.water        \tab numeric         \tab degC            \tab required      \cr
-light             \tab numeric         \tab umol m^-2 s^-1  \tab required      \cr
-discharge         \tab numeric         \tab m^3 s^-1        \tab optional
-}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
-\\tabular\{lrrrrrr\}\{
-  \code{solar.time         } \\tab \code{DO.obs} \\tab \code{DO.sat} \\tab \code{depth} \\tab \code{temp.water} \\tab \code{light} \\tab \code{discharge}\\cr
-  \code{2050-03-14 15:10:00} \\tab \code{10.1  } \\tab \code{14.2  } \\tab \code{0.5  } \\tab \code{21.8      } \\tab \code{300.9} \\tab \code{9        }
-\}
-}\if{html}{\out{</div>}}
-
-}
-\item{\code{bayes}}{
-\tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
-DO.obs            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
-DO.sat            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
-depth             \tab numeric         \tab m               \tab required      \cr
-temp.water        \tab numeric         \tab degC            \tab required      \cr
-light             \tab numeric         \tab umol m^-2 s^-1  \tab required      \cr
-discharge         \tab numeric         \tab m^3 s^-1        \tab optional
-}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
-\\tabular\{lrrrrrr\}\{
-  \code{solar.time         } \\tab \code{DO.obs} \\tab \code{DO.sat} \\tab \code{depth} \\tab \code{temp.water} \\tab \code{light} \\tab \code{discharge}\\cr
-  \code{2050-03-14 15:10:00} \\tab \code{10.1  } \\tab \code{14.2  } \\tab \code{0.5  } \\tab \code{21.8      } \\tab \code{300.9} \\tab \code{9        }
-\}
-}\if{html}{\out{</div>}}
-
-}
-\item{\code{Kmodel}}{
-\tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-solar.time        \tab POSIXct,POSIXt  \tab                 \tab optional      \cr
-discharge         \tab numeric         \tab m^3 s^-1        \tab optional      \cr
-velocity          \tab numeric         \tab m s^-1          \tab optional
-}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
-\\tabular\{lrr\}\{
-  \code{solar.time         } \\tab \code{discharge} \\tab \code{velocity}\\cr
-  \code{2050-03-14 15:10:00} \\tab \code{9        } \\tab \code{2       }
-\}
-}\if{html}{\out{</div>}}
-
-}
-\item{\code{sim}}{
-\tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
-DO.obs            \tab numeric         \tab mgO2 L^-1       \tab optional      \cr
-DO.sat            \tab numeric         \tab mgO2 L^-1       \tab required      \cr
-depth             \tab numeric         \tab m               \tab required      \cr
-temp.water        \tab numeric         \tab degC            \tab required      \cr
-light             \tab numeric         \tab umol m^-2 s^-1  \tab required
-}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
-\\tabular\{lrrrrr\}\{
-  \code{solar.time         } \\tab \code{DO.obs} \\tab \code{DO.sat} \\tab \code{depth} \\tab \code{temp.water} \\tab \code{light}\\cr
-  \code{2050-03-14 15:10:00} \\tab \code{10.1  } \\tab \code{14.2  } \\tab \code{0.5  } \\tab \code{21.8      } \\tab \code{300.9}
-\}
-}\if{html}{\out{</div>}}
-
-}
-}
-}
-
-\section{Formatting \code{data_daily}}{
-
-Daily-value model inputs passed via the \code{data_daily} argument should
-be formatted as a data.frame with column names and values that
-depend on the model \code{type}, as follows.
-(If all columns are optional, \code{data_daily} may equal \code{NULL}.)
-
-\describe{
-\item{\code{night}}{
-\code{NULL}
-}
-\item{\code{mle}}{
-\tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units}    \tab \strong{need}\cr
-date              \tab Date            \tab                    \tab optional      \cr
-K600.daily        \tab numeric         \tab d^-1               \tab optional      \cr
-init.GPP.daily    \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-init.Pmax         \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-init.alpha        \tab numeric         \tab gO2 s d^-1 umol^-1 \tab optional      \cr
-init.ER.daily     \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-init.ER20         \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-init.K600.daily   \tab numeric         \tab d^-1               \tab optional
-}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
-\\tabular\{lrrrrrrr\}\{
-  \code{date      } \\tab \code{K600.daily} \\tab \code{init.GPP.daily} \\tab \code{init.Pmax} \\tab \code{init.alpha} \\tab \code{init.ER.daily} \\tab \code{init.ER20} \\tab \code{init.K600.daily}\\cr
-  \code{2050-03-14} \\tab \code{10        } \\tab \code{5             } \\tab \code{10       } \\tab \code{1e-04     } \\tab \code{-10          } \\tab \code{-10      } \\tab \code{10             }
-\}
-}\if{html}{\out{</div>}}
-
-}
-\item{\code{bayes}}{
-\tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-date              \tab Date            \tab                 \tab optional      \cr
-discharge.daily   \tab numeric         \tab m^3 s^-1        \tab optional
-}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
-\\tabular\{lr\}\{
-  \code{date      } \\tab \code{discharge.daily}\\cr
-  \code{2050-03-14} \\tab \code{9              }
-\}
-}\if{html}{\out{</div>}}
-
-}
-\item{\code{Kmodel}}{
-\tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
-date              \tab Date            \tab                 \tab required      \cr
-K600.daily        \tab numeric         \tab d^-1            \tab required      \cr
-K600.daily.lower  \tab numeric         \tab d^-1            \tab optional      \cr
-K600.daily.upper  \tab numeric         \tab d^-1            \tab optional      \cr
-discharge.daily   \tab numeric         \tab m^3 s^-1        \tab optional      \cr
-velocity.daily    \tab numeric         \tab m s^-1          \tab optional
-}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
-\\tabular\{lrrrrr\}\{
-  \code{date      } \\tab \code{K600.daily} \\tab \code{K600.daily.lower} \\tab \code{K600.daily.upper} \\tab \code{discharge.daily} \\tab \code{velocity.daily}\\cr
-  \code{2050-03-14} \\tab \code{10        } \\tab \code{4.5             } \\tab \code{15.6            } \\tab \code{9              } \\tab \code{2             }
-\}
-}\if{html}{\out{</div>}}
-
-}
-\item{\code{sim}}{
-\tabular{llll}{
-\strong{colname} \tab \strong{class} \tab \strong{units}    \tab \strong{need}\cr
-date              \tab Date            \tab                    \tab optional      \cr
-discharge.daily   \tab numeric         \tab m^3 s^-1           \tab optional      \cr
-DO.mod.1          \tab numeric         \tab mgO2 L^-1          \tab optional      \cr
-K600.daily        \tab numeric         \tab d^-1               \tab optional      \cr
-GPP.daily         \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-Pmax              \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-alpha             \tab numeric         \tab gO2 s d^-1 umol^-1 \tab optional      \cr
-ER.daily          \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-ER20              \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-err.obs.sigma     \tab numeric         \tab mgO2 L^-1          \tab optional      \cr
-err.obs.phi       \tab numeric         \tab                    \tab optional      \cr
-err.proc.sigma    \tab numeric         \tab gO2 m^-2 d^-1      \tab optional      \cr
-err.proc.phi      \tab numeric         \tab                    \tab optional
-}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{\\strong\{Example\}:
-\\tabular\{lrrrrrrrrrrrr\}\{
-  \code{date      } \\tab \code{discharge.daily} \\tab \code{DO.mod.1} \\tab \code{K600.daily} \\tab \code{GPP.daily} \\tab \code{Pmax} \\tab \code{alpha} \\tab \code{ER.daily} \\tab \code{ER20} \\tab \code{err.obs.sigma} \\tab \code{err.obs.phi} \\tab \code{err.proc.sigma} \\tab \code{err.proc.phi}\\cr
-  \code{2050-03-14} \\tab \code{9              } \\tab \code{7.5     } \\tab \code{10        } \\tab \code{5        } \\tab \code{10  } \\tab \code{1e-04} \\tab \code{-10     } \\tab \code{-10 } \\tab \code{0.01         } \\tab \code{0          } \\tab \code{5             } \\tab \code{0           }
-\}
-}\if{html}{\out{</div>}}
-
-}
-}
-}
-
 \examples{
 dat <- data_metab(num_days='3')
 
@@ -245,4 +64,165 @@ plot_DO_preds(predict_DO(mm), y_var='pctsat', style='dygraphs')
 }
 \author{
 Alison Appling
+}
+\section{Formatting \code{data}}{
+Unit-value model inputs passed via the \code{data} argument should
+be formatted as a data.frame with column names and values that
+depend on the model \code{type}, as follows.
+(If all columns are optional, \code{data} may equal \code{NULL}.)
+
+\describe{
+  \item{\code{mle} or \code{night}}{
+    \tabular{llll}{
+      \strong{colname} \tab \strong{class} \tab \strong{units}           \tab \strong{need}\cr
+      solar.time        \tab POSIXct,POSIXt  \tab                           \tab required      \cr
+      DO.obs            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
+      DO.sat            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
+      depth             \tab numeric         \tab \eqn{m}                  \tab required      \cr
+      temp.water        \tab numeric         \tab \eqn{°C}                 \tab required      \cr
+      light             \tab numeric         \tab \eqn{umol m^{-2} s^{-1}} \tab required      \cr
+      discharge         \tab numeric         \tab \eqn{m^{3} s^{-1}}       \tab optional
+    }
+
+    \strong{Example}:
+    \tabular{lrrrrrr}{
+      \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light} \tab \code{discharge}\cr
+      \code{2050-03-14 15:10:00} \tab \code{10.1  } \tab \code{14.2  } \tab \code{0.5  } \tab \code{21.8      } \tab \code{300.9} \tab \code{9        }
+    }
+  }
+  \item{\code{bayes}}{
+    \tabular{llll}{
+      \strong{colname} \tab \strong{class} \tab \strong{units}           \tab \strong{need}\cr
+      solar.time        \tab POSIXct,POSIXt  \tab                           \tab required      \cr
+      DO.obs            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
+      DO.sat            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
+      depth             \tab numeric         \tab \eqn{m}                  \tab required      \cr
+      temp.water        \tab numeric         \tab \eqn{°C}                 \tab required      \cr
+      light             \tab numeric         \tab \eqn{umol m^{-2} s^{-1}} \tab required      \cr
+      discharge         \tab numeric         \tab \eqn{m^{3} s^{-1}}       \tab optional
+    }
+
+    \strong{Example}:
+    \tabular{lrrrrrr}{
+      \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light} \tab \code{discharge}\cr
+      \code{2050-03-14 15:10:00} \tab \code{10.1  } \tab \code{14.2  } \tab \code{0.5  } \tab \code{21.8      } \tab \code{300.9} \tab \code{9        }
+    }
+  }
+  \item{\code{Kmodel}}{
+    \tabular{llll}{
+      \strong{colname} \tab \strong{class} \tab \strong{units}     \tab \strong{need}\cr
+      solar.time        \tab POSIXct,POSIXt  \tab                     \tab optional      \cr
+      discharge         \tab numeric         \tab \eqn{m^{3} s^{-1}} \tab optional      \cr
+      velocity          \tab numeric         \tab \eqn{m s^{-1}}     \tab optional
+    }
+
+    \strong{Example}:
+    \tabular{lrr}{
+      \code{solar.time         } \tab \code{discharge} \tab \code{velocity}\cr
+      \code{2050-03-14 15:10:00} \tab \code{9        } \tab \code{2       }
+    }
+  }
+  \item{\code{sim}}{
+    \tabular{llll}{
+      \strong{colname} \tab \strong{class} \tab \strong{units}           \tab \strong{need}\cr
+      solar.time        \tab POSIXct,POSIXt  \tab                           \tab required      \cr
+      DO.obs            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab optional      \cr
+      DO.sat            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
+      depth             \tab numeric         \tab \eqn{m}                  \tab required      \cr
+      temp.water        \tab numeric         \tab \eqn{°C}                 \tab required      \cr
+      light             \tab numeric         \tab \eqn{umol m^{-2} s^{-1}} \tab required
+    }
+
+    \strong{Example}:
+    \tabular{lrrrrr}{
+      \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light}\cr
+      \code{2050-03-14 15:10:00} \tab \code{10.1  } \tab \code{14.2  } \tab \code{0.5  } \tab \code{21.8      } \tab \code{300.9}
+    }
+  }
+}
+}
+\section{Formatting \code{data_daily}}{
+Daily-value model inputs passed via the \code{data_daily} argument should
+be formatted as a data.frame with column names and values that
+depend on the model \code{type}, as follows.
+(If all columns are optional, \code{data_daily} may equal \code{NULL}.)
+
+\describe{
+  \item{\code{night}}{
+    \code{NULL}
+  }
+  \item{\code{mle}}{
+    \tabular{llll}{
+      \strong{colname} \tab \strong{class} \tab \strong{units}                \tab \strong{need}\cr
+      date              \tab Date            \tab                                \tab optional      \cr
+      K600.daily        \tab numeric         \tab \eqn{d^{-1}}                  \tab optional      \cr
+      init.GPP.daily    \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      init.Pmax         \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      init.alpha        \tab numeric         \tab \eqn{gO_2 s d^{-1} umol^{-1}} \tab optional      \cr
+      init.ER.daily     \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      init.ER20         \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      init.K600.daily   \tab numeric         \tab \eqn{d^{-1}}                  \tab optional
+    }
+
+    \strong{Example}:
+    \tabular{lrrrrrrr}{
+      \code{date      } \tab \code{K600.daily} \tab \code{init.GPP.daily} \tab \code{init.Pmax} \tab \code{init.alpha} \tab \code{init.ER.daily} \tab \code{init.ER20} \tab \code{init.K600.daily}\cr
+      \code{2050-03-14} \tab \code{10        } \tab \code{5             } \tab \code{10       } \tab \code{1e-04     } \tab \code{-10          } \tab \code{-10      } \tab \code{10             }
+    }
+  }
+  \item{\code{bayes}}{
+    \tabular{llll}{
+      \strong{colname} \tab \strong{class} \tab \strong{units}     \tab \strong{need}\cr
+      date              \tab Date            \tab                     \tab optional      \cr
+      discharge.daily   \tab numeric         \tab \eqn{m^{3} s^{-1}} \tab optional
+    }
+
+    \strong{Example}:
+    \tabular{lr}{
+      \code{date      } \tab \code{discharge.daily}\cr
+      \code{2050-03-14} \tab \code{9              }
+    }
+  }
+  \item{\code{Kmodel}}{
+    \tabular{llll}{
+      \strong{colname} \tab \strong{class} \tab \strong{units}     \tab \strong{need}\cr
+      date              \tab Date            \tab                     \tab required      \cr
+      K600.daily        \tab numeric         \tab \eqn{d^{-1}}       \tab required      \cr
+      K600.daily.lower  \tab numeric         \tab \eqn{d^{-1}}       \tab optional      \cr
+      K600.daily.upper  \tab numeric         \tab \eqn{d^{-1}}       \tab optional      \cr
+      discharge.daily   \tab numeric         \tab \eqn{m^{3} s^{-1}} \tab optional      \cr
+      velocity.daily    \tab numeric         \tab \eqn{m s^{-1}}     \tab optional
+    }
+
+    \strong{Example}:
+    \tabular{lrrrrr}{
+      \code{date      } \tab \code{K600.daily} \tab \code{K600.daily.lower} \tab \code{K600.daily.upper} \tab \code{discharge.daily} \tab \code{velocity.daily}\cr
+      \code{2050-03-14} \tab \code{10        } \tab \code{4.5             } \tab \code{15.6            } \tab \code{9              } \tab \code{2             }
+    }
+  }
+  \item{\code{sim}}{
+    \tabular{llll}{
+      \strong{colname} \tab \strong{class} \tab \strong{units}                \tab \strong{need}\cr
+      date              \tab Date            \tab                                \tab optional      \cr
+      discharge.daily   \tab numeric         \tab \eqn{m^{3} s^{-1}}            \tab optional      \cr
+      DO.mod.1          \tab numeric         \tab \eqn{mgO_2 L^{-1}}            \tab optional      \cr
+      K600.daily        \tab numeric         \tab \eqn{d^{-1}}                  \tab optional      \cr
+      GPP.daily         \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      Pmax              \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      alpha             \tab numeric         \tab \eqn{gO_2 s d^{-1} umol^{-1}} \tab optional      \cr
+      ER.daily          \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      ER20              \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      err.obs.sigma     \tab numeric         \tab \eqn{mgO_2 L^{-1}}            \tab optional      \cr
+      err.obs.phi       \tab numeric         \tab                                \tab optional      \cr
+      err.proc.sigma    \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
+      err.proc.phi      \tab numeric         \tab                                \tab optional
+    }
+
+    \strong{Example}:
+    \tabular{lrrrrrrrrrrrr}{
+      \code{date      } \tab \code{discharge.daily} \tab \code{DO.mod.1} \tab \code{K600.daily} \tab \code{GPP.daily} \tab \code{Pmax} \tab \code{alpha} \tab \code{ER.daily} \tab \code{ER20} \tab \code{err.obs.sigma} \tab \code{err.obs.phi} \tab \code{err.proc.sigma} \tab \code{err.proc.phi}\cr
+      \code{2050-03-14} \tab \code{9              } \tab \code{7.5     } \tab \code{10        } \tab \code{5        } \tab \code{10  } \tab \code{1e-04} \tab \code{-10     } \tab \code{-10 } \tab \code{0.01         } \tab \code{0          } \tab \code{5             } \tab \code{0           }
+    }
+  }
+}
 }

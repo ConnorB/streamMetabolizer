@@ -41,7 +41,7 @@ test_that("mm_data units are available for documentation", {
     DO.obs = "mgO2 L^-1",
     DO.sat = "mgO2 L^-1",
     depth = "m",
-    temp.water = "degC",
+    temp.water = "°C",
     light = "umol m^-2 s^-1",
     discharge = "m^3 s^-1",
     velocity = "m s^-1",
@@ -77,12 +77,13 @@ test_that("mm_data units are available for documentation", {
     D.lower = "gO2 m^-3 d^-1",
     D.upper = "gO2 m^-3 d^-1"
   )
+  expected <- gsub("O2", "O_2", expected, fixed = TRUE)
 
   expect_equal(mm_data_units(), expected)
   expect_equal(names(mm_data_units()), names(mm_data()))
   expect_equal(
     metab_inputs("mle", "data")$units,
-    c("", "mgO2 L^-1", "mgO2 L^-1", "m", "degC", "umol m^-2 s^-1", "m^3 s^-1")
+    c("", "mgO_2 L^-1", "mgO_2 L^-1", "m", "°C", "umol m^-2 s^-1", "m^3 s^-1")
   )
 })
 

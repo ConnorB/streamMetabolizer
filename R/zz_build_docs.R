@@ -23,8 +23,22 @@ zz_tabular <- function(df, bold_headers = TRUE, code = FALSE, ...) {
       colname = as.list(names(df)),
       colvec = df
     ) |>
-    as.data.frame() |>
-    lapply(format, ...)
+    as.data.frame()
+
+  unit_col <- match("units", names(df), nomatch = 0)
+  if (unit_col > 0) {
+    has_units <- seq_along(cols[[unit_col]]) > 1 & nzchar(cols[[unit_col]])
+    units <- cols[[unit_col]][has_units]
+    units <- gsub(
+      "\\^(-?\\d+)",
+      "^{\\1}",
+      units,
+      perl = TRUE
+    )
+    cols[[unit_col]][has_units] <- paste0("\\eqn{", units, "}")
+  }
+
+  cols <- lapply(cols, format, ...)
 
   if (code) {
     cols <- lapply(cols, function(col) {
@@ -64,7 +78,8 @@ zz_build_docs <- function() {
 
   . <- 'dplyr.var'
   doc_text <- c(
-    "@section Formatting \\code{data}:",
+    "@rawRd",
+    "\\section{Formatting \\code{data}}{",
     "Unit-value model inputs passed via the \\code{data} argument should",
     "be formatted as a data.frame with column names and values that",
     "depend on the model \\code{type}, as follows.",
@@ -111,8 +126,9 @@ zz_build_docs <- function() {
       })
     ),
     "}",
+    "}",
 
-    "@section Formatting \\code{data_daily}:",
+    "\\section{Formatting \\code{data_daily}}{",
     "Daily-value model inputs passed via the \\code{data_daily} argument should",
     "be formatted as a data.frame with column names and values that",
     "depend on the model \\code{type}, as follows.",
@@ -146,6 +162,7 @@ zz_build_docs <- function() {
         )
       })
     ),
+    "}",
     "}"
   ) |>
     (\(x) paste0("#' ", x))()
