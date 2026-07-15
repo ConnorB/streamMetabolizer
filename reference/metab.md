@@ -54,6 +54,10 @@ An object inheriting from metab_model and containing the fitted model.
 This object can be inspected with the functions in the
 [`metab_model_interface()`](https://connorb.github.io/streamMetabolizer/reference/metab_model_interface.md).
 
+## Author
+
+Alison Appling
+
 ## Formatting `data`
 
 Unit-value model inputs passed via the `data` argument should be
@@ -63,74 +67,78 @@ equal `NULL`.)
 
 - `mle` or `night`:
 
-  |             |                |                |          |
-  |-------------|----------------|----------------|----------|
-  | **colname** | **class**      | **units**      | **need** |
-  | solar.time  | POSIXct,POSIXt |                | required |
-  | DO.obs      | numeric        | mgO2 L^-1      | required |
-  | DO.sat      | numeric        | mgO2 L^-1      | required |
-  | depth       | numeric        | m              | required |
-  | temp.water  | numeric        | degC           | required |
-  | light       | numeric        | umol m^-2 s^-1 | required |
-  | discharge   | numeric        | m^3 s^-1       | optional |
+  |             |                |                        |          |
+  |-------------|----------------|------------------------|----------|
+  | **colname** | **class**      | **units**              | **need** |
+  | solar.time  | POSIXct,POSIXt |                        | required |
+  | DO.obs      | numeric        | \\mgO_2 L^{-1}\\       | required |
+  | DO.sat      | numeric        | \\mgO_2 L^{-1}\\       | required |
+  | depth       | numeric        | \\m\\                  | required |
+  | temp.water  | numeric        | \\°C\\                 | required |
+  | light       | numeric        | \\umol m^{-2} s^{-1}\\ | required |
+  | discharge   | numeric        | \\m^{3} s^{-1}\\       | optional |
 
-      \strong{Example}:
-      \tabular{lrrrrrr}{
-        \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light} \tab \code{discharge}\cr
-        \code{2050-03-14 15:10:00} \tab \code{10.1  } \tab \code{14.2  } \tab \code{0.5  } \tab \code{21.8      } \tab \code{300.9} \tab \code{9        }
-      }
+  **Example**:
+
+  |  |  |  |  |  |  |  |
+  |----|----|----|----|----|----|----|
+  | `solar.time ` | `DO.obs` | `DO.sat` | `depth` | `temp.water` | `light` | `discharge` |
+  | `2050-03-14 15:10:00` | `10.1 ` | `14.2 ` | `0.5 ` | `21.8 ` | `300.9` | `9 ` |
 
 - `bayes`:
 
-  |             |                |                |          |
-  |-------------|----------------|----------------|----------|
-  | **colname** | **class**      | **units**      | **need** |
-  | solar.time  | POSIXct,POSIXt |                | required |
-  | DO.obs      | numeric        | mgO2 L^-1      | required |
-  | DO.sat      | numeric        | mgO2 L^-1      | required |
-  | depth       | numeric        | m              | required |
-  | temp.water  | numeric        | degC           | required |
-  | light       | numeric        | umol m^-2 s^-1 | required |
-  | discharge   | numeric        | m^3 s^-1       | optional |
+  |             |                |                        |          |
+  |-------------|----------------|------------------------|----------|
+  | **colname** | **class**      | **units**              | **need** |
+  | solar.time  | POSIXct,POSIXt |                        | required |
+  | DO.obs      | numeric        | \\mgO_2 L^{-1}\\       | required |
+  | DO.sat      | numeric        | \\mgO_2 L^{-1}\\       | required |
+  | depth       | numeric        | \\m\\                  | required |
+  | temp.water  | numeric        | \\°C\\                 | required |
+  | light       | numeric        | \\umol m^{-2} s^{-1}\\ | required |
+  | discharge   | numeric        | \\m^{3} s^{-1}\\       | optional |
 
-      \strong{Example}:
-      \tabular{lrrrrrr}{
-        \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light} \tab \code{discharge}\cr
-        \code{2050-03-14 15:10:00} \tab \code{10.1  } \tab \code{14.2  } \tab \code{0.5  } \tab \code{21.8      } \tab \code{300.9} \tab \code{9        }
-      }
+  **Example**:
+
+  |  |  |  |  |  |  |  |
+  |----|----|----|----|----|----|----|
+  | `solar.time ` | `DO.obs` | `DO.sat` | `depth` | `temp.water` | `light` | `discharge` |
+  | `2050-03-14 15:10:00` | `10.1 ` | `14.2 ` | `0.5 ` | `21.8 ` | `300.9` | `9 ` |
 
 - `Kmodel`:
 
-  |             |                |           |          |
-  |-------------|----------------|-----------|----------|
-  | **colname** | **class**      | **units** | **need** |
-  | solar.time  | POSIXct,POSIXt |           | optional |
-  | discharge   | numeric        | m^3 s^-1  | optional |
-  | velocity    | numeric        | m s^-1    | optional |
+  |             |                |                  |          |
+  |-------------|----------------|------------------|----------|
+  | **colname** | **class**      | **units**        | **need** |
+  | solar.time  | POSIXct,POSIXt |                  | optional |
+  | discharge   | numeric        | \\m^{3} s^{-1}\\ | optional |
+  | velocity    | numeric        | \\m s^{-1}\\     | optional |
 
-      \strong{Example}:
-      \tabular{lrr}{
-        \code{solar.time         } \tab \code{discharge} \tab \code{velocity}\cr
-        \code{2050-03-14 15:10:00} \tab \code{9        } \tab \code{2       }
-      }
+  **Example**:
+
+  |                       |             |            |
+  |-----------------------|-------------|------------|
+  | `solar.time `         | `discharge` | `velocity` |
+  | `2050-03-14 15:10:00` | `9 `        | `2 `       |
 
 - `sim`:
 
-  |             |                |                |          |
-  |-------------|----------------|----------------|----------|
-  | **colname** | **class**      | **units**      | **need** |
-  | solar.time  | POSIXct,POSIXt |                | required |
-  | DO.obs      | numeric        | mgO2 L^-1      | optional |
-  | DO.sat      | numeric        | mgO2 L^-1      | required |
-  | depth       | numeric        | m              | required |
-  | temp.water  | numeric        | degC           | required |
-  | light       | numeric        | umol m^-2 s^-1 | required |
+  |             |                |                        |          |
+  |-------------|----------------|------------------------|----------|
+  | **colname** | **class**      | **units**              | **need** |
+  | solar.time  | POSIXct,POSIXt |                        | required |
+  | DO.obs      | numeric        | \\mgO_2 L^{-1}\\       | optional |
+  | DO.sat      | numeric        | \\mgO_2 L^{-1}\\       | required |
+  | depth       | numeric        | \\m\\                  | required |
+  | temp.water  | numeric        | \\°C\\                 | required |
+  | light       | numeric        | \\umol m^{-2} s^{-1}\\ | required |
 
-      \strong{Example}:
-      \tabular{lrrrrr}{
-        \code{solar.time         } \tab \code{DO.obs} \tab \code{DO.sat} \tab \code{depth} \tab \code{temp.water} \tab \code{light}\cr
-        \code{2050-03-14 15:10:00} \tab \code{10.1  } \tab \code{14.2  } \tab \code{0.5  } \tab \code{21.8      } \tab \code{300.9}
-      }
+  **Example**:
+
+  |                       |          |          |         |              |         |
+  |-----------------------|----------|----------|---------|--------------|---------|
+  | `solar.time `         | `DO.obs` | `DO.sat` | `depth` | `temp.water` | `light` |
+  | `2050-03-14 15:10:00` | `10.1 `  | `14.2 `  | `0.5 `  | `21.8 `      | `300.9` |
 
 ## Formatting `data_daily`
 
@@ -145,84 +153,84 @@ may equal `NULL`.)
 
 - `mle`:
 
-  |                 |           |                    |          |
-  |-----------------|-----------|--------------------|----------|
-  | **colname**     | **class** | **units**          | **need** |
-  | date            | Date      |                    | optional |
-  | K600.daily      | numeric   | d^-1               | optional |
-  | init.GPP.daily  | numeric   | gO2 m^-2 d^-1      | optional |
-  | init.Pmax       | numeric   | gO2 m^-2 d^-1      | optional |
-  | init.alpha      | numeric   | gO2 s d^-1 umol^-1 | optional |
-  | init.ER.daily   | numeric   | gO2 m^-2 d^-1      | optional |
-  | init.ER20       | numeric   | gO2 m^-2 d^-1      | optional |
-  | init.K600.daily | numeric   | d^-1               | optional |
+  |                 |           |                             |          |
+  |-----------------|-----------|-----------------------------|----------|
+  | **colname**     | **class** | **units**                   | **need** |
+  | date            | Date      |                             | optional |
+  | K600.daily      | numeric   | \\d^{-1}\\                  | optional |
+  | init.GPP.daily  | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | init.Pmax       | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | init.alpha      | numeric   | \\gO_2 s d^{-1} umol^{-1}\\ | optional |
+  | init.ER.daily   | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | init.ER20       | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | init.K600.daily | numeric   | \\d^{-1}\\                  | optional |
 
-      \strong{Example}:
-      \tabular{lrrrrrrr}{
-        \code{date      } \tab \code{K600.daily} \tab \code{init.GPP.daily} \tab \code{init.Pmax} \tab \code{init.alpha} \tab \code{init.ER.daily} \tab \code{init.ER20} \tab \code{init.K600.daily}\cr
-        \code{2050-03-14} \tab \code{10        } \tab \code{5             } \tab \code{10       } \tab \code{1e-04     } \tab \code{-10          } \tab \code{-10      } \tab \code{10             }
-      }
+  **Example**:
+
+  |  |  |  |  |  |  |  |  |
+  |----|----|----|----|----|----|----|----|
+  | `date ` | `K600.daily` | `init.GPP.daily` | `init.Pmax` | `init.alpha` | `init.ER.daily` | `init.ER20` | `init.K600.daily` |
+  | `2050-03-14` | `10 ` | `5 ` | `10 ` | `1e-04 ` | `-10 ` | `-10 ` | `10 ` |
 
 - `bayes`:
 
-  |                 |           |           |          |
-  |-----------------|-----------|-----------|----------|
-  | **colname**     | **class** | **units** | **need** |
-  | date            | Date      |           | optional |
-  | discharge.daily | numeric   | m^3 s^-1  | optional |
+  |                 |           |                  |          |
+  |-----------------|-----------|------------------|----------|
+  | **colname**     | **class** | **units**        | **need** |
+  | date            | Date      |                  | optional |
+  | discharge.daily | numeric   | \\m^{3} s^{-1}\\ | optional |
 
-      \strong{Example}:
-      \tabular{lr}{
-        \code{date      } \tab \code{discharge.daily}\cr
-        \code{2050-03-14} \tab \code{9              }
-      }
+  **Example**:
+
+  |              |                   |
+  |--------------|-------------------|
+  | `date `      | `discharge.daily` |
+  | `2050-03-14` | `9 `              |
 
 - `Kmodel`:
 
-  |                  |           |           |          |
-  |------------------|-----------|-----------|----------|
-  | **colname**      | **class** | **units** | **need** |
-  | date             | Date      |           | required |
-  | K600.daily       | numeric   | d^-1      | required |
-  | K600.daily.lower | numeric   | d^-1      | optional |
-  | K600.daily.upper | numeric   | d^-1      | optional |
-  | discharge.daily  | numeric   | m^3 s^-1  | optional |
-  | velocity.daily   | numeric   | m s^-1    | optional |
+  |                  |           |                  |          |
+  |------------------|-----------|------------------|----------|
+  | **colname**      | **class** | **units**        | **need** |
+  | date             | Date      |                  | required |
+  | K600.daily       | numeric   | \\d^{-1}\\       | required |
+  | K600.daily.lower | numeric   | \\d^{-1}\\       | optional |
+  | K600.daily.upper | numeric   | \\d^{-1}\\       | optional |
+  | discharge.daily  | numeric   | \\m^{3} s^{-1}\\ | optional |
+  | velocity.daily   | numeric   | \\m s^{-1}\\     | optional |
 
-      \strong{Example}:
-      \tabular{lrrrrr}{
-        \code{date      } \tab \code{K600.daily} \tab \code{K600.daily.lower} \tab \code{K600.daily.upper} \tab \code{discharge.daily} \tab \code{velocity.daily}\cr
-        \code{2050-03-14} \tab \code{10        } \tab \code{4.5             } \tab \code{15.6            } \tab \code{9              } \tab \code{2             }
-      }
+  **Example**:
+
+  |  |  |  |  |  |  |
+  |----|----|----|----|----|----|
+  | `date ` | `K600.daily` | `K600.daily.lower` | `K600.daily.upper` | `discharge.daily` | `velocity.daily` |
+  | `2050-03-14` | `10 ` | `4.5 ` | `15.6 ` | `9 ` | `2 ` |
 
 - `sim`:
 
-  |                 |           |                    |          |
-  |-----------------|-----------|--------------------|----------|
-  | **colname**     | **class** | **units**          | **need** |
-  | date            | Date      |                    | optional |
-  | discharge.daily | numeric   | m^3 s^-1           | optional |
-  | DO.mod.1        | numeric   | mgO2 L^-1          | optional |
-  | K600.daily      | numeric   | d^-1               | optional |
-  | GPP.daily       | numeric   | gO2 m^-2 d^-1      | optional |
-  | Pmax            | numeric   | gO2 m^-2 d^-1      | optional |
-  | alpha           | numeric   | gO2 s d^-1 umol^-1 | optional |
-  | ER.daily        | numeric   | gO2 m^-2 d^-1      | optional |
-  | ER20            | numeric   | gO2 m^-2 d^-1      | optional |
-  | err.obs.sigma   | numeric   | mgO2 L^-1          | optional |
-  | err.obs.phi     | numeric   |                    | optional |
-  | err.proc.sigma  | numeric   | gO2 m^-2 d^-1      | optional |
-  | err.proc.phi    | numeric   |                    | optional |
+  |                 |           |                             |          |
+  |-----------------|-----------|-----------------------------|----------|
+  | **colname**     | **class** | **units**                   | **need** |
+  | date            | Date      |                             | optional |
+  | discharge.daily | numeric   | \\m^{3} s^{-1}\\            | optional |
+  | DO.mod.1        | numeric   | \\mgO_2 L^{-1}\\            | optional |
+  | K600.daily      | numeric   | \\d^{-1}\\                  | optional |
+  | GPP.daily       | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | Pmax            | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | alpha           | numeric   | \\gO_2 s d^{-1} umol^{-1}\\ | optional |
+  | ER.daily        | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | ER20            | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | err.obs.sigma   | numeric   | \\mgO_2 L^{-1}\\            | optional |
+  | err.obs.phi     | numeric   |                             | optional |
+  | err.proc.sigma  | numeric   | \\gO_2 m^{-2} d^{-1}\\      | optional |
+  | err.proc.phi    | numeric   |                             | optional |
 
-      \strong{Example}:
-      \tabular{lrrrrrrrrrrrr}{
-        \code{date      } \tab \code{discharge.daily} \tab \code{DO.mod.1} \tab \code{K600.daily} \tab \code{GPP.daily} \tab \code{Pmax} \tab \code{alpha} \tab \code{ER.daily} \tab \code{ER20} \tab \code{err.obs.sigma} \tab \code{err.obs.phi} \tab \code{err.proc.sigma} \tab \code{err.proc.phi}\cr
-        \code{2050-03-14} \tab \code{9              } \tab \code{7.5     } \tab \code{10        } \tab \code{5        } \tab \code{10  } \tab \code{1e-04} \tab \code{-10     } \tab \code{-10 } \tab \code{0.01         } \tab \code{0          } \tab \code{5             } \tab \code{0           }
-      }
+  **Example**:
 
-## Author
-
-Alison Appling
+  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+  |----|----|----|----|----|----|----|----|----|----|----|----|----|
+  | `date ` | `discharge.daily` | `DO.mod.1` | `K600.daily` | `GPP.daily` | `Pmax` | `alpha` | `ER.daily` | `ER20` | `err.obs.sigma` | `err.obs.phi` | `err.proc.sigma` | `err.proc.phi` |
+  | `2050-03-14` | `9 ` | `7.5 ` | `10 ` | `5 ` | `10 ` | `1e-04` | `-10 ` | `-10 ` | `0.01 ` | `0 ` | `5 ` | `0 ` |
 
 ## Examples
 
@@ -243,7 +251,7 @@ get_info(mm)
 #> [1] "my info"
 get_fitting_time(mm)
 #>    user  system elapsed 
-#>   0.868   0.000   0.867 
+#>   0.571   0.000   0.570 
 
 # with chaining & customization
 library(dplyr)

@@ -40,10 +40,10 @@ metab_inputs('bayes','data')
 #>   colname    class          units            need    
 #>   <chr>      <chr>          <chr>            <chr>   
 #> 1 solar.time POSIXct,POSIXt ""               required
-#> 2 DO.obs     numeric        "mgO2 L^-1"      required
-#> 3 DO.sat     numeric        "mgO2 L^-1"      required
+#> 2 DO.obs     numeric        "mgO_2 L^-1"     required
+#> 3 DO.sat     numeric        "mgO_2 L^-1"     required
 #> 4 depth      numeric        "m"              required
-#> 5 temp.water numeric        "degC"           required
+#> 5 temp.water numeric        "°C"             required
 #> 6 light      numeric        "umol m^-2 s^-1" required
 #> 7 discharge  numeric        "m^3 s^-1"       optional
 metab_inputs('Kmodel','data_daily')
