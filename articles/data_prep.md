@@ -90,15 +90,15 @@ metab_inputs('mle', 'data')
 ```
 
     # A tibble: 7 × 4
-      colname    class          units            need
-      <chr>      <chr>          <chr>            <chr>
-    1 solar.time POSIXct,POSIXt ""               required
-    2 DO.obs     numeric        "mgO_2 L^-1"     required
-    3 DO.sat     numeric        "mgO_2 L^-1"     required
-    4 depth      numeric        "m"              required
-    5 temp.water numeric        "°C"             required
-    6 light      numeric        "umol m^-2 s^-1" required
-    7 discharge  numeric        "m^3 s^-1"       optional
+      colname    class          units          need
+      <chr>      <chr>          <chr>          <chr>
+    1 solar.time POSIXct,POSIXt ""             required
+    2 DO.obs     numeric        "mgO₂ L⁻¹"     required
+    3 DO.sat     numeric        "mgO₂ L⁻¹"     required
+    4 depth      numeric        "m"            required
+    5 temp.water numeric        "°C"           required
+    6 light      numeric        "µmol m⁻² s⁻¹" required
+    7 discharge  numeric        "m³ s⁻¹"       optional
 
 Also read through the help pages at
 [`?metab`](https://connorb.github.io/streamMetabolizer/reference/metab.md)

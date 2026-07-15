@@ -1,4 +1,4 @@
-# Calculates the time of sunrise and sunset
+# Calculate sunrise and sunset times
 
 **\[deprecated\]**
 
@@ -21,11 +21,12 @@ calc_sun_rise_set(date, latitude)
 - latitude:
 
   Single latitude value of site. South should be negative, North
-  positive
+  positive.
 
 ## Value
 
-data.frame of sunrise and sunset (apparent solar time, nominally UTC)
+A data frame containing sunrise and sunset times in apparent solar time
+(nominally UTC).
 
 ## See also
 

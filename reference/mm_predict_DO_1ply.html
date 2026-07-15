@@ -85,10 +85,10 @@
 
 
 <dl><dt id="arg-data-ply">data_ply<a class="anchor" aria-label="anchor" href="#arg-data-ply"></a></dt>
-<dd><p>a data frame or tibble containing all relevant, validated
+<dd><p>A data frame or tibble containing all relevant, validated
 modeling data for a single ply of data. (1 ply ~= 1 date, although the day
 length has been specified by day_start and day_end and may not be exactly
-24 hours)</p></dd>
+24 hours).</p></dd>
 
 
 <dt id="arg-data-daily-ply">data_daily_ply<a class="anchor" aria-label="anchor" href="#arg-data-daily-ply"></a></dt>
@@ -97,7 +97,7 @@ a daily timestep.</p></dd>
 
 
 <dt id="arg-day-start">day_start<a class="anchor" aria-label="anchor" href="#arg-day-start"></a></dt>
-<dd><p>start time (inclusive) of a day's data in number of hours
+<dd><p>Start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
 indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
@@ -105,30 +105,30 @@ fall exactly on an observation time.</p></dd>
 
 
 <dt id="arg-day-end">day_end<a class="anchor" aria-label="anchor" href="#arg-day-end"></a></dt>
-<dd><p>end time (exclusive) of a day's data in number of hours from
+<dd><p>End time (exclusive) of a day's data in number of hours from
 the midnight that begins the date. For example, day_end=30 indicates that
 data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00.</p></dd>
 
 
 <dt id="arg-ply-date">ply_date<a class="anchor" aria-label="anchor" href="#arg-ply-date"></a></dt>
-<dd><p>the modal date of this ply of data and data_daily, and the
+<dd><p>The modal date of this ply of data and data_daily, and the
 date by which this ply should be referred topresent.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>other args that were passed untouched from the function calling
+<dd><p>Other args that were passed untouched from the function calling
 mm_model_by_ply, through mm_model_by_ply, and finally to this function.</p></dd>
 
 
 <dt id="arg-model-name">model_name<a class="anchor" aria-label="anchor" href="#arg-model-name"></a></dt>
-<dd><p>the coded model name that will determine the GPP_fun,
-ER_fun, deficit_src, and ode_method to use in prediction</p></dd>
+<dd><p>The coded model name that will determine the GPP_fun,
+ER_fun, deficit_src, and ode_method to use in prediction.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a data.frame of predictions</p>
+    <p>A data.frame of predictions.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

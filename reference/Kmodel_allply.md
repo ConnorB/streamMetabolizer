@@ -20,8 +20,8 @@ Kmodel_allply(
 
 - data_daily_all:
 
-  data to use as input, with columns including K600.daily.obs, weight,
-  and any predictors
+  A data frame containing `K600.daily.obs`, `weight`, and any
+  predictors.
 
 - engine:
 
@@ -51,12 +51,12 @@ Kmodel_allply(
 
 - transforms:
 
-  For Kmodel, a named character vector of names of functions (probably
-  'log' or NA) to apply to K600.daily and/or the predictors. K600.daily
-  should probably be logged. The vector names must match the values of
-  `predictors`, although not all elements of `predictors` must be
-  included in `transforms`. Recommended transforms include
-  `c(K600.daily='log', date=NA, velocity.daily="log", discharge.daily="log")`
+  For Kmodel, a named character vector of function names (usually
+  `"log"` or `NA`) to apply to `K600.daily` and the predictors.
+  `K600.daily` should usually be logged. The vector names must match the
+  values of `predictors`, although not all elements of `predictors` must
+  be included in `transforms`. Recommended transforms include
+  `c(K600.daily = "log", date = NA, velocity.daily = "log", discharge.daily = "log")`.
 
 - other_args:
 

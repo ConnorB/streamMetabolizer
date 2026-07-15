@@ -1,6 +1,6 @@
-# Extract the user-supplied metadata about a metabolism model.
+# Extract user-supplied model metadata
 
-A function in the metab_model_interface. Returns any user-supplied
+A function in the `metab_model_interface`. Returns any user-supplied
 metadata.
 
 ## Usage
@@ -16,8 +16,7 @@ get_info(metab_model)
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, for which
-  to return the metadata information.
+  A metabolism model that implements the `metab_model_interface`.
 
 ## Value
 
@@ -41,3 +40,12 @@ Other metab_model_interface:
 [`get_version()`](https://connorb.github.io/streamMetabolizer/reference/get_version.md),
 [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md),
 [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
+
+## Examples
+
+``` r
+get_info(metab_model(info = list(site = "Example stream")))
+#> $site
+#> [1] "Example stream"
+#> 
+```

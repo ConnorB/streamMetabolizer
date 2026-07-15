@@ -1,4 +1,4 @@
-# Determines if specified datetime is during the daytime Returns T/F indicating whether a datetime occurs during the daytime (sunlight hours)
+# Determine whether datetimes occur during daylight
 
 **\[deprecated\]**
 
@@ -14,22 +14,26 @@ calc_is_daytime(datetimes, lat)
 
 - datetimes:
 
-  Vector of dates as `POSIXct` or `POSIXlt` (see
-  [`DateTimeClasses()`](https://rdrr.io/r/base/DateTimeClasses.html))
-  format, but in SOLAR time
+  A `POSIXct` or `POSIXlt` vector in solar time. See
+  [`DateTimeClasses()`](https://rdrr.io/r/base/DateTimeClasses.html).
 
 - lat:
 
-  Single latitude value of site. South should be negative, north
-  positive
+  A numeric scalar giving the site latitude. Use negative values south
+  of the equator and positive values north of it.
 
 ## Value
 
-a boolean vector of same length as `datetimes`
+A logical vector with the same length as `datetimes`.
+
+## Details
+
+Returns a logical vector indicating whether each datetime occurs during
+daylight hours.
 
 ## See also
 
-[calc_sun_rise_set](https://connorb.github.io/streamMetabolizer/reference/calc_sun_rise_set.md)
+[`calc_sun_rise_set()`](https://connorb.github.io/streamMetabolizer/reference/calc_sun_rise_set.md)
 
 ## Author
 
@@ -38,8 +42,11 @@ Luke A. Winslow
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 # Warning: this function is deprecated.
-calc_is_daytime(datetimes=as.POSIXct(paste('2013-03-31', c('1:00','11:00'))), lat=40.75)
-} # }
+calc_is_daytime(
+  datetimes = as.POSIXct(paste("2013-03-31", c("1:00", "11:00"))),
+  lat = 40.75
+)
+}
 ```

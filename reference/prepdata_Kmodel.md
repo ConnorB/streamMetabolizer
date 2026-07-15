@@ -1,8 +1,7 @@
-# Prepare data_daily by aggregating any daily data, renaming K600.daily to K600.daily.obs, & setting data_daily\$weight to reflect user weights & filters
+# Prepare daily data for K modeling
 
-Prepare data_daily by aggregating any daily data, renaming K600.daily to
-K600.daily.obs, & setting data_daily\$weight to reflect user weights &
-filters
+Aggregates daily data, renames `K600.daily` to `K600.daily.obs`, and
+sets `data_daily$weight` to reflect user weights and filters.
 
 ## Usage
 
@@ -23,11 +22,11 @@ prepdata_Kmodel(
 
 - data:
 
-  unit data to aggregate to daily_data. may be NULL.
+  Unit data to aggregate to daily_data. may be NULL.
 
 - data_daily:
 
-  daily data to prepare for K modeling
+  Daily data to prepare for K modeling.
 
 - weights:
 
@@ -40,12 +39,13 @@ prepdata_Kmodel(
   data_daily. Elements may include
   c("CI.max","discharge.daily.max","velocity.daily.max"). If an element
   is given, the corresponding filter is applied:
-  K600.daily.upper-K600.daily.lower \<= CI.max, discharge.daily \<=
-  discharge.daily.max, velocity.daily \<= velocity.daily.max
+  `K600.daily.upper - K600.daily.lower <= CI.max`,
+  `discharge.daily <= discharge.daily.max`, or
+  `velocity.daily <= velocity.daily.max`.
 
 - day_start:
 
-  start time (inclusive) of a day's data in number of hours from the
+  Start time (inclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_start=-1.5 indicates
   that data describing 2006-06-26 begin at 2006-06-25 22:30, or at the
   first observation time that occurs after that time if day_start
@@ -61,7 +61,7 @@ prepdata_Kmodel(
 
 - day_end:
 
-  end time (exclusive) of a day's data in number of hours from the
+  End time (exclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_end=30 indicates that
   data describing 2006-06-26 end at the last observation time that
   occurs before 2006-06-27 06:00. See day_start for recommended start
@@ -69,7 +69,7 @@ prepdata_Kmodel(
 
 - day_tests:
 
-  list of tests to conduct to determine whether each date worth of data
+  List of tests to conduct to determine whether each date worth of data
   is valid for modeling. The results of these tests will be combined
   with the result of the test implied if `required_timestep` is numeric
   and then will be passed to `model_fun` as the `ply_validity` argument

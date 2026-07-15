@@ -13,4 +13,4 @@ show(object)
 
 - object:
 
-  specs list to be displayed.
+  Specs list to be displayed.

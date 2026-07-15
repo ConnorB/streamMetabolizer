@@ -12,7 +12,7 @@ mm_check_mcmc_file(model_file, stan_engine = c("rstan", "cmdstanr"))
 
 - model_file:
 
-  the file path of the model file to check; the extension will be used
+  The file path of the model file to check; the extension will be used
   to determine which engine to use for checking.
 
 - stan_engine:

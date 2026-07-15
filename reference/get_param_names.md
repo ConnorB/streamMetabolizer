@@ -1,7 +1,7 @@
-# Extract the daily parameter names from a metabolism model.
+# Extract daily metabolism parameter names
 
-A function in the metab_model_interface. Returns vectors of the required
-and optional daily metabolism parameters for the model.
+A function in the `metab_model_interface`. Returns vectors of the
+required and optional daily metabolism parameters for the model.
 
 ## Usage
 
@@ -24,11 +24,11 @@ get_param_names(metab_model, ...)
 
 - ...:
 
-  Placeholder for future arguments
+  Reserved for future arguments.
 
 ## Value
 
-Returns a list of two vectors, the names of the required and optional
+A list of two vectors containing the names of required and optional
 daily metabolism parameters, respectively.
 
 ## Methods (by class)

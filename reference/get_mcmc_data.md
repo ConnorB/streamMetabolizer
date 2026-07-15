@@ -21,13 +21,23 @@ get_mcmc_data(metab_model)
 - metab_model:
 
   A Bayesian metabolism model (metab_bayes) from which to return the
-  data list that was passed to the MCMC
+  data list that was passed to the MCMC.
 
 ## Value
 
-The MCMC data list
+The MCMC data list.
 
 ## Methods (by class)
 
 - `get_mcmc_data(metab_bayes)`: Retrieve any MCMC data list(s) that were
   saved with a metab_bayes model
+
+## Examples
+
+``` r
+mm <- metab_model("metab_bayes", mcmc_data = list(n = 10))
+get_mcmc_data(mm)
+#> $n
+#> [1] 10
+#> 
+```

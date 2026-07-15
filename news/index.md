@@ -5,12 +5,15 @@
 - Messages, errors, and warnings now use structured cli formatting to
   make diagnostics clearer and more actionable.
 
-- [`calc_DO_at_sat()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_sat.md),
+- [`calc_DO_at_sat()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_at_sat.md)
+  now has its own deprecated wrapper and help topic, so
+  [`calc_DO_sat()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_sat.md)
+  is documented as current;
   [`calc_DO_deficit()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_deficit.md),
   [`calc_is_daytime()`](https://connorb.github.io/streamMetabolizer/reference/calc_is_daytime.md),
   and
   [`calc_sun_rise_set()`](https://connorb.github.io/streamMetabolizer/reference/calc_sun_rise_set.md)
-  now use lifecycle deprecation warnings.
+  also use lifecycle deprecation warnings.
 
 - improved package maintenance with writable Stan-cache fallbacks,
   modernized dependencies, concise startup output, and automated R CMD
@@ -33,6 +36,9 @@
 - [`metab_inputs()`](https://connorb.github.io/streamMetabolizer/reference/metab_inputs.md)
   now uses structured cli messages for model specifications, optional
   inputs, and model information guidance.
+
+- `mm_data_units()` now returns units with Unicode subscripts,
+  superscripts, and SI symbols for clearer display.
 
 - [`plot_metab_data()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_data.md)
   now provides a faceted quality-control plot for metabolism input data,

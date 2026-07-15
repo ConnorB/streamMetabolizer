@@ -6,25 +6,23 @@
     }
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/Fira_Code-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Generate a coherent list of model specs — specs"><meta name="description" content="Generates an internally consistent list of model specifications that may be
-passed to metab_bayes, metab_mle, etc. via the specs
-argument. This help file gives the definitive list of all possible model
-specs, but only a subset of these are relevant to any given
+passed to metab_bayes(), metab_mle(), and related functions via the
+specs argument. This help file gives the definitive list of all possible
+model specifications, but only a subset is relevant to any given
 model_name. See the 'Relevant arguments' section below. Irrelevant
 arguments for the given model_name should not be explicitly passed
-into this function (but don't worry - we'll just stop and tell you if you
-make a mistake). Relevant arguments for the given model_name either
-have default values or do not (see Usage). Relevant arguments without a
+into this function. Relevant arguments for the given model_name either
+have default values or do not (see usage). Relevant arguments without a
 default should rarely be overridden, because their values will be determined
 based on other arguments. Relevant arguments that do have a default can, and
 often should, be overridden to tailor the model to your needs."><meta property="og:description" content="Generates an internally consistent list of model specifications that may be
-passed to metab_bayes, metab_mle, etc. via the specs
-argument. This help file gives the definitive list of all possible model
-specs, but only a subset of these are relevant to any given
+passed to metab_bayes(), metab_mle(), and related functions via the
+specs argument. This help file gives the definitive list of all possible
+model specifications, but only a subset is relevant to any given
 model_name. See the 'Relevant arguments' section below. Irrelevant
 arguments for the given model_name should not be explicitly passed
-into this function (but don't worry - we'll just stop and tell you if you
-make a mistake). Relevant arguments for the given model_name either
-have default values or do not (see Usage). Relevant arguments without a
+into this function. Relevant arguments for the given model_name either
+have default values or do not (see usage). Relevant arguments without a
 default should rarely be overridden, because their values will be determined
 based on other arguments. Relevant arguments that do have a default can, and
 often should, be overridden to tailor the model to your needs."><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-ELB0F4QNPS"></script><script>
@@ -87,14 +85,13 @@ often should, be overridden to tailor the model to your needs."><!-- Global site
 
     <div class="ref-description section level2">
     <p>Generates an internally consistent list of model specifications that may be
-passed to <code>metab_bayes</code>, <code>metab_mle</code>, etc. via the <code>specs</code>
-argument. This help file gives the definitive list of all possible model
-specs, but only a subset of these are relevant to any given
+passed to <code><a href="metab_bayes.html">metab_bayes()</a></code>, <code><a href="metab_mle.html">metab_mle()</a></code>, and related functions via the
+<code>specs</code> argument. This help file gives the definitive list of all possible
+model specifications, but only a subset is relevant to any given
 <code>model_name</code>. See the 'Relevant arguments' section below. Irrelevant
 arguments for the given <code>model_name</code> should not be explicitly passed
-into this function (but don't worry - we'll just stop and tell you if you
-make a mistake). Relevant arguments for the given <code>model_name</code> either
-have default values or do not (see Usage). Relevant arguments without a
+into this function. Relevant arguments for the given <code>model_name</code> either
+have default values or do not (see usage). Relevant arguments without a
 default should rarely be overridden, because their values will be determined
 based on other arguments. Relevant arguments that do have a default can, and
 often should, be overridden to tailor the model to your needs.</p>
@@ -198,7 +195,7 @@ often should, be overridden to tailor the model to your needs.</p>
 
 
 <dl><dt id="arg-model-name">model_name<a class="anchor" aria-label="anchor" href="#arg-model-name"></a></dt>
-<dd><p>character string identifying the model features. Use
+<dd><p>Character string identifying the model features. Use
 <code><a href="mm_name.html">mm_name()</a></code> to create a valid name based on desired attributes,
 or <code><a href="mm_valid_names.html">mm_valid_names()</a></code> to see all valid names. Two alternatives to
 the names given by <code><a href="mm_valid_names.html">mm_valid_names()</a></code> are also accepted: (1) a model
@@ -227,7 +224,7 @@ regression method relating K to the predictor(s) of choice. One of
 
 
 <dt id="arg-day-start">day_start<a class="anchor" aria-label="anchor" href="#arg-day-start"></a></dt>
-<dd><p>start time (inclusive) of a day's data in number of hours
+<dd><p>Start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
 indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
@@ -242,14 +239,14 @@ metab_night, of which the times of darkness will be used.</p></dd>
 
 
 <dt id="arg-day-end">day_end<a class="anchor" aria-label="anchor" href="#arg-day-end"></a></dt>
-<dd><p>end time (exclusive) of a day's data in number of hours from
+<dd><p>End time (exclusive) of a day's data in number of hours from
 the midnight that begins the date. For example, day_end=30 indicates that
 data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00. See day_start for recommended start and end times.</p></dd>
 
 
 <dt id="arg-day-tests">day_tests<a class="anchor" aria-label="anchor" href="#arg-day-tests"></a></dt>
-<dd><p>list of tests to conduct to determine whether each date
+<dd><p>List of tests to conduct to determine whether each date
 worth of data is valid for modeling. The results of these tests will be
 combined with the result of the test implied if <code>required_timestep</code> is
 numeric and then will be passed to <code>model_fun</code> as the
@@ -266,14 +263,14 @@ of this test will be combined with the results of the tests listed in
 
 
 <dt id="arg-init-gpp-daily">init.GPP.daily<a class="anchor" aria-label="anchor" href="#arg-init-gpp-daily"></a></dt>
-<dd><p>the initial value of daily mean GPP
-(\(g O_2 m^{-2} d^{-1}\)) to use in the NLM fitting process. See the MLE
+<dd><p>The initial value of daily mean GPP
+(gO₂ m⁻² d⁻¹) to use in the NLM fitting process. See the MLE
 Initial Values section under
 Details.</p></dd>
 
 
 <dt id="arg-init-pmax">init.Pmax<a class="anchor" aria-label="anchor" href="#arg-init-pmax"></a></dt>
-<dd><p>the initial value of Pmax (\(g O_2 m^{-2} d^{-1}\)) to use
+<dd><p>The initial value of Pmax (gO₂ m⁻² d⁻¹) to use
 in the GPP versus light relationship in the NLM fitting process. Pmax is
 the maximum
 GPP value of the GPP-light curve. See the MLE Initial Values section under
@@ -281,22 +278,22 @@ Details.</p></dd>
 
 
 <dt id="arg-init-alpha">init.alpha<a class="anchor" aria-label="anchor" href="#arg-init-alpha"></a></dt>
-<dd><p>the initial value of alpha
-(\(g O_2 s d^{-1} umol^{-1}\), i.e., units of GPP/light) to use in the
+<dd><p>The initial value of alpha
+(gO₂ s d⁻¹ µmol⁻¹, i.e., units of GPP/light) to use in the
 GPP versus light relationship in the NLM
 fitting process. alpha is the initial slope of the GPP-light curve. See the
 MLE Initial Values section under Details.</p></dd>
 
 
 <dt id="arg-init-er-daily">init.ER.daily<a class="anchor" aria-label="anchor" href="#arg-init-er-daily"></a></dt>
-<dd><p>the initial value of daily mean ER
-(\(g O_2 m^{-2} d^{-1}\)) to use in the NLM fitting process. See the MLE
+<dd><p>The initial value of daily mean ER
+(gO₂ m⁻² d⁻¹) to use in the NLM fitting process. See the MLE
 Initial Values section under
 Details.</p></dd>
 
 
 <dt id="arg-init-er-">init.ER20<a class="anchor" aria-label="anchor" href="#arg-init-er-"></a></dt>
-<dd><p>the initial value of ER20 (\(g O_2 m^{-2} d^{-1}\)) to use
+<dd><p>The initial value of ER20 (gO₂ m⁻² d⁻¹) to use
 in the ER versus temperature relationship in the NLM fitting process.
 ER20 is the
 respiration rate at 20 degrees C. See the MLE Initial Values section under
@@ -304,7 +301,7 @@ Details.</p></dd>
 
 
 <dt id="arg-init-k-daily">init.K600.daily<a class="anchor" aria-label="anchor" href="#arg-init-k-daily"></a></dt>
-<dd><p>the initial value of daily mean K600 (\(d^{-1}\)) to
+<dd><p>The initial value of daily mean K600 (d⁻¹) to
 use in the NLM fitting process. Ignored if K600 is supplied in data_daily,
 except
 for those dates where K600 is NA. If there are any such dates, K600_init
@@ -313,7 +310,7 @@ for those dates. See the MLE Initial Values section under Details.</p></dd>
 
 
 <dt id="arg-split-dates">split_dates<a class="anchor" aria-label="anchor" href="#arg-split-dates"></a></dt>
-<dd><p>logical indicating whether the data should be split into
+<dd><p>Logical indicating whether the data should be split into
 daily chunks first (TRUE) or processed within one big model (FALSE). If
 valid days differ in their timestep length, split_dates will need to be
 TRUE; otherwise, FALSE is generally more efficient. FALSE is also the only
@@ -337,7 +334,7 @@ default is FALSE because these objects can be very large.</p></dd>
 
 <dt id="arg-gpp-daily-mu">GPP_daily_mu<a class="anchor" aria-label="anchor" href="#arg-gpp-daily-mu"></a></dt>
 <dd><p>The mean of a dnorm distribution for GPP_daily, the daily
-rate of gross primary production</p></dd>
+rate of gross primary production.</p></dd>
 
 
 <dt id="arg-gpp-daily-lower">GPP_daily_lower<a class="anchor" aria-label="anchor" href="#arg-gpp-daily-lower"></a></dt>
@@ -350,13 +347,13 @@ indication.</p></dd>
 
 <dt id="arg-gpp-daily-sigma">GPP_daily_sigma<a class="anchor" aria-label="anchor" href="#arg-gpp-daily-sigma"></a></dt>
 <dd><p>The standard deviation of a dnorm distribution for
-GPP_daily, the daily rate of gross primary production</p></dd>
+GPP_daily, the daily rate of gross primary production.</p></dd>
 
 
 <dt id="arg-alpha-meanlog">alpha_meanlog<a class="anchor" aria-label="anchor" href="#arg-alpha-meanlog"></a></dt>
 <dd><p>The mean of a dlnorm (lognormal) distribution for alpha,
 the daily initial slope of the Jassby-Platt saturating curve relating GPP
-to light</p></dd>
+to light.</p></dd>
 
 
 <dt id="arg-alpha-sdlog">alpha_sdlog<a class="anchor" aria-label="anchor" href="#arg-alpha-sdlog"></a></dt>
@@ -378,7 +375,7 @@ relating GPP to light.</p></dd>
 
 <dt id="arg-er-daily-mu">ER_daily_mu<a class="anchor" aria-label="anchor" href="#arg-er-daily-mu"></a></dt>
 <dd><p>The mean of a dnorm distribution for ER_daily, the daily
-rate of ecosystem respiration</p></dd>
+rate of ecosystem respiration.</p></dd>
 
 
 <dt id="arg-er-daily-upper">ER_daily_upper<a class="anchor" aria-label="anchor" href="#arg-er-daily-upper"></a></dt>
@@ -391,69 +388,69 @@ only indication.</p></dd>
 
 <dt id="arg-er-daily-sigma">ER_daily_sigma<a class="anchor" aria-label="anchor" href="#arg-er-daily-sigma"></a></dt>
 <dd><p>The standard deviation of a dnorm distribution for
-ER_daily, the daily rate of ecosystem respiration</p></dd>
+ER_daily, the daily rate of ecosystem respiration.</p></dd>
 
 
 <dt id="arg-k-daily-meanlog">K600_daily_meanlog<a class="anchor" aria-label="anchor" href="#arg-k-daily-meanlog"></a></dt>
 <dd><p>Applies when pool_K600 is 'none'. The mean of a
-dlnorm distribution for K600_daily, the daily rate of reaeration</p></dd>
+dlnorm distribution for K600_daily, the daily rate of reaeration.</p></dd>
 
 
 <dt id="arg-k-daily-meanlog-meanlog">K600_daily_meanlog_meanlog<a class="anchor" aria-label="anchor" href="#arg-k-daily-meanlog-meanlog"></a></dt>
-<dd><p>hyperparameter for pool_K600='normal'. The
+<dd><p>Hyperparameter for pool_K600='normal'. The
 mean parameter (meanlog_meanlog) of a lognormal distribution of meanlog in
-K ~ lN(meanlog, sdlog), meanlog ~ lN(meanlog_meanlog, meanlog_sdlog)</p></dd>
+K ~ lN(meanlog, sdlog), meanlog ~ lN(meanlog_meanlog, meanlog_sdlog).</p></dd>
 
 
 <dt id="arg-k-daily-meanlog-sdlog">K600_daily_meanlog_sdlog<a class="anchor" aria-label="anchor" href="#arg-k-daily-meanlog-sdlog"></a></dt>
-<dd><p>hyperparameter for pool_K600='normal'. The
+<dd><p>Hyperparameter for pool_K600='normal'. The
 standard deviation parameter (meanlog_sdlog) of a lognormal distribution of
 meanlog in K ~ lN(meanlog, sdlog), meanlog ~ lN(meanlog_meanlog,
-meanlog_sdlog)</p></dd>
+meanlog_sdlog).</p></dd>
 
 
 <dt id="arg-lnk-lnq-intercept-mu">lnK600_lnQ_intercept_mu<a class="anchor" aria-label="anchor" href="#arg-lnk-lnq-intercept-mu"></a></dt>
-<dd><p>hyperparameter for pool_K600 == 'linear'. The
+<dd><p>Hyperparameter for pool_K600 == 'linear'. The
 mean of the prior distribution for the intercept parameter in
-<code>log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)</code></p></dd>
+<code>log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)</code>.</p></dd>
 
 
 <dt id="arg-lnk-lnq-intercept-sigma">lnK600_lnQ_intercept_sigma<a class="anchor" aria-label="anchor" href="#arg-lnk-lnq-intercept-sigma"></a></dt>
-<dd><p>hyperparameter for pool_K600 == 'linear'.
+<dd><p>Hyperparameter for pool_K600 == 'linear'.
 The standard deviation of the prior distribution for the intercept
-parameter in <code>log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)</code></p></dd>
+parameter in <code>log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)</code>.</p></dd>
 
 
 <dt id="arg-lnk-lnq-slope-mu">lnK600_lnQ_slope_mu<a class="anchor" aria-label="anchor" href="#arg-lnk-lnq-slope-mu"></a></dt>
-<dd><p>hyperparameter for pool_K600='linear'. The mean of
-the prior distribution for the slope parameter in <code>log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)</code></p></dd>
+<dd><p>Hyperparameter for pool_K600='linear'. The mean of
+the prior distribution for the slope parameter in <code>log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)</code>.</p></dd>
 
 
 <dt id="arg-lnk-lnq-slope-sigma">lnK600_lnQ_slope_sigma<a class="anchor" aria-label="anchor" href="#arg-lnk-lnq-slope-sigma"></a></dt>
-<dd><p>hyperparameter for pool_K600='linear'. The
+<dd><p>Hyperparameter for pool_K600='linear'. The
 standard deviation of the prior distribution for the slope parameter in
-<code>log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)</code></p></dd>
+<code>log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)</code>.</p></dd>
 
 
 <dt id="arg-k-lnq-nodes-centers">K600_lnQ_nodes_centers<a class="anchor" aria-label="anchor" href="#arg-k-lnq-nodes-centers"></a></dt>
-<dd><p>data configuration argument for
+<dd><p>Data configuration argument for
 pool_K600='binned'. numeric vector giving the natural-log-space centers of
-the discharge bins. See also <code><a href="calc_bins.html">calc_bins()</a></code></p></dd>
+the discharge bins. See also <code><a href="calc_bins.html">calc_bins()</a></code>.</p></dd>
 
 
 <dt id="arg-k-lnq-nodediffs-sdlog">K600_lnQ_nodediffs_sdlog<a class="anchor" aria-label="anchor" href="#arg-k-lnq-nodediffs-sdlog"></a></dt>
-<dd><p>hyperparameter for pool_K600='binned'. The
+<dd><p>Hyperparameter for pool_K600='binned'. The
 standard deviations of the differences in estimated K600 between successive
-lnQ_nodes (bins), where the means of those differences are always zero</p></dd>
+lnQ_nodes (bins), where the means of those differences are always zero.</p></dd>
 
 
 <dt id="arg-k-lnq-nodes-meanlog">K600_lnQ_nodes_meanlog<a class="anchor" aria-label="anchor" href="#arg-k-lnq-nodes-meanlog"></a></dt>
-<dd><p>hyperparameter for pool_K600='binned'. The
+<dd><p>Hyperparameter for pool_K600='binned'. The
 means of lognormal prior distributions for the K600_lnQ_nodes parameters.</p></dd>
 
 
 <dt id="arg-k-lnq-nodes-sdlog">K600_lnQ_nodes_sdlog<a class="anchor" aria-label="anchor" href="#arg-k-lnq-nodes-sdlog"></a></dt>
-<dd><p>hyperparameter for pool_K600='binned'. The
+<dd><p>Hyperparameter for pool_K600='binned'. The
 standard deviations of lognormal prior distributions for the K600_lnQ_nodes
 parameters.</p></dd>
 
@@ -463,25 +460,25 @@ parameters.</p></dd>
 a dlnorm distribution having meanlog equal to <code>K600_daily_meanlog</code>
 (when pool_K600 is 'none') or <code>K600_daily_predlog</code> (when pool_K600 is
 'normal_sdfixed') for K600_daily, the daily rate of reaeration as corrected
-for temperature and the diffusivity of oxygen</p></dd>
+for temperature and the diffusivity of oxygen.</p></dd>
 
 
 <dt id="arg-k-daily-sigma">K600_daily_sigma<a class="anchor" aria-label="anchor" href="#arg-k-daily-sigma"></a></dt>
 <dd><p>The standard deviation of a dnorm distribution having
 mean equal to <code>exp(K600_daily_predlog)</code> (applicable when pool_K600 is
 'linear_sdfixed' or 'binned_sdfixed') for K600_daily, the daily rate of
-reaeration as corrected for temperature and the diffusivity of oxygen</p></dd>
+reaeration as corrected for temperature and the diffusivity of oxygen.</p></dd>
 
 
 <dt id="arg-k-daily-sdlog-sigma">K600_daily_sdlog_sigma<a class="anchor" aria-label="anchor" href="#arg-k-daily-sdlog-sigma"></a></dt>
-<dd><p>hyperparameter for pool_K600 in c('normal').
+<dd><p>Hyperparameter for pool_K600 in c('normal').
 The scale (= sigma) parameter of a half-normal distribution of sdlog in K ~
 lN(meanlog, sdlog), sdlog ~ halfnormal(0, sigma=sdlog_sigma). Visualize the
 PDF of K600_daily_sdlog with <code><a href="plot_distribs.html">plot_distribs()</a></code>.</p></dd>
 
 
 <dt id="arg-k-daily-sigma-sigma">K600_daily_sigma_sigma<a class="anchor" aria-label="anchor" href="#arg-k-daily-sigma-sigma"></a></dt>
-<dd><p>hyperparameter for pool_K600 in
+<dd><p>Hyperparameter for pool_K600 in
 c('linear','binned'). The scale (= sigma) parameter of a half-normal
 distribution of sigma in K ~ lN(meanlog, sigma), sigma ~ halfnormal(0,
 sigma=sigma_sigma). Visualize the PDF of K600_daily_sdlog with
@@ -550,29 +547,29 @@ model that requires different hyperparameters.</p></dd>
 
 
 <dt id="arg-params-out">params_out<a class="anchor" aria-label="anchor" href="#arg-params-out"></a></dt>
-<dd><p>a character vector of parameters whose values in the MCMC
-runs should be recorded and summarized</p></dd>
+<dd><p>A character vector of parameters whose values in the MCMC
+runs should be recorded and summarized.</p></dd>
 
 
 <dt id="arg-n-chains">n_chains<a class="anchor" aria-label="anchor" href="#arg-n-chains"></a></dt>
-<dd><p>the number of chains to run</p></dd>
+<dd><p>The number of chains to run.</p></dd>
 
 
 <dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
-<dd><p>the number of cores to apply to this run</p></dd>
+<dd><p>The number of cores to apply to this run.</p></dd>
 
 
 <dt id="arg-burnin-steps">burnin_steps<a class="anchor" aria-label="anchor" href="#arg-burnin-steps"></a></dt>
-<dd><p>the number of steps per chain to run and ignore before
-starting to collect MCMC 'data'</p></dd>
+<dd><p>The number of steps per chain to run and ignore before
+starting to collect MCMC 'data'.</p></dd>
 
 
 <dt id="arg-saved-steps">saved_steps<a class="anchor" aria-label="anchor" href="#arg-saved-steps"></a></dt>
-<dd><p>the number of MCMC steps per chain to save</p></dd>
+<dd><p>The number of MCMC steps per chain to save.</p></dd>
 
 
 <dt id="arg-thin-steps">thin_steps<a class="anchor" aria-label="anchor" href="#arg-thin-steps"></a></dt>
-<dd><p>the number of steps to move before saving another step. 1
+<dd><p>The number of steps to move before saving another step. 1
 means save all steps.</p></dd>
 
 
@@ -585,7 +582,7 @@ package and a configured CmdStan installation; see
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>logical. give status messages?</p></dd>
+<dd><p>Logical. give status messages?</p></dd>
 
 
 <dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
@@ -597,9 +594,10 @@ to use. Set to c() for no weights. One of c("1/CI", "K600/CI", c()).</p></dd>
 <dd><p>For Kmodel, named numeric vector of limits to use in filtering
 data_daily. Elements may include
 c("CI.max","discharge.daily.max","velocity.daily.max"). If an element is
-given, the corresponding filter is applied: K600.daily.upper-K600.daily.lower &lt;=
-CI.max, discharge.daily &lt;= discharge.daily.max, velocity.daily &lt;=
-velocity.daily.max</p></dd>
+given, the corresponding filter is applied:
+<code>K600.daily.upper - K600.daily.lower &lt;= CI.max</code>,
+<code>discharge.daily &lt;= discharge.daily.max</code>, or
+<code>velocity.daily &lt;= velocity.daily.max</code>.</p></dd>
 
 
 <dt id="arg-predictors">predictors<a class="anchor" aria-label="anchor" href="#arg-predictors"></a></dt>
@@ -610,12 +608,12 @@ no predictors. Otherwise, one or more of these may be included: c("date",
 
 
 <dt id="arg-transforms">transforms<a class="anchor" aria-label="anchor" href="#arg-transforms"></a></dt>
-<dd><p>For Kmodel, a named character vector of names of functions
-(probably 'log' or NA) to apply to K600.daily and/or the predictors. K600.daily should
-probably be logged. The vector names must match the values of
-<code>predictors</code>, although not all elements of <code>predictors</code> must be
+<dd><p>For Kmodel, a named character vector of function names
+(usually <code>"log"</code> or <code>NA</code>) to apply to <code>K600.daily</code> and the predictors.
+<code>K600.daily</code> should usually be logged. The vector names must match the
+values of <code>predictors</code>, although not all elements of <code>predictors</code> must be
 included in <code>transforms</code>. Recommended transforms include
-<code>c(K600.daily='log', date=NA, velocity.daily="log", discharge.daily="log")</code></p></dd>
+<code>c(K600.daily = "log", date = NA, velocity.daily = "log", discharge.daily = "log")</code>.</p></dd>
 
 
 <dt id="arg-other-args">other_args<a class="anchor" aria-label="anchor" href="#arg-other-args"></a></dt>
@@ -627,13 +625,13 @@ included in <code>transforms</code>. Recommended transforms include
 <dt id="arg-k-lnq-cnode-meanlog">K600_lnQ_cnode_meanlog<a class="anchor" aria-label="anchor" href="#arg-k-lnq-cnode-meanlog"></a></dt>
 <dd><p>For a sim model with pool_K600='binned'. The
 mean of a lognormal distribution describing the y=K600 value of the middle
-(or just past middle) node in the piecewise lnK ~ lnQ relationship</p></dd>
+(or just past middle) node in the piecewise lnK ~ lnQ relationship.</p></dd>
 
 
 <dt id="arg-k-lnq-cnode-sdlog">K600_lnQ_cnode_sdlog<a class="anchor" aria-label="anchor" href="#arg-k-lnq-cnode-sdlog"></a></dt>
 <dd><p>For a sim model with pool_K600='binned'. The sd
 of a lognormal distribution describing the y=K600 value of the middle (or
-just past middle) node in the piecewise lnK ~ lnQ relationship</p></dd>
+just past middle) node in the piecewise lnK ~ lnQ relationship.</p></dd>
 
 
 <dt id="arg-k-lnq-nodediffs-meanlog">K600_lnQ_nodediffs_meanlog<a class="anchor" aria-label="anchor" href="#arg-k-lnq-nodediffs-meanlog"></a></dt>
@@ -650,7 +648,7 @@ computes lnK600s based on simulated K~Q relationships.</p></dd>
 
 <dt id="arg-discharge-daily">discharge_daily<a class="anchor" aria-label="anchor" href="#arg-discharge-daily"></a></dt>
 <dd><p>Daily values, or a function to generate daily values,
-of mean daily discharge in \(m^3 s^{-1}\). Fixed values may alternatively
+of mean daily discharge in m³ s⁻¹. Fixed values may alternatively
 be specified as discharge.daily in the data_daily passed to
 <code><a href="metab.html">metab()</a></code>.</p></dd>
 
@@ -744,48 +742,51 @@ of predict_DO and/or predict_metab.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>an internally consistent list of arguments that may be passed to
-<code>metab</code> as the <code>specs</code> argument</p>
+    <p>An internally consistent list of arguments that may be passed to
+<code>metab</code> as the <code>specs</code> argument.</p>
     </div>
     <div class="section level2">
     <h2 id="relevant-arguments">Relevant arguments<a class="anchor" aria-label="anchor" href="#relevant-arguments"></a></h2>
 
 
-<ul><li><p>metab_bayes: Always relevant: <code>model_name, engine, split_dates,   keep_mcmcs, keep_mcmc_data, day_start, day_end, day_tests, ER_daily_mu,   ER_daily_sigma, params_in, params_out, n_chains, n_cores, burnin_steps,   saved_steps, thin_steps, verbose</code>. The need for other arguments depends on
-features of the model structure, as from <code>mm_parse_name(model_name)</code>:</p><ul><li><p>If <code>GPP_fun=='linlight'</code> then <code>GPP_daily_mu,   GPP_daily_sigma</code>, while if <code>GPP_fun=='satlight'</code> then
-<code>alpha_meanlog, alpha_sdlog, Pmax_mu, Pmax_sigma</code>.</p></li>
-<li><p>If
-<code>pool_K600=='none'</code> then <code>K600_daily_meanlog, K600_daily_sdlog</code>.</p></li>
-<li><p>If <code>pool_K600=='normal'</code> then <code>K600_daily_meanlog_meanlog,   K600_daily_meanlog_sdlog, K600_daily_sdlog_sigma</code>.</p></li>
-<li><p>If
-<code>pool_K600=='linear'</code> then <code>lnK600_lnQ_intercept_mu,   lnK600_lnQ_intercept_sigma, lnK600_lnQ_slope_mu, lnK600_lnQ_slope_sigma,   K600_daily_sigma_sigma</code>.</p></li>
-<li><p>If <code>pool_K600=='binned'</code> then
-<code>K600_lnQ_nodes_centers, K600_lnQ_nodediffs_sdlog,   K600_lnQ_nodes_meanlog, K600_lnQ_nodes_sdlog, K600_daily_sigma_sigma</code>.</p></li>
-<li><p>If <code>err_obs_iid</code> then <code>err_obs_iid_sigma_scale</code>.</p></li>
-<li><p>If
-<code>err_proc_acor</code> then <code>err_proc_acor_phi_alpha,   err_proc_acor_phi_beta, err_proc_acor_sigma_scale</code>, and, if
-<code>err_proc_acor_light</code>,
+<ul><li><p><code>metab_bayes</code>: Always relevant: <code>model_name</code>, <code>engine</code>, <code>split_dates</code>,
+<code>keep_mcmcs</code>, <code>keep_mcmc_data</code>, <code>day_start</code>, <code>day_end</code>, <code>day_tests</code>,
+<code>ER_daily_mu</code>, <code>ER_daily_sigma</code>, <code>params_in</code>, <code>params_out</code>, <code>n_chains</code>,
+<code>n_cores</code>, <code>burnin_steps</code>, <code>saved_steps</code>, <code>thin_steps</code>, and <code>verbose</code>. The
+need for other arguments depends on <code>mm_parse_name(model_name)</code>:</p><ul><li><p>If <code>GPP_fun == "linlight"</code>, use <code>GPP_daily_mu</code> and <code>GPP_daily_sigma</code>; if
+<code>GPP_fun == "satlight"</code>, use <code>alpha_meanlog</code>, <code>alpha_sdlog</code>, <code>Pmax_mu</code>,
+and <code>Pmax_sigma</code>.</p></li>
+<li><p>If <code>pool_K600 == "none"</code>, use <code>K600_daily_meanlog</code> and
+<code>K600_daily_sdlog</code>.</p></li>
+<li><p>If <code>pool_K600 == "normal"</code>, use <code>K600_daily_meanlog_meanlog</code>,
+<code>K600_daily_meanlog_sdlog</code>, and <code>K600_daily_sdlog_sigma</code>.</p></li>
+<li><p>If <code>pool_K600 == "linear"</code>, use <code>lnK600_lnQ_intercept_mu</code>,
+<code>lnK600_lnQ_intercept_sigma</code>, <code>lnK600_lnQ_slope_mu</code>,
+<code>lnK600_lnQ_slope_sigma</code>, and <code>K600_daily_sigma_sigma</code>.</p></li>
+<li><p>If <code>pool_K600 == "binned"</code>, use <code>K600_lnQ_nodes_centers</code>,
+<code>K600_lnQ_nodediffs_sdlog</code>, <code>K600_lnQ_nodes_meanlog</code>,
+<code>K600_lnQ_nodes_sdlog</code>, and <code>K600_daily_sigma_sigma</code>.</p></li>
+<li><p>If <code>err_obs_iid</code> is <code>TRUE</code>, use <code>err_obs_iid_sigma_scale</code>.</p></li>
+<li><p>If <code>err_proc_acor</code> is <code>TRUE</code>, use <code>err_proc_acor_phi_alpha</code>,
+<code>err_proc_acor_phi_beta</code>, and <code>err_proc_acor_sigma_scale</code>. If
+<code>err_proc_acor_light</code> is also <code>TRUE</code>, use
 <code>err_proc_acor_light_alpha_sigma</code>.</p></li>
-<li><p>If
-<code>err_proc_iid</code> then <code>err_proc_iid_sigma_scale</code>.</p></li>
-<li><p>If
-<code>err_proc_GPP</code> then <code>err_mult_GPP_sdlog_sigma</code>.</p></li>
+<li><p>If <code>err_proc_iid</code> is <code>TRUE</code>, use <code>err_proc_iid_sigma_scale</code>.</p></li>
+<li><p>If <code>err_proc_GPP</code> is <code>TRUE</code>, use <code>err_mult_GPP_sdlog_sigma</code>.</p></li>
 </ul></li>
-<li><p>metab_mle: <code>model_name, day_start, day_end, day_tests,   init.GPP.daily, init.Pmax, init.alpha, init.ER.daily, init.ER20,   init.K600.daily</code></p></li>
-<li><p>metab_night: <code>model_name, day_start, day_end, day_tests</code></p></li>
-<li><p>metab_Kmodel: <code>model_name, engine, day_start, day_end, day_tests,   weights, filters, predictors, transforms, other_args</code>. Note that the
-defaults for <code>weights</code>, <code>predictors</code>, <code>filters</code>, and
-<code>transforms</code> are adjusted according to the <code>engine</code> implied by
-<code>model_name</code>.</p></li>
-<li><p>metab_sim: <code>model_name, day_start, day_end, day_tests,   err_obs_sigma, err_obs_phi, err_proc_sigma, err_proc_phi, sim_seed</code>. Those
-arguments whose period-separated name occurs in the default data_daily
-argument to metab(sim) can be specified here as NULL, numeric, or a
-function to be called each time <code>predict_DO</code> or <code>predict_metab</code>
-is called on the model. If given as a function, an argument will be called
-with any already-evaluated parameters (including the contents of data_daily
-and n, the number of dates) passed in as arguments; for example, K600_daily
-can see n, discharge.daily, and GPP_daily can see n, discharge.daily, and
-K600.daily.</p></li>
+<li><p><code>metab_mle</code>: <code>model_name</code>, <code>day_start</code>, <code>day_end</code>, <code>day_tests</code>,
+<code>init.GPP.daily</code>, <code>init.Pmax</code>, <code>init.alpha</code>, <code>init.ER.daily</code>, <code>init.ER20</code>,
+and <code>init.K600.daily</code>.</p></li>
+<li><p><code>metab_night</code>: <code>model_name</code>, <code>day_start</code>, <code>day_end</code>, and <code>day_tests</code>.</p></li>
+<li><p><code>metab_Kmodel</code>: <code>model_name</code>, <code>engine</code>, <code>day_start</code>, <code>day_end</code>,
+<code>day_tests</code>, <code>weights</code>, <code>filters</code>, <code>predictors</code>, <code>transforms</code>, and
+<code>other_args</code>. Defaults for the last four arguments depend on the <code>engine</code>
+implied by <code>model_name</code>.</p></li>
+<li><p><code>metab_sim</code>: <code>model_name</code>, <code>day_start</code>, <code>day_end</code>, <code>day_tests</code>,
+<code>err_obs_sigma</code>, <code>err_obs_phi</code>, <code>err_proc_sigma</code>, <code>err_proc_phi</code>, and
+<code>sim_seed</code>. Arguments whose period-separated name occurs in the default
+<code>data_daily</code> argument to <code>metab("sim")</code> may be <code>NULL</code>, numeric, or a
+function evaluated whenever <code><a href="predict_DO.html">predict_DO()</a></code> or <code><a href="predict_metab.html">predict_metab()</a></code> is called.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="mle-initial-values">MLE Initial Values<a class="anchor" aria-label="anchor" href="#mle-initial-values"></a></h2>

@@ -1,7 +1,7 @@
-# Extract the fitting specifications from a metabolism model.
+# Extract model fitting specifications
 
-A function in the metab_model_interface. Returns the specifications that
-were passed in when fitting the metabolism model.
+A function in the `metab_model_interface`. Returns the specifications
+that were passed in when fitting the metabolism model.
 
 ## Usage
 
@@ -16,13 +16,12 @@ get_specs(metab_model)
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, for which
-  to return the specifications
+  A metabolism model that implements the `metab_model_interface`.
 
 ## Value
 
-The list of specifications that was passed to
-[`metab()`](https://connorb.github.io/streamMetabolizer/reference/metab.md)
+The list of specifications passed to
+[`metab()`](https://connorb.github.io/streamMetabolizer/reference/metab.md).
 
 ## Methods (by class)
 
@@ -42,3 +41,12 @@ Other metab_model_interface:
 [`get_version()`](https://connorb.github.io/streamMetabolizer/reference/get_version.md),
 [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md),
 [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
+
+## Examples
+
+``` r
+get_specs(metab_model(specs = list(day_start = 4, day_end = 28)))
+#> Model specifications:
+#>   day_start 4    
+#>   day_end   28   
+```

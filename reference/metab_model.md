@@ -1,4 +1,4 @@
-# Create a metab_model object.
+# Create a metabolism model object
 
 Generates a new model of class metab_model
 ([`metab_model-class()`](https://connorb.github.io/streamMetabolizer/reference/metab_model-class.md)).
@@ -25,8 +25,8 @@ metab_model(
 
 - model_class:
 
-  character name of a class inheriting from metab_model - the type of
-  object to create
+  Character name of a class inheriting from metab_model - the type of
+  object to create.
 
 - info:
 
@@ -34,7 +34,7 @@ metab_model(
 
 - metab_daily:
 
-  a data.frame of daily metabolism estimates produced from the fit.
+  A data.frame of daily metabolism estimates produced from the fit.
 
 - fit:
 
@@ -64,7 +64,7 @@ metab_model(
 
 - ...:
 
-  other arguments passed to new() for this particular model_class
+  Other arguments passed to new() for this particular model_class.
 
 ## Value
 

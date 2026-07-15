@@ -1,7 +1,7 @@
-# Extract the amount of time that was required to fit the metabolism model.
+# Extract model fitting time
 
-A function in the metab_model_interface. Returns the time that was taken
-to fit the model; see
+A function in the `metab_model_interface`. Returns the time that was
+taken to fit the model; see
 [`proc.time()`](https://rdrr.io/r/base/proc.time.html) for details.
 
 ## Usage
@@ -17,17 +17,16 @@ get_fitting_time(metab_model)
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, for which
-  to return the time
+  A metabolism model that implements the `metab_model_interface`.
 
 ## Value
 
-An proc_time object
+A `proc_time` object.
 
 ## Methods (by class)
 
 - `get_fitting_time(metab_model)`: This implementation is shared by many
-  model types
+  model types.
 
 ## See also
 
@@ -42,3 +41,11 @@ Other metab_model_interface:
 [`get_version()`](https://connorb.github.io/streamMetabolizer/reference/get_version.md),
 [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md),
 [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
+
+## Examples
+
+``` r
+get_fitting_time(metab_model())
+#>    user  system elapsed 
+#>       0       0       0 
+```

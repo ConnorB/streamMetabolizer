@@ -22,7 +22,7 @@ metab_night(
 
 - specs:
 
-  a list of model specifications and parameters for a model. Although
+  A list of model specifications and parameters for a model. Although
   this may be specified manually (it's just a list), it is easier and
   safer to use
   [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md)
@@ -49,8 +49,8 @@ metab_night(
 
 - info:
 
-  any information, in any format, that you would like to store within
-  the metab_model object
+  Any information, in any format, that you would like to store within
+  the metab_model object.
 
 ## Value
 
@@ -83,7 +83,5 @@ predict_metab(mm)
 #> 2 2012-09-19     0 NA        NA        -2.93    -3.23    -2.62 "      … ""      
 #> 3 2012-09-20     0 NA        NA        -2.13    -2.31    -1.95 "      … ""      
 #> # ℹ 1 more variable: errors <chr>
-if (FALSE) { # \dontrun{
 plot_DO_preds(predict_DO(mm))
-} # }
 ```

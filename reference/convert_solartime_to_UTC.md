@@ -18,28 +18,36 @@ convert_solartime_to_UTC(
 
 - any.solar.time:
 
-  either apparent or mean solar time (specified by time.type); date-time
+  Either apparent or mean solar time (specified by time.type); date-time
   values in POSIXct format. Timezone must be UTC.
 
 - longitude:
 
-  numeric, in degrees, either positive and unitted ("degE" or "degW") or
+  Numeric, in degrees, either positive and unitted ("degE" or "degW") or
   with sign indicating direction (positive = East), describing location
-  of the site
+  of the site.
 
 - time.type:
 
-  character indicating whether any.solar.time values are in apparent or
+  Character indicating whether any.solar.time values are in apparent or
   mean solar time. "apparent solar", i.e. true solar time, is noon when
   the sun is at its zenith. "mean solar" approximates apparent solar
   time but with noons exactly 24 hours apart.
 
 ## Value
 
-a POSIXct object in UTC
+A POSIXct object in UTC.
 
 ## References
 
 Yard, Bennett, Mietz, Coggins, Stevens, Hueftle, and Blinn. 2005.
 Influence of topographic complexity on solar insolation estimates for
 the Colorado River, Grand Canyon, AZ. Ecological Modelling.
+
+## Examples
+
+``` r
+solar <- as.POSIXct("2024-06-01 12:00:00", tz = "UTC")
+convert_solartime_to_UTC(solar, longitude = -105)
+#> [1] "2024-06-01 18:56:31 UTC"
+```

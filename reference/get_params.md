@@ -1,6 +1,6 @@
-# Extract the metabolism parameters (fitted and/or fixed) from a model.
+# Extract metabolism model parameters
 
-A function in the metab_model_interface. Returns estimates of those
+A function in the `metab_model_interface`. Returns estimates of the
 parameters describing the rates and/or shapes of GPP, ER, or reaeration.
 
 ## Usage
@@ -70,59 +70,62 @@ get_params(
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, to use in
-  predicting metabolism
+  A metabolism model that implements the `metab_model_interface`.
 
 - date_start:
 
-  Date or a class convertible with as.Date. The first date (inclusive)
-  for which to report parameters. If NA, no filtering is done.
+  A `Date` or an object coercible with
+  [`as.Date()`](https://rdrr.io/r/base/as.Date.html). The first date
+  (inclusive) for which to report parameters. If `NA`, no filtering is
+  done.
 
 - date_end:
 
-  Date or a class convertible with as.Date. The last date (inclusive)
-  for which to report parameters.. If NA, no filtering is done.
+  A `Date` or an object coercible with
+  [`as.Date()`](https://rdrr.io/r/base/as.Date.html). The last date
+  (inclusive) for which to report parameters. If `NA`, no filtering is
+  done.
 
 - uncertainty:
 
-  character. Should columns for the uncertainty of parameter estimates
-  be excluded ('none'), reported as standard deviations ('sd'), or
-  reported as lower and upper bounds of a 95 percent confidence interval
-  ('ci')? When available (e.g., for Bayesian models), if 'ci' then the
-  central value will be the median (50th quantile) and the ranges will
-  be the 2.5th and 97.5th quantiles. If 'sd' then the central value will
-  always be the mean.
+  A string. Should columns for parameter uncertainty be excluded
+  (`"none"`), reported as standard deviations (`"sd"`), or reported as
+  lower and upper bounds of a 95 percent confidence interval (`"ci"`)?
+  When available (e.g., for Bayesian models), if `"ci"` then the central
+  value will be the median (50th quantile) and the ranges will be the
+  2.5th and 97.5th quantiles. If `"sd"` then the central value will be
+  the mean.
 
 - messages:
 
-  logical. Should warning and error messages from the fitting procedure
-  be included in the output?
+  A logical. Should warning and error messages from the fitting
+  procedure be included in the output?
 
 - fixed:
 
-  character. Should values pulled from data_daily (i.e., fixed rather
-  that fitted) be treated identically ('none'), paired with a logicals
-  column ending in '.fixed' ('columns'), converted to character and
-  marked with a leading asterisk ('stars')?
+  A string. Should values pulled from `data_daily` (i.e., fixed rather
+  than fitted) be treated identically (`"none"`), paired with logical
+  columns ending in `.fixed` (`"columns"`), or converted to character
+  and marked with a leading asterisk (`"stars"`)?
 
 - ...:
 
   Other arguments passed to class-specific implementations of
-  `get_params`
+  `get_params()`.
 
 - attach.units:
 
-  (deprecated, effectively FALSE in future) logical. Should units be
-  attached to the output?
+  Deprecated. A logical indicating whether to attach units to the
+  output.
 
 - use_saved:
 
-  logical. Is it OK to use predictions that were saved with the model?
+  A logical. Is it OK to use predictions that were saved with the model?
 
 ## Value
 
-A data.frame of the parameters needed to predict GPP, ER, D, and DO, one
-row per date
+A data frame of the parameters needed to predict GPP, ER, D, and DO,
+with one row per date.
 
 ## Methods (by class)
 
@@ -147,7 +150,7 @@ row per date
 ## See also
 
 [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
-for daily average rates of GPP and ER
+for daily average rates of GPP and ER.
 
 Other metab_model_interface:
 [`get_data()`](https://connorb.github.io/streamMetabolizer/reference/get_data.md),
@@ -164,14 +167,14 @@ Other metab_model_interface:
 ## Examples
 
 ``` r
-dat <- data_metab('3', day_start=12, day_end=36)
-mm <- metab_night(specs(mm_name('night')), data=dat)
+dat <- data_metab("3", day_start = 12, day_end = 36)
+mm <- metab_night(specs(mm_name("night")), data = dat)
 get_params(mm)
 #>         date  ER.daily ER.daily.sd K600.daily K600.daily.sd warnings errors
 #> 1 2012-09-18 -2.122498  0.11670762   26.17191      1.337894                
 #> 2 2012-09-19 -2.927715  0.15616944   34.09664      1.692708                
 #> 3 2012-09-20 -2.125522  0.09201041   29.65021      1.184019                
-get_params(mm, date_start=get_fit(mm)$date[2])
+get_params(mm, date_start = get_fit(mm)$date[2])
 #>         date  ER.daily ER.daily.sd K600.daily K600.daily.sd warnings errors
 #> 1 2012-09-19 -2.927715  0.15616944   34.09664      1.692708                
 #> 2 2012-09-20 -2.125522  0.09201041   29.65021      1.184019                

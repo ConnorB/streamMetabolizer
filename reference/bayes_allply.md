@@ -12,22 +12,22 @@ bayes_allply(data_all, data_daily_all, removed, specs)
 
 - data_all:
 
-  data.frame of the form
+  Data.frame of the form
   `mm_data(solar.time, DO.obs, DO.sat, depth, temp.water, light)` and
   containing data for just one estimation-day (this may be \>24 hours
-  but only yields estimates for one 24-hour period)
+  but only yields estimates for one 24-hour period).
 
 - data_daily_all:
 
-  data.frame of daily priors, if appropriate to the given model_path
+  Data.frame of daily priors, if appropriate to the given model_path.
 
 - removed:
 
-  data.frame of dates that were removed and why
+  Data.frame of dates that were removed and why.
 
 - specs:
 
-  a list of model specifications and parameters for a model. Although
+  A list of model specifications and parameters for a model. Although
   this may be specified manually (it's just a list), it is easier and
   safer to use
   [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md)
@@ -40,4 +40,4 @@ bayes_allply(data_all, data_daily_all, removed, specs)
 
 ## Value
 
-data.frame of estimates and MCMC model diagnostics
+Data.frame of estimates and MCMC model diagnostics.

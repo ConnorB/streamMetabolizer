@@ -17,8 +17,8 @@ mm_locate_filename(
 
 - model_name:
 
-  a model file in the 'models' folder of the streamMetabolizer package
-  or a relative or absolute file path of a model file
+  A model file in the 'models' folder of the streamMetabolizer package
+  or a relative or absolute file path of a model file.
 
 - stan_engine:
 
@@ -31,4 +31,4 @@ mm_locate_filename(
 
 ## Value
 
-a file path if the file exists or an error otherwise
+A file path if the file exists or an error otherwise.

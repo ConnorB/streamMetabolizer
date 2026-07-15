@@ -12,8 +12,8 @@ load_spring_creek(attach.units = deprecated())
 
 - attach.units:
 
-  (deprecated, effectively FALSE in future) logical, default TRUE for
-  backward compatibility. Should units be attached to the data.frame?
+  Deprecated. A logical, default TRUE for backward compatibility. Should
+  units be attached to the data.frame?
 
 ## Value
 

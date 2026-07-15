@@ -1,6 +1,6 @@
-# Extract the internal model from a metabolism model.
+# Extract the internal fitted model
 
-A function in the metab_model_interface. Returns the internal model
+A function in the `metab_model_interface`. Returns the internal model
 representation as fitted to the supplied data and arguments.
 
 ## Usage
@@ -16,12 +16,11 @@ get_fit(metab_model)
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, for which
-  to return the data
+  A metabolism model that implements the `metab_model_interface`.
 
 ## Value
 
-An internal model representation; may have any class
+An internal model representation, which may have any class.
 
 ## Methods (by class)
 
@@ -41,3 +40,12 @@ Other metab_model_interface:
 [`get_version()`](https://connorb.github.io/streamMetabolizer/reference/get_version.md),
 [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md),
 [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
+
+## Examples
+
+``` r
+get_fit(metab_model(fit = list(converged = TRUE)))
+#> $converged
+#> [1] TRUE
+#> 
+```

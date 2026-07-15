@@ -14,7 +14,7 @@ convert_SW_to_PAR(sw, coef = 2.114)
 
 - sw:
 
-  Vector of shortwave radiation (W/m^2)
+  Vector of shortwave radiation (W/m^2).
 
 - coef:
 
@@ -23,7 +23,7 @@ convert_SW_to_PAR(sw, coef = 2.114)
 
 ## Value
 
-Numeric vector of PAR values in units umol/m^2/sec
+Numeric vector of PAR values in units umol/m^2/sec.
 
 ## Examples
 

@@ -13,8 +13,8 @@ print(x, ...)
 
 - x:
 
-  specs list to be displayed.
+  Specs list to be displayed.
 
 - ...:
 
-  additional arguments passed to inner functions
+  Additional arguments passed to inner functions.

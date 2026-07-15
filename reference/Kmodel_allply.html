@@ -87,8 +87,8 @@ Called from metab_Kmodel().</p>
 
 
 <dl><dt id="arg-data-daily-all">data_daily_all<a class="anchor" aria-label="anchor" href="#arg-data-daily-all"></a></dt>
-<dd><p>data to use as input, with columns including K600.daily.obs,
-weight, and any predictors</p></dd>
+<dd><p>A data frame containing <code>K600.daily.obs</code>, <code>weight</code>, and
+any predictors.</p></dd>
 
 
 <dt id="arg-engine">engine<a class="anchor" aria-label="anchor" href="#arg-engine"></a></dt>
@@ -117,12 +117,12 @@ no predictors. Otherwise, one or more of these may be included: c("date",
 
 
 <dt id="arg-transforms">transforms<a class="anchor" aria-label="anchor" href="#arg-transforms"></a></dt>
-<dd><p>For Kmodel, a named character vector of names of functions
-(probably 'log' or NA) to apply to K600.daily and/or the predictors. K600.daily should
-probably be logged. The vector names must match the values of
-<code>predictors</code>, although not all elements of <code>predictors</code> must be
+<dd><p>For Kmodel, a named character vector of function names
+(usually <code>"log"</code> or <code>NA</code>) to apply to <code>K600.daily</code> and the predictors.
+<code>K600.daily</code> should usually be logged. The vector names must match the
+values of <code>predictors</code>, although not all elements of <code>predictors</code> must be
 included in <code>transforms</code>. Recommended transforms include
-<code>c(K600.daily='log', date=NA, velocity.daily="log", discharge.daily="log")</code></p></dd>
+<code>c(K600.daily = "log", date = NA, velocity.daily = "log", discharge.daily = "log")</code>.</p></dd>
 
 
 <dt id="arg-other-args">other_args<a class="anchor" aria-label="anchor" href="#arg-other-args"></a></dt>

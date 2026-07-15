@@ -13,15 +13,19 @@ revise(specs, ..., delete)
 
 - specs:
 
-  a list of specifications to revise
+  A list of specifications to revise.
 
 - ...:
 
-  named values to replace in or add to `specs`
+  Named values to replace in or add to `specs`.
 
 - delete:
 
-  a vector of names of elements to remove from the specs list
+  A vector of names of elements to remove from the specs list.
+
+## Value
+
+The revised list.
 
 ## Examples
 

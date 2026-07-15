@@ -15,7 +15,7 @@ convert_PAR_to_SW(par, coef = 0.473)
 - par:
 
   Vector of photosynthetically active radiation (400-700 nm;
-  umol/m^2/sec)
+  umol/m^2/sec).
 
 - coef:
 
@@ -24,7 +24,7 @@ convert_PAR_to_SW(par, coef = 0.473)
 
 ## Value
 
-Numeric vector of shortwave values with units W/m^2
+Numeric vector of shortwave values with units W/m^2.
 
 ## Examples
 

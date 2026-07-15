@@ -99,7 +99,7 @@ filtered in accordance with the filtering of data.</p></dd>
 
 
 <dt id="arg-day-start">day_start<a class="anchor" aria-label="anchor" href="#arg-day-start"></a></dt>
-<dd><p>start time (inclusive) of a day's data in number of hours
+<dd><p>Start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
 indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
@@ -114,14 +114,14 @@ metab_night, of which the times of darkness will be used.</p></dd>
 
 
 <dt id="arg-day-end">day_end<a class="anchor" aria-label="anchor" href="#arg-day-end"></a></dt>
-<dd><p>end time (exclusive) of a day's data in number of hours from
+<dd><p>End time (exclusive) of a day's data in number of hours from
 the midnight that begins the date. For example, day_end=30 indicates that
 data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00. See day_start for recommended start and end times.</p></dd>
 
 
 <dt id="arg-day-tests">day_tests<a class="anchor" aria-label="anchor" href="#arg-day-tests"></a></dt>
-<dd><p>list of tests to conduct to determine whether each date
+<dd><p>List of tests to conduct to determine whether each date
 worth of data is valid for modeling. The results of these tests will be
 combined with the result of the test implied if <code>required_timestep</code> is
 numeric and then will be passed to <code>model_fun</code> as the

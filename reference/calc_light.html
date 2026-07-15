@@ -86,32 +86,36 @@ date-times and site coordinates.</p>
 
 
 <dl><dt id="arg-solar-time">solar.time<a class="anchor" aria-label="anchor" href="#arg-solar-time"></a></dt>
-<dd><p>mean solar time, as required for input to metabolism
+<dd><p>Mean solar time, as required for input to metabolism
 models. See <code><a href="mm_data.html">mm_data()</a></code> and <code><a href="calc_solar_time.html">calc_solar_time()</a></code>.</p></dd>
 
 
 <dt id="arg-latitude">latitude<a class="anchor" aria-label="anchor" href="#arg-latitude"></a></dt>
-<dd><p>numeric value or vector indicating the site latitude in
+<dd><p>Numeric value or vector indicating the site latitude in
 decimal degrees (never radians or deg-min-sec, no matter what <code>format</code>
 is) between -90 (South Pole) and 90 (North Pole).</p></dd>
 
 
 <dt id="arg-longitude">longitude<a class="anchor" aria-label="anchor" href="#arg-longitude"></a></dt>
-<dd><p>numeric, in degrees, either positive and unitted ("degE" or
+<dd><p>Numeric, in degrees, either positive and unitted ("degE" or
 "degW") or with sign indicating direction (positive = East), describing
-location of the site</p></dd>
+location of the site.</p></dd>
 
 
 <dt id="arg-max-par">max.PAR<a class="anchor" aria-label="anchor" href="#arg-max-par"></a></dt>
-<dd><p>numeric or unitted_numeric: the PAR (umol m^-2 s^-1) that each
-day should reach at peak light</p></dd>
+<dd><p>Numeric or unitted_numeric: the PAR (umol m^-2 s^-1) that each
+day should reach at peak light.</p></dd>
 
 
 <dt id="arg-attach-units">attach.units<a class="anchor" aria-label="anchor" href="#arg-attach-units"></a></dt>
-<dd><p>(deprecated, effectively FALSE in future) logical. Should
+<dd><p>Deprecated. A logical. Should
 the returned vector be a unitted object?</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A numeric vector of modeled PAR values in µmol m⁻² s⁻¹.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

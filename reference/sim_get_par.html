@@ -88,33 +88,33 @@ depending on whether <code>required=TRUE</code>.</p>
 <dl><dt id="arg-par-name">par.name<a class="anchor" aria-label="anchor" href="#arg-par-name"></a></dt>
 <dd><p>The parameter name. Should be period.separated if that's how
 data_daily is. Periods will be converted to underscores when searching
-specs for the parameter</p></dd>
+specs for the parameter.</p></dd>
 
 
 <dt id="arg-specs">specs<a class="anchor" aria-label="anchor" href="#arg-specs"></a></dt>
-<dd><p>a specifications list from which parameter values/functions will
-be drawn</p></dd>
+<dd><p>A specifications list from which parameter values/functions will
+be drawn.</p></dd>
 
 
 <dt id="arg-data-daily">data_daily<a class="anchor" aria-label="anchor" href="#arg-data-daily"></a></dt>
-<dd><p>a data.frame of daily values from which parameter values
-will be drawn</p></dd>
+<dd><p>A data.frame of daily values from which parameter values
+will be drawn.</p></dd>
 
 
 <dt id="arg-eval-env">eval_env<a class="anchor" aria-label="anchor" href="#arg-eval-env"></a></dt>
-<dd><p>an environment containing any parameters that have already
+<dd><p>An environment containing any parameters that have already
 been finalized, plus the variable <code>n</code> containing the number of daily
-values required</p></dd>
+values required.</p></dd>
 
 
 <dt id="arg-required">required<a class="anchor" aria-label="anchor" href="#arg-required"></a></dt>
-<dd><p>logical. If true and the parameter is unavailable, an error
+<dd><p>Logical. If true and the parameter is unavailable, an error
 will be thrown.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>list containing up to three vectors (or NULLs) named <code>specs</code>,
+    <p>List containing up to three vectors (or NULLs) named <code>specs</code>,
 <code>data_daily</code>, and <code>combo</code> according to the source of the numbers
 in each vector.</p>
     </div>

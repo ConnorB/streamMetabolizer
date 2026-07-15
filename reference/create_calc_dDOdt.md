@@ -1,4 +1,4 @@
-# Create a function that generates a 1-day timeseries of DO.mod
+# Create a function that calculates a one-day DO time series
 
 Creates a closure that bundles data and helper functions into a single
 function that returns dDOdt in gO2 m^-3 timestep^-1 for any given time
@@ -14,124 +14,90 @@ create_calc_dDOdt(data, ode_method, GPP_fun, ER_fun, deficit_src, err.proc = 0)
 
 - data:
 
-  data.frame as in
+  Data.frame as in
   [`metab()`](https://connorb.github.io/streamMetabolizer/reference/metab.md),
   except that data must contain exactly one date worth of inputs (~24
   hours according to `[specs]$day_start` and `[specs]$day_end`).
 
 - ode_method:
 
-  character. The method to use in solving the ordinary differential
-  equation for DO. Options:
+  A string specifying the method used to solve the ordinary differential
+  equation for DO:
 
-  - `euler`, formerly `Euler`: the final change in DO from t=1 to t=2 is
-    solely a function of GPP, ER, DO, etc. at t=1
+  - `"euler"` (formerly `"Euler"`): Use conditions at the start of each
+    timestep.
 
-  - `trapezoid`, formerly `pairmeans`: the final change in DO from t=1
-    to t=2 is a function of the mean values of GPP, ER, etc. across t=1
-    and t=2.
+  - `"trapezoid"` (formerly `"pairmeans"`): Use mean conditions across
+    each timestep.
 
-  - for `type='mle'`, options also include `rk2` and any character
-    method accepted by
-    [`deSolve::ode()`](https://rdrr.io/pkg/deSolve/man/ode.html) in the
-    `deSolve` package (`lsoda`, `lsode`, `lsodes`, `lsodar`, `vode`,
-    `daspk`, `rk4`, `ode23`, `ode45`, `radau`, `bdf`, `bdf_d`, `adams`,
-    `impAdams`, and `impAdams_d`; note that many of these have not been
-    well tested in the context of `streamMetabolizer` models)
+  - For `type = "mle"`, `"rk2"` and methods accepted by
+    [`deSolve::ode()`](https://rdrr.io/pkg/deSolve/man/ode.html) are
+    also available. Many have not been extensively tested with
+    streamMetabolizer models.
 
 - GPP_fun:
 
-  character. Function dictating how gross primary productivity (GPP)
-  varies within each day. Options:
+  A string specifying how gross primary productivity (GPP) varies within
+  each day:
 
-  - `linlight`: GPP is a linear function of light with an intercept at 0
-    and a slope that varies by day.  
-    `GPP(t) = GPP.daily * light(t) / mean.light`
+  - `"linlight"`: `GPP(t) = GPP.daily * light(t) / mean.light`.
+    `GPP.daily` is partitioned among timesteps by their fraction of the
+    day's average light.
 
-    - `GPP.daily`: the daily mean GPP, which is partitioned into
-      timestep-specific rates according to the fraction of that day's
-      average light that occurs at each timestep (specifically,
-      `mean.light` is the mean of the first 24 hours of the date's data
-      window)
+  - `"satlight"`: `GPP(t) = Pmax * tanh(alpha * light(t) / Pmax)`, where
+    `Pmax` is the maximum possible GPP and `alpha` describes the initial
+    increase with light.
 
-  - `satlight`: GPP is a saturating function of light.  
-    `GPP(t) = Pmax * tanh(alpha * light(t) / Pmax)`
+  - `"satlightq10temp"`: The saturating light model multiplied by
+    `1.036 ^ (temp.water(t) - 20)`.
 
-    - `Pmax`: the maximum possible GPP
-
-    - `alpha`: a descriptor of the rate of increase of GPP as a function
-      of light
-
-  - `satlightq10temp`: GPP is a saturating function of light and an
-    exponential function of temperature.  
-    `GPP(t) = Pmax * tanh(alpha * light(t) / Pmax) * 1.036 ^ (temp.water(t) - 20)`
-
-    - `Pmax`: the maximum possible GPP
-
-    - `alpha`: a descriptor of the rate of increase of GPP as a function
-      of light
-
-  - `NA`: applicable only to `type='Kmodel'`, for which GPP is not
-    estimated
+  - `NA`: Do not estimate GPP; applicable only to `type = "Kmodel"`.
 
 - ER_fun:
 
-  character. Function dictating how ecosystem respiration (ER) varies
-  within each day. Options:
+  A string specifying how ecosystem respiration (ER) varies within each
+  day:
 
-  - `constant`: ER is constant over every timestep of the day.  
-    `ER(t) = ER.daily`
+  - `"constant"`: `ER(t) = ER.daily`.
 
-    - `ER.daily`: the daily mean ER, which is equal to instantaneous ER
-      at all times
+  - `"q10temp"`: `ER(t) = ER20 * 1.045 ^ (temp.water(t) - 20)`, where
+    `ER20` is ER at 20 degrees C.
 
-  - `q10temp`: ER at each timestep is an exponential function of the
-    water temperature and a temperature-normalized base rate.  
-    `ER(t) = ER20 * 1.045 ^ (temp.water(t) - 20)`
-
-    - `ER20`: the value of ER when `temp.water` is 20 degrees C
-
-  - `NA`: applicable only to `type='Kmodel'`, for which ER is not
-    estimated
+  - `NA`: Do not estimate ER; applicable only to `type = "Kmodel"`.
 
 - deficit_src:
 
-  character. From what DO estimate (observed or modeled) should the DO
-  deficit be computed? Options:
+  A string specifying the DO estimate used to compute the DO deficit:
 
-  - `DO_mod`: the DO deficit at time t will be \\(DO.sat(t) -
-    DO_mod(t))\\, the difference between the equilibrium-saturation
-    value and the current best estimate of the true DO concentration at
-    that time
+  - `"DO_mod"`: Use `DO.sat(t) − DO_mod(t)`, the difference between the
+    equilibrium-saturation value and the current best estimate of the
+    true DO concentration at that time.
 
-  - `DO_obs`: the DO deficit at time t will be \\(DO.sat(t) -
-    DO.obs(t))\\, the difference between the equilibrium-saturation
-    value and the measured DO concentration at that time
+  - `"DO_obs"`: Use `DO.sat(t) − DO.obs(t)`.
 
-  - `DO_obs_filter`: applicable only to `type='night'`: a smoothing
-    filter is applied over the measured DO.obs values before applying
-    nighttime regression
+  - `"DO_obs_filter"`: Smooth `DO.obs` before nighttime regression;
+    applicable only to `type = "night"`.
 
-  - `NA`: applicable only to `type='Kmodel'`, for which DO deficit is
-    not estimated
+  - `NA`: Do not estimate DO deficit; applicable only to
+    `type = "Kmodel"`.
 
 - err.proc:
 
-  optional numerical vector of length nrow(data). Process error in units
+  Optional numerical vector of length nrow(data). Process error in units
   of gO2 m^-2 d^-1 (THIS MAY DIFFER FROM WHAT YOU'RE USED TO!).
   Appropriate for simulation, when this vector of process errors will be
   added to the calculated values of GPP and ER (then divided by depth
   and multiplied by timestep duration) to simulate process error. But
   usually (for MLE or prediction from a fitted MLE/Bayesian/nighttime
-  regression model) `err.proc` should be missing or 0
+  regression model) `err.proc` should be missing or 0.
 
 ## Value
 
-a function that accepts args `t` (the time in 0:(n-1) where n is the
+A function that accepts args `t` (the time in 0:(n-1) where n is the
 number of timesteps), `DO.mod.t` (the value of DO.mod at time t in gO2
 m^-3), and `metab` (a list of metabolism parameters; to see which
 parameters should be included in this list, create `dDOdt` with this
-function and then call `environment(dDOdt)$metab.needs`)
+function and then call `environment(dDOdt)$metab.needs`).
 
 ## ode_method 'trapezoid'
 
@@ -142,7 +108,8 @@ solution to a trapezoid rule with this starting point:
       DO.mod[t] +
        (((GPP[t]+GPP[t+1])/2) / (depth[t]+depth[t+1])/2
        + ((ER[t]+ER[t+1])/2) / (depth[t]+depth[t+1])/2
-       + (k.O2[t](DO.sat[t] - DO.mod[t]) + k.O2[t+1](DO.sat[t+1] - DO.mod[t+1]))/2
+       + (k.O2[t](DO.sat[t] - DO.mod[t])
+          + k.O2[t+1](DO.sat[t+1] - DO.mod[t+1]))/2
        + ((err.proc[t]+err.proc[t+1])/2) / (depth[t]+depth[t+1])/2
        ) * timestep
 
@@ -163,7 +130,7 @@ and err.proc=0 for model fitting.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 data <- data_metab('1','30')[seq(1,48,by=2),]
 dDOdt.obs <- diff(data$DO.obs)
 preds.init <- as.list(dplyr::select(
@@ -276,5 +243,5 @@ DO.mod.err2 <- deSolve::ode(
   parms=list(GPP.daily=2, ER.daily=-1.4, K600.daily=21),
   times=1:nrow(data), func=dDOdt.err2, method='rk4')[,'DO.mod']
 lines(x=data$solar.time, y=DO.mod.err2, type='l', col='black', lty=2)
-} # }
+}
 ```

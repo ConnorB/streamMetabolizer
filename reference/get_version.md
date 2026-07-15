@@ -1,6 +1,6 @@
-# Extract the version of streamMetabolizer that was used to fit the model.
+# Extract the streamMetabolizer version used to fit a model
 
-A function in the metab_model_interface. Returns the version of
+A function in the `metab_model_interface`. Returns the version of
 streamMetabolizer that was used to fit the model.
 
 ## Usage
@@ -16,12 +16,11 @@ get_version(metab_model)
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, for which
-  to return the data
+  A metabolism model that implements the `metab_model_interface`.
 
 ## Value
 
-character representation of the package version
+A character representation of the package version.
 
 ## Methods (by class)
 
@@ -41,3 +40,10 @@ Other metab_model_interface:
 [`get_specs()`](https://connorb.github.io/streamMetabolizer/reference/get_specs.md),
 [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md),
 [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
+
+## Examples
+
+``` r
+get_version(metab_model())
+#> [1] "0.12.1.9000"
+```

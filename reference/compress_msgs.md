@@ -18,17 +18,18 @@ compress_msgs(
 
 - ddat:
 
-  a data.frame including warnings and errors columns
+  A data.frame including warnings and errors columns.
 
 - colname:
 
-  the name of the column where the summary should be placed
+  The name of the column where the summary should be placed.
 
 - warnings.overall:
 
-  any general warnings (for the whole model) to be included in the
-  summary
+  Any general warnings (for the whole model) to be included in the
+  summary.
 
 - errors.overall:
 
-  any general errors (for the whole model) to be included in the summary
+  Any general errors (for the whole model) to be included in the
+  summary.

@@ -90,155 +90,102 @@
 
 
 <dl><dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>character. The model type. Options:</p><ul><li><p><code>mle</code>:
-maximum likelihood estimation (see also <code><a href="metab_mle.html">metab_mle()</a></code>)</p></li>
-<li><p><code>bayes</code>: bayesian hierarchical models <code><a href="metab_bayes.html">metab_bayes()</a></code></p></li>
-<li><p><code>night</code>: nighttime regression (see also <code><a href="metab_night.html">metab_night()</a></code>)</p></li>
-<li><p><code>Kmodel</code>: regression of <em>daily</em> estimates of
-<code>K600.daily</code> versus discharge, time, etc., usually for 3-phase
-estimation of K alone (by MLE or nighttime regression), K vs discharge
-(using this model), and then GPP and ER with fixed K (by MLE) (see also
-<code><a href="metab_Kmodel.html">metab_Kmodel()</a></code>)</p></li>
-<li><p><code>sim</code>: simulation of <code>DO.obs</code>
-'data' for testing other models (see also <code><a href="metab_sim.html">metab_sim()</a></code>)</p></li>
+<dd><p>A string specifying the model type:</p><ul><li><p><code>"mle"</code>: Maximum likelihood estimation; see <code><a href="metab_mle.html">metab_mle()</a></code>.</p></li>
+<li><p><code>"bayes"</code>: Bayesian hierarchical modeling; see <code><a href="metab_bayes.html">metab_bayes()</a></code>.</p></li>
+<li><p><code>"night"</code>: Nighttime regression; see <code><a href="metab_night.html">metab_night()</a></code>.</p></li>
+<li><p><code>"Kmodel"</code>: Regression of daily <code>K600.daily</code> estimates against
+discharge, time, or other predictors; see <code><a href="metab_Kmodel.html">metab_Kmodel()</a></code>.</p></li>
+<li><p><code>"sim"</code>: Simulation of <code>DO.obs</code> data; see <code><a href="metab_sim.html">metab_sim()</a></code>.</p></li>
 </ul></dd>
 
 
 <dt id="arg-pool-k-">pool_K600<a class="anchor" aria-label="anchor" href="#arg-pool-k-"></a></dt>
-<dd><p>character. How should the model pool information among
-days to get more consistent daily estimates for K600? Options (see Details
-for more):</p><ul><li><p><code>none</code>: no pooling of K600</p></li>
-<li><p><code>normal</code>: \(K600 ~ N(mu, sigma)\)</p></li>
-<li><p><code>linear</code>: \(K600 ~
-N(B[0] + B[1]*Q, sigma)\)</p></li>
-<li><p><code>binned</code>: \(K600 ~ N(B[Q_bin],
-sigma)\) where \(mu ~ N(mu_mu, mu_sigma)\) and \(sigma ~ N(sigma_mu,
-sigma_sigma)\)</p></li>
-<li><p><code>complete</code>: applicable only for
-<code>type='Kmodel'</code>, which is generally used in conjunction with preceding
-estimates of K (e.g., by <code>type='mle'</code> or <code>type='night'</code>) and
-subsequent estimates of GPP and ER (e.g., by <code>type='mle'</code> with daily
-K600 values specified)</p></li>
+<dd><p>A string specifying how to pool information among days for
+more consistent daily K600 estimates. See <em>K600 pooling</em> for details:</p><ul><li><p><code>"none"</code>: Do not pool K600.</p></li>
+<li><p><code>"normal"</code>: Use <code>K₆₀₀ ∼ N(μ, σ)</code>.</p></li>
+<li><p><code>"linear"</code>: Use <code>K₆₀₀ ∼ N(B[0] + B[1] × Q, σ)</code>.</p></li>
+<li><p><code>"binned"</code>: Use <code>K₆₀₀ ∼ N(B[Q_bin], σ)</code>, where
+<code>μ ∼ N(mu_mu, mu_sigma)</code> and <code>σ ∼ N(sigma_mu, sigma_sigma)</code>.</p></li>
+<li><p><code>"complete"</code>: Use complete pooling for <code>type = "Kmodel"</code>, generally
+between preceding K estimates and subsequent GPP and ER estimates.</p></li>
 </ul></dd>
 
 
 <dt id="arg-err-obs-iid">err_obs_iid<a class="anchor" aria-label="anchor" href="#arg-err-obs-iid"></a></dt>
-<dd><p>logical. Should IID observation error be included? If not,
-the model will be fit to the differences in successive DO measurements,
-rather than to the DO measurements themselves.</p></dd>
+<dd><p>A logical. Should IID observation error be included? If
+not, the model will be fit to the differences in successive DO
+measurements, rather than to the DO measurements themselves.</p></dd>
 
 
 <dt id="arg-err-proc-acor">err_proc_acor<a class="anchor" aria-label="anchor" href="#arg-err-proc-acor"></a></dt>
-<dd><p>logical. Should autocorrelated process error (with the
-autocorrelation term phi fitted) be included? For multi-day Bayesian
+<dd><p>A logical. Should autocorrelated process error (with the
+autocorrelation term <code>phi</code> fitted) be included? For multi-day Bayesian
 process-error models, the AR likelihood continues across day boundaries.</p></dd>
 
 
 <dt id="arg-err-proc-iid">err_proc_iid<a class="anchor" aria-label="anchor" href="#arg-err-proc-iid"></a></dt>
-<dd><p>logical. Should IID process error be included?</p></dd>
+<dd><p>A logical. Should IID process error be included?</p></dd>
 
 
 <dt id="arg-err-proc-gpp">err_proc_GPP<a class="anchor" aria-label="anchor" href="#arg-err-proc-gpp"></a></dt>
-<dd><p>logical. Should IID process error in GPP be included?
+<dd><p>A logical. Should IID process error in GPP be included?
 This kind of error occurs only during the day and is used to adjust GPP
-before passing that adjusted GPP into the dDO/dt equation. The GPP_inst
-variable is the corrected GPP, and a new variable, GPP_inst_partial,
-contains the pre-adjustment GPP estimates</p></dd>
+before passing it into the dDO/dt equation. <code>GPP_inst</code> is the corrected
+GPP, and <code>GPP_inst_partial</code> contains the pre-adjustment estimates.</p></dd>
 
 
 <dt id="arg-ode-method">ode_method<a class="anchor" aria-label="anchor" href="#arg-ode-method"></a></dt>
-<dd><p>character. The method to use in solving the ordinary
-differential equation for DO. Options:</p><ul><li><p><code>euler</code>,
-formerly <code>Euler</code>: the final change in DO from t=1 to t=2 is solely a
-function of GPP, ER, DO, etc. at t=1</p></li>
-<li><p><code>trapezoid</code>, formerly
-<code>pairmeans</code>: the final change in DO from t=1 to t=2 is a function of
-the mean values of GPP, ER, etc. across t=1 and t=2.</p></li>
-<li><p>for
-<code>type='mle'</code>, options also include <code>rk2</code> and any character method
-accepted by <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">deSolve::ode()</a></code> in the <code>deSolve</code> package
-(<code>lsoda</code>, <code>lsode</code>, <code>lsodes</code>, <code>lsodar</code>, <code>vode</code>,
-<code>daspk</code>, <code>rk4</code>, <code>ode23</code>, <code>ode45</code>, <code>radau</code>,
-<code>bdf</code>, <code>bdf_d</code>, <code>adams</code>, <code>impAdams</code>, and
-<code>impAdams_d</code>; note that many of these have not been well tested in the
-context of <code>streamMetabolizer</code> models)</p></li>
+<dd><p>A string specifying the method used to solve the ordinary
+differential equation for DO:</p><ul><li><p><code>"euler"</code> (formerly <code>"Euler"</code>): Use conditions at the start of each
+timestep.</p></li>
+<li><p><code>"trapezoid"</code> (formerly <code>"pairmeans"</code>): Use mean conditions across each
+timestep.</p></li>
+<li><p>For <code>type = "mle"</code>, <code>"rk2"</code> and methods accepted by <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">deSolve::ode()</a></code>
+are also available. Many have not been extensively tested with
+streamMetabolizer models.</p></li>
 </ul></dd>
 
 
 <dt id="arg-gpp-fun">GPP_fun<a class="anchor" aria-label="anchor" href="#arg-gpp-fun"></a></dt>
-<dd><p>character. Function dictating how gross primary productivity
-(GPP) varies within each day. Options:</p><ul><li><p><code>linlight</code>: GPP
-is a linear function of light with an intercept at 0 and a slope that
-varies by day. <br><code>GPP(t) = GPP.daily * light(t) / mean.light</code></p><ul><li><p><code>GPP.daily</code>: the daily mean GPP, which is partitioned
-into timestep-specific rates according to the fraction of that day's
-average light that occurs at each timestep (specifically, <code>mean.light</code>
-is the mean of the first 24 hours of the date's data window)</p></li>
-</ul></li>
-<li><p><code>satlight</code>: GPP is a saturating function of light. <br><code>GPP(t) = Pmax * tanh(alpha * light(t) / Pmax)</code></p><ul><li><p><code>Pmax</code>: the
-maximum possible GPP</p></li>
-<li><p><code>alpha</code>: a descriptor of the rate of
-increase of GPP as a function of light</p></li>
-</ul></li>
-<li><p><code>satlightq10temp</code>: GPP
-is a saturating function of light and an exponential function of
-temperature. <br><code>GPP(t) = Pmax * tanh(alpha * light(t) / Pmax) * 1.036 ^ (temp.water(t) - 20)</code></p><ul><li><p><code>Pmax</code>: the maximum
-possible GPP</p></li>
-<li><p><code>alpha</code>: a descriptor of the rate of increase of
-GPP as a function of light</p></li>
-</ul></li>
-<li><p><code>NA</code>: applicable only to
-<code>type='Kmodel'</code>, for which GPP is not estimated</p></li>
+<dd><p>A string specifying how gross primary productivity (GPP)
+varies within each day:</p><ul><li><p><code>"linlight"</code>: <code>GPP(t) = GPP.daily * light(t) / mean.light</code>.
+<code>GPP.daily</code> is partitioned among timesteps by their fraction of the day's
+average light.</p></li>
+<li><p><code>"satlight"</code>: <code>GPP(t) = Pmax * tanh(alpha * light(t) / Pmax)</code>, where
+<code>Pmax</code> is the maximum possible GPP and <code>alpha</code> describes the initial
+increase with light.</p></li>
+<li><p><code>"satlightq10temp"</code>: The saturating light model multiplied by
+<code>1.036 ^ (temp.water(t) - 20)</code>.</p></li>
+<li><p><code>NA</code>: Do not estimate GPP; applicable only to <code>type = "Kmodel"</code>.</p></li>
 </ul></dd>
 
 
 <dt id="arg-er-fun">ER_fun<a class="anchor" aria-label="anchor" href="#arg-er-fun"></a></dt>
-<dd><p>character. Function dictating how ecosystem respiration (ER)
-varies within each day. Options:</p><ul><li><p><code>constant</code>: ER is
-constant over every timestep of the day. <br><code>ER(t) = ER.daily</code></p><ul><li><p><code>ER.daily</code>: the daily mean ER, which is equal to
-instantaneous ER at all times</p></li>
-</ul></li>
-<li><p><code>q10temp</code>: ER at each timestep
-is an exponential function of the water temperature and a
-temperature-normalized base rate. <br><code>ER(t) = ER20 * 1.045 ^ (temp.water(t) - 20)</code></p><ul><li><p><code>ER20</code>: the value of ER when
-<code>temp.water</code> is 20 degrees C</p></li>
-</ul></li>
-<li><p><code>NA</code>: applicable only to
-<code>type='Kmodel'</code>, for which ER is not estimated</p></li>
+<dd><p>A string specifying how ecosystem respiration (ER) varies
+within each day:</p><ul><li><p><code>"constant"</code>: <code>ER(t) = ER.daily</code>.</p></li>
+<li><p><code>"q10temp"</code>: <code>ER(t) = ER20 * 1.045 ^ (temp.water(t) - 20)</code>, where <code>ER20</code>
+is ER at 20 degrees C.</p></li>
+<li><p><code>NA</code>: Do not estimate ER; applicable only to <code>type = "Kmodel"</code>.</p></li>
 </ul></dd>
 
 
 <dt id="arg-deficit-src">deficit_src<a class="anchor" aria-label="anchor" href="#arg-deficit-src"></a></dt>
-<dd><p>character. From what DO estimate (observed or modeled)
-should the DO deficit be computed? Options:</p><ul><li><p><code>DO_mod</code>:
-the DO deficit at time t will be \((DO.sat(t) - DO_mod(t))\), the difference
-between the equilibrium-saturation value and the current best estimate of
-the true DO concentration at that time</p></li>
-<li><p><code>DO_obs</code>: the DO deficit
-at time t will be \((DO.sat(t) - DO.obs(t))\), the difference between the
-equilibrium-saturation value and the measured DO concentration at that time</p></li>
-<li><p><code>DO_obs_filter</code>: applicable only to <code>type='night'</code>: a
-smoothing filter is applied over the measured DO.obs values before applying
-nighttime regression</p></li>
-<li><p><code>NA</code>: applicable only to
-<code>type='Kmodel'</code>, for which DO deficit is not estimated</p></li>
+<dd><p>A string specifying the DO estimate used to compute the DO
+deficit:</p><ul><li><p><code>"DO_mod"</code>: Use <code>DO.sat(t) − DO_mod(t)</code>, the difference between the
+equilibrium-saturation value and the current best estimate of the true DO
+concentration at that time.</p></li>
+<li><p><code>"DO_obs"</code>: Use <code>DO.sat(t) − DO.obs(t)</code>.</p></li>
+<li><p><code>"DO_obs_filter"</code>: Smooth <code>DO.obs</code> before nighttime regression;
+applicable only to <code>type = "night"</code>.</p></li>
+<li><p><code>NA</code>: Do not estimate DO deficit; applicable only to <code>type = "Kmodel"</code>.</p></li>
 </ul></dd>
 
 
 <dt id="arg-engine">engine<a class="anchor" aria-label="anchor" href="#arg-engine"></a></dt>
-<dd><p>character. With which function or software should the model
-fitting be done?</p><ul><li><p>for <code>type='mle'</code>: <code>nlm</code> only
-(the default)</p></li>
-<li><p>for <code>type='bayes'</code>: <code>stan</code> only (the
-default), an external software package that runs MCMC chains for Bayesian
-models (see http://mc-stan.org)</p></li>
-<li><p>for <code>type='night'</code>: <code>lm</code>
-only (the default)</p></li>
-<li><p>for <code>type='Kmodel'</code>: <code>mean</code>, <code>lm</code>,
-or <code>loess</code> enable different types of relationships between daily K600
-and its predictors (nothing, discharge, time, etc.)</p></li>
-<li><p>for
-<code>type='sim'</code>: <code>rnorm</code> only (the default)</p></li>
-</ul></dd>
+<dd><p>A string specifying the fitting engine. Valid combinations are
+<code>"nlm"</code> for MLE, <code>"stan"</code> for Bayesian models, <code>"lm"</code> for nighttime
+regression, <code>"mean"</code>, <code>"lm"</code>, or <code>"loess"</code> for K models, and <code>"rnorm"</code>
+for simulations.</p></dd>
 
 </dl></div>
 

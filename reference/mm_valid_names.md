@@ -17,26 +17,27 @@ mm_valid_names(type = c("bayes", "mle", "night", "Kmodel", "sim"))
 
 - type:
 
-  character. The model type. Options:
+  A string specifying the model type:
 
-  - `mle`: maximum likelihood estimation (see also
-    [`metab_mle()`](https://connorb.github.io/streamMetabolizer/reference/metab_mle.md))
+  - `"mle"`: Maximum likelihood estimation; see
+    [`metab_mle()`](https://connorb.github.io/streamMetabolizer/reference/metab_mle.md).
 
-  - `bayes`: bayesian hierarchical models
-    [`metab_bayes()`](https://connorb.github.io/streamMetabolizer/reference/metab_bayes.md)
+  - `"bayes"`: Bayesian hierarchical modeling; see
+    [`metab_bayes()`](https://connorb.github.io/streamMetabolizer/reference/metab_bayes.md).
 
-  - `night`: nighttime regression (see also
-    [`metab_night()`](https://connorb.github.io/streamMetabolizer/reference/metab_night.md))
+  - `"night"`: Nighttime regression; see
+    [`metab_night()`](https://connorb.github.io/streamMetabolizer/reference/metab_night.md).
 
-  - `Kmodel`: regression of *daily* estimates of `K600.daily` versus
-    discharge, time, etc., usually for 3-phase estimation of K alone (by
-    MLE or nighttime regression), K vs discharge (using this model), and
-    then GPP and ER with fixed K (by MLE) (see also
-    [`metab_Kmodel()`](https://connorb.github.io/streamMetabolizer/reference/metab_Kmodel.md))
+  - `"Kmodel"`: Regression of daily `K600.daily` estimates against
+    discharge, time, or other predictors; see
+    [`metab_Kmodel()`](https://connorb.github.io/streamMetabolizer/reference/metab_Kmodel.md).
 
-  - `sim`: simulation of `DO.obs` 'data' for testing other models (see
-    also
-    [`metab_sim()`](https://connorb.github.io/streamMetabolizer/reference/metab_sim.md))
+  - `"sim"`: Simulation of `DO.obs` data; see
+    [`metab_sim()`](https://connorb.github.io/streamMetabolizer/reference/metab_sim.md).
+
+## Value
+
+A character vector of valid encoded model names.
 
 ## Examples
 

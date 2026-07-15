@@ -27,47 +27,47 @@ runstan_bayes(
 
 - data_list:
 
-  a formatted list of inputs to the Stan model
+  A formatted list of inputs to the Stan model.
 
 - model_path:
 
-  the Stan model file to use, as a full file path
+  The Stan model file to use, as a full file path.
 
 - model_name:
 
-  the coded model name, as from mm_name, giving the model structure
+  The coded model name, as from mm_name, giving the model structure.
 
 - params_out:
 
-  a character vector of parameters whose values in the MCMC runs should
-  be recorded and summarized
+  A character vector of parameters whose values in the MCMC runs should
+  be recorded and summarized.
 
 - keep_mcmc:
 
-  logical. If TRUE, the Stan output object will be saved. Be careful;
+  Logical. If TRUE, the Stan output object will be saved. Be careful;
   these can be big, and a run with many models might overwhelm R's
   memory.
 
 - n_chains:
 
-  the number of chains to run
+  The number of chains to run.
 
 - n_cores:
 
-  the number of cores to apply to this run
+  The number of cores to apply to this run.
 
 - burnin_steps:
 
-  the number of steps per chain to run and ignore before starting to
-  collect MCMC 'data'
+  The number of steps per chain to run and ignore before starting to
+  collect MCMC 'data'.
 
 - saved_steps:
 
-  the number of MCMC steps per chain to save
+  The number of MCMC steps per chain to save.
 
 - thin_steps:
 
-  the number of steps to move before saving another step. 1 means save
+  The number of steps to move before saving another step. 1 means save
   all steps.
 
 - stan_engine:
@@ -80,11 +80,11 @@ runstan_bayes(
 
 - verbose:
 
-  logical. give status messages?
+  Logical. give status messages?
 
 - ...:
 
-  ignored arguments
+  Ignored arguments.
 
 ## Details
 

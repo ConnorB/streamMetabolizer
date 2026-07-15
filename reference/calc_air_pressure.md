@@ -1,4 +1,4 @@
-# Calculates the average air pressure for a site
+# Calculate average air pressure for a site
 
 Estimates air pressure from air temperature and elevation
 
@@ -12,22 +12,21 @@ calc_air_pressure(temp.air = 15, elevation = 762, attach.units = deprecated())
 
 - temp.air:
 
-  air temperature in degrees C. Default is 15 degC.
+  Air temperature in degrees C. Default is 15 degC.
 
 - elevation:
 
-  the site elevation above sea level in m. Default is the rough mean
+  The site elevation above sea level in m. Default is the rough mean
   elevation of the USA at 2500 ft (from
-  http://www.infoplease.com/ipa/A0001792.html)
+  http://www.infoplease.com/ipa/A0001792.html).
 
 - attach.units:
 
-  (deprecated, effectively FALSE in future) logical. Should the returned
-  vector be a unitted object?
+  Deprecated. A logical. Should the returned vector be a unitted object?
 
 ## Value
 
-a numeric vector of barometric pressures in mb, with units attached if
+A numeric vector of barometric pressures in mb, with units attached if
 requested.
 
 ## Examples

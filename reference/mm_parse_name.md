@@ -1,8 +1,9 @@
 # Parse a model name into its features
 
-Returns a data.frame with one column per model structure detail and one
-row per `model_name` supplied to this function. See `?[mm_name]` for a
-description of each of the data.frame columns that is returned.
+Returns a data frame with one column per model structure detail and one
+row per `model_name`. See
+[`mm_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_name.md)
+for a description of each column.
 
 ## Usage
 
@@ -14,14 +15,19 @@ mm_parse_name(model_name, expand = FALSE)
 
 - model_name:
 
-  character: the model name
+  Character: the model name.
 
 - expand:
 
-  logical: should additional columns such as model_name and
+  Logical: should additional columns such as model_name and
   pool_K600_type be added? If expand=TRUE then the result cannot be
   passed directly back into mm_name, but the additional columns may be
   helpful for interpreting the model structure.
+
+## Value
+
+A data frame with one row per model name and one column per model
+feature.
 
 ## Details
 

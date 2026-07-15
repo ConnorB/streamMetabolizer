@@ -93,57 +93,69 @@ Try get_params() to retrieve the predicted values of K600.daily.</p>
 
 
 <dl><dt id="arg-metab-model">metab_model<a class="anchor" aria-label="anchor" href="#arg-metab-model"></a></dt>
-<dd><p>A metabolism model, implementing the
-metab_model_interface, to use in predicting metabolism</p></dd>
+<dd><p>A metabolism model that implements the
+<code>metab_model_interface</code>.</p></dd>
 
 
 <dt id="arg-date-start">date_start<a class="anchor" aria-label="anchor" href="#arg-date-start"></a></dt>
-<dd><p>Date or a class convertible with as.Date. The first date
-(inclusive) for which to report metabolism predictions. If NA, no filtering
-is done.</p></dd>
+<dd><p>A <code>Date</code> or an object coercible with <code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date()</a></code>. The first
+date (inclusive) for which to report metabolism predictions. If <code>NA</code>, no
+filtering is done.</p></dd>
 
 
 <dt id="arg-date-end">date_end<a class="anchor" aria-label="anchor" href="#arg-date-end"></a></dt>
-<dd><p>Date or a class convertible with as.Date. The last date
-(inclusive) for which to report metabolism predictions. If NA, no filtering
-is done.</p></dd>
+<dd><p>A <code>Date</code> or an object coercible with <code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date()</a></code>. The last
+date (inclusive) for which to report metabolism predictions. If <code>NA</code>, no
+filtering is done.</p></dd>
 
 
 <dt id="arg-day-start">day_start<a class="anchor" aria-label="anchor" href="#arg-day-start"></a></dt>
-<dd><p>start time (inclusive) of a day's data in number of hours
-from the midnight that begins the date. For example, day_start=-1.5
+<dd><p>Start time (inclusive) of a day's data in number of hours
+from the midnight that begins the date. For example, <code>day_start = -1.5</code>
 indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
 fall exactly on an observation time. For daily metabolism predictions,
-day_end - day_start should probably equal 24 so that each day's estimate is
-representative of a 24-hour period.</p></dd>
+<code>day_end - day_start</code> should probably equal 24 so that each day's estimate
+is representative of a 24-hour period.</p></dd>
 
 
 <dt id="arg-day-end">day_end<a class="anchor" aria-label="anchor" href="#arg-day-end"></a></dt>
-<dd><p>end time (exclusive) of a day's data in number of hours from
-the midnight that begins the date. For example, day_end=30 indicates that
+<dd><p>End time (exclusive) of a day's data in number of hours from
+the midnight that begins the date. For example, <code>day_end = 30</code> indicates
+that
 data describing 2006-06-26 end at the last observation time that occurs
-before 2006-06-27 06:00. For daily metabolism predictions, day_end -
-day_start should probably equal 24 so that each day's estimate is
-representative of a 24-hour period.</p></dd>
+before 2006-06-27 06:00.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Other arguments passed to class-specific implementations of
-<code>predict_metab</code></p></dd>
+<code><a href="predict_metab.html">predict_metab()</a></code>.</p></dd>
 
 
 <dt id="arg-attach-units">attach.units<a class="anchor" aria-label="anchor" href="#arg-attach-units"></a></dt>
-<dd><p>(deprecated, effectively FALSE in future) logical. Should
-units be attached to the output?</p></dd>
+<dd><p>Deprecated. A logical indicating whether to attach units
+to the output.</p></dd>
 
 
 <dt id="arg-use-saved">use_saved<a class="anchor" aria-label="anchor" href="#arg-use-saved"></a></dt>
-<dd><p>logical. Is it OK to use predictions that were saved with
+<dd><p>A logical. Is it OK to use predictions that were saved with
 the model?</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>This method always throws an error because K models cannot predict
+metabolism.</p>
+    </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="predict_metab.html">predict_metab</a></span><span class="op">(</span><span class="fu"><a href="metab_model.html">metab_model</a></span><span class="op">(</span><span class="st">"metab_Kmodel"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in predict_metab(metab_model("metab_Kmodel")) : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB;">&lt;metab_Kmodel&gt;</span> objects cannot predict metabolism.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `get_params()` to retrieve predicted `K600.daily` values.</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

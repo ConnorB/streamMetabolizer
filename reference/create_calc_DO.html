@@ -81,45 +81,38 @@
 
 
 <dl><dt id="arg-calc-ddodt">calc_dDOdt<a class="anchor" aria-label="anchor" href="#arg-calc-ddodt"></a></dt>
-<dd><p>a function as from <code>create_calc_dDOdt</code></p></dd>
+<dd><p>A function as from <code>create_calc_dDOdt</code>.</p></dd>
 
 
 <dt id="arg-ode-method">ode_method<a class="anchor" aria-label="anchor" href="#arg-ode-method"></a></dt>
-<dd><p>character. The method to use in solving the ordinary
-differential equation for DO. Options:</p><ul><li><p><code>euler</code>,
-formerly <code>Euler</code>: the final change in DO from t=1 to t=2 is solely a
-function of GPP, ER, DO, etc. at t=1</p></li>
-<li><p><code>trapezoid</code>, formerly
-<code>pairmeans</code>: the final change in DO from t=1 to t=2 is a function of
-the mean values of GPP, ER, etc. across t=1 and t=2.</p></li>
-<li><p>for
-<code>type='mle'</code>, options also include <code>rk2</code> and any character method
-accepted by <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">deSolve::ode()</a></code> in the <code>deSolve</code> package
-(<code>lsoda</code>, <code>lsode</code>, <code>lsodes</code>, <code>lsodar</code>, <code>vode</code>,
-<code>daspk</code>, <code>rk4</code>, <code>ode23</code>, <code>ode45</code>, <code>radau</code>,
-<code>bdf</code>, <code>bdf_d</code>, <code>adams</code>, <code>impAdams</code>, and
-<code>impAdams_d</code>; note that many of these have not been well tested in the
-context of <code>streamMetabolizer</code> models)</p></li>
+<dd><p>A string specifying the method used to solve the ordinary
+differential equation for DO:</p><ul><li><p><code>"euler"</code> (formerly <code>"Euler"</code>): Use conditions at the start of each
+timestep.</p></li>
+<li><p><code>"trapezoid"</code> (formerly <code>"pairmeans"</code>): Use mean conditions across each
+timestep.</p></li>
+<li><p>For <code>type = "mle"</code>, <code>"rk2"</code> and methods accepted by <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">deSolve::ode()</a></code>
+are also available. Many have not been extensively tested with
+streamMetabolizer models.</p></li>
 </ul></dd>
 
 
 <dt id="arg-err-obs">err.obs<a class="anchor" aria-label="anchor" href="#arg-err-obs"></a></dt>
-<dd><p>optional numerical vector of length nrow(data) in units of gO2
+<dd><p>Optional numerical vector of length nrow(data) in units of gO2
 m^3. Appropriate for simulation, when this vector of observation errors
 will be added to the calculated DO values to simulate observation error.
 But usually (for MLE or prediction from a fitted MLE/Bayesian/nighttime
-regression model) <code>err.obs</code> should be missing or 0</p></dd>
+regression model) <code>err.obs</code> should be missing or 0.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a function that will return a negative log likelihood of the data
-given a set of metab.pars</p>
+    <p>A function that will return a negative log likelihood of the data
+given a set of metab.pars.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
 <span class="r-in"><span><span class="co"># prepare data for examples</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="data_metab.html">data_metab</a></span><span class="op">(</span><span class="st">'3'</span>,<span class="st">'30'</span><span class="op">)</span><span class="op">[</span><span class="fl">97</span><span class="op">:</span><span class="fl">144</span>,<span class="op">]</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">48</span>,by<span class="op">=</span><span class="fl">2</span><span class="op">)</span>,<span class="op">]</span></span></span>
 <span class="r-in"><span><span class="co"># preds.init &lt;- list(GPP.daily=2.82,ER.daily=-2.12,K600.daily=31.27)</span></span></span>
@@ -179,7 +172,7 @@ given a set of metab.pars</p>
 <span class="r-in"><span><span class="va">DO</span> <span class="op">&lt;-</span> <span class="fu">create_calc_DO</span><span class="op">(</span><span class="va">dDOdt</span>, ode_method<span class="op">=</span><span class="st">'trapezoid'</span>, err.obs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">DO.mod.operr</span> <span class="op">&lt;-</span> <span class="fu">DO</span><span class="op">(</span><span class="va">preds.init</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">DOtime</span>, y<span class="op">=</span><span class="va">DO.mod.operr</span>, col<span class="op">=</span><span class="st">'red'</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

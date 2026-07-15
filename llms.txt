@@ -173,13 +173,13 @@ authorized or unauthorized use of the software.
 ## Plotting
 
 - [`plot_DO_preds()`](https://connorb.github.io/streamMetabolizer/reference/plot_DO_preds.md)
-  : Plot predictions produced with predict_DO
+  : Plot dissolved oxygen predictions
 - [`plot_distribs()`](https://connorb.github.io/streamMetabolizer/reference/plot_distribs.md)
   : Plot the prior/posterior distributions of a parameter
 - [`plot_metab_data()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_data.md)
   : Plot metabolism input data
 - [`plot_metab_preds()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_preds.md)
-  : Plot predictions produced with predict_DO
+  : Plot metabolism predictions
 
 ## Other
 
@@ -187,11 +187,10 @@ authorized or unauthorized use of the software.
   **\[deprecated\]** : Calculate a vector of dissolved oxygen deficits
 
 - [`calc_DO_sat()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_sat.md)
-  **\[deprecated\]** : Calculates the equilibrium saturation
-  concentration of oxygen in water at the supplied conditions
+  : Calculate equilibrium oxygen saturation
 
 - [`calc_air_pressure()`](https://connorb.github.io/streamMetabolizer/reference/calc_air_pressure.md)
-  : Calculates the average air pressure for a site
+  : Calculate average air pressure for a site
 
 - [`calc_bins()`](https://connorb.github.io/streamMetabolizer/reference/calc_bins.md)
   : Assign continuous values in a vector to discrete bins
@@ -203,24 +202,22 @@ authorized or unauthorized use of the software.
   : Estimate depth from discharge and hydraulic geometry coefficients
 
 - [`calc_hour_angle()`](https://connorb.github.io/streamMetabolizer/reference/calc_hour_angle.md)
-  : Calculate hour angle as in
-  http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html.
+  :
+
+  Calculate hour angle using the [NASA solar insolation
+  method](http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.md).
 
 - [`calc_is_daytime()`](https://connorb.github.io/streamMetabolizer/reference/calc_is_daytime.md)
-  **\[deprecated\]** : Determines if specified datetime is during the
-  daytime Returns T/F indicating whether a datetime occurs during the
-  daytime (sunlight hours)
+  **\[deprecated\]** : Determine whether datetimes occur during daylight
 
 - [`calc_light()`](https://connorb.github.io/streamMetabolizer/reference/calc_light.md)
   : Calculate modeled light from solar.time
 
 - [`calc_light_merged()`](https://connorb.github.io/streamMetabolizer/reference/calc_light_merged.md)
-  : Merge modeled and observed PAR into a single timeseries
+  : Merge modeled and observed PAR into a time series
 
 - [`calc_solar_insolation()`](https://connorb.github.io/streamMetabolizer/reference/calc_solar_insolation.md)
-  : Model solar insolation on a horizontal surface (W/m2 == J/s/m2) as
-  in
-  http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html
+  : Model solar insolation on a horizontal surface
 
 - [`calc_solar_time()`](https://connorb.github.io/streamMetabolizer/reference/calc_solar_time.md)
   : Calculate solar.time from local.time
@@ -239,21 +236,19 @@ authorized or unauthorized use of the software.
   : Convert from shortwave to photosynthetically active radiation
 
 - [`convert_UTC_to_localtime()`](https://connorb.github.io/streamMetabolizer/reference/convert_UTC_to_localtime.md)
-  : Convert time from UTC to local time.
+  : Convert UTC to local time
 
 - [`convert_UTC_to_solartime()`](https://connorb.github.io/streamMetabolizer/reference/convert_UTC_to_solartime.md)
   : Convert DateTime from UTC to local solar time
 
 - [`convert_k600_to_kGAS()`](https://connorb.github.io/streamMetabolizer/reference/convert_k600_to_kGAS.md)
-  : Returns the gas exchange velocity for gas of interest w/ no unit
-  conversions
+  : Convert K600 to a gas-specific exchange velocity
 
 - [`convert_kGAS_to_k600()`](https://connorb.github.io/streamMetabolizer/reference/convert_kGAS_to_k600.md)
-  : Returns the gas exchange velocity as k600 for gas of interest w/ no
-  unit conversions
+  : Convert a gas-specific exchange velocity to K600
 
 - [`convert_localtime_to_UTC()`](https://connorb.github.io/streamMetabolizer/reference/convert_localtime_to_UTC.md)
-  : Convert time from local time to UTC.
+  : Convert local time to UTC
 
 - [`convert_solartime_to_UTC()`](https://connorb.github.io/streamMetabolizer/reference/convert_solartime_to_UTC.md)
   : Convert DateTime from local solar time to UTC
@@ -267,26 +262,25 @@ authorized or unauthorized use of the software.
   metabolism parameter values
 
 - [`create_calc_dDOdt()`](https://connorb.github.io/streamMetabolizer/reference/create_calc_dDOdt.md)
-  : Create a function that generates a 1-day timeseries of DO.mod
+  : Create a function that calculates a one-day DO time series
 
 - [`data_metab()`](https://connorb.github.io/streamMetabolizer/reference/data_metab.md)
   : Get a demo dataset for modeling metabolism
 
 - [`get_data()`](https://connorb.github.io/streamMetabolizer/reference/get_data.md)
-  : Extract the fitting data from a metabolism model.
+  : Extract model fitting data
 
 - [`get_data_daily()`](https://connorb.github.io/streamMetabolizer/reference/get_data_daily.md)
-  : Extract the daily fitting data, if any, from a metabolism model.
+  : Extract daily model fitting data
 
 - [`get_fit()`](https://connorb.github.io/streamMetabolizer/reference/get_fit.md)
-  : Extract the internal model from a metabolism model.
+  : Extract the internal fitted model
 
 - [`get_fitting_time()`](https://connorb.github.io/streamMetabolizer/reference/get_fitting_time.md)
-  : Extract the amount of time that was required to fit the metabolism
-  model.
+  : Extract model fitting time
 
 - [`get_info()`](https://connorb.github.io/streamMetabolizer/reference/get_info.md)
-  : Extract the user-supplied metadata about a metabolism model.
+  : Extract user-supplied model metadata
 
 - [`get_log()`](https://connorb.github.io/streamMetabolizer/reference/get_log.md)
   : Return the log file(s) from a model run
@@ -298,18 +292,16 @@ authorized or unauthorized use of the software.
   : Extract any MCMC data list(s) that were stored with the model
 
 - [`get_param_names()`](https://connorb.github.io/streamMetabolizer/reference/get_param_names.md)
-  : Extract the daily parameter names from a metabolism model.
+  : Extract daily metabolism parameter names
 
 - [`get_params()`](https://connorb.github.io/streamMetabolizer/reference/get_params.md)
-  : Extract the metabolism parameters (fitted and/or fixed) from a
-  model.
+  : Extract metabolism model parameters
 
 - [`get_specs()`](https://connorb.github.io/streamMetabolizer/reference/get_specs.md)
-  : Extract the fitting specifications from a metabolism model.
+  : Extract model fitting specifications
 
 - [`get_version()`](https://connorb.github.io/streamMetabolizer/reference/get_version.md)
-  : Extract the version of streamMetabolizer that was used to fit the
-  model.
+  : Extract the streamMetabolizer version used to fit a model
 
 - [`load_french_creek()`](https://connorb.github.io/streamMetabolizer/reference/load_french_creek.md)
   : Load a short dataset from French Creek
@@ -343,7 +335,7 @@ authorized or unauthorized use of the software.
   : Metabolism model fitted by Bayesian MCMC
 
 - [`metab_bayes()`](https://connorb.github.io/streamMetabolizer/reference/metab_bayes.md)
-  : Basic Bayesian metabolism model fitting function
+  : Fit a Bayesian metabolism model
 
 - [`metab_inputs()`](https://connorb.github.io/streamMetabolizer/reference/metab_inputs.md)
   : Describe the requirements for an argument to metab()
@@ -352,19 +344,16 @@ authorized or unauthorized use of the software.
   : Metabolism model fitted by maximum likelihood estimation
 
 - [`metab_mle()`](https://connorb.github.io/streamMetabolizer/reference/metab_mle.md)
-  : Maximum likelihood metabolism model fitting function
+  : Fit a metabolism model by maximum likelihood
 
 - [`metab_model-class`](https://connorb.github.io/streamMetabolizer/reference/metab_model-class.md)
-  : A metabolism model class.
+  : Metabolism model class
 
 - [`metab_model()`](https://connorb.github.io/streamMetabolizer/reference/metab_model.md)
-  : Create a metab_model object.
+  : Create a metabolism model object
 
 - [`metab_model_interface`](https://connorb.github.io/streamMetabolizer/reference/metab_model_interface.md)
-  :
-
-  Functions implemented by any `streamMetabolizer`-compatible metabolism
-  model.
+  : Functions implemented by compatible metabolism models
 
 - [`metab_night-class`](https://connorb.github.io/streamMetabolizer/reference/metab_night-class.md)
   : Reaeration model fitted by nighttime regression
@@ -382,14 +371,13 @@ authorized or unauthorized use of the software.
   : Simulate dissolved oxygen data from input data
 
 - [`mm_data()`](https://connorb.github.io/streamMetabolizer/reference/mm_data.md)
-  : Return the data types that may be used by metab_models using the
-  metab_model_interface.
+  : Describe model input data types
 
 - [`mm_filter_valid_days()`](https://connorb.github.io/streamMetabolizer/reference/mm_filter_valid_days.md)
   : Remove entries in data
 
 - [`mm_get_timestep()`](https://connorb.github.io/streamMetabolizer/reference/mm_get_timestep.md)
-  : Return the average timestep in days
+  : Calculate timesteps in days
 
 - [`mm_is_valid_day()`](https://connorb.github.io/streamMetabolizer/reference/mm_is_valid_day.md)
   : Validate one day of data, returning a vector of error strings if
@@ -402,7 +390,7 @@ authorized or unauthorized use of the software.
   : A prototype for the model_fun argument to mm_model_by_ply
 
 - [`mm_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_name.md)
-  : Find the name of a model by its features
+  : Construct a model name from its features
 
 - [`mm_parse_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_parse_name.md)
   : Parse a model name into its features
@@ -417,25 +405,23 @@ authorized or unauthorized use of the software.
   : Get the valid names for a given model type or types
 
 - [`mm_validate_data()`](https://connorb.github.io/streamMetabolizer/reference/mm_validate_data.md)
-  : Evaluate whether the data argument is properly formatted.
+  : Validate model input data
 
 - [`mm_validate_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_validate_name.md)
   : Check the validity of a model name
 
 - [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md)
-  : Predict DO from a fitted model.
+  : Predict dissolved oxygen from a fitted model
 
 - [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
-  : Predict metabolism from a fitted model.
+  : Predict metabolism from a fitted model
 
 - [`predict_metab(`*`<metab_Kmodel>`*`)`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.metab_Kmodel.md)
   : Override generic predict_metab for metab_Kmodel, which can't predict
   metab
 
 - [`prepdata_Kmodel()`](https://connorb.github.io/streamMetabolizer/reference/prepdata_Kmodel.md)
-  : Prepare data_daily by aggregating any daily data, renaming
-  K600.daily to K600.daily.obs, & setting data_daily\$weight to reflect
-  user weights & filters
+  : Prepare daily data for K modeling
 
 - [`print(`*`<logs_metab>`*`)`](https://connorb.github.io/streamMetabolizer/reference/print.logs_metab.md)
   : Print metab logs
@@ -462,7 +448,7 @@ authorized or unauthorized use of the software.
   : Generate a coherent list of model specs
 
 - [`streamMetabolizer-deprecated`](https://connorb.github.io/streamMetabolizer/reference/streamMetabolizer-deprecated.md)
-  : Deprecated Functions in package streamMetabolizer
+  : Deprecated functions in streamMetabolizer
 
 - [`to_degrees()`](https://connorb.github.io/streamMetabolizer/reference/to_degrees.md)
   : Convert radians to degrees

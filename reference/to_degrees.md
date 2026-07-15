@@ -12,8 +12,8 @@ to_degrees(radians)
 
 - radians:
 
-  angle in radians
+  Angle in radians.
 
 ## Value
 
-angle in degrees
+Angle in degrees.

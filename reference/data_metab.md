@@ -20,24 +20,24 @@ data_metab(
 
 - num_days:
 
-  the number of days to include in the data. character format because
+  The number of days to include in the data. character format because
   only certain numbers of days are permitted (see defaults in Usage for
-  the accepted options)
+  the accepted options).
 
 - res:
 
-  character specifying the desired resolution of the data in minutes
-  (character; see defaults in Usage for the accepted options)
+  Character specifying the desired resolution of the data in minutes
+  (character; see defaults in Usage for the accepted options).
 
 - flaws:
 
-  character specifying one or more flaws to include in the data, or
+  Character specifying one or more flaws to include in the data, or
   empty ([`c()`](https://rdrr.io/r/base/c.html)) for no flaws. default
   is no flaws.
 
 - day_start:
 
-  start time (inclusive) of a day's data in number of hours from the
+  Start time (inclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_start=-1.5 indicates
   that data describing 2006-06-26 begin at 2006-06-25 22:30, or at the
   first observation time that occurs after that time if day_start
@@ -53,7 +53,7 @@ data_metab(
 
 - day_end:
 
-  end time (exclusive) of a day's data in number of hours from the
+  End time (exclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_end=30 indicates that
   data describing 2006-06-26 end at the last observation time that
   occurs before 2006-06-27 06:00. See day_start for recommended start
@@ -61,8 +61,12 @@ data_metab(
 
 - attach.units:
 
-  (deprecated, effectively FALSE in future) logical, default TRUE for
-  backward compatibility. Should units be attached to the data.frame?
+  Deprecated. A logical, default TRUE for backward compatibility. Should
+  units be attached to the data.frame?
+
+## Value
+
+A data frame of example metabolism inputs.
 
 ## Examples
 

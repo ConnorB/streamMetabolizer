@@ -1,7 +1,7 @@
-# Model solar insolation on a horizontal surface (W/m2 == J/s/m2) as in http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html
+# Model solar insolation on a horizontal surface
 
-Model solar insolation on a horizontal surface (W/m2 == J/s/m2) as in
-http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html
+Implements the solar insolation equations described by Yard et al.
+(2005).
 
 ## Usage
 
@@ -21,18 +21,18 @@ calc_solar_insolation(
 
   POSIXct vector of date-time values in apparent solar time, e.g., as
   returned by
-  `convert_UTC_to_solartime(..., time.type="apparent solar")`
+  `convert_UTC_to_solartime(..., time.type="apparent solar")`.
 
 - latitude:
 
-  numeric value or vector indicating the site latitude in decimal
+  Numeric value or vector indicating the site latitude in decimal
   degrees (never radians or deg-min-sec, no matter what `format` is)
   between -90 (South Pole) and 90 (North Pole).
 
 - max.insolation:
 
-  insolation rate at solar noon, W/m2 == J/s/m2. varies greatly with
-  atmospheric conditions
+  Insolation rate at solar noon, W/m2 == J/s/m2. varies greatly with
+  atmospheric conditions.
 
 - format:
 
@@ -41,8 +41,11 @@ calc_solar_insolation(
 
 - attach.units:
 
-  (deprecated, effectively FALSE in future) logical. Should the returned
-  vector be a unitted object?
+  Deprecated. A logical. Should the returned vector be a unitted object?
+
+## Value
+
+A numeric vector of solar insolation in W m⁻².
 
 ## Examples
 
@@ -56,10 +59,8 @@ insdf <- transform(insdf, datetime=lubridate::with_tz(as.POSIXct(date), 'UTC') +
   as.difftime(hour, units='hours'))
 insdf <- transform(insdf, date=as.character(date))
 insdf <- transform(insdf, ins=calc_solar_insolation(datetime, lat))
-if (FALSE) { # \dontrun{
 library(ggplot2)
 ggplot(insdf, aes(color=date, y=ins, x=hour)) +
   geom_line() + facet_wrap(~lat) +
   ggtitle('solar insolation by latitude (panels) and day of year (colors)')
-} # }
 ```

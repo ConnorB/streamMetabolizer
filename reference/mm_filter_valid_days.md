@@ -32,7 +32,7 @@ mm_filter_valid_days(
 
 - day_start:
 
-  start time (inclusive) of a day's data in number of hours from the
+  Start time (inclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_start=-1.5 indicates
   that data describing 2006-06-26 begin at 2006-06-25 22:30, or at the
   first observation time that occurs after that time if day_start
@@ -48,7 +48,7 @@ mm_filter_valid_days(
 
 - day_end:
 
-  end time (exclusive) of a day's data in number of hours from the
+  End time (exclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_end=30 indicates that
   data describing 2006-06-26 end at the last observation time that
   occurs before 2006-06-27 06:00. See day_start for recommended start
@@ -56,7 +56,7 @@ mm_filter_valid_days(
 
 - day_tests:
 
-  list of tests to conduct to determine whether each date worth of data
+  List of tests to conduct to determine whether each date worth of data
   is valid for modeling. The results of these tests will be combined
   with the result of the test implied if `required_timestep` is numeric
   and then will be passed to `model_fun` as the `ply_validity` argument

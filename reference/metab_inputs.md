@@ -15,11 +15,11 @@ metab_inputs(
 
 - type:
 
-  the type of model you want to fit
+  The type of model you want to fit.
 
 - input:
 
-  the name of an argument to pass into metab()
+  The name of an argument to pass into metab().
 
 ## Value
 
@@ -37,25 +37,25 @@ metab_inputs('night','specs')
 #>   (`?streamMetabolizer::specs()`) for more options.
 metab_inputs('bayes','data')
 #> # A tibble: 7 × 4
-#>   colname    class          units            need    
-#>   <chr>      <chr>          <chr>            <chr>   
-#> 1 solar.time POSIXct,POSIXt ""               required
-#> 2 DO.obs     numeric        "mgO_2 L^-1"     required
-#> 3 DO.sat     numeric        "mgO_2 L^-1"     required
-#> 4 depth      numeric        "m"              required
-#> 5 temp.water numeric        "°C"             required
-#> 6 light      numeric        "umol m^-2 s^-1" required
-#> 7 discharge  numeric        "m^3 s^-1"       optional
+#>   colname    class          units          need    
+#>   <chr>      <chr>          <chr>          <chr>   
+#> 1 solar.time POSIXct,POSIXt ""             required
+#> 2 DO.obs     numeric        "mgO₂ L⁻¹"     required
+#> 3 DO.sat     numeric        "mgO₂ L⁻¹"     required
+#> 4 depth      numeric        "m"            required
+#> 5 temp.water numeric        "°C"           required
+#> 6 light      numeric        "µmol m⁻² s⁻¹" required
+#> 7 discharge  numeric        "m³ s⁻¹"       optional
 metab_inputs('Kmodel','data_daily')
 #> # A tibble: 6 × 4
-#>   colname          class   units      need    
-#>   <chr>            <chr>   <chr>      <chr>   
-#> 1 date             Date    ""         required
-#> 2 K600.daily       numeric "d^-1"     required
-#> 3 K600.daily.lower numeric "d^-1"     optional
-#> 4 K600.daily.upper numeric "d^-1"     optional
-#> 5 discharge.daily  numeric "m^3 s^-1" optional
-#> 6 velocity.daily   numeric "m s^-1"   optional
+#>   colname          class   units    need    
+#>   <chr>            <chr>   <chr>    <chr>   
+#> 1 date             Date    ""       required
+#> 2 K600.daily       numeric "d⁻¹"    required
+#> 3 K600.daily.lower numeric "d⁻¹"    optional
+#> 4 K600.daily.upper numeric "d⁻¹"    optional
+#> 5 discharge.daily  numeric "m³ s⁻¹" optional
+#> 6 velocity.daily   numeric "m s⁻¹"  optional
 metab_inputs('mle','info')
 #> ℹ `info` is optional metadata stored in the returned `metab_model()`
 #>   (`?streamMetabolizer::metab_model()`).

@@ -1,6 +1,6 @@
-# Predict DO from a fitted model.
+# Predict dissolved oxygen from a fitted model
 
-A function in the metab_model_interface. Returns predictions of
+A function in the `metab_model_interface`. Returns predictions of
 dissolved oxygen.
 
 ## Usage
@@ -39,37 +39,40 @@ predict_DO(metab_model, date_start = NA, date_end = NA, ...)
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, to use in
-  predicting metabolism
+  A metabolism model that implements the `metab_model_interface`.
 
 - date_start:
 
-  Date or a class convertible with as.Date. The first date (inclusive)
-  for which to report DO predictions. If NA, no filtering is done.
+  A `Date` or an object coercible with
+  [`as.Date()`](https://rdrr.io/r/base/as.Date.html). The first date
+  (inclusive) for which to report DO predictions. If `NA`, no filtering
+  is done.
 
 - date_end:
 
-  Date or a class convertible with as.Date. The last date (inclusive)
-  for which to report DO predictions. If NA, no filtering is done.
+  A `Date` or an object coercible with
+  [`as.Date()`](https://rdrr.io/r/base/as.Date.html). The last date
+  (inclusive) for which to report DO predictions. If `NA`, no filtering
+  is done.
 
 - ...:
 
   Other arguments passed to class-specific implementations of
-  `predict_DO`
+  `predict_DO()`.
 
 - attach.units:
 
-  (deprecated, effectively FALSE in future) logical. Should units be
-  attached to the output?
+  Deprecated. A logical indicating whether to attach units to the
+  output.
 
 - use_saved:
 
-  logical. Is it OK to use predictions that were saved with the model?
+  A logical. Is it OK to use predictions that were saved with the model?
 
 ## Value
 
-A data.frame of dissolved oxygen predictions at the temporal resolution
-of the input data
+A data frame of dissolved oxygen predictions at the temporal resolution
+of the input data.
 
 ## Methods (by class)
 
@@ -109,9 +112,9 @@ Other metab_model_interface:
 ## Examples
 
 ``` r
-dat <- data_metab('3', day_start=12, day_end=36)
-mm <- metab_night(specs(mm_name('night')), data=dat)
-preds <- predict_DO(mm, date_start=get_fit(mm)$date[3])
+dat <- data_metab("3", day_start = 12, day_end = 36)
+mm <- metab_night(specs(mm_name("night")), data = dat)
+preds <- predict_DO(mm, date_start = get_fit(mm)$date[3])
 head(preds)
 #> # A tibble: 6 × 8
 #>   date       solar.time          DO.obs DO.sat depth temp.water light DO.mod

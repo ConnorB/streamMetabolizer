@@ -1,8 +1,6 @@
-# Calculates the equilibrium saturation concentration of oxygen in water at the supplied conditions
+# Calculate equilibrium oxygen saturation
 
-**\[deprecated\]**
-
-The `calc_DO_at_sat()` alias is deprecated. Use `calc_DO_sat()` instead.
+Calculate equilibrium oxygen saturation
 
 ## Usage
 
@@ -20,34 +18,35 @@ calc_DO_sat(
 
 - temp.water:
 
-  a numeric vector of water temperature in degrees Celsius.
+  A numeric vector of water temperature in degrees Celsius.
 
 - pressure.air:
 
-  barometric pressure in millibars.
+  Barometric pressure in millibars.
 
 - salinity.water:
 
-  a numeric vector of salinity in PSU. Defaults to zero.
+  A numeric vector of salinity in PSU. Defaults to zero.
 
 - model:
 
-  character. One of 'garcia-benson', 'garcia', 'weiss', or 'benson', but
-  'garcia-benson' is recommended.
+  A string specifying the saturation model. One of `"garcia-benson"`,
+  `"garcia"`, `"weiss"`, or `"benson"`; `"garcia-benson"` is
+  recommended.
 
 - ...:
 
-  additional parameters passed to
-  [`LakeMetabolizer::o2.at.sat.base`](https://rdrr.io/pkg/LakeMetabolizer/man/o2.at.sat.html)
+  Additional parameters passed to
+  [`LakeMetabolizer::o2.at.sat.base`](https://rdrr.io/pkg/LakeMetabolizer/man/o2.at.sat.html).
 
 ## Value
 
-a numeric vector of dissolved oxygen equilibrium saturation
+A numeric vector of dissolved oxygen equilibrium saturation
 concentrations, in mg/L.
 
 ## Examples
 
 ``` r
-calc_DO_sat(temp=21, press=1000.1, sal=0)
+calc_DO_sat(temp.water = 21, pressure.air = 1000.1, salinity.water = 0)
 #> [1] 8.795956
 ```

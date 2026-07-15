@@ -21,10 +21,10 @@ nightreg_1ply(
 
 - data_ply:
 
-  a data frame or tibble containing all relevant, validated modeling
+  A data frame or tibble containing all relevant, validated modeling
   data for a single ply of data. (1 ply ~= 1 date, although the day
   length has been specified by day_start and day_end and may not be
-  exactly 24 hours)
+  exactly 24 hours).
 
 - data_daily_ply:
 
@@ -33,7 +33,7 @@ nightreg_1ply(
 
 - day_start:
 
-  start time (inclusive) of a day's data in number of hours from the
+  Start time (inclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_start=-1.5 indicates
   that data describing 2006-06-26 begin at 2006-06-25 22:30, or at the
   first observation time that occurs after that time if day_start
@@ -41,30 +41,30 @@ nightreg_1ply(
 
 - day_end:
 
-  end time (exclusive) of a day's data in number of hours from the
+  End time (exclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_end=30 indicates that
   data describing 2006-06-26 end at the last observation time that
   occurs before 2006-06-27 06:00.
 
 - ply_date:
 
-  the modal date of this ply of data and data_daily, and the date by
+  The modal date of this ply of data and data_daily, and the date by
   which this ply should be referred topresent.
 
 - ...:
 
-  other args that were passed untouched from the function calling
+  Other args that were passed untouched from the function calling
   mm_model_by_ply, through mm_model_by_ply, and finally to this
   function.
 
 - night_tests:
 
-  character vector of validity tests to conduct on the data after
-  subsetting to just nighttime
+  Character vector of validity tests to conduct on the data after
+  subsetting to just nighttime.
 
 - specs:
 
-  a list of model specifications and parameters for a model. Although
+  A list of model specifications and parameters for a model. Although
   this may be specified manually (it's just a list), it is easier and
   safer to use
   [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md)
@@ -77,8 +77,8 @@ nightreg_1ply(
 
 ## Value
 
-data.frame of estimates and
-[`stats::lm()`](https://rdrr.io/r/stats/lm.html) model diagnostics
+Data.frame of estimates and
+[`stats::lm()`](https://rdrr.io/r/stats/lm.html) model diagnostics.
 
 ## References
 

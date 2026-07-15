@@ -28,12 +28,12 @@ prepdata_bayes(data, data_daily, ply_date = NA, specs)
 
 - ply_date:
 
-  the modal date of this ply of data and data_daily, and the date by
+  The modal date of this ply of data and data_daily, and the date by
   which this ply should be referred topresent.
 
 - specs:
 
-  a list of model specifications and parameters for a model. Although
+  A list of model specifications and parameters for a model. Although
   this may be specified manually (it's just a list), it is easier and
   safer to use
   [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md)
@@ -46,4 +46,4 @@ prepdata_bayes(data, data_daily, ply_date = NA, specs)
 
 ## Value
 
-list of data for input to runstan_bayes
+List of data for input to runstan_bayes.

@@ -12,7 +12,7 @@ mm_check_mcmc_files(grep_pattern, stan_engine = c("rstan", "cmdstanr"))
 
 - grep_pattern:
 
-  string on which to filter the names if only some should be checked.
+  String on which to filter the names if only some should be checked.
   fixed=FALSE.
 
 - stan_engine:
@@ -22,7 +22,7 @@ mm_check_mcmc_files(grep_pattern, stan_engine = c("rstan", "cmdstanr"))
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 # takes a long time, so run only when needed
 checks <- streamMetabolizer:::mm_check_mcmc_files()
 saveRDS(checks, file='temp/bayes_model_checks.Rds')
@@ -32,5 +32,5 @@ checks <- streamMetabolizer:::mm_check_mcmc_files(
   "b_np_.*_ko\\.stan", stan_engine = "cmdstanr"
 )
 cat(checks[[7]])
-} # }
+}
 ```

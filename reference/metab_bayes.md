@@ -1,4 +1,4 @@
-# Basic Bayesian metabolism model fitting function
+# Fit a Bayesian metabolism model
 
 Fits a Bayesian model to estimate GPP and ER from input data on DO,
 temperature, light, etc. See
@@ -23,7 +23,7 @@ metab_bayes(
 
 - specs:
 
-  a list of model specifications and parameters for a model. Although
+  A list of model specifications and parameters for a model. Although
   this may be specified manually (it's just a list), it is easier and
   safer to use
   [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md)
@@ -50,8 +50,8 @@ metab_bayes(
 
 - info:
 
-  any information, in any format, that you would like to store within
-  the metab_model object
+  Any information, in any format, that you would like to store within
+  the metab_model object.
 
 ## Value
 
@@ -88,7 +88,7 @@ Alison Appling, Bob Hall
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 dat <- data_metab('3', res='30')
 # fast-ish model version, but still too slow to auto-run in examples
 mm <- metab_bayes(data=dat,
@@ -108,5 +108,5 @@ predict_metab(mm)
 
 # view the Stan model file as stored on your system
 file.edit(get_specs(mm)$model_path)
-} # }
+}
 ```

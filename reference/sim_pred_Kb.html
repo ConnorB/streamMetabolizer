@@ -83,9 +83,9 @@ specified by <code>K600_lnQ_nodes_centers</code> and <code>lnK600_lnQ_nodes</cod
 
 
 <dl><dt id="arg-k-lnq-nodes-centers">K600_lnQ_nodes_centers<a class="anchor" aria-label="anchor" href="#arg-k-lnq-nodes-centers"></a></dt>
-<dd><p>data configuration argument for
+<dd><p>Data configuration argument for
 pool_K600='binned'. numeric vector giving the natural-log-space centers of
-the discharge bins. See also <code><a href="calc_bins.html">calc_bins()</a></code></p></dd>
+the discharge bins. See also <code><a href="calc_bins.html">calc_bins()</a></code>.</p></dd>
 
 
 <dt id="arg-lnk-lnq-nodes">lnK600_lnQ_nodes<a class="anchor" aria-label="anchor" href="#arg-lnk-lnq-nodes"></a></dt>
@@ -95,11 +95,25 @@ computes lnK600s based on simulated K~Q relationships.</p></dd>
 
 
 <dt id="arg-lnq-daily">lnQ.daily<a class="anchor" aria-label="anchor" href="#arg-lnq-daily"></a></dt>
-<dd><p>vector of daily values of the natural log of discharge,
-e.g., <code>log(data_daily$discharge.daily)</code></p></dd>
+<dd><p>Vector of daily values of the natural log of discharge,
+e.g., <code>log(data_daily$discharge.daily)</code>.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A numeric vector of predicted daily ln(K600) values.</p>
+    </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">sim_pred_Kb</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  K600_lnQ_nodes_centers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lnK600_lnQ_nodes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lnQ.daily <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.956012 2.649159</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

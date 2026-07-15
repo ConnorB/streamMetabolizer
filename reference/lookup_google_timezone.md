@@ -17,11 +17,11 @@ lookup_google_timezone(latitude, longitude, timestamp = NULL)
 
 - latitude:
 
-  degrees latitude (positive for north) of the location to look up.
+  Degrees latitude (positive for north) of the location to look up.
 
 - longitude:
 
-  degrees longitude (positive for east) of the location to look up.
+  Degrees longitude (positive for east) of the location to look up.
 
 - timestamp:
 

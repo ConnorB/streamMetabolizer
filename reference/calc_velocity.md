@@ -1,8 +1,8 @@
 # Estimate velocity from discharge and hydraulic geometry coefficients
 
-Uses the relationship \\U=k\*Q^m\\ (parameter names and definitions as
-in Leopold and Maddock, 1953; default values for k and m as in Raymond
-et al. 2012)
+Uses the relationship U = k × Qᵐ (parameter names and definitions as in
+Leopold and Maddock, 1953; default values for k and m as in Raymond et
+al. 2012)
 
 ## Usage
 
@@ -14,21 +14,21 @@ calc_velocity(Q, k = 0.194, m = 0.285)
 
 - Q:
 
-  discharge (m^3 s^-1)
+  Discharge (m^3 s^-1).
 
 - k:
 
-  coefficient representing velocity at unit discharge (usually m/s; e in
-  Raymond et al.)
+  A numeric coefficient representing velocity at unit discharge, usually
+  in m/s; *e* in Raymond et al. (2012).
 
 - m:
 
-  exponent in velocity-discharge relation (unitless; f in Raymond et
-  al.)
+  A numeric exponent in the velocity-discharge relationship;
+  dimensionless and *f* in Raymond et al. (2012).
 
 ## Value
 
-v (= V = U), stream flow velcoity, in the same units as k
+A numeric vector of streamflow velocities in the same units as `k`.
 
 ## References
 

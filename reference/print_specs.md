@@ -12,12 +12,12 @@ print_specs(object, header = "Model specifications:\n", prefix = "  ")
 
 - object:
 
-  specs list to be displayed.
+  Specs list to be displayed.
 
 - header:
 
-  line to be catted at start of printout
+  Line to be catted at start of printout.
 
 - prefix:
 
-  text to prepend to the start of each line that follows the header
+  Text to prepend to the start of each line that follows the header.

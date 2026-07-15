@@ -19,26 +19,26 @@ create_calc_NLL(
 
 - calc_DO:
 
-  a function as from `create_calc_DO`
+  A function as from `create_calc_DO`.
 
 - par.names:
 
-  vector of names of parameters that can be expected in calls to the
-  function created by this one (the calc_NLL function)
+  Vector of names of parameters that can be expected in calls to the
+  function created by this one (the calc_NLL function).
 
 - err_obs_iid:
 
-  logical. Should IID observation error be included? If not, the model
+  A logical. Should IID observation error be included? If not, the model
   will be fit to the differences in successive DO measurements, rather
   than to the DO measurements themselves.
 
 - err_proc_iid:
 
-  logical. Should IID process error be included?
+  A logical. Should IID process error be included?
 
 ## Value
 
-a function that will return a negative log likelihood of the data given
+A function that will return a negative log likelihood of the data given
 a set of metab.pars. metab.pars is the first argument of the returned
 function; its names are defined in `par.names`.
 
@@ -71,7 +71,7 @@ nlm(NLL, p=c(GPP.daily=2, ER.daily=-2, K600.daily=25))
 #> [1]  2.829716 -2.121566 31.265547
 #> 
 #> $gradient
-#> [1] -1.056505e-06 -6.472218e-07  3.710029e-08
+#> [1] -1.060271e-06 -6.338252e-07  3.692985e-08
 #> 
 #> $code
 #> [1] 1
@@ -103,7 +103,7 @@ nlm(NLL3, p=c(GPP.daily=2, ER.daily=-2, K600.daily=25, DO.mod.1=9))
 #> [1]  2.824270 -2.118702 31.201832  8.424478
 #> 
 #> $gradient
-#> [1] -3.421550e-06  2.426380e-06  5.528586e-07  9.653016e-07
+#> [1] -3.422808e-06  2.424703e-06  5.524031e-07  9.581324e-07
 #> 
 #> $code
 #> [1] 2

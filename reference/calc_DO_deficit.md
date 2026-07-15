@@ -17,30 +17,30 @@ calc_DO_deficit(DO.obs, temp.water, pressure.air, salinity.water = 0, ...)
 
 - DO.obs:
 
-  a numeric vector of dissolved oxygen concentration observations, mgO2
+  A numeric vector of dissolved oxygen concentration observations, mgO2
   L^-1.
 
 - temp.water:
 
-  a numeric vector of water temperature in degrees Celsius.
+  A numeric vector of water temperature in degrees Celsius.
 
 - pressure.air:
 
-  barometric pressure in millibars.
+  Barometric pressure in millibars.
 
 - salinity.water:
 
-  a numeric vector of salinity in PSU. Defaults to zero. Length must be
-  one or equal to length of `temp.water`.
+  A numeric vector of salinity in PSU. Defaults to zero. Its length must
+  be one or equal to the length of `temp.water`.
 
 - ...:
 
-  additional parameters passed to
-  [`LakeMetabolizer::o2.at.sat.base`](https://rdrr.io/pkg/LakeMetabolizer/man/o2.at.sat.html)
+  Additional parameters passed to
+  [`LakeMetabolizer::o2.at.sat.base`](https://rdrr.io/pkg/LakeMetabolizer/man/o2.at.sat.html).
 
 ## Value
 
-a vector of DO.deficit values
+A vector of DO.deficit values.
 
 ## Examples
 

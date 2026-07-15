@@ -17,30 +17,31 @@ sim_get_par(par.name, specs, data_daily, eval_env, required = TRUE)
 
   The parameter name. Should be period.separated if that's how
   data_daily is. Periods will be converted to underscores when searching
-  specs for the parameter
+  specs for the parameter.
 
 - specs:
 
-  a specifications list from which parameter values/functions will be
-  drawn
+  A specifications list from which parameter values/functions will be
+  drawn.
 
 - data_daily:
 
-  a data.frame of daily values from which parameter values will be drawn
+  A data.frame of daily values from which parameter values will be
+  drawn.
 
 - eval_env:
 
-  an environment containing any parameters that have already been
+  An environment containing any parameters that have already been
   finalized, plus the variable `n` containing the number of daily values
-  required
+  required.
 
 - required:
 
-  logical. If true and the parameter is unavailable, an error will be
+  Logical. If true and the parameter is unavailable, an error will be
   thrown.
 
 ## Value
 
-list containing up to three vectors (or NULLs) named `specs`,
+List containing up to three vectors (or NULLs) named `specs`,
 `data_daily`, and `combo` according to the source of the numbers in each
 vector.

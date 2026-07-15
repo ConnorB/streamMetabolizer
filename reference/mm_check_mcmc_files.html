@@ -77,7 +77,7 @@
 
 
 <dl><dt id="arg-grep-pattern">grep_pattern<a class="anchor" aria-label="anchor" href="#arg-grep-pattern"></a></dt>
-<dd><p>string on which to filter the names if only some should
+<dd><p>String on which to filter the names if only some should
 be checked. fixed=FALSE.</p></dd>
 
 
@@ -89,7 +89,7 @@ CmdStanR.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
 <span class="r-in"><span><span class="co"># takes a long time, so run only when needed</span></span></span>
 <span class="r-in"><span><span class="va">checks</span> <span class="op">&lt;-</span> <span class="fu">streamMetabolizer</span><span class="fu">:::</span><span class="fu">mm_check_mcmc_files</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">checks</span>, file<span class="op">=</span><span class="st">'temp/bayes_model_checks.Rds'</span><span class="op">)</span></span></span>
@@ -99,7 +99,7 @@ CmdStanR.</p></dd>
 <span class="r-in"><span>  <span class="st">"b_np_.*_ko\\.stan"</span>, stan_engine <span class="op">=</span> <span class="st">"cmdstanr"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">checks</span><span class="op">[[</span><span class="fl">7</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

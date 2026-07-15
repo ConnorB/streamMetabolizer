@@ -1,6 +1,6 @@
-# Extract the fitting data from a metabolism model.
+# Extract model fitting data
 
-A function in the metab_model_interface. Returns the data that were
+A function in the `metab_model_interface`. Returns the data that were
 passed to a metabolism model.
 
 ## Usage
@@ -16,12 +16,11 @@ get_data(metab_model)
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, for which
-  to return the data
+  A metabolism model that implements the `metab_model_interface`.
 
 ## Value
 
-A data.frame
+A data frame.
 
 ## Methods (by class)
 
@@ -41,3 +40,11 @@ Other metab_model_interface:
 [`get_version()`](https://connorb.github.io/streamMetabolizer/reference/get_version.md),
 [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md),
 [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
+
+## Examples
+
+``` r
+get_data(metab_model())
+#>            solar.time DO.obs DO.sat depth temp.water light
+#> 1 2050-03-14 15:10:00   10.1   14.2   0.5       21.8 300.9
+```

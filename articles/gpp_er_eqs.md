@@ -49,10 +49,10 @@ mm_classic
       init.GPP.daily    8
       init.ER.daily     -10
       init.K600.daily   10
-    Fitting time: 0.306 secs elapsed
+    Fitting time: 0.386 secs elapsed
     Parameters (3 dates):
             date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily ER.daily.lower ER.daily.upper
-    1 2012-09-18 2.814873         2.158411        3.471335 -2.113937       -2.647968      -1.579906
+    1 2012-09-18 2.814873         2.158411        3.471335 -2.113937       -2.647969      -1.579906
     2 2012-09-19 3.271209         2.561176        3.981243 -2.466198       -3.052360      -1.880037
     3 2012-09-20 2.590927         2.119941        3.061914 -1.712055       -2.070765      -1.353344
       K600.daily K600.daily.lower K600.daily.upper msgs.fit
@@ -92,25 +92,25 @@ mm_saturator
       init.alpha        1e-04
       init.ER.daily     -10
       init.K600.daily   10
-    Fitting time: 1.062 secs elapsed
+    Fitting time: 1.37 secs elapsed
     Parameters (3 dates):
-            date       Pmax Pmax.lower Pmax.upper         alpha   alpha.lower alpha.upper   ER.daily
-    1 2012-09-18  6.033017    5.715922   6.350112 0.0083269284   0.0078855248 0.008768332 -1.934454
-    2 2012-09-19 10.513878  -30.075534  51.103290 0.0006386593  -0.0002643586 0.001541677 -1.013413
-    3 2012-09-20  6.226685    5.745419   6.707950 0.0073752923   0.0068235254 0.007927059 -1.673045
+            date       Pmax Pmax.lower Pmax.upper         alpha  alpha.lower alpha.upper    ER.daily
+    1 2012-09-18  6.033049    5.715948   6.350149 0.0083268781  0.0078854775 0.008768279 -1.9344527
+    2 2012-09-19 10.636301  -14.149356  35.421959 0.0006899063  0.0001361327 0.001243680 -0.9308165
+    3 2012-09-20  6.226685    5.745419   6.707950 0.0073752921  0.0068235252 0.007927059 -1.6730454
       ER.daily.lower ER.daily.upper K600.daily K600.daily.lower K600.daily.upper msgs.fit
-    1      -2.025455     -1.8434540  24.57056          23.55600         25.58512
-    2      -1.885540     -0.1412865  25.55571          19.95822         31.15319      W
-    3      -1.789892     -1.5561989  24.40066          23.00306         25.79827
+    1      -2.025453     -1.8434520 24.570655         23.556080         25.58523
+    2      -1.247575     -0.6140585  9.018137          6.705663         11.33061      W
+    3      -1.789892     -1.5561989 24.400665         23.003057         25.79827
     Fitting warnings:
       1 date: iteration limit exceeded
     Predictions (3 dates):
     # A tibble: 3 × 9
-      date         GPP GPP.lower GPP.upper    ER ER.lower ER.upper msgs.fit  msgs.pred
-      <date>     <dbl> <lgl>     <lgl>     <dbl>    <dbl>    <dbl> <chr>     <chr>
-    1 2012-09-18 2.47  NA        NA        -1.93    -2.03   -1.84  "       " "       "
-    2 2012-09-19 0.363 NA        NA        -1.01    -1.89   -0.141 "    W  " "       "
-    3 2012-09-20 2.41  NA        NA        -1.67    -1.79   -1.56  "       " "       "
+      date         GPP GPP.lower GPP.upper     ER ER.lower ER.upper msgs.fit  msgs.pred
+      <date>     <dbl> <lgl>     <lgl>      <dbl>    <dbl>    <dbl> <chr>     <chr>
+    1 2012-09-18 2.47  NA        NA        -1.93     -2.03   -1.84  "       " "       "
+    2 2012-09-19 0.392 NA        NA        -0.931    -1.25   -0.614 "    W  " "       "
+    3 2012-09-20 2.41  NA        NA        -1.67     -1.79   -1.56  "       " "       "
 
 The Saturator produces fitting warnings, which are condensed to ‘w’ and
 a summary in the above print-out. They can be inspected in detail by
@@ -185,12 +185,12 @@ get_params(mm_saturator2)
 
             date     Pmax   Pmax.sd       alpha     alpha.sd  ER.daily ER.daily.sd K600.daily
     1 2012-09-18 6.033048 0.1614450 0.008326878 0.0002252292 -1.934453  0.04636854   24.57065
-    2 2012-09-19 7.270001 0.2810037 0.009041332 0.0003329968 -2.239060  0.07721838   26.61006
-    3 2012-09-20 6.226683 0.2451117 0.007375290 0.0002815440 -1.673045  0.05956599   24.40066
+    2 2012-09-19 7.269962 0.2810137 0.009041367 0.0003329972 -2.239060  0.07722047   26.60996
+    3 2012-09-20 6.226683 0.2451116 0.007375290 0.0002815439 -1.673045  0.05956598   24.40066
       K600.daily.sd
     1     0.5166937
-    2     0.7961435
-    3     0.7120839
+    2     0.7961691
+    3     0.7120838
                                                                                                                                                     warnings
     1
     2
@@ -210,12 +210,12 @@ get_params(mm_saturator3)
 ```
 
             date     Pmax   Pmax.sd       alpha     alpha.sd  ER.daily ER.daily.sd K600.daily
-    1 2012-09-18 6.033048 0.1614592 0.008326878 0.0002252283 -1.934452  0.04637106   24.57065
-    2 2012-09-19 7.270001 0.2806163 0.009041332 0.0003330178 -2.239060  0.07715527   26.61006
+    1 2012-09-18 6.033048 0.1614592 0.008326878 0.0002252284 -1.934452  0.04637106   24.57065
+    2 2012-09-19 7.270001 0.2806162 0.009041332 0.0003330177 -2.239060  0.07715525   26.61006
     3 2012-09-20 6.226684 0.2451105 0.007375292 0.0002815623 -1.673045  0.05956607   24.40066
       K600.daily.sd
-    1     0.5167333
-    2     0.7952317
+    1     0.5167332
+    2     0.7952315
     3     0.7120806
                                                                                                                                                     warnings
     1 last global step failed to locate a point lower than estimate. Either estimate is an approximate local minimum of the function or steptol is too small
@@ -236,12 +236,12 @@ get_params(mm_saturator4)
 ```
 
             date     Pmax   Pmax.sd       alpha     alpha.sd  ER.daily ER.daily.sd K600.daily
-    1 2012-09-18 6.033048 0.1614592 0.008326878 0.0002252283 -1.934452  0.04637106   24.57065
-    2 2012-09-19 7.270001 0.2806150 0.009041378 0.0003330192 -2.239069  0.07715563   26.61007
+    1 2012-09-18 6.033048 0.1614592 0.008326878 0.0002252284 -1.934452  0.04637106   24.57065
+    2 2012-09-19 7.270001 0.2806151 0.009041378 0.0003330192 -2.239069  0.07715563   26.61007
     3 2012-09-20 6.226684 0.2451105 0.007375292 0.0002815623 -1.673045  0.05956607   24.40066
       K600.daily.sd
-    1     0.5167333
-    2     0.7952307
+    1     0.5167332
+    2     0.7952308
     3     0.7120806
                                                                                                                                                                                                                                        warnings
     1 data_daily$init.Pmax==NA so using specs; data_daily$init.alpha==NA so using specs; last global step failed to locate a point lower than estimate. Either estimate is an approximate local minimum of the function or steptol is too small

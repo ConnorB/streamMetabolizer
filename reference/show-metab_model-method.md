@@ -13,4 +13,4 @@ show(object)
 
 - object:
 
-  metab_model to be displayed.
+  Metab_model to be displayed.

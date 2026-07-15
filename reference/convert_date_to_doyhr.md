@@ -12,13 +12,13 @@ convert_date_to_doyhr(date)
 
 - date:
 
-  A datetime object as POSIXct or POSIXt
+  A datetime object as POSIXct or POSIXt.
 
 ## Value
 
-Numeric value expressing the date as the number of days, with decimal
-hours, since 00:00 of December 31 of the preceding year (i.e., January
-1st at 00:01 is ~1.01)
+A number expressing the date as days, including fractional days, since
+00:00 on December 31 of the preceding year (that is, January 1 at 00:01
+is approximately 1.01).
 
 ## Examples
 

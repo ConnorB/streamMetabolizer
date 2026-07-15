@@ -91,60 +91,56 @@ and precise metabolism estimates.</p>
 
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>See http://usgs-r.github.io/streamMetabolizer for vignettes on the web.</p>
+    <p>See <a href="https://usgs-r.github.io/streamMetabolizer" class="external-link">https://usgs-r.github.io/streamMetabolizer</a> for package vignettes.</p>
     </div>
     <div class="section level2">
     <h2 id="calculate-new-input-variables">Calculate new input variables<a class="anchor" aria-label="anchor" href="#calculate-new-input-variables"></a></h2>
 
 
-
-<ul><li><p><code><a href="calc_depth.html">calc_depth()</a></code></p></li>
-<li><p><code><a href="calc_DO_sat.html">calc_DO_sat()</a></code></p></li>
-<li><p><code><a href="calc_light.html">calc_light()</a></code></p></li>
+<ul><li><p><code><a href="calc_depth.html">calc_depth()</a></code> estimates stream depth from discharge.</p></li>
+<li><p><code><a href="calc_DO_sat.html">calc_DO_sat()</a></code> calculates dissolved oxygen saturation.</p></li>
+<li><p><code><a href="calc_light.html">calc_light()</a></code> models photosynthetically active radiation.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="convert-existing-input-variables">Convert existing input variables<a class="anchor" aria-label="anchor" href="#convert-existing-input-variables"></a></h2>
 
 
-
-<ul><li><p><code><a href="convert_localtime_to_UTC.html">convert_localtime_to_UTC()</a></code></p></li>
-<li><p><code><a href="convert_UTC_to_solartime.html">convert_UTC_to_solartime()</a></code></p></li>
-<li><p><code><a href="convert_k600_to_kGAS.html">convert_k600_to_kGAS()</a></code></p></li>
-<li><p><code><a href="convert_PAR_to_SW.html">convert_PAR_to_SW()</a></code></p></li>
+<ul><li><p><code><a href="convert_localtime_to_UTC.html">convert_localtime_to_UTC()</a></code> converts local time to UTC.</p></li>
+<li><p><code><a href="convert_UTC_to_solartime.html">convert_UTC_to_solartime()</a></code> converts UTC to local solar time.</p></li>
+<li><p><code><a href="convert_k600_to_kGAS.html">convert_k600_to_kGAS()</a></code> converts K600 to another gas.</p></li>
+<li><p><code><a href="convert_PAR_to_SW.html">convert_PAR_to_SW()</a></code> converts photosynthetically active radiation to
+shortwave radiation.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="model-metabolism">Model metabolism<a class="anchor" aria-label="anchor" href="#model-metabolism"></a></h2>
 
 
-
-<ul><li><p><code><a href="mm_name.html">mm_name()</a></code> 1. Choose a model structure</p></li>
-<li><p><code><a href="specs.html">specs()</a></code> 2. Set the specifications</p></li>
-<li><p><code><a href="metab.html">metab()</a></code> 3. Fit the model</p></li>
-</ul></div>
+<ol><li><p><code><a href="mm_name.html">mm_name()</a></code> chooses a model structure.</p></li>
+<li><p><code><a href="specs.html">specs()</a></code> sets model specifications.</p></li>
+<li><p><code><a href="metab.html">metab()</a></code> fits the model.</p></li>
+</ol></div>
     <div class="section level2">
     <h2 id="inspect-model-results">Inspect model results<a class="anchor" aria-label="anchor" href="#inspect-model-results"></a></h2>
 
 
-
-<ul><li><p><code><a href="predict_metab.html">predict_metab()</a></code></p></li>
-<li><p><code><a href="predict_DO.html">predict_DO()</a></code></p></li>
-<li><p><code><a href="plot_metab_preds.html">plot_metab_preds()</a></code></p></li>
-<li><p><code><a href="plot_DO_preds.html">plot_DO_preds()</a></code></p></li>
-<li><p><code><a href="get_params.html">get_params()</a></code></p></li>
-<li><p><code><a href="get_fit.html">get_fit()</a></code></p></li>
-<li><p><code><a href="get_mcmc.html">get_mcmc()</a></code> (Bayesian models only)</p></li>
-<li><p><code><a href="get_fitting_time.html">get_fitting_time()</a></code></p></li>
+<ul><li><p><code><a href="predict_metab.html">predict_metab()</a></code> predicts daily metabolism.</p></li>
+<li><p><code><a href="predict_DO.html">predict_DO()</a></code> predicts dissolved oxygen.</p></li>
+<li><p><code><a href="plot_metab_preds.html">plot_metab_preds()</a></code> plots daily metabolism predictions.</p></li>
+<li><p><code><a href="plot_DO_preds.html">plot_DO_preds()</a></code> plots dissolved oxygen predictions.</p></li>
+<li><p><code><a href="get_params.html">get_params()</a></code> extracts fitted and fixed parameters.</p></li>
+<li><p><code><a href="get_fit.html">get_fit()</a></code> extracts the internal fitted model.</p></li>
+<li><p><code><a href="get_mcmc.html">get_mcmc()</a></code> extracts Bayesian MCMC model objects.</p></li>
+<li><p><code><a href="get_fitting_time.html">get_fitting_time()</a></code> extracts the model fitting time.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="inspect-model-inputs-properties">Inspect model inputs/properties<a class="anchor" aria-label="anchor" href="#inspect-model-inputs-properties"></a></h2>
 
 
-
-<ul><li><p><code><a href="get_specs.html">get_specs()</a></code></p></li>
-<li><p><code><a href="get_data.html">get_data()</a></code></p></li>
-<li><p><code><a href="get_data_daily.html">get_data_daily()</a></code></p></li>
-<li><p><code><a href="get_info.html">get_info()</a></code></p></li>
-<li><p><code><a href="get_version.html">get_version()</a></code></p></li>
+<ul><li><p><code><a href="get_specs.html">get_specs()</a></code> extracts model specifications.</p></li>
+<li><p><code><a href="get_data.html">get_data()</a></code> extracts subdaily fitting data.</p></li>
+<li><p><code><a href="get_data_daily.html">get_data_daily()</a></code> extracts daily fitting data.</p></li>
+<li><p><code><a href="get_info.html">get_info()</a></code> extracts user-supplied metadata.</p></li>
+<li><p><code><a href="get_version.html">get_version()</a></code> extracts the package version used to fit the model.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

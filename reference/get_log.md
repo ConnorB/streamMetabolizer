@@ -17,14 +17,22 @@ get_log(metab_model)
 - metab_model:
 
   A Bayesian metabolism model (metab_bayes) from which to return the log
-  file, if available
+  file, if available.
 
 ## Value
 
-The MCMC log file(s) lines
+The MCMC log file(s) lines.
 
 ## Methods (by class)
 
 - `get_log(metab_bayes)`: If a log file was created during the Bayesian
   MCMC run, metab_bayes() attempted to capture it. Retrieve what was
   captured with this function.
+
+## Examples
+
+``` r
+mm <- metab_model("metab_bayes", log = "Sampling complete")
+get_log(mm)
+#> Sampling complete
+```

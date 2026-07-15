@@ -19,18 +19,22 @@ mm_filter_dates(
 
 - data:
 
-  either instantaneous/unit or daily data, having columns for solar.time
-  or date, respectively, to filter
+  Either instantaneous/unit or daily data, having columns for solar.time
+  or date, respectively, to filter.
 
 - date_start:
 
-  Date or a class convertible with as.Date. The first date (inclusive)
-  for which to report DO predictions. If NA, no filtering is done.
+  A `Date` or an object coercible with
+  [`as.Date()`](https://rdrr.io/r/base/as.Date.html). The first date
+  (inclusive) for which to report DO predictions. If `NA`, no filtering
+  is done.
 
 - date_end:
 
-  Date or a class convertible with as.Date. The last date (inclusive)
-  for which to report DO predictions. If NA, no filtering is done.
+  A `Date` or an object coercible with
+  [`as.Date()`](https://rdrr.io/r/base/as.Date.html). The last date
+  (inclusive) for which to report DO predictions. If `NA`, no filtering
+  is done.
 
 ## Examples
 

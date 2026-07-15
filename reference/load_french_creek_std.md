@@ -14,12 +14,12 @@ load_french_creek_std(attach.units = deprecated())
 
 - attach.units:
 
-  (deprecated, effectively FALSE in future) logical, default TRUE for
-  backward compatibility. Should units be attached to the data.frame?
+  Deprecated. A logical, default TRUE for backward compatibility. Should
+  units be attached to the data.frame?
 
 ## Value
 
-a data.frame, unitted if attach.units==TRUE
+A data.frame, unitted if attach.units==TRUE.
 
 ## Details
 

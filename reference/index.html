@@ -76,7 +76,7 @@
           <code><a href="plot_DO_preds.html">plot_DO_preds()</a></code>
 
         </dt>
-        <dd>Plot predictions produced with predict_DO</dd>
+        <dd>Plot dissolved oxygen predictions</dd>
 
         <dt>
 
@@ -97,7 +97,7 @@
           <code><a href="plot_metab_preds.html">plot_metab_preds()</a></code>
 
         </dt>
-        <dd>Plot predictions produced with predict_DO</dd>
+        <dd>Plot metabolism predictions</dd>
       </dl></div><div class="section level2">
       <h2 id="other">Other<a class="anchor" aria-label="anchor" href="#other"></a></h2>
 
@@ -118,16 +118,16 @@
         <dt>
 
           <code><a href="calc_DO_sat.html">calc_DO_sat()</a></code>
-          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
+
         </dt>
-        <dd>Calculates the equilibrium saturation concentration of oxygen in water at the supplied conditions</dd>
+        <dd>Calculate equilibrium oxygen saturation</dd>
 
         <dt>
 
           <code><a href="calc_air_pressure.html">calc_air_pressure()</a></code>
 
         </dt>
-        <dd>Calculates the average air pressure for a site</dd>
+        <dd>Calculate average air pressure for a site</dd>
 
         <dt>
 
@@ -155,14 +155,14 @@
           <code><a href="calc_hour_angle.html">calc_hour_angle()</a></code>
 
         </dt>
-        <dd>Calculate hour angle as in http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html.</dd>
+        <dd>Calculate hour angle using the <a href="http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html" class="external-link">NASA solar insolation method</a>.</dd>
 
         <dt>
 
           <code><a href="calc_is_daytime.html">calc_is_daytime()</a></code>
           <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
         </dt>
-        <dd>Determines if specified datetime is during the daytime Returns T/F indicating whether a datetime occurs during the daytime (sunlight hours)</dd>
+        <dd>Determine whether datetimes occur during daylight</dd>
 
         <dt>
 
@@ -176,14 +176,14 @@
           <code><a href="calc_light_merged.html">calc_light_merged()</a></code>
 
         </dt>
-        <dd>Merge modeled and observed PAR into a single timeseries</dd>
+        <dd>Merge modeled and observed PAR into a time series</dd>
 
         <dt>
 
           <code><a href="calc_solar_insolation.html">calc_solar_insolation()</a></code>
 
         </dt>
-        <dd>Model solar insolation on a horizontal surface (W/m2 == J/s/m2) as in http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html</dd>
+        <dd>Model solar insolation on a horizontal surface</dd>
 
         <dt>
 
@@ -225,7 +225,7 @@
           <code><a href="convert_UTC_to_localtime.html">convert_UTC_to_localtime()</a></code>
 
         </dt>
-        <dd>Convert time from UTC to local time.</dd>
+        <dd>Convert UTC to local time</dd>
 
         <dt>
 
@@ -239,21 +239,21 @@
           <code><a href="convert_k600_to_kGAS.html">convert_k600_to_kGAS()</a></code>
 
         </dt>
-        <dd>Returns the gas exchange velocity for gas of interest w/ no unit conversions</dd>
+        <dd>Convert K600 to a gas-specific exchange velocity</dd>
 
         <dt>
 
           <code><a href="convert_kGAS_to_k600.html">convert_kGAS_to_k600()</a></code>
 
         </dt>
-        <dd>Returns the gas exchange velocity as k600 for gas of interest w/ no unit conversions</dd>
+        <dd>Convert a gas-specific exchange velocity to K600</dd>
 
         <dt>
 
           <code><a href="convert_localtime_to_UTC.html">convert_localtime_to_UTC()</a></code>
 
         </dt>
-        <dd>Convert time from local time to UTC.</dd>
+        <dd>Convert local time to UTC</dd>
 
         <dt>
 
@@ -281,7 +281,7 @@
           <code><a href="create_calc_dDOdt.html">create_calc_dDOdt()</a></code>
 
         </dt>
-        <dd>Create a function that generates a 1-day timeseries of DO.mod</dd>
+        <dd>Create a function that calculates a one-day DO time series</dd>
 
         <dt>
 
@@ -295,35 +295,35 @@
           <code><a href="get_data.html">get_data()</a></code>
 
         </dt>
-        <dd>Extract the fitting data from a metabolism model.</dd>
+        <dd>Extract model fitting data</dd>
 
         <dt>
 
           <code><a href="get_data_daily.html">get_data_daily()</a></code>
 
         </dt>
-        <dd>Extract the daily fitting data, if any, from a metabolism model.</dd>
+        <dd>Extract daily model fitting data</dd>
 
         <dt>
 
           <code><a href="get_fit.html">get_fit()</a></code>
 
         </dt>
-        <dd>Extract the internal model from a metabolism model.</dd>
+        <dd>Extract the internal fitted model</dd>
 
         <dt>
 
           <code><a href="get_fitting_time.html">get_fitting_time()</a></code>
 
         </dt>
-        <dd>Extract the amount of time that was required to fit the metabolism model.</dd>
+        <dd>Extract model fitting time</dd>
 
         <dt>
 
           <code><a href="get_info.html">get_info()</a></code>
 
         </dt>
-        <dd>Extract the user-supplied metadata about a metabolism model.</dd>
+        <dd>Extract user-supplied model metadata</dd>
 
         <dt>
 
@@ -351,28 +351,28 @@
           <code><a href="get_param_names.html">get_param_names()</a></code>
 
         </dt>
-        <dd>Extract the daily parameter names from a metabolism model.</dd>
+        <dd>Extract daily metabolism parameter names</dd>
 
         <dt>
 
           <code><a href="get_params.html">get_params()</a></code>
 
         </dt>
-        <dd>Extract the metabolism parameters (fitted and/or fixed) from a model.</dd>
+        <dd>Extract metabolism model parameters</dd>
 
         <dt>
 
           <code><a href="get_specs.html">get_specs()</a></code>
 
         </dt>
-        <dd>Extract the fitting specifications from a metabolism model.</dd>
+        <dd>Extract model fitting specifications</dd>
 
         <dt>
 
           <code><a href="get_version.html">get_version()</a></code>
 
         </dt>
-        <dd>Extract the version of streamMetabolizer that was used to fit the model.</dd>
+        <dd>Extract the streamMetabolizer version used to fit a model</dd>
 
         <dt>
 
@@ -449,7 +449,7 @@
           <code><a href="metab_bayes.html">metab_bayes()</a></code>
 
         </dt>
-        <dd>Basic Bayesian metabolism model fitting function</dd>
+        <dd>Fit a Bayesian metabolism model</dd>
 
         <dt>
 
@@ -470,28 +470,28 @@
           <code><a href="metab_mle.html">metab_mle()</a></code>
 
         </dt>
-        <dd>Maximum likelihood metabolism model fitting function</dd>
+        <dd>Fit a metabolism model by maximum likelihood</dd>
 
         <dt>
 
           <code><a href="metab_model-class.html">metab_model-class</a></code>
 
         </dt>
-        <dd>A metabolism model class.</dd>
+        <dd>Metabolism model class</dd>
 
         <dt>
 
           <code><a href="metab_model.html">metab_model()</a></code>
 
         </dt>
-        <dd>Create a metab_model object.</dd>
+        <dd>Create a metabolism model object</dd>
 
         <dt>
 
           <code><a href="metab_model_interface.html">metab_model_interface</a></code>
 
         </dt>
-        <dd>Functions implemented by any <code>streamMetabolizer</code>-compatible metabolism model.</dd>
+        <dd>Functions implemented by compatible metabolism models</dd>
 
         <dt>
 
@@ -533,7 +533,7 @@
           <code><a href="mm_data.html">mm_data()</a></code>
 
         </dt>
-        <dd>Return the data types that may be used by metab_models using the metab_model_interface.</dd>
+        <dd>Describe model input data types</dd>
 
         <dt>
 
@@ -547,7 +547,7 @@
           <code><a href="mm_get_timestep.html">mm_get_timestep()</a></code>
 
         </dt>
-        <dd>Return the average timestep in days</dd>
+        <dd>Calculate timesteps in days</dd>
 
         <dt>
 
@@ -575,7 +575,7 @@
           <code><a href="mm_name.html">mm_name()</a></code>
 
         </dt>
-        <dd>Find the name of a model by its features</dd>
+        <dd>Construct a model name from its features</dd>
 
         <dt>
 
@@ -610,7 +610,7 @@
           <code><a href="mm_validate_data.html">mm_validate_data()</a></code>
 
         </dt>
-        <dd>Evaluate whether the data argument is properly formatted.</dd>
+        <dd>Validate model input data</dd>
 
         <dt>
 
@@ -624,14 +624,14 @@
           <code><a href="predict_DO.html">predict_DO()</a></code>
 
         </dt>
-        <dd>Predict DO from a fitted model.</dd>
+        <dd>Predict dissolved oxygen from a fitted model</dd>
 
         <dt>
 
           <code><a href="predict_metab.html">predict_metab()</a></code>
 
         </dt>
-        <dd>Predict metabolism from a fitted model.</dd>
+        <dd>Predict metabolism from a fitted model</dd>
 
         <dt>
 
@@ -645,7 +645,7 @@
           <code><a href="prepdata_Kmodel.html">prepdata_Kmodel()</a></code>
 
         </dt>
-        <dd>Prepare data_daily by aggregating any daily data, renaming K600.daily to K600.daily.obs, &amp; setting data_daily$weight to reflect user weights &amp; filters</dd>
+        <dd>Prepare daily data for K modeling</dd>
 
         <dt>
 
@@ -708,7 +708,7 @@
           <code><a href="streamMetabolizer-deprecated.html">streamMetabolizer-deprecated</a></code>
 
         </dt>
-        <dd>Deprecated Functions in package streamMetabolizer</dd>
+        <dd>Deprecated functions in streamMetabolizer</dd>
 
         <dt>
 

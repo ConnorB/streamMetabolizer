@@ -20,7 +20,7 @@ select_cmdstan_draws(draws_array, parname, index = TRUE)
 
 - index:
 
-  integer or logical. Applicable only if plotting posteriors, and useful
+  Integer or logical. Applicable only if plotting posteriors, and useful
   only if the parname is for a parameter having multiple (e.g., daily)
   instances. In this case, the index selects the instance and
   corresponds to the row number in the data.frame element of

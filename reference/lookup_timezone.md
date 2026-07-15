@@ -13,11 +13,16 @@ lookup_timezone(latitude, longitude)
 
 - latitude:
 
-  degrees latitude (positive for north) of the location to look up.
+  Degrees latitude (positive for north) of the location to look up.
 
 - longitude:
 
-  degrees longitude (positive for east) of the location to look up.
+  Degrees longitude (positive for east) of the location to look up.
+
+## Value
+
+A list containing the IANA time zone name (`tz`), daylight-saving offset
+(`dst_offset`), standard UTC offset (`std_offset`), and retry count.
 
 ## Examples
 

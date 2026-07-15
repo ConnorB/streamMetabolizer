@@ -22,67 +22,86 @@ variants that produce more accurate and precise metabolism estimates.
 
 ## Details
 
-See http://usgs-r.github.io/streamMetabolizer for vignettes on the web.
+See <https://usgs-r.github.io/streamMetabolizer> for package vignettes.
 
 ## Calculate new input variables
 
 - [`calc_depth()`](https://connorb.github.io/streamMetabolizer/reference/calc_depth.md)
+  estimates stream depth from discharge.
 
 - [`calc_DO_sat()`](https://connorb.github.io/streamMetabolizer/reference/calc_DO_sat.md)
+  calculates dissolved oxygen saturation.
 
 - [`calc_light()`](https://connorb.github.io/streamMetabolizer/reference/calc_light.md)
+  models photosynthetically active radiation.
 
 ## Convert existing input variables
 
 - [`convert_localtime_to_UTC()`](https://connorb.github.io/streamMetabolizer/reference/convert_localtime_to_UTC.md)
+  converts local time to UTC.
 
 - [`convert_UTC_to_solartime()`](https://connorb.github.io/streamMetabolizer/reference/convert_UTC_to_solartime.md)
+  converts UTC to local solar time.
 
 - [`convert_k600_to_kGAS()`](https://connorb.github.io/streamMetabolizer/reference/convert_k600_to_kGAS.md)
+  converts K600 to another gas.
 
 - [`convert_PAR_to_SW()`](https://connorb.github.io/streamMetabolizer/reference/convert_PAR_to_SW.md)
+  converts photosynthetically active radiation to shortwave radiation.
 
 ## Model metabolism
 
-- [`mm_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_name.md) 1.
-  Choose a model structure
+1.  [`mm_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_name.md)
+    chooses a model structure.
 
-- [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md) 2.
-  Set the specifications
+2.  [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md)
+    sets model specifications.
 
-- [`metab()`](https://connorb.github.io/streamMetabolizer/reference/metab.md) 3.
-  Fit the model
+3.  [`metab()`](https://connorb.github.io/streamMetabolizer/reference/metab.md)
+    fits the model.
 
 ## Inspect model results
 
 - [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
+  predicts daily metabolism.
 
 - [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md)
+  predicts dissolved oxygen.
 
 - [`plot_metab_preds()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_preds.md)
+  plots daily metabolism predictions.
 
 - [`plot_DO_preds()`](https://connorb.github.io/streamMetabolizer/reference/plot_DO_preds.md)
+  plots dissolved oxygen predictions.
 
 - [`get_params()`](https://connorb.github.io/streamMetabolizer/reference/get_params.md)
+  extracts fitted and fixed parameters.
 
 - [`get_fit()`](https://connorb.github.io/streamMetabolizer/reference/get_fit.md)
+  extracts the internal fitted model.
 
 - [`get_mcmc()`](https://connorb.github.io/streamMetabolizer/reference/get_mcmc.md)
-  (Bayesian models only)
+  extracts Bayesian MCMC model objects.
 
 - [`get_fitting_time()`](https://connorb.github.io/streamMetabolizer/reference/get_fitting_time.md)
+  extracts the model fitting time.
 
 ## Inspect model inputs/properties
 
 - [`get_specs()`](https://connorb.github.io/streamMetabolizer/reference/get_specs.md)
+  extracts model specifications.
 
 - [`get_data()`](https://connorb.github.io/streamMetabolizer/reference/get_data.md)
+  extracts subdaily fitting data.
 
 - [`get_data_daily()`](https://connorb.github.io/streamMetabolizer/reference/get_data_daily.md)
+  extracts daily fitting data.
 
 - [`get_info()`](https://connorb.github.io/streamMetabolizer/reference/get_info.md)
+  extracts user-supplied metadata.
 
 - [`get_version()`](https://connorb.github.io/streamMetabolizer/reference/get_version.md)
+  extracts the package version used to fit the model.
 
 ## See also
 

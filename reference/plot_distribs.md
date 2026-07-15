@@ -1,7 +1,7 @@
 # Plot the prior/posterior distributions of a parameter
 
-Plot the prior and/or posterior disitrubtions as implied by the
-hyperparameters in a specs list and/or the
+Plot prior and posterior distributions implied by a `specs` list or
+fitted metabolism model.
 
 ## Usage
 
@@ -26,12 +26,12 @@ plot_distribs(
 
 - parname:
 
-  character. the name of the parameter whose distribution(s) you wish to
-  plot
+  Character. the name of the parameter whose distribution(s) you wish to
+  plot.
 
 - index:
 
-  integer or logical. Applicable only if plotting posteriors, and useful
+  Integer or logical. Applicable only if plotting posteriors, and useful
   only if the parname is for a parameter having multiple (e.g., daily)
   instances. In this case, the index selects the instance and
   corresponds to the row number in the data.frame element of
@@ -41,12 +41,17 @@ plot_distribs(
 
 - style:
 
-  character indicating which graphics package to use
+  Character indicating which graphics package to use.
+
+## Value
+
+A ggplot object when `style = "ggplot2"` or a dygraph object when
+`style = "dygraphs"`.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 # priors only
 plot_distribs(specs('bayes', K600_daily_mu=30), 'K600_daily')
 
@@ -58,5 +63,5 @@ plot_distribs(mm, 'GPP_daily', 1)
 plot_distribs(mm, 'err_proc_iid_sigma') |>
   dygraphs::dyRangeSelector(dateWindow=c(-0.1,1.3)) |>
   dygraphs::dyAxis(name='y', valueRange=c(0,15))
-} # }
+}
 ```

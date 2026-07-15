@@ -1,4 +1,4 @@
-# Evaluate whether the data argument is properly formatted.
+# Validate model input data
 
 Will most often be called from within a metab_model constructor.
 
@@ -31,17 +31,23 @@ mm_validate_data(
 
 - metab_class:
 
-  character the class name of the metab_model constructor
+  Character the class name of the metab_model constructor.
 
 - data_tests:
 
-  list of tests to conduct to determine whether the input data.frames
-  are properly formatted to allow modeling to begin
+  List of tests to conduct to determine whether the input data.frames
+  are properly formatted to allow modeling to begin.
+
+## Value
+
+A list containing validated `data` and `data_daily` objects.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-mm_validate_data(dplyr::select(mm_data(),-temp.water), metab_class="metab_mle")
-} # }
+try(mm_validate_data(
+  dplyr::select(mm_data(), -temp.water),
+  metab_class = "metab_mle"
+))
+#> Error : `data` is missing column: `temp.water`.
 ```

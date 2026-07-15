@@ -20,11 +20,11 @@ lookup_usgs_elevation(
 
 - latitude:
 
-  degrees latitude (positive for north) of the location to look up.
+  Degrees latitude (positive for north) of the location to look up.
 
 - longitude:
 
-  degrees longitude (positive for east) of the location to look up.
+  Degrees longitude (positive for east) of the location to look up.
 
 - units:
 
@@ -51,7 +51,7 @@ https://epqs.nationalmap.gov/v1/docs
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 elevation_m <- lookup_usgs_elevation(
   latitude = 39.102075,
   longitude = -96.594689
@@ -64,5 +64,5 @@ elevation_ft <- lookup_usgs_elevation(
   units = "ft"
 )
 elevation_ft
-} # }
+}
 ```

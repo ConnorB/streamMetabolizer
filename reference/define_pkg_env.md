@@ -11,4 +11,4 @@ define_pkg_env()
 
 ## Value
 
-the package environment
+The package environment.

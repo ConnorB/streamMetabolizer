@@ -19,32 +19,35 @@ calc_light(
 
 - solar.time:
 
-  mean solar time, as required for input to metabolism models. See
+  Mean solar time, as required for input to metabolism models. See
   [`mm_data()`](https://connorb.github.io/streamMetabolizer/reference/mm_data.md)
   and
   [`calc_solar_time()`](https://connorb.github.io/streamMetabolizer/reference/calc_solar_time.md).
 
 - latitude:
 
-  numeric value or vector indicating the site latitude in decimal
+  Numeric value or vector indicating the site latitude in decimal
   degrees (never radians or deg-min-sec, no matter what `format` is)
   between -90 (South Pole) and 90 (North Pole).
 
 - longitude:
 
-  numeric, in degrees, either positive and unitted ("degE" or "degW") or
+  Numeric, in degrees, either positive and unitted ("degE" or "degW") or
   with sign indicating direction (positive = East), describing location
-  of the site
+  of the site.
 
 - max.PAR:
 
-  numeric or unitted_numeric: the PAR (umol m^-2 s^-1) that each day
-  should reach at peak light
+  Numeric or unitted_numeric: the PAR (umol m^-2 s^-1) that each day
+  should reach at peak light.
 
 - attach.units:
 
-  (deprecated, effectively FALSE in future) logical. Should the returned
-  vector be a unitted object?
+  Deprecated. A logical. Should the returned vector be a unitted object?
+
+## Value
+
+A numeric vector of modeled PAR values in µmol m⁻² s⁻¹.
 
 ## Examples
 

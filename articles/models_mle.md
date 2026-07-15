@@ -146,15 +146,15 @@ mm
       init.GPP.daily    2
       init.ER.daily     -1
       init.K600.daily   3
-    Fitting time: 0.338 secs elapsed
+    Fitting time: 0.418 secs elapsed
     Parameters (3 dates):
             date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily
-    1 2012-09-18 2.814768         2.160463        3.469073 -2.113856
-    2 2012-09-19 3.271369         2.562593        3.980144 -2.466321
+    1 2012-09-18 2.814768         2.160462        3.469074 -2.113856
+    2 2012-09-19 3.271369         2.562593        3.980145 -2.466321
     3 2012-09-20 2.590855         2.121370        3.060339 -1.712003
       ER.daily.lower ER.daily.upper K600.daily K600.daily.lower K600.daily.upper
-    1      -2.646426      -1.581285  31.05944          24.49085         37.62803
-    2      -3.051682      -1.880960  33.23987          26.63807         39.84166
+    1      -2.646427      -1.581284  31.05944          24.49084         37.62804
+    2      -3.051683      -1.880959  33.23987          26.63806         39.84167
     3      -2.069836      -1.354171  28.71773          24.02289         33.41257
       msgs.fit
     1
@@ -205,7 +205,7 @@ get_fitting_time(mm) # the time it took to fit the model
 ```
 
        user  system elapsed
-      0.338   0.000   0.338 
+      0.416   0.003   0.418 
 
 ``` r
 

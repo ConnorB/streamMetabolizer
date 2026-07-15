@@ -86,20 +86,19 @@ slightly more readable with <code><a href="mm_parse_name.html">mm_parse_name()</
 
 
 <dl><dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>character. The model type. Options:</p><ul><li><p><code>mle</code>:
-maximum likelihood estimation (see also <code><a href="metab_mle.html">metab_mle()</a></code>)</p></li>
-<li><p><code>bayes</code>: bayesian hierarchical models <code><a href="metab_bayes.html">metab_bayes()</a></code></p></li>
-<li><p><code>night</code>: nighttime regression (see also <code><a href="metab_night.html">metab_night()</a></code>)</p></li>
-<li><p><code>Kmodel</code>: regression of <em>daily</em> estimates of
-<code>K600.daily</code> versus discharge, time, etc., usually for 3-phase
-estimation of K alone (by MLE or nighttime regression), K vs discharge
-(using this model), and then GPP and ER with fixed K (by MLE) (see also
-<code><a href="metab_Kmodel.html">metab_Kmodel()</a></code>)</p></li>
-<li><p><code>sim</code>: simulation of <code>DO.obs</code>
-'data' for testing other models (see also <code><a href="metab_sim.html">metab_sim()</a></code>)</p></li>
+<dd><p>A string specifying the model type:</p><ul><li><p><code>"mle"</code>: Maximum likelihood estimation; see <code><a href="metab_mle.html">metab_mle()</a></code>.</p></li>
+<li><p><code>"bayes"</code>: Bayesian hierarchical modeling; see <code><a href="metab_bayes.html">metab_bayes()</a></code>.</p></li>
+<li><p><code>"night"</code>: Nighttime regression; see <code><a href="metab_night.html">metab_night()</a></code>.</p></li>
+<li><p><code>"Kmodel"</code>: Regression of daily <code>K600.daily</code> estimates against
+discharge, time, or other predictors; see <code><a href="metab_Kmodel.html">metab_Kmodel()</a></code>.</p></li>
+<li><p><code>"sim"</code>: Simulation of <code>DO.obs</code> data; see <code><a href="metab_sim.html">metab_sim()</a></code>.</p></li>
 </ul></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A character vector of valid encoded model names.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

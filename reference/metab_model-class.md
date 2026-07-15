@@ -1,6 +1,6 @@
-# A metabolism model class.
+# Metabolism model class
 
-A metabolism model class.
+Metabolism model class
 
 ## Slots
 

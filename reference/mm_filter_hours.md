@@ -16,12 +16,12 @@ mm_filter_hours(data, day_start, day_end)
 
 - data:
 
-  a data.frame containing date and solar.time columns (POSIXct)
+  A data.frame containing date and solar.time columns (POSIXct).
 
 - day_start:
 
-  the start time of each day, inclusive, in hours
+  The start time of each day, inclusive, in hours.
 
 - day_end:
 
-  the end time of each day, exclusive, in hours
+  The end time of each day, exclusive, in hours.

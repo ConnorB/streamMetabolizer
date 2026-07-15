@@ -16,7 +16,7 @@ load_rstan_model(model_path, verbose = FALSE, stan_model_fn = rstan_stan_model)
 
 - verbose:
 
-  logical. give status messages?
+  Logical. give status messages?
 
 - stan_model_fn:
 

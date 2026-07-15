@@ -20,21 +20,21 @@ sim_Kb(
 
 - K600_lnQ_nodes_centers:
 
-  data configuration argument for pool_K600='binned'. numeric vector
+  Data configuration argument for pool_K600='binned'. numeric vector
   giving the natural-log-space centers of the discharge bins. See also
-  [`calc_bins()`](https://connorb.github.io/streamMetabolizer/reference/calc_bins.md)
+  [`calc_bins()`](https://connorb.github.io/streamMetabolizer/reference/calc_bins.md).
 
 - K600_lnQ_cnode_meanlog:
 
   For a sim model with pool_K600='binned'. The mean of a lognormal
   distribution describing the y=K600 value of the middle (or just past
-  middle) node in the piecewise lnK ~ lnQ relationship
+  middle) node in the piecewise lnK ~ lnQ relationship.
 
 - K600_lnQ_cnode_sdlog:
 
   For a sim model with pool_K600='binned'. The sd of a lognormal
   distribution describing the y=K600 value of the middle (or just past
-  middle) node in the piecewise lnK ~ lnQ relationship
+  middle) node in the piecewise lnK ~ lnQ relationship.
 
 - K600_lnQ_nodediffs_meanlog:
 
@@ -44,10 +44,28 @@ sim_Kb(
 
 - K600_lnQ_nodediffs_sdlog:
 
-  hyperparameter for pool_K600='binned'. The standard deviations of the
+  Hyperparameter for pool_K600='binned'. The standard deviations of the
   differences in estimated K600 between successive lnQ_nodes (bins),
-  where the means of those differences are always zero
+  where the means of those differences are always zero.
 
 - ...:
 
   Additional simulation parameters, which are ignored.
+
+## Value
+
+A numeric vector of simulated ln(K600) values at the supplied nodes.
+
+## Examples
+
+``` r
+set.seed(42)
+sim_Kb(
+  K600_lnQ_nodes_centers = c(-1, 0, 1),
+  K600_lnQ_cnode_meanlog = log(10),
+  K600_lnQ_cnode_sdlog = 0.1,
+  K600_lnQ_nodediffs_meanlog = 0.2,
+  K600_lnQ_nodediffs_sdlog = 0.05
+)
+#> [1] 2.211446 2.439681 2.657837
+```

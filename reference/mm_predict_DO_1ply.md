@@ -20,10 +20,10 @@ mm_predict_DO_1ply(
 
 - data_ply:
 
-  a data frame or tibble containing all relevant, validated modeling
+  A data frame or tibble containing all relevant, validated modeling
   data for a single ply of data. (1 ply ~= 1 date, although the day
   length has been specified by day_start and day_end and may not be
-  exactly 24 hours)
+  exactly 24 hours).
 
 - data_daily_ply:
 
@@ -32,7 +32,7 @@ mm_predict_DO_1ply(
 
 - day_start:
 
-  start time (inclusive) of a day's data in number of hours from the
+  Start time (inclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_start=-1.5 indicates
   that data describing 2006-06-26 begin at 2006-06-25 22:30, or at the
   first observation time that occurs after that time if day_start
@@ -40,27 +40,27 @@ mm_predict_DO_1ply(
 
 - day_end:
 
-  end time (exclusive) of a day's data in number of hours from the
+  End time (exclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_end=30 indicates that
   data describing 2006-06-26 end at the last observation time that
   occurs before 2006-06-27 06:00.
 
 - ply_date:
 
-  the modal date of this ply of data and data_daily, and the date by
+  The modal date of this ply of data and data_daily, and the date by
   which this ply should be referred topresent.
 
 - ...:
 
-  other args that were passed untouched from the function calling
+  Other args that were passed untouched from the function calling
   mm_model_by_ply, through mm_model_by_ply, and finally to this
   function.
 
 - model_name:
 
-  the coded model name that will determine the GPP_fun, ER_fun,
-  deficit_src, and ode_method to use in prediction
+  The coded model name that will determine the GPP_fun, ER_fun,
+  deficit_src, and ode_method to use in prediction.
 
 ## Value
 
-a data.frame of predictions
+A data.frame of predictions.

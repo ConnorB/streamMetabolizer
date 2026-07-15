@@ -15,9 +15,9 @@ sim_pred_Kb(K600_lnQ_nodes_centers, lnK600_lnQ_nodes, lnQ.daily)
 
 - K600_lnQ_nodes_centers:
 
-  data configuration argument for pool_K600='binned'. numeric vector
+  Data configuration argument for pool_K600='binned'. numeric vector
   giving the natural-log-space centers of the discharge bins. See also
-  [`calc_bins()`](https://connorb.github.io/streamMetabolizer/reference/calc_bins.md)
+  [`calc_bins()`](https://connorb.github.io/streamMetabolizer/reference/calc_bins.md).
 
 - lnK600_lnQ_nodes:
 
@@ -27,5 +27,20 @@ sim_pred_Kb(K600_lnQ_nodes_centers, lnK600_lnQ_nodes, lnQ.daily)
 
 - lnQ.daily:
 
-  vector of daily values of the natural log of discharge, e.g.,
-  `log(data_daily$discharge.daily)`
+  Vector of daily values of the natural log of discharge, e.g.,
+  `log(data_daily$discharge.daily)`.
+
+## Value
+
+A numeric vector of predicted daily ln(K600) values.
+
+## Examples
+
+``` r
+sim_pred_Kb(
+  K600_lnQ_nodes_centers = c(-1, 0, 1),
+  lnK600_lnQ_nodes = log(c(5, 10, 20)),
+  lnQ.daily = c(-0.5, 0.5)
+)
+#> [1] 1.956012 2.649159
+```

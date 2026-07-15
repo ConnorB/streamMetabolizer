@@ -17,46 +17,42 @@ create_calc_DO(
 
 - calc_dDOdt:
 
-  a function as from `create_calc_dDOdt`
+  A function as from `create_calc_dDOdt`.
 
 - ode_method:
 
-  character. The method to use in solving the ordinary differential
-  equation for DO. Options:
+  A string specifying the method used to solve the ordinary differential
+  equation for DO:
 
-  - `euler`, formerly `Euler`: the final change in DO from t=1 to t=2 is
-    solely a function of GPP, ER, DO, etc. at t=1
+  - `"euler"` (formerly `"Euler"`): Use conditions at the start of each
+    timestep.
 
-  - `trapezoid`, formerly `pairmeans`: the final change in DO from t=1
-    to t=2 is a function of the mean values of GPP, ER, etc. across t=1
-    and t=2.
+  - `"trapezoid"` (formerly `"pairmeans"`): Use mean conditions across
+    each timestep.
 
-  - for `type='mle'`, options also include `rk2` and any character
-    method accepted by
-    [`deSolve::ode()`](https://rdrr.io/pkg/deSolve/man/ode.html) in the
-    `deSolve` package (`lsoda`, `lsode`, `lsodes`, `lsodar`, `vode`,
-    `daspk`, `rk4`, `ode23`, `ode45`, `radau`, `bdf`, `bdf_d`, `adams`,
-    `impAdams`, and `impAdams_d`; note that many of these have not been
-    well tested in the context of `streamMetabolizer` models)
+  - For `type = "mle"`, `"rk2"` and methods accepted by
+    [`deSolve::ode()`](https://rdrr.io/pkg/deSolve/man/ode.html) are
+    also available. Many have not been extensively tested with
+    streamMetabolizer models.
 
 - err.obs:
 
-  optional numerical vector of length nrow(data) in units of gO2 m^3.
+  Optional numerical vector of length nrow(data) in units of gO2 m^3.
   Appropriate for simulation, when this vector of observation errors
   will be added to the calculated DO values to simulate observation
   error. But usually (for MLE or prediction from a fitted
   MLE/Bayesian/nighttime regression model) `err.obs` should be missing
-  or 0
+  or 0.
 
 ## Value
 
-a function that will return a negative log likelihood of the data given
-a set of metab.pars
+A function that will return a negative log likelihood of the data given
+a set of metab.pars.
 
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 # prepare data for examples
 data <- data_metab('3','30')[97:144,][seq(1,48,by=2),]
 # preds.init <- list(GPP.daily=2.82,ER.daily=-2.12,K600.daily=31.27)
@@ -116,5 +112,5 @@ dDOdt <- create_calc_dDOdt(data, ode_method='trapezoid', GPP_fun='linlight',
 DO <- create_calc_DO(dDOdt, ode_method='trapezoid', err.obs=rnorm(nrow(data), 0, 0.1))
 DO.mod.operr <- DO(preds.init)
 lines(x=DOtime, y=DO.mod.operr, col='red', lty=2)
-} # }
+}
 ```

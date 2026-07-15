@@ -29,26 +29,26 @@ mm_model_by_ply(
 
 - model_fun:
 
-  the function to apply to each data ply. This function should accept
+  The function to apply to each data ply. This function should accept
   the arguments `c(data, data_daily, ..., day_start, day_end, ply_date)`
   where `data_daily` is `NULL` when the `data_daily` argument to
-  `mm_model_by_ply` is missing or `NULL`
+  `mm_model_by_ply` is missing or `NULL`.
 
 - data:
 
-  required. A data frame or tibble to split into chunks by date, where a
+  Required. A data frame or tibble to split into chunks by date, where a
   'date' begins on the hour day_start and ends at the hour day_end. The
   solar.time column must be present.
 
 - data_daily:
 
-  optional. A data frame or tibble containing inputs with a daily
+  Optional. A data frame or tibble containing inputs with a daily
   timestep, each row of which will be passed to the corresponding date
   chunk from `data`. The date column must be present.
 
 - day_start:
 
-  start time (inclusive) of a day's data in number of hours from the
+  Start time (inclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_start=-1.5 indicates
   that data describing 2006-06-26 begin at 2006-06-25 22:30, or at the
   first observation time that occurs after that time if day_start
@@ -64,7 +64,7 @@ mm_model_by_ply(
 
 - day_end:
 
-  end time (exclusive) of a day's data in number of hours from the
+  End time (exclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_end=30 indicates that
   data describing 2006-06-26 end at the last observation time that
   occurs before 2006-06-27 06:00. See day_start for recommended start
@@ -72,7 +72,7 @@ mm_model_by_ply(
 
 - day_tests:
 
-  list of tests to conduct to determine whether each date worth of data
+  List of tests to conduct to determine whether each date worth of data
   is valid for modeling. The results of these tests will be combined
   with the result of the test implied if `required_timestep` is numeric
   and then will be passed to `model_fun` as the `ply_validity` argument
@@ -97,7 +97,7 @@ mm_model_by_ply(
 
 - ...:
 
-  other args to be passed through mm_model_by_ply to model_fun
+  Other args to be passed through mm_model_by_ply to model_fun.
 
 ## Value
 

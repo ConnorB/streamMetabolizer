@@ -22,24 +22,29 @@ calc_bins(
 
 - vec:
 
-  the numeric vector whose values should be binned. log(discharge.daily)
+  The numeric vector whose values should be binned. log(discharge.daily)
   is a good candidate when using this function for pooling of K600
   values.
 
 - method:
 
-  a single character string indicating the automated bin selection
-  method to use
+  A single character string indicating the automated bin selection
+  method to use.
 
 - ...:
 
-  other arguments (e.g. `n`, `width`) passed to the ggplot function
+  Other arguments (e.g. `n`, `width`) passed to the ggplot function
   corresponding to the value of cuts, if cuts is a character (otherwise
-  ignored)
+  ignored).
 
 - bounds:
 
-  if method=='bounds', a numeric vector of bin boundaries
+  If method=='bounds', a numeric vector of bin boundaries.
+
+## Value
+
+A list containing the integer bin assignment for each value (`vec`), the
+numeric bin boundaries (`bounds`), and the bin labels (`names`).
 
 ## Examples
 
@@ -115,15 +120,16 @@ table(bins_arb$vec)
 #> 
 #>  2  3  4  5  6  7 
 #>  3 11 32 35 16  3 
-if (FALSE) { # \dontrun{
 library(ggplot2)
 ggplot(df_num, aes(x=t, y=vec, color=bin)) + geom_point() +
   geom_hline(data=as.data.frame(bins_num['bounds']), aes(yintercept=bounds))
+
 ggplot(df_int, aes(x=t, y=vec, color=bin)) + geom_point() +
   geom_hline(data=as.data.frame(bins_int['bounds']), aes(yintercept=bounds))
+
 ggplot(df_wid, aes(x=t, y=vec, color=bin)) + geom_point() +
   geom_hline(data=as.data.frame(bins_wid['bounds']), aes(yintercept=bounds))
+
 ggplot(df_arb, aes(x=t, y=vec, color=bin)) + geom_point() +
   geom_hline(data=as.data.frame(bins_arb['bounds']), aes(yintercept=bounds))
-} # }
 ```

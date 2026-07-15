@@ -25,14 +25,14 @@ mm_is_valid_day(
 
 - data_ply:
 
-  a data frame or tibble containing all relevant, validated modeling
+  A data frame or tibble containing all relevant, validated modeling
   data for a single ply of data. (1 ply ~= 1 date, although the day
   length has been specified by day_start and day_end and may not be
-  exactly 24 hours)
+  exactly 24 hours).
 
 - day_start:
 
-  start time (inclusive) of a day's data in number of hours from the
+  Start time (inclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_start=-1.5 indicates
   that data describing 2006-06-26 begin at 2006-06-25 22:30, or at the
   first observation time that occurs after that time if day_start
@@ -40,14 +40,14 @@ mm_is_valid_day(
 
 - day_end:
 
-  end time (exclusive) of a day's data in number of hours from the
+  End time (exclusive) of a day's data in number of hours from the
   midnight that begins the date. For example, day_end=30 indicates that
   data describing 2006-06-26 end at the last observation time that
   occurs before 2006-06-27 06:00.
 
 - day_tests:
 
-  list of tests to conduct to determine whether each date worth of data
+  List of tests to conduct to determine whether each date worth of data
   is valid for modeling. `full_day`: Do the data span the full expected
   period (e.g., from 10:30pm on preceding day to 6am on following day)?
   `even_timesteps`: are all of the timesteps within the day the same
@@ -61,15 +61,15 @@ mm_is_valid_day(
 
   NA or numeric (length 1). If numeric, the timestep length in days that
   a date must have to pass the validity check (to within a tolerance of
-  0.2% of the value of `required_timestep`)
+  0.2% of the value of `required_timestep`).
 
 - ply_date:
 
-  the Date this data_ply is intended to match. May be NA
+  The Date this data_ply is intended to match. May be NA.
 
 - timestep_days:
 
-  the expected timestep length in fraction of a day; for example, a
+  The expected timestep length in fraction of a day; for example, a
   1-hour timestep is 1/24 is 0.0416667. This is calculated within the
   function if timestep_days is NA. May be supplied as an argument to (1)
   pre-calculate the value for efficiency, or (2) require a specific
@@ -77,7 +77,7 @@ mm_is_valid_day(
 
 ## Value
 
-character vector of errors if day is invalid, or TRUE if it's valid
+Character vector of errors if day is invalid, or TRUE if it's valid.
 
 ## Details
 

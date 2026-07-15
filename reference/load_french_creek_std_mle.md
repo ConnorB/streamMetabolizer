@@ -22,30 +22,31 @@ load_french_creek_std_mle(
 
 - french:
 
-  the French Creek dataset
+  The French Creek dataset.
 
 - K:
 
-  optional. If specified, a number for the K600 to assume (units of 1/d)
+  Optional. If specified, a number for the K600 to assume (units of
+  1/d).
 
 - estimate:
 
-  character indicating the type of model to fit
+  Character indicating the type of model to fit.
 
 - start:
 
-  a character vector specifying the time at which the 'day' (the time
+  A character vector specifying the time at which the 'day' (the time
   period to use in producing an estimate for a single date) begins. The
-  vector should have 2 elements, dates and times, to pass to chron()
+  vector should have 2 elements, dates and times, to pass to chron().
 
 - end:
 
-  a character vector specifying the time at which the 'day' ends. The
-  vector should have 2 elements, dates and times, to pass to chron()
+  A character vector specifying the time at which the 'day' ends. The
+  vector should have 2 elements, dates and times, to pass to chron().
 
 - plot:
 
-  logical - should plots be produced?
+  Logical - should plots be produced?
 
 ## Details
 

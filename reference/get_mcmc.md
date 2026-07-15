@@ -25,12 +25,22 @@ get_mcmc(metab_model)
 - metab_model:
 
   A Bayesian metabolism model (metab_bayes) from which to return the
-  MCMC model object(s)
+  MCMC model object(s).
 
 ## Value
 
-The MCMC model object(s)
+The MCMC model object(s).
 
 ## Methods (by class)
 
 - `get_mcmc(metab_bayes)`: Get the Bayesian MCMC model object
+
+## Examples
+
+``` r
+mm <- metab_model("metab_bayes", mcmc = list(chain = 1))
+get_mcmc(mm)
+#> $chain
+#> [1] 1
+#> 
+```

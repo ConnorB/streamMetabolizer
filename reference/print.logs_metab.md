@@ -13,9 +13,20 @@ print(x, ...)
 
 - x:
 
-  an object to print
+  An object to print.
 
 - ...:
 
-  ignored; included only for compatibility with
-  [`base::print`](https://rdrr.io/r/base/print.html)
+  Ignored; included only for compatibility with
+  [`base::print`](https://rdrr.io/r/base/print.html).
+
+## Value
+
+`x`, invisibly.
+
+## Examples
+
+``` r
+print(structure("Sampling complete", class = "logs_metab"))
+#> Sampling complete
+```

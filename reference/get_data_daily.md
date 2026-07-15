@@ -1,6 +1,6 @@
-# Extract the daily fitting data, if any, from a metabolism model.
+# Extract daily model fitting data
 
-A function in the metab_model_interface. Returns the daily data that
+A function in the `metab_model_interface`. Returns the daily data that
 were passed to a metabolism model.
 
 ## Usage
@@ -16,12 +16,11 @@ get_data_daily(metab_model)
 
 - metab_model:
 
-  A metabolism model, implementing the metab_model_interface, for which
-  to return the data_daily
+  A metabolism model that implements the `metab_model_interface`.
 
 ## Value
 
-A data.frame
+A data frame or `NULL` when no daily data were supplied.
 
 ## Methods (by class)
 
@@ -41,3 +40,11 @@ Other metab_model_interface:
 [`get_version()`](https://connorb.github.io/streamMetabolizer/reference/get_version.md),
 [`predict_DO()`](https://connorb.github.io/streamMetabolizer/reference/predict_DO.md),
 [`predict_metab()`](https://connorb.github.io/streamMetabolizer/reference/predict_metab.md)
+
+## Examples
+
+``` r
+get_data_daily(metab_model())
+#>         date
+#> 1 2050-03-14
+```

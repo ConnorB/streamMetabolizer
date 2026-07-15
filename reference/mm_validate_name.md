@@ -13,7 +13,7 @@ mm_validate_name(model_name)
 
 - model_name:
 
-  character string identifying the model features. Use
+  Character string identifying the model features. Use
   [`mm_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_name.md)
   to create a valid name based on desired attributes, or
   [`mm_valid_names()`](https://connorb.github.io/streamMetabolizer/reference/mm_valid_names.md)
@@ -33,12 +33,17 @@ mm_validate_name(model_name)
   second assumption, if the first assumption turns up no files of the
   given name).
 
+## Value
+
+The validated model name.
+
 ## Examples
 
 ``` r
 mm_validate_name("b_np_oipi_tr_plrckm.stan")
 #> [1] "b_np_oipi_tr_plrckm.stan"
-if (FALSE) { # \dontrun{
-mm_validate_name("b_np_oipn") # throws error
-} # }
+try(mm_validate_name("b_np_oipn"))
+#> Error in mm_validate_name("b_np_oipn") : 
+#>   Could not parse model name "b_np_oipn".
+#> ℹ Construct the name with `mm_name()`.
 ```

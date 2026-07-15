@@ -1,4 +1,4 @@
-# Convert SD columns into CI columns in a data.frame
+# Convert standard deviation columns to confidence intervals
 
 Convert data with var and var.sd columns into data with var, var.lower,
 and var.upper columns
@@ -13,9 +13,9 @@ mm_sd_to_ci(data, alpha = 0.05)
 
 - data:
 
-  a data.frame with 1+ pairs of columns named var and var.sd (where var
-  can be anything)
+  A data.frame with 1+ pairs of columns named var and var.sd (where var
+  can be anything).
 
 - alpha:
 
-  the desired significance level described by the confidence interval
+  The desired significance level described by the confidence interval.

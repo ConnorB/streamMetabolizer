@@ -1,8 +1,8 @@
 # Estimate depth from discharge and hydraulic geometry coefficients
 
-Uses the relationship \\d=c\*Q^f\\ (parameter names and definitions as
-in Leopold and Maddock, 1953; default values for c and f as in Raymond
-et al. 2012)
+Uses the relationship d = c × Qᶠ (parameter names and definitions as in
+Leopold and Maddock, 1953; default values for c and f as in Raymond et
+al. 2012)
 
 ## Usage
 
@@ -14,19 +14,19 @@ calc_depth(Q, c = 0.409, f = 0.294)
 
 - Q:
 
-  discharge (m^3 s^-1)
+  Discharge (m^3 s^-1).
 
 - c:
 
-  coefficient representing depth at unit discharge (usually m)
+  Coefficient representing depth at unit discharge (usually m).
 
 - f:
 
-  exponent in depth-discharge relation (unitless)
+  Exponent in depth-discharge relation (unitless).
 
 ## Value
 
-d, stream depth, in the same units as c
+D, stream depth, in the same units as c.
 
 ## References
 

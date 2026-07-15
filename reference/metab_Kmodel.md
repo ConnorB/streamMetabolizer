@@ -21,7 +21,7 @@ metab_Kmodel(
 
 - specs:
 
-  a list of model specifications and parameters for a model. Although
+  A list of model specifications and parameters for a model. Although
   this may be specified manually (it's just a list), it is easier and
   safer to use
   [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md)
@@ -48,50 +48,38 @@ metab_Kmodel(
 
 - info:
 
-  any information, in any format, that you would like to store within
-  the metab_model object
+  Any information, in any format, that you would like to store within
+  the metab_model object.
 
 ## Value
 
-A metab_Kmodel object containing the fitted model. This object can be
-inspected with the functions in the
+A `metab_Kmodel` object containing the fitted model. Inspect it with the
+functions in
 [`metab_model_interface()`](https://connorb.github.io/streamMetabolizer/reference/metab_model_interface.md).
 
 ## Details
 
 Possible approaches:
 
-- mean:
+- **Mean**: Predict K as the mean of all K values.
 
-  Predict K as the mean of all K values
+- **Weighted mean**: Predict K as the mean of all K values, weighted by
+  the inverse confidence intervals of the input K values.
 
-- weighted mean:
+- **KvQ**: Regress K against Q, tending toward the overall mean in
+  ranges of Q with sparse data.
 
-  Predict K as the mean of all K values, weighted by the inverse of the
-  confidence intervals in the input K values
+- **Weighted KvQ**: Regress K against Q, tending toward the overall mean
+  in ranges of Q with sparse data and weighting high-confidence K values
+  more heavily.
 
-- KvQ:
+- **T smoother**: Predict K using a loess or spline smoother over time.
 
-  Regress K versus Q, tending toward overall mean in ranges of Q with
-  sparse data
+- **Q smoother**: Predict K using a loess or spline smoother over
+  `discharge.daily`.
 
-- weighted KvQ:
-
-  Regress K versus Q, tending toward overall mean in ranges of Q with
-  sparse data, weighting high-confidence K values more heavily
-
-- T smoother:
-
-  Predict K using a loess or spline smoother over time
-
-- Q smoother:
-
-  Predict K using a loess or spline smoother over discharge.daily
-
-- TQ smoother:
-
-  Predict K using a loess or spline smoother over both time and
-  discharge.daily
+- **TQ smoother**: Predict K using a loess or spline smoother over time
+  and `discharge.daily`.
 
 ## See also
 
@@ -153,9 +141,8 @@ get_params(mm)
 #> 30 2012-09-13   29.41813            NA overall warnings       
 #> 31 2012-09-14   29.41813            NA overall warnings       
 #> 32 2012-09-15   29.41813            NA overall warnings       
-if (FALSE) { # \dontrun{
 plot(get_params(mm)$date, get_params(mm)$K600.daily)
-} # }
+
 
 # linear model
 mm <- metab_Kmodel(
@@ -195,9 +182,8 @@ get_params(mm)
 #> 30 2012-09-13   28.51264            NA                
 #> 31 2012-09-14   30.65190            NA                
 #> 32 2012-09-15   30.86205            NA                
-if (FALSE) { # \dontrun{
 plot(get_data_daily(mm)$discharge.daily, get_params(mm)$K600.daily)
-} # }
+
 
 # loess
 mm <- metab_Kmodel(    ### breaks ###
@@ -237,9 +223,8 @@ get_params(mm)
 #> 30 2012-09-13   28.71594      1.069151                
 #> 31 2012-09-14   29.09925      1.084802                
 #> 32 2012-09-15   29.31613      1.132190                
-if (FALSE) { # \dontrun{
 plot(get_params(mm)$date, get_params(mm)$K600.daily)
-} # }
+
 
 ## 3-phase workflow (sort of like complete pooling) for estimating K within
 ## days, then K across days, then GPP and ER within days
@@ -264,10 +249,10 @@ get_params(mm3, fixed='stars')
 #>          date GPP.daily GPP.daily.sd   ER.daily ER.daily.sd K600.daily warnings
 #> 1  2012-09-18 2.558979    0.05519044 -1.913915   0.08116143  28.44894*         
 #> 2  2012-09-19 2.765987    0.05888406 -2.066356   0.08646030  28.44894*         
-#> 3  2012-09-20 2.564581    0.05024763 -1.693336   0.07446124  28.44894*         
+#> 3  2012-09-20 2.564581    0.05024763 -1.693337   0.07446124  28.44894*         
 #> 4  2012-09-21 2.558030    0.04396162 -1.709250   0.06493983  28.44894*         
 #> 5  2012-09-22 2.607292    0.05752125 -1.745543   0.08553130  28.44894*         
-#> 6  2012-09-23 2.835975    0.06980850 -2.159617   0.10599571  28.44894*         
+#> 6  2012-09-23 2.835975    0.06980850 -2.159617   0.10599572  28.44894*         
 #> 7  2012-09-24 2.756249    0.07120201 -2.627882   0.10734383  28.44894*         
 #> 8  2012-09-25 1.881598    0.06901491 -1.999497   0.10824960  28.44894*         
 #> 9  2012-09-26 2.139146    0.05002992 -1.970511   0.07780874  28.44894*         
@@ -298,8 +283,7 @@ predict_metab(mm3)
 #>  9 2012-09-26  2.14      2.04      2.24 -1.97    -2.12    -1.82 "       "
 #> 10 2012-09-27  1.95      1.86      2.05 -1.85    -2.00    -1.71 "       "
 #> # ℹ 2 more variables: warnings <chr>, errors <chr>
-if (FALSE) { # \dontrun{
 plot_metab_preds(mm1)
+
 plot_metab_preds(mm3)
-} # }
 ```

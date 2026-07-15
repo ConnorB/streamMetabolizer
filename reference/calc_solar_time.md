@@ -17,12 +17,16 @@ calc_solar_time(local.time, longitude)
 - local.time:
 
   POSIXct date+time of interest, already in local time as specified by
-  the tz attribute
+  the tz attribute.
 
 - longitude:
 
-  numeric, in degrees, either positive and unitted ("degE" or "degW") or
-  with sign indicating direction (positive = East)
+  Numeric, in degrees, either positive and unitted ("degE" or "degW") or
+  with sign indicating direction (positive = East).
+
+## Value
+
+A `POSIXct` vector containing mean solar time with time zone `UTC`.
 
 ## Examples
 
