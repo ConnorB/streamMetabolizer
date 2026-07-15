@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_DO_preds.R
 \name{plot_DO_preds}
 \alias{plot_DO_preds}
-\title{Plot predictions produced with predict_DO}
+\title{Plot dissolved oxygen predictions}
 \usage{
 plot_DO_preds(
   DO_preds,
@@ -15,40 +15,44 @@ plot_DO_preds(
 )
 }
 \arguments{
-\item{DO_preds}{a data.frame of predictions such as that returned by
-predict_DO()}
+\item{DO_preds}{A data.frame of predictions such as that returned by
+predict_DO().}
 
-\item{y_var}{character. Should the plot display predicted & observed values
+\item{y_var}{Character. Should the plot display predicted & observed values
 in concentration (conc) or as percent of saturation (pctsat)? The default
 is to plot both.}
 
-\item{style}{character indicating which graphics package to use}
+\item{style}{Character indicating which graphics package to use.}
 
-\item{y_lim}{list of named vectors, each of which has length 2 and is numeric
+\item{y_lim}{List of named vectors, each of which has length 2 and is numeric
 and has a name in the possible values of y_var. NA within a vector
 indicates that the data range should be used. for ggplot2, y_lim is only
 used to exclude values outside that range and is ignored if the data span a
-narrower range}
+narrower range.}
 
-\item{date_start}{Date or a class convertible with as.Date. The first date
-(inclusive) for which to report DO predictions. If NA, no filtering is
-done.}
+\item{date_start}{A \code{Date} or an object coercible with \code{\link[=as.Date]{as.Date()}}. The first
+date (inclusive) for which to report DO predictions. If \code{NA}, no filtering
+is done.}
 
-\item{date_end}{Date or a class convertible with as.Date. The last date
-(inclusive) for which to report DO predictions. If NA, no filtering is
-done.}
+\item{date_end}{A \code{Date} or an object coercible with \code{\link[=as.Date]{as.Date()}}. The last
+date (inclusive) for which to report DO predictions. If \code{NA}, no filtering
+is done.}
 
-\item{use_saved}{logical. Is it OK to use predictions that were saved with
+\item{use_saved}{A logical. Is it OK to use predictions that were saved with
 the model?}
+}
+\value{
+A ggplot object when \code{style = "ggplot2"} or a dygraph object when
+\code{style = "dygraphs"}.
 }
 \description{
 Plots modeled values as lines, observed values as points
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 mm <- metab_night(specs(mm_name('night')), data=data_metab('3', day_start=12, day_end=36))
 plot_DO_preds(mm)
 plot_DO_preds(mm, date_start='2012-09-19', date_end='2012-09-19')
 plot_DO_preds(mm, style='dygraphs', y_var='pctsat')
-}
+\dontshow{\}) # examplesIf}
 }

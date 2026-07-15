@@ -1,22 +1,21 @@
-#' Plot predictions produced with predict_DO
+#' Plot metabolism predictions
 #'
 #' Plots modeled values as lines, observed values as points
 #'
-#' @param metab_preds a data.frame of predictions such as that returned by
-#'   predict_metab()
-#' @param y_var character. Should the plot display predicted values of GPP
+#' @param metab_preds A data.frame of predictions such as that returned by
+#'   predict_metab().
+#' @param y_var Character. Should the plot display predicted values of GPP
 #'   and/or ER? The default is to plot both.
-#' @param style character indicating which graphics package to use
-#' @param y_lim list of named vectors, each of which has length 2 and is numeric
+#' @param style Character indicating which graphics package to use.
+#' @param y_lim List of named vectors, each of which has length 2 and is numeric
 #'   and has a name in the possible values of y_var. NA within a vector
 #'   indicates that the data range should be used. for ggplot2, y_lim is only
 #'   used to exclude values outside that range and is ignored if the data span a
-#'   narrower range
-#' @examples
-#' \dontrun{
+#'   narrower range.
+#' @returns A ggplot object.
+#' @examplesIf interactive()
 #' mm <- metab_night(specs(mm_name('night')), data=data_metab('10', day_start=12, day_end=36))
 #' plot_metab_preds(mm)
-#' }
 #' @import dplyr
 #' @export
 plot_metab_preds <- function(

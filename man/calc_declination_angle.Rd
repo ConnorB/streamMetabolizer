@@ -8,13 +8,13 @@ calc_declination_angle(jday, format = c("degrees", "radians"))
 }
 \arguments{
 \item{jday}{The day of year as a number between 0 (Jan 1) and 364 (365 also
-OK for leap year)}
+OK for leap year).}
 
 \item{format}{The format of both the input and the output. May be "degrees"
 or "radians".}
 }
 \value{
-numeric value or vector, in the units specified by \code{format},
+Numeric value or vector, in the units specified by \code{format},
 indicating the declination angle corresponding to each value supplied in
 \code{jday}.
 }
@@ -24,10 +24,8 @@ Calculate declination angle as in Yard et al. (2005)
 \examples{
 decdf <- data.frame(jday=1:366,
   dec=streamMetabolizer:::calc_declination_angle(1:366))
-\dontrun{
 library(ggplot2)
 ggplot(decdf, aes(x=jday, y=dec)) + geom_line()
-}
 }
 \references{
 Yard, Michael D., Glenn E. Bennett, Steve N. Mietz, Lewis G.

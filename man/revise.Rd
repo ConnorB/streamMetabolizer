@@ -7,11 +7,14 @@
 revise(specs, ..., delete)
 }
 \arguments{
-\item{specs}{a list of specifications to revise}
+\item{specs}{A list of specifications to revise.}
 
-\item{...}{named values to replace in or add to \code{specs}}
+\item{...}{Named values to replace in or add to \code{specs}.}
 
-\item{delete}{a vector of names of elements to remove from the specs list}
+\item{delete}{A vector of names of elements to remove from the specs list.}
+}
+\value{
+The revised list.
 }
 \description{
 Primary use case is for revising a list of specifications as originally

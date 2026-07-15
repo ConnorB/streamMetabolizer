@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_metab_preds.R
 \name{plot_metab_preds}
 \alias{plot_metab_preds}
-\title{Plot predictions produced with predict_DO}
+\title{Plot metabolism predictions}
 \usage{
 plot_metab_preds(
   metab_preds,
@@ -12,26 +12,29 @@ plot_metab_preds(
 )
 }
 \arguments{
-\item{metab_preds}{a data.frame of predictions such as that returned by
-predict_metab()}
+\item{metab_preds}{A data.frame of predictions such as that returned by
+predict_metab().}
 
-\item{y_var}{character. Should the plot display predicted values of GPP
+\item{y_var}{Character. Should the plot display predicted values of GPP
 and/or ER? The default is to plot both.}
 
-\item{style}{character indicating which graphics package to use}
+\item{style}{Character indicating which graphics package to use.}
 
-\item{y_lim}{list of named vectors, each of which has length 2 and is numeric
+\item{y_lim}{List of named vectors, each of which has length 2 and is numeric
 and has a name in the possible values of y_var. NA within a vector
 indicates that the data range should be used. for ggplot2, y_lim is only
 used to exclude values outside that range and is ignored if the data span a
-narrower range}
+narrower range.}
+}
+\value{
+A ggplot object.
 }
 \description{
 Plots modeled values as lines, observed values as points
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 mm <- metab_night(specs(mm_name('night')), data=data_metab('10', day_start=12, day_end=36))
 plot_metab_preds(mm)
-}
+\dontshow{\}) # examplesIf}
 }

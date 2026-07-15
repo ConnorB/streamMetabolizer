@@ -17,10 +17,10 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{ply_date}{the modal date of this ply of data and data_daily, and the
+\item{ply_date}{The modal date of this ply of data and data_daily, and the
 date by which this ply should be referred topresent.}
 
-\item{specs}{a list of model specifications and parameters for a model.
+\item{specs}{A list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
@@ -29,7 +29,7 @@ of required parameters and their defaults depends on the model given in the
 detail, and gives default values.}
 }
 \value{
-list of data for input to runstan_bayes
+List of data for input to runstan_bayes.
 }
 \description{
 This function accepts pre-validated data (though more problems may be

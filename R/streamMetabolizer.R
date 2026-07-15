@@ -1,4 +1,4 @@
-#' Functions for calculating ecosystem metabolism in streams
+#' Model aquatic ecosystem metabolism in streams
 #'
 #' This package uses inverse modeling to estimate aquatic photosynthesis and
 #' respiration (collectively, metabolism) from time series data on dissolved
@@ -8,84 +8,46 @@
 #' implemented along with many promising new variants that produce more accurate
 #' and precise metabolism estimates.
 #'
-#' See http://usgs-r.github.io/streamMetabolizer for vignettes on the web.
+#' See <https://usgs-r.github.io/streamMetabolizer> for package vignettes.
 #'
 #' @section Calculate new input variables:
 #'
-#'   \itemize{
-#'
-#'   \item [calc_depth()]
-#'
-#'   \item [calc_DO_sat()]
-#'
-#'   \item [calc_light()]
-#'
-#'   }
+#' * [calc_depth()] estimates stream depth from discharge.
+#' * [calc_DO_sat()] calculates dissolved oxygen saturation.
+#' * [calc_light()] models photosynthetically active radiation.
 #'
 #' @section Convert existing input variables:
 #'
-#'   \itemize{
-#'
-#'   \item [convert_localtime_to_UTC()]
-#'
-#'   \item [convert_UTC_to_solartime()]
-#'
-#'   \item [convert_k600_to_kGAS()]
-#'
-#'   \item [convert_PAR_to_SW()]
-#'
-#'   }
+#' * [convert_localtime_to_UTC()] converts local time to UTC.
+#' * [convert_UTC_to_solartime()] converts UTC to local solar time.
+#' * [convert_k600_to_kGAS()] converts K600 to another gas.
+#' * [convert_PAR_to_SW()] converts photosynthetically active radiation to
+#'   shortwave radiation.
 #'
 #' @section Model metabolism:
 #'
-#'   \itemize{
-#'
-#'   \item [mm_name()] 1. Choose a model structure
-#'
-#'   \item [specs()] 2. Set the specifications
-#'
-#'   \item [metab()] 3. Fit the model
-#'
-#'   }
+#' 1. [mm_name()] chooses a model structure.
+#' 2. [specs()] sets model specifications.
+#' 3. [metab()] fits the model.
 #'
 #' @section Inspect model results:
 #'
-#'   \itemize{
-#'
-#'   \item [predict_metab()]
-#'
-#'   \item [predict_DO()]
-#'
-#'   \item [plot_metab_preds()]
-#'
-#'   \item [plot_DO_preds()]
-#'
-#'   \item [get_params()]
-#'
-#'   \item [get_fit()]
-#'
-#'   \item [get_mcmc()] (Bayesian models only)
-#'
-#'   \item [get_fitting_time()]
-#'
-#'
-#'   }
+#' * [predict_metab()] predicts daily metabolism.
+#' * [predict_DO()] predicts dissolved oxygen.
+#' * [plot_metab_preds()] plots daily metabolism predictions.
+#' * [plot_DO_preds()] plots dissolved oxygen predictions.
+#' * [get_params()] extracts fitted and fixed parameters.
+#' * [get_fit()] extracts the internal fitted model.
+#' * [get_mcmc()] extracts Bayesian MCMC model objects.
+#' * [get_fitting_time()] extracts the model fitting time.
 #'
 #' @section Inspect model inputs/properties:
 #'
-#'   \itemize{
-#'
-#'   \item [get_specs()]
-#'
-#'   \item [get_data()]
-#'
-#'   \item [get_data_daily()]
-#'
-#'   \item [get_info()]
-#'
-#'   \item [get_version()]
-#'
-#'   }
+#' * [get_specs()] extracts model specifications.
+#' * [get_data()] extracts subdaily fitting data.
+#' * [get_data_daily()] extracts daily fitting data.
+#' * [get_info()] extracts user-supplied metadata.
+#' * [get_version()] extracts the package version used to fit the model.
 #'
 #' @keywords internal
 "_PACKAGE"

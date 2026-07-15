@@ -7,17 +7,19 @@
 calc_velocity(Q, k = 0.194, m = 0.285)
 }
 \arguments{
-\item{Q}{discharge (m^3 s^-1)}
+\item{Q}{Discharge (m^3 s^-1).}
 
-\item{k}{coefficient representing velocity at unit discharge (usually m/s; e in Raymond et al.)}
+\item{k}{A numeric coefficient representing velocity at unit discharge,
+usually in m/s; \emph{e} in Raymond et al. (2012).}
 
-\item{m}{exponent in velocity-discharge relation (unitless; f in Raymond et al.)}
+\item{m}{A numeric exponent in the velocity-discharge relationship;
+dimensionless and \emph{f} in Raymond et al. (2012).}
 }
 \value{
-v (= V = U), stream flow velcoity, in the same units as k
+A numeric vector of streamflow velocities in the same units as \code{k}.
 }
 \description{
-Uses the relationship \eqn{U=k*Q^m} (parameter names and definitions as in
+Uses the relationship U = k × Qᵐ (parameter names and definitions as in
 Leopold and Maddock, 1953; default values for k and m as in Raymond et al.
 2012)
 }

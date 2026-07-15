@@ -7,16 +7,18 @@
 mm_valid_names(type = c("bayes", "mle", "night", "Kmodel", "sim"))
 }
 \arguments{
-\item{type}{character. The model type. Options: \itemize{ \item \code{mle}:
-maximum likelihood estimation (see also \code{\link[=metab_mle]{metab_mle()}}) \item
-\code{bayes}: bayesian hierarchical models \code{\link[=metab_bayes]{metab_bayes()}} \item
-\code{night}: nighttime regression (see also \code{\link[=metab_night]{metab_night()}})
-\item \code{Kmodel}: regression of \emph{daily} estimates of
-\code{K600.daily} versus discharge, time, etc., usually for 3-phase
-estimation of K alone (by MLE or nighttime regression), K vs discharge
-(using this model), and then GPP and ER with fixed K (by MLE) (see also
-\code{\link[=metab_Kmodel]{metab_Kmodel()}}) \item \code{sim}: simulation of \code{DO.obs}
-'data' for testing other models (see also \code{\link[=metab_sim]{metab_sim()}}) }}
+\item{type}{A string specifying the model type:
+\itemize{
+\item \code{"mle"}: Maximum likelihood estimation; see \code{\link[=metab_mle]{metab_mle()}}.
+\item \code{"bayes"}: Bayesian hierarchical modeling; see \code{\link[=metab_bayes]{metab_bayes()}}.
+\item \code{"night"}: Nighttime regression; see \code{\link[=metab_night]{metab_night()}}.
+\item \code{"Kmodel"}: Regression of daily \code{K600.daily} estimates against
+discharge, time, or other predictors; see \code{\link[=metab_Kmodel]{metab_Kmodel()}}.
+\item \code{"sim"}: Simulation of \code{DO.obs} data; see \code{\link[=metab_sim]{metab_sim()}}.
+}}
+}
+\value{
+A character vector of valid encoded model names.
 }
 \description{
 Returns a vector of the \code{model_name}s for the type(s) indicated. If

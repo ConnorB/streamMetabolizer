@@ -2,22 +2,22 @@
 % Please edit documentation in R/calc_air_pressure.R
 \name{calc_air_pressure}
 \alias{calc_air_pressure}
-\title{Calculates the average air pressure for a site}
+\title{Calculate average air pressure for a site}
 \usage{
 calc_air_pressure(temp.air = 15, elevation = 762, attach.units = deprecated())
 }
 \arguments{
-\item{temp.air}{air temperature in degrees C. Default is 15 degC.}
+\item{temp.air}{Air temperature in degrees C. Default is 15 degC.}
 
-\item{elevation}{the site elevation above sea level in m. Default is the
+\item{elevation}{The site elevation above sea level in m. Default is the
 rough mean elevation of the USA at 2500 ft (from
-http://www.infoplease.com/ipa/A0001792.html)}
+http://www.infoplease.com/ipa/A0001792.html).}
 
-\item{attach.units}{(deprecated, effectively FALSE in future) logical. Should
+\item{attach.units}{Deprecated. A logical. Should
 the returned vector be a unitted object?}
 }
 \value{
-a numeric vector of barometric pressures in mb, with units attached
+A numeric vector of barometric pressures in mb, with units attached
 if requested.
 }
 \description{

@@ -18,10 +18,10 @@ plot_distribs(
 \item{dist_data}{Either a specs list (for priors only) or a metab_model
 object (for both priors and posteriors).}
 
-\item{parname}{character. the name of the parameter whose distribution(s) you
-wish to plot}
+\item{parname}{Character. the name of the parameter whose distribution(s) you
+wish to plot.}
 
-\item{index}{integer or logical. Applicable only if plotting posteriors, and
+\item{index}{Integer or logical. Applicable only if plotting posteriors, and
 useful only if the parname is for a parameter having multiple (e.g., daily)
 instances. In this case, the index selects the instance and corresponds to
 the row number in the data.frame element of \code{get_fit(metab_model)}
@@ -29,14 +29,18 @@ that contains the parameter, e.g. \code{get_fit(metab_model)$daily} for
 \code{'GPP_daily'}. The default, TRUE, selects and pools all instances of
 the parameter.}
 
-\item{style}{character indicating which graphics package to use}
+\item{style}{Character indicating which graphics package to use.}
+}
+\value{
+A ggplot object when \code{style = "ggplot2"} or a dygraph object when
+\code{style = "dygraphs"}.
 }
 \description{
-Plot the prior and/or posterior disitrubtions as implied by the
-hyperparameters in a specs list and/or the
+Plot prior and posterior distributions implied by a \code{specs} list or fitted
+metabolism model.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 # priors only
 plot_distribs(specs('bayes', K600_daily_mu=30), 'K600_daily')
 
@@ -48,5 +52,5 @@ plot_distribs(mm, 'GPP_daily', 1)
 plot_distribs(mm, 'err_proc_iid_sigma') |>
   dygraphs::dyRangeSelector(dateWindow=c(-0.1,1.3)) |>
   dygraphs::dyAxis(name='y', valueRange=c(0,15))
-}
+\dontshow{\}) # examplesIf}
 }

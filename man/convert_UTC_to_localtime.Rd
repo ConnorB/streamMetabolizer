@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_UTC_to_localtime.R
 \name{convert_UTC_to_localtime}
 \alias{convert_UTC_to_localtime}
-\title{Convert time from UTC to local time.}
+\title{Convert UTC to local time}
 \usage{
 convert_UTC_to_localtime(
   date.time,
@@ -12,23 +12,30 @@ convert_UTC_to_localtime(
 )
 }
 \arguments{
-\item{date.time}{POSIXct object the date and time in UTC}
+\item{date.time}{POSIXct object the date and time in UTC.}
 
-\item{latitude}{numeric, in degrees, either positive and unitted ("degN" or
-"degS") or with sign indicating direction (positive = North)}
+\item{latitude}{Numeric, in degrees, either positive and unitted ("degN" or
+"degS") or with sign indicating direction (positive = North).}
 
-\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or
-"degW") or with sign indicating direction (positive = East)}
+\item{longitude}{Numeric, in degrees, either positive and unitted ("degE" or
+"degW") or with sign indicating direction (positive = East).}
 
-\item{time.type}{character. The type of time zone desired - either standard
+\item{time.type}{Character. The type of time zone desired - either standard
 time without any daylight savings time or daylight time where daylight
-savings is on during the appropriate days}
+savings is on during the appropriate days.}
+}
+\value{
+A \code{POSIXct} vector in the requested local time zone.
 }
 \description{
 Convert time from UTC to local time, either standard or with daylight
 savings. Recommended for post-analysis visualization only; most functions in
 streamMetabolizer use times in UTC. If you know the timezone code for your
 local site, use \code{\link[lubridate:with_tz]{lubridate::with_tz()}} instead.
+}
+\examples{
+utc <- as.POSIXct("2024-01-15 18:00:00", tz = "UTC")
+convert_UTC_to_localtime(utc, latitude = 41.88, longitude = -87.63)
 }
 \references{
 https://stackoverflow.com/questions/23414340/convert-to-local-time-zone-using-latitude-and-longitude

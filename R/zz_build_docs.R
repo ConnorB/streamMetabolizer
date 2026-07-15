@@ -1,7 +1,8 @@
-#' @include metab_inputs.R metab_bayes.R metab_mle.R metab_night.R metab_sim.R metab_Kmodel.R mm_data.R
+#' @include metab_inputs.R metab_bayes.R metab_mle.R metab_night.R
+#' @include metab_sim.R metab_Kmodel.R mm_data.R
 NULL
 
-#' Format a data.frame for inclusion in a roxygen header
+#' Format a data frame for inclusion in a roxygen header
 #'
 #' Modified from Hadley Wickham's function at http://r-pkgs.had.co.nz/man.html
 #'
@@ -24,19 +25,6 @@ zz_tabular <- function(df, bold_headers = TRUE, code = FALSE, ...) {
       colvec = df
     ) |>
     as.data.frame()
-
-  unit_col <- match("units", names(df), nomatch = 0)
-  if (unit_col > 0) {
-    has_units <- seq_along(cols[[unit_col]]) > 1 & nzchar(cols[[unit_col]])
-    units <- cols[[unit_col]][has_units]
-    units <- gsub(
-      "\\^(-?\\d+)",
-      "^{\\1}",
-      units,
-      perl = TRUE
-    )
-    cols[[unit_col]][has_units] <- paste0("\\eqn{", units, "}")
-  }
 
   cols <- lapply(cols, format, ...)
 

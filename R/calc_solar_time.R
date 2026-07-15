@@ -8,6 +8,7 @@
 #'
 #' @inheritParams convert_localtime_to_UTC
 #' @inheritParams convert_UTC_to_solartime
+#' @returns A `POSIXct` vector containing mean solar time with time zone `UTC`.
 #' @import dplyr
 #' @examples
 #' local.time <- as.POSIXct('2016-05-27 12:00:00', tz='America/New_York')

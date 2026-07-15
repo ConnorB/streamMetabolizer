@@ -1,7 +1,7 @@
 #' @include metab_model-class.R
 NULL
 
-#' Basic Bayesian metabolism model fitting function
+#' Fit a Bayesian metabolism model
 #'
 #' Fits a Bayesian model to estimate GPP and ER from input data on DO,
 #' temperature, light, etc. See [mm_name()] to choose a Bayesian model
@@ -19,12 +19,11 @@ NULL
 #' @author Alison Appling, Bob Hall
 #'
 #' @inheritParams metab
-#' @return A metab_bayes object containing the fitted model. This object can be
+#' @returns A metab_bayes object containing the fitted model. This object can be
 #'   inspected with the functions in the [metab_model_interface()] and
 #'   also [get_mcmc()].
 #'
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' dat <- data_metab('3', res='30')
 #' # fast-ish model version, but still too slow to auto-run in examples
 #' mm <- metab_bayes(data=dat,
@@ -44,7 +43,6 @@ NULL
 #'
 #' # view the Stan model file as stored on your system
 #' file.edit(get_specs(mm)$model_path)
-#' }
 #' @export
 #' @family metab_model
 metab_bayes <- function(
@@ -348,7 +346,7 @@ metab_bayes <- function(
 #'
 #' @inheritParams mm_model_by_ply_prototype
 #' @inheritParams metab
-#' @return data.frame of estimates and MCMC model diagnostics
+#' @returns Data.frame of estimates and MCMC model diagnostics.
 #' @importFrom stats setNames
 #' @keywords internal
 bayes_1ply <- function(
@@ -453,15 +451,15 @@ bayes_1ply <- function(
 #'
 #' Called from metab_bayes().
 #'
-#' @param data_all data.frame of the form `mm_data(solar.time, DO.obs,
+#' @param data_all Data.frame of the form `mm_data(solar.time, DO.obs,
 #'   DO.sat, depth, temp.water, light)` and containing data for just one
 #'   estimation-day (this may be >24 hours but only yields estimates for one
-#'   24-hour period)
-#' @param data_daily_all data.frame of daily priors, if appropriate to the given
-#'   model_path
-#' @param removed data.frame of dates that were removed and why
+#'   24-hour period).
+#' @param data_daily_all Data.frame of daily priors, if appropriate to the given
+#'   model_path.
+#' @param removed Data.frame of dates that were removed and why.
 #' @inheritParams metab
-#' @return data.frame of estimates and MCMC model diagnostics
+#' @returns Data.frame of estimates and MCMC model diagnostics.
 #' @keywords internal
 bayes_allply <- function(
   data_all,
@@ -634,7 +632,7 @@ bayes_allply <- function(
 #'
 #' @inheritParams mm_model_by_ply_prototype
 #' @inheritParams metab
-#' @return list of data for input to runstan_bayes
+#' @returns List of data for input to runstan_bayes.
 #' @keywords internal
 prepdata_bayes <- function(
   data,
@@ -870,29 +868,29 @@ prepdata_bayes <- function(
 
 #' Run Stan on a formatted data ply
 #'
-#' @param data_list a formatted list of inputs to the Stan model
-#' @param model_path the Stan model file to use, as a full file path
-#' @param model_name the coded model name, as from mm_name, giving the model
-#'   structure
-#' @param params_out a character vector of parameters whose values in the MCMC
-#'   runs should be recorded and summarized
-#' @param keep_mcmc logical. If TRUE, the Stan output object will be saved. Be
+#' @param data_list A formatted list of inputs to the Stan model.
+#' @param model_path The Stan model file to use, as a full file path.
+#' @param model_name The coded model name, as from mm_name, giving the model
+#'   structure.
+#' @param params_out A character vector of parameters whose values in the MCMC
+#'   runs should be recorded and summarized.
+#' @param keep_mcmc Logical. If TRUE, the Stan output object will be saved. Be
 #'   careful; these can be big, and a run with many models might overwhelm R's
 #'   memory.
-#' @param n_chains the number of chains to run
-#' @param n_cores the number of cores to apply to this run
-#' @param burnin_steps the number of steps per chain to run and ignore before
-#'   starting to collect MCMC 'data'
-#' @param saved_steps the number of MCMC steps per chain to save
-#' @param thin_steps the number of steps to move before saving another step. 1
+#' @param n_chains The number of chains to run.
+#' @param n_cores The number of cores to apply to this run.
+#' @param burnin_steps The number of steps per chain to run and ignore before
+#'   starting to collect MCMC 'data'.
+#' @param saved_steps The number of MCMC steps per chain to save.
+#' @param thin_steps The number of steps to move before saving another step. 1
 #'   means save all steps.
 #' @param stan_engine Character string specifying which Stan R interface to use.
 #'   Either "rstan" or "cmdstanr". Defaults to "rstan" to preserve the original
 #'   behavior of the streamMetabolizer package. CmdStanR requires both the R
 #'   package and a configured CmdStan installation; see
 #'   [cmdstanr::install_cmdstan()].
-#' @param verbose logical. give status messages?
-#' @param ... ignored arguments
+#' @param verbose Logical. give status messages?
+#' @param ... Ignored arguments.
 #' @details Compiled Stan models are cached by interface/compiler version,
 #'   platform, and model content in the user cache directory. Set the
 #'   `streamMetabolizer.rstan_cache_dir` or
@@ -1147,7 +1145,7 @@ rstan_stan_model <- function(...) {
 #' @param model_path Path to a Stan program.
 #' @param stan_model_fn Internal function used to compile the Stan model.
 #' @inheritParams runstan_bayes
-#' @return A list containing the `stanmodel`, compilation time, compilation
+#' @returns A list containing the `stanmodel`, compilation time, compilation
 #'   output, and cache file.
 #' @keywords internal
 load_rstan_model <- function(
@@ -1218,7 +1216,7 @@ load_rstan_model <- function(
 #' Locate the persistent compilation cache for an RStan model
 #'
 #' @param model_path Path to a Stan program.
-#' @return A cache file unique to the model contents, RStan and Stan versions,
+#' @returns A cache file unique to the model contents, RStan and Stan versions,
 #'   R version, and platform.
 #' @keywords internal
 rstan_cache_file <- function(model_path) {
@@ -1285,7 +1283,7 @@ package_version_for_cache <- function(package) {
 #' @param cmdstan_version The configured CmdStan version.
 #' @param cmdstanr_version The installed CmdStanR version.
 #' @param platform The platform on which the model executable will run.
-#' @return A writable cache directory unique to the model contents, CmdStan and
+#' @returns A writable cache directory unique to the model contents, CmdStan and
 #'   CmdStanR versions, and platform.
 #' @keywords internal
 cmdstan_cache_dir <- function(
@@ -1364,14 +1362,14 @@ cache_dir_is_writable <- function(cache_dir) {
   dir.exists(cache_dir) && file.access(cache_dir, mode = 2) == 0
 }
 
-#' Format MCMC output into a one-row data.frame
+#' Format MCMC output into a one-row data frame
 #'
 #' For split_dates models. Formats output into a one-row data.frame for
 #' row-binding with other such data.frames
 #'
-#' @param mcmc_mat matrix as extracted from Stan
-#' @param names_params character vector of the names of the parameters
-#' @param names_stats character vector of the names of the statistics
+#' @param mcmc_mat Matrix as extracted from Stan.
+#' @param names_params Character vector of the names of the parameters.
+#' @param names_stats Character vector of the names of the statistics.
 #' @import dplyr
 #' @keywords internal
 format_mcmc_mat_split <- function(
@@ -1397,12 +1395,12 @@ format_mcmc_mat_split <- function(
   mcmc_out
 }
 
-#' Format MCMC output into a list of data.frames
+#' Format MCMC output into a list of data frames
 #'
 #' For multi-day or unsplit models. Formats output into a list of data.frames,
 #' one per unique number of nodes sharing a variable name
 #'
-#' @param mcmc_mat matrix as extracted from Stan
+#' @param mcmc_mat Matrix as extracted from Stan.
 #' @import dplyr
 #' @keywords internal
 format_mcmc_mat_nosplit <- function(
@@ -1601,10 +1599,12 @@ setClass(
 #' interface documentation for available summaries, diagnostics, draws, and
 #' plotting methods.
 #'
-#' @md
 #' @param metab_model A Bayesian metabolism model (metab_bayes) from which to
-#'   return the MCMC model object(s)
-#' @return The MCMC model object(s)
+#'   return the MCMC model object(s).
+#' @returns The MCMC model object(s).
+#' @examples
+#' mm <- metab_model("metab_bayes", mcmc = list(chain = 1))
+#' get_mcmc(mm)
 #' @export
 get_mcmc <- function(metab_model) {
   UseMethod("get_mcmc")
@@ -1624,8 +1624,11 @@ get_mcmc.metab_bayes <- function(metab_model) {
 #' [specs()] for options.
 #'
 #' @param metab_model A Bayesian metabolism model (metab_bayes) from which to
-#'   return the data list that was passed to the MCMC
-#' @return The MCMC data list
+#'   return the data list that was passed to the MCMC.
+#' @returns The MCMC data list.
+#' @examples
+#' mm <- metab_model("metab_bayes", mcmc_data = list(n = 10))
+#' get_mcmc_data(mm)
 #' @export
 get_mcmc_data <- function(metab_model) {
   UseMethod("get_mcmc_data")
@@ -1643,8 +1646,11 @@ get_mcmc_data.metab_bayes <- function(metab_model) {
 #' If a log file was created during a model run, this function can retrieve it.
 #'
 #' @param metab_model A Bayesian metabolism model (metab_bayes) from which to
-#'   return the log file, if available
-#' @return The MCMC log file(s) lines
+#'   return the log file, if available.
+#' @returns The MCMC log file(s) lines.
+#' @examples
+#' mm <- metab_model("metab_bayes", log = "Sampling complete")
+#' get_log(mm)
 #' @export
 get_log <- function(metab_model) {
   UseMethod("get_log")
@@ -1675,8 +1681,11 @@ get_log.metab_bayes <- function(metab_model) {
 #' Print metab logs
 #'
 #' Print metab model compilation and/or fitting logs
-#' @param x an object to print
-#' @param ... ignored; included only for compatibility with `base::print`
+#' @param x An object to print.
+#' @param ... Ignored; included only for compatibility with `base::print`.
+#' @returns `x`, invisibly.
+#' @examples
+#' print(structure("Sampling complete", class = "logs_metab"))
 #' @export
 print.logs_metab <- function(x, ...) {
   if (is.list(x)) {

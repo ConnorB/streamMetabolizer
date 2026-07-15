@@ -3,21 +3,22 @@
 \name{get_data}
 \alias{get_data}
 \alias{get_data.metab_model}
-\title{Extract the fitting data from a metabolism model.}
+\title{Extract model fitting data}
 \usage{
 get_data(metab_model)
 
 \method{get_data}{metab_model}(metab_model)
 }
 \arguments{
-\item{metab_model}{A metabolism model, implementing the
-metab_model_interface, for which to return the data}
+\item{metab_model}{A metabolism model that implements the
+\code{metab_model_interface}.}
 }
 \value{
-A data.frame
+A data frame.
 }
 \description{
-A function in the metab_model_interface. Returns the data that were passed to
+A function in the \code{metab_model_interface}. Returns the data that were passed
+to
 a metabolism model.
 }
 \section{Methods (by class)}{
@@ -25,6 +26,9 @@ a metabolism model.
 \item \code{get_data(metab_model)}: This implementation is shared by many model types
 
 }}
+\examples{
+get_data(metab_model())
+}
 \seealso{
 Other metab_model_interface:
 \code{\link[=get_data_daily]{get_data_daily()}},

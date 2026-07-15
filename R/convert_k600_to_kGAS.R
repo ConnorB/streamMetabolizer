@@ -1,11 +1,13 @@
-#' Returns the gas exchange velocity for gas of interest w/ no unit conversions
+#' Convert K600 to a gas-specific exchange velocity
 #'
-#' @param k600 k600 as vector of numbers or single number
-#' @param temperature Water temperature (deg C) as vector array of numbers or single number
-#' @param gas gas for conversion, as string (e.g., 'CO2' or 'O2')
-#' @return Numeric value of gas exchange velocity for gas
+#' @param k600 K600 as vector of numbers or single number.
+#' @param temperature A numeric vector of water temperatures in degrees Celsius.
+#' @param gas Gas for conversion, as string (e.g., 'CO2' or 'O2').
+#' @returns Numeric value of gas exchange velocity for gas.
 #'
 #' @importFrom LakeMetabolizer k600.2.kGAS.base
+#' @examples
+#' convert_k600_to_kGAS(10, temperature = 20, gas = "O2")
 #' @export
 convert_k600_to_kGAS <- function(k600, temperature, gas = "O2") {
   # suppressing "In getSchmidt(temperature, gas) : temperature out of range" b/c it's way too common
@@ -26,14 +28,16 @@ convert_k600_to_kGAS <- function(k600, temperature, gas = "O2") {
   out
 }
 
-#' Returns the gas exchange velocity as k600 for gas of interest w/ no unit conversions
+#' Convert a gas-specific exchange velocity to K600
 #'
-#' @param kGAS k of gas as vector of numbers or single number
-#' @param temperature Water temperature (deg C) as vector array of numbers or single number
-#' @param gas gas for conversion, as string (e.g., 'CO2' or 'O2')
-#' @return Numeric value of gas exchange velocity for gas
+#' @param kGAS K of gas as vector of numbers or single number.
+#' @param temperature A numeric vector of water temperatures in degrees Celsius.
+#' @param gas Gas for conversion, as string (e.g., 'CO2' or 'O2').
+#' @returns Numeric value of gas exchange velocity for gas.
 #'
 #' @importFrom LakeMetabolizer k600.2.kGAS.base
+#' @examples
+#' convert_kGAS_to_k600(8, temperature = 20, gas = "O2")
 #' @export
 convert_kGAS_to_k600 <- function(kGAS, temperature, gas = "O2") {
   # suppressing "In getSchmidt(temperature, gas) : temperature out of range" b/c it's way too common

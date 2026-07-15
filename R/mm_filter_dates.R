@@ -1,7 +1,7 @@
 #' Filter unit or daily data by inclusive start & end dates
 #'
-#' @param data either instantaneous/unit or daily data, having columns for
-#'   solar.time or date, respectively, to filter
+#' @param data Either instantaneous/unit or daily data, having columns for
+#'   solar.time or date, respectively, to filter.
 #' @inheritParams predict_DO
 #' @importFrom lubridate tz floor_date
 #' @keywords internal

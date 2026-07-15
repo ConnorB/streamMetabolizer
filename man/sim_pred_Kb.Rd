@@ -7,19 +7,29 @@
 sim_pred_Kb(K600_lnQ_nodes_centers, lnK600_lnQ_nodes, lnQ.daily)
 }
 \arguments{
-\item{K600_lnQ_nodes_centers}{data configuration argument for
+\item{K600_lnQ_nodes_centers}{Data configuration argument for
 pool_K600='binned'. numeric vector giving the natural-log-space centers of
-the discharge bins. See also \code{\link[=calc_bins]{calc_bins()}}}
+the discharge bins. See also \code{\link[=calc_bins]{calc_bins()}}.}
 
 \item{lnK600_lnQ_nodes}{For a sim model with pool_K600='binned'. The values
 of lnK600 at each node. The default value of this spec is a function that
 computes lnK600s based on simulated K~Q relationships.}
 
-\item{lnQ.daily}{vector of daily values of the natural log of discharge,
-e.g., \code{log(data_daily$discharge.daily)}}
+\item{lnQ.daily}{Vector of daily values of the natural log of discharge,
+e.g., \code{log(data_daily$discharge.daily)}.}
+}
+\value{
+A numeric vector of predicted daily ln(K600) values.
 }
 \description{
 Uses linear interpolation among "nodes" (lnQ, lnK points) to predict daily
 values of the natural log of K600, based on the lnK ~ lnQ relationship
 specified by \code{K600_lnQ_nodes_centers} and \code{lnK600_lnQ_nodes}
+}
+\examples{
+sim_pred_Kb(
+  K600_lnQ_nodes_centers = c(-1, 0, 1),
+  lnK600_lnQ_nodes = log(c(5, 10, 20)),
+  lnQ.daily = c(-0.5, 0.5)
+)
 }

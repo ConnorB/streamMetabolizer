@@ -2,7 +2,7 @@
 % Please edit documentation in R/metab_bayes.R
 \name{format_mcmc_mat_nosplit}
 \alias{format_mcmc_mat_nosplit}
-\title{Format MCMC output into a list of data.frames}
+\title{Format MCMC output into a list of data frames}
 \usage{
 format_mcmc_mat_nosplit(
   mcmc_mat,
@@ -14,7 +14,7 @@ format_mcmc_mat_nosplit(
 )
 }
 \arguments{
-\item{mcmc_mat}{matrix as extracted from Stan}
+\item{mcmc_mat}{Matrix as extracted from Stan.}
 }
 \description{
 For multi-day or unsplit models. Formats output into a list of data.frames,

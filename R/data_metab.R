@@ -3,15 +3,16 @@
 #' Get a formatted data.frame of inputs from which metabolism can be modeled.
 #' These test data were provided by Bob Hall.
 #'
-#' @param num_days the number of days to include in the data. character format
+#' @param num_days The number of days to include in the data. character format
 #'   because only certain numbers of days are permitted (see defaults in Usage
-#'   for the accepted options)
-#' @param res character specifying the desired resolution of the data in minutes
-#'   (character; see defaults in Usage for the accepted options)
-#' @param flaws character specifying one or more flaws to include in the data,
+#'   for the accepted options).
+#' @param res Character specifying the desired resolution of the data in minutes
+#'   (character; see defaults in Usage for the accepted options).
+#' @param flaws Character specifying one or more flaws to include in the data,
 #'   or empty (`c()`) for no flaws. default is no flaws.
 #' @inheritParams mm_model_by_ply
 #' @inheritParams load_french_creek
+#' @returns A data frame of example metabolism inputs.
 #' @importFrom lifecycle deprecated is_present
 #' @examples
 #' head(data_metab())

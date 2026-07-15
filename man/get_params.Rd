@@ -7,7 +7,7 @@
 \alias{get_params.metab_bayes}
 \alias{get_params.metab_model}
 \alias{get_params.metab_sim}
-\title{Extract the metabolism parameters (fitted and/or fixed) from a model.}
+\title{Extract metabolism model parameters}
 \usage{
 get_params(
   metab_model,
@@ -65,46 +65,48 @@ get_params(
 )
 }
 \arguments{
-\item{metab_model}{A metabolism model, implementing the
-metab_model_interface, to use in predicting metabolism}
+\item{metab_model}{A metabolism model that implements the
+\code{metab_model_interface}.}
 
-\item{date_start}{Date or a class convertible with as.Date. The first date
-(inclusive) for which to report parameters. If NA, no filtering is done.}
+\item{date_start}{A \code{Date} or an object coercible with \code{\link[=as.Date]{as.Date()}}. The first
+date (inclusive) for which to report parameters. If \code{NA}, no filtering is
+done.}
 
-\item{date_end}{Date or a class convertible with as.Date. The last date
-(inclusive) for which to report parameters.. If NA, no filtering is done.}
+\item{date_end}{A \code{Date} or an object coercible with \code{\link[=as.Date]{as.Date()}}. The last
+date (inclusive) for which to report parameters. If \code{NA}, no filtering is
+done.}
 
-\item{uncertainty}{character. Should columns for the uncertainty of parameter
-estimates be excluded ('none'), reported as standard deviations ('sd'), or
+\item{uncertainty}{A string. Should columns for parameter uncertainty be
+excluded (\code{"none"}), reported as standard deviations (\code{"sd"}), or
 reported as lower and upper bounds of a 95 percent confidence interval
-('ci')? When available (e.g., for Bayesian models), if 'ci' then the
+(\code{"ci"})? When available (e.g., for Bayesian models), if \code{"ci"} then the
 central value will be the median (50th quantile) and the ranges will be the
-2.5th and 97.5th quantiles. If 'sd' then the central value will always be
+2.5th and 97.5th quantiles. If \code{"sd"} then the central value will be
 the mean.}
 
-\item{messages}{logical. Should warning and error messages from the fitting
+\item{messages}{A logical. Should warning and error messages from the fitting
 procedure be included in the output?}
 
-\item{fixed}{character. Should values pulled from data_daily (i.e., fixed
-rather that fitted) be treated identically ('none'), paired with a logicals
-column ending in '.fixed' ('columns'), converted to character and marked
-with a leading asterisk ('stars')?}
+\item{fixed}{A string. Should values pulled from \code{data_daily} (i.e., fixed
+rather than fitted) be treated identically (\code{"none"}), paired with logical
+columns ending in \code{.fixed} (\code{"columns"}), or converted to character and
+marked with a leading asterisk (\code{"stars"})?}
 
 \item{...}{Other arguments passed to class-specific implementations of
-\code{get_params}}
+\code{\link[=get_params]{get_params()}}.}
 
-\item{attach.units}{(deprecated, effectively FALSE in future) logical. Should
-units be attached to the output?}
+\item{attach.units}{Deprecated. A logical indicating whether to attach units
+to the output.}
 
-\item{use_saved}{logical. Is it OK to use predictions that were saved with
+\item{use_saved}{A logical. Is it OK to use predictions that were saved with
 the model?}
 }
 \value{
-A data.frame of the parameters needed to predict GPP, ER, D, and DO,
-one row per date
+A data frame of the parameters needed to predict GPP, ER, D, and DO,
+with one row per date.
 }
 \description{
-A function in the metab_model_interface. Returns estimates of those
+A function in the \code{metab_model_interface}. Returns estimates of the
 parameters describing the rates and/or shapes of GPP, ER, or reaeration.
 }
 \section{Methods (by class)}{
@@ -126,13 +128,13 @@ returns the fixed values for daily parameters if they were set in
 
 }}
 \examples{
-dat <- data_metab('3', day_start=12, day_end=36)
-mm <- metab_night(specs(mm_name('night')), data=dat)
+dat <- data_metab("3", day_start = 12, day_end = 36)
+mm <- metab_night(specs(mm_name("night")), data = dat)
 get_params(mm)
-get_params(mm, date_start=get_fit(mm)$date[2])
+get_params(mm, date_start = get_fit(mm)$date[2])
 }
 \seealso{
-\code{\link[=predict_metab]{predict_metab()}} for daily average rates of GPP and ER
+\code{\link[=predict_metab]{predict_metab()}} for daily average rates of GPP and ER.
 
 Other metab_model_interface:
 \code{\link[=get_data]{get_data()}},

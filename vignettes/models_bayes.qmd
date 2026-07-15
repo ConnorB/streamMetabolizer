@@ -6,11 +6,9 @@ vignette: >
   %\VignetteIndexEntry{Bayesian Models}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+execute:
+  cache: true
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 This page provides details on how to get the best results from a Bayesian metabolism model. See [Quickstart](get_started.html) for an example of preparing and fitting a Bayesian model.
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/metab_model-class.R
 \name{metab_model}
 \alias{metab_model}
-\title{Create a metab_model object.}
+\title{Create a metabolism model object}
 \usage{
 metab_model(
   model_class = "metab_model",
@@ -19,12 +19,12 @@ metab_model(
 )
 }
 \arguments{
-\item{model_class}{character name of a class inheriting from metab_model -
-the type of object to create}
+\item{model_class}{Character name of a class inheriting from metab_model -
+the type of object to create.}
 
 \item{info}{User-supplied metadata of any form.}
 
-\item{metab_daily}{a data.frame of daily metabolism estimates produced from
+\item{metab_daily}{A data.frame of daily metabolism estimates produced from
 the fit.}
 
 \item{fit}{An internal representation of a fitted model.}
@@ -43,7 +43,7 @@ NULL.}
 \item{pkg_version}{A string indicating the package version used to create
 this metab_model object. The default should almost always be appropriate.}
 
-\item{...}{other arguments passed to new() for this particular model_class}
+\item{...}{Other arguments passed to new() for this particular model_class.}
 }
 \value{
 A metab_model object.

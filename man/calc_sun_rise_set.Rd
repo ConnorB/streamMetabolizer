@@ -2,7 +2,7 @@
 % Please edit documentation in R/calc_sun_rise_set.R
 \name{calc_sun_rise_set}
 \alias{calc_sun_rise_set}
-\title{Calculates the time of sunrise and sunset}
+\title{Calculate sunrise and sunset times}
 \usage{
 calc_sun_rise_set(date, latitude)
 }
@@ -10,10 +10,11 @@ calc_sun_rise_set(date, latitude)
 \item{date}{Vector of dates in \code{Date} format.}
 
 \item{latitude}{Single latitude value of site. South should be negative,
-North positive}
+North positive.}
 }
 \value{
-data.frame of sunrise and sunset (apparent solar time, nominally UTC)
+A data frame containing sunrise and sunset times in apparent solar
+time (nominally UTC).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}

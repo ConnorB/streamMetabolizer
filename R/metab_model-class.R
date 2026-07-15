@@ -4,7 +4,7 @@ NULL
 
 #### class definition ####
 
-#' A metabolism model class.
+#' Metabolism model class
 #'
 #' @slot info Any metadata the user chooses to package with metabolism model.
 #' @slot metab_daily A data.frame of daily metabolism predictions.
@@ -59,14 +59,14 @@ setClass(
 
 #### initialize ####
 
-#' Create a metab_model object.
+#' Create a metabolism model object
 #'
 #' Generates a new model of class metab_model ([metab_model-class()]).
 #'
-#' @param model_class character name of a class inheriting from metab_model -
-#'   the type of object to create
+#' @param model_class Character name of a class inheriting from metab_model -
+#'   the type of object to create.
 #' @param info User-supplied metadata of any form.
-#' @param metab_daily a data.frame of daily metabolism estimates produced from
+#' @param metab_daily A data.frame of daily metabolism estimates produced from
 #'   the fit.
 #' @param fit An internal representation of a fitted model.
 #' @param fitting_time A proc_time object giving the time taken to fit the
@@ -78,8 +78,8 @@ setClass(
 #'   NULL.
 #' @param pkg_version A string indicating the package version used to create
 #'   this metab_model object. The default should almost always be appropriate.
-#' @param ... other arguments passed to new() for this particular model_class
-#' @return A metab_model object.
+#' @param ... Other arguments passed to new() for this particular model_class.
+#' @returns A metab_model object.
 #'
 #' @examples
 #' metab_model()
@@ -143,7 +143,8 @@ get_fit.metab_model <- function(metab_model) {
   metab_model@fit
 }
 
-#' @describeIn get_fitting_time This implementation is shared by many model types
+#' @describeIn get_fitting_time This implementation is shared by many model
+#'   types.
 #' @export
 get_fitting_time.metab_model <- function(metab_model) {
   metab_model@fitting_time

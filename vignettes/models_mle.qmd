@@ -6,11 +6,9 @@ vignette: >
   %\VignetteIndexEntry{MLE Models}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+execute:
+  cache: true
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 This file provides an example of fitting an MLE (maximum likelihood estimation) model, following the general outline in the [Quickstart](get_started.html) tutorial.
 

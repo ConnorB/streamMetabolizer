@@ -14,21 +14,21 @@ load_french_creek_std_mle(
 )
 }
 \arguments{
-\item{french}{the French Creek dataset}
+\item{french}{The French Creek dataset.}
 
-\item{K}{optional. If specified, a number for the K600 to assume (units of
-1/d)}
+\item{K}{Optional. If specified, a number for the K600 to assume (units of
+1/d).}
 
-\item{estimate}{character indicating the type of model to fit}
+\item{estimate}{Character indicating the type of model to fit.}
 
-\item{start}{a character vector specifying the time at which the 'day' (the
+\item{start}{A character vector specifying the time at which the 'day' (the
 time period to use in producing an estimate for a single date) begins. The
-vector should have 2 elements, dates and times, to pass to chron()}
+vector should have 2 elements, dates and times, to pass to chron().}
 
-\item{end}{a character vector specifying the time at which the 'day' ends.
-The vector should have 2 elements, dates and times, to pass to chron()}
+\item{end}{A character vector specifying the time at which the 'day' ends.
+The vector should have 2 elements, dates and times, to pass to chron().}
 
-\item{plot}{logical - should plots be produced?}
+\item{plot}{Logical - should plots be produced?}
 }
 \description{
 Bob's code includes MLE and nighttime regression models. This function

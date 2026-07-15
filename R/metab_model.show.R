@@ -5,7 +5,7 @@ NULL
 #'
 #' Print a metab_model object to the console.
 #'
-#' @param object metab_model to be displayed.
+#' @param object Metab_model to be displayed.
 #' @importFrom utils head
 #' @import dplyr
 setMethod(
@@ -170,12 +170,12 @@ summarize_stopwarn_msgs <- function(msgs) {
 #'
 #' Compress two columns of warning and error messages into one short-hand column
 #'
-#' @param ddat a data.frame including warnings and errors columns
-#' @param colname the name of the column where the summary should be placed
-#' @param warnings.overall any general warnings (for the whole model) to be
-#'   included in the summary
-#' @param errors.overall any general errors (for the whole model) to be included
-#'   in the summary
+#' @param ddat A data.frame including warnings and errors columns.
+#' @param colname The name of the column where the summary should be placed.
+#' @param warnings.overall Any general warnings (for the whole model) to be
+#'   included in the summary.
+#' @param errors.overall Any general errors (for the whole model) to be included
+#'   in the summary.
 #' @import dplyr
 #' @keywords internal
 compress_msgs <- function(

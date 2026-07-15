@@ -6,9 +6,9 @@
 #' overlap starting from a continuous time series, see
 #' [mm_model_by_ply()].
 #'
-#' @param data a data.frame containing date and solar.time columns (POSIXct)
-#' @param day_start the start time of each day, inclusive, in hours
-#' @param day_end the end time of each day, exclusive, in hours
+#' @param data A data.frame containing date and solar.time columns (POSIXct).
+#' @param day_start The start time of each day, inclusive, in hours.
+#' @param day_end The end time of each day, exclusive, in hours.
 #' @import dplyr
 #' @keywords internal
 mm_filter_hours <- function(data, day_start, day_end) {

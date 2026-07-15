@@ -9,35 +9,25 @@ NULL
 #'
 #' Possible approaches:
 #'
-#' \describe{
-#'
-#' \item{mean}{Predict K as the mean of all K values}
-#'
-#' \item{weighted mean}{Predict K as the mean of all K values, weighted by the
-#' inverse of the confidence intervals in the input K values}
-#'
-#' \item{KvQ}{Regress K versus Q, tending toward overall mean in ranges of Q
-#' with sparse data}
-#'
-#' \item{weighted KvQ}{Regress K versus Q, tending toward overall mean in
-#' ranges of Q with sparse data, weighting high-confidence K values more
-#' heavily}
-#'
-#' \item{T smoother}{Predict K using a loess or spline smoother over time}
-#'
-#' \item{Q smoother}{Predict K using a loess or spline smoother over
-#' discharge.daily}
-#'
-#' \item{TQ smoother}{Predict K using a loess or spline smoother over both
-#' time and discharge.daily}
-#'
-#' }
+#' * **Mean**: Predict K as the mean of all K values.
+#' * **Weighted mean**: Predict K as the mean of all K values, weighted by the
+#'   inverse confidence intervals of the input K values.
+#' * **KvQ**: Regress K against Q, tending toward the overall mean in ranges of
+#'   Q with sparse data.
+#' * **Weighted KvQ**: Regress K against Q, tending toward the overall mean in
+#'   ranges of Q with sparse data and weighting high-confidence K values more
+#'   heavily.
+#' * **T smoother**: Predict K using a loess or spline smoother over time.
+#' * **Q smoother**: Predict K using a loess or spline smoother over
+#'   `discharge.daily`.
+#' * **TQ smoother**: Predict K using a loess or spline smoother over time and
+#'   `discharge.daily`.
 #'
 #' @author Alison Appling
 #'
 #' @inheritParams metab
-#' @return A metab_Kmodel object containing the fitted model. This object can be
-#'   inspected with the functions in the [metab_model_interface()].
+#' @returns A `metab_Kmodel` object containing the fitted model. Inspect it with
+#'   the functions in [metab_model_interface()].
 #' @import dplyr
 #'
 #' @examples
@@ -53,27 +43,21 @@ NULL
 #'   specs(mm_name('Kmodel', engine='mean')),
 #'   data_daily=example_Ks) # two warnings expected for engine='mean'
 #' get_params(mm)
-#' \dontrun{
 #' plot(get_params(mm)$date, get_params(mm)$K600.daily)
-#' }
 #'
 #' # linear model
 #' mm <- metab_Kmodel(
 #'   specs(mm_name('Kmodel', engine='lm'), predictors='discharge.daily'),
 #'   data_daily=example_Ks)
 #' get_params(mm)
-#' \dontrun{
 #' plot(get_data_daily(mm)$discharge.daily, get_params(mm)$K600.daily)
-#' }
 #'
 #' # loess
 #' mm <- metab_Kmodel(    ### breaks ###
 #'   specs(mm_name('Kmodel', engine='loess'), predictors='date', other_args=list(span=0.4)),
 #'   data_daily=example_Ks)
 #' get_params(mm)
-#' \dontrun{
 #' plot(get_params(mm)$date, get_params(mm)$K600.daily)
-#' }
 #'
 #' ## 3-phase workflow (sort of like complete pooling) for estimating K within
 #' ## days, then K across days, then GPP and ER within days
@@ -96,10 +80,8 @@ NULL
 #' mm3 <- metab_mle(mle_specs, data=dat, data_daily=K600_mm2)
 #' get_params(mm3, fixed='stars')
 #' predict_metab(mm3)
-#' \dontrun{
 #' plot_metab_preds(mm1)
 #' plot_metab_preds(mm3)
-#' }
 #' @export
 #' @family metab_model
 metab_Kmodel <- function(
@@ -206,19 +188,22 @@ metab_Kmodel <- function(
 
 #### helpers ####
 
-#' Prepare data_daily by aggregating any daily data, renaming K600.daily to K600.daily.obs,
-#' & setting data_daily$weight to reflect user weights & filters
+#' Prepare daily data for K modeling
 #'
-#' @param data unit data to aggregate to daily_data. may be NULL.
-#' @param data_daily daily data to prepare for K modeling
+#' Aggregates daily data, renames `K600.daily` to `K600.daily.obs`, and sets
+#' `data_daily$weight` to reflect user weights and filters.
+#'
+#' @param data Unit data to aggregate to daily_data. may be NULL.
+#' @param data_daily Daily data to prepare for K modeling.
 #' @param weights For Kmodel, character vector indicating the type of weighting
 #'   to use. Set to c() for no weights. One of c("1/CI", "K600/CI", c()).
 #' @param filters For Kmodel, named numeric vector of limits to use in filtering
 #'   data_daily. Elements may include
 #'   c("CI.max","discharge.daily.max","velocity.daily.max"). If an element is
-#'   given, the corresponding filter is applied: K600.daily.upper-K600.daily.lower <=
-#'   CI.max, discharge.daily <= discharge.daily.max, velocity.daily <=
-#'   velocity.daily.max
+#'   given, the corresponding filter is applied:
+#'   `K600.daily.upper - K600.daily.lower <= CI.max`,
+#'   `discharge.daily <= discharge.daily.max`, or
+#'   `velocity.daily <= velocity.daily.max`.
 #' @inheritParams metab
 #' @inheritParams mm_model_by_ply
 prepdata_Kmodel <- function(
@@ -345,7 +330,7 @@ prepdata_Kmodel <- function(
 #' For use in predicting K
 #'
 #' @inheritParams mm_model_by_ply_prototype
-#' @param columns character vector of names of columns to aggregate
+#' @param columns Character vector of names of columns to aggregate.
 #' @keywords internal
 Kmodel_aggregate_day <- function(
   data_ply,
@@ -377,18 +362,19 @@ Kmodel_aggregate_day <- function(
 #' The model will predict daily K estimates from preliminary daily K estimates.
 #' Called from metab_Kmodel().
 #'
-#' @param data_daily_all data to use as input, with columns including K600.daily.obs,
-#'   weight, and any predictors
+#' @param data_daily_all A data frame containing `K600.daily.obs`, `weight`, and
+#'   any predictors.
 #' @param predictors For Kmodel, character vector of variables (column names in
 #'   data or data_daily) to use in predicting K. Leave blank or set to c() for
 #'   no predictors. Otherwise, one or more of these may be included: c("date",
 #'   "velocity.daily", "discharge.daily").
-#' @param transforms For Kmodel, a named character vector of names of functions
-#'   (probably 'log' or NA) to apply to K600.daily and/or the predictors. K600.daily should
-#'   probably be logged. The vector names must match the values of
-#'   `predictors`, although not all elements of `predictors` must be
+#' @param transforms For Kmodel, a named character vector of function names
+#'   (usually `"log"` or `NA`) to apply to `K600.daily` and the predictors.
+#'   `K600.daily` should usually be logged. The vector names must match the
+#'   values of `predictors`, although not all elements of `predictors` must be
 #'   included in `transforms`. Recommended transforms include
-#'   `c(K600.daily='log', date=NA, velocity.daily="log", discharge.daily="log")`
+#'   `c(K600.daily = "log", date = NA, velocity.daily = "log",
+#'   discharge.daily = "log")`.
 #' @param other_args Other arguments passed to the fitting function given by
 #'   `specs$engine`. `na.rm=TRUE` is already passed to
 #'   `mean` (which is actually implemented as `sum`, anyway).
@@ -509,8 +495,8 @@ Kmodel_allply <- function(
 #' Interpolation model of daily K for metabolism
 #'
 #' `metab_Kmodel` models use initial daily estimates of K, along with
-#' predictors such as Q (discharge.daily) or U (velocity.daily) or T (time) to leverage all
-#' available data to reach better, less variable daily estimates of K
+#' predictors such as Q (`discharge.daily`), U (`velocity.daily`), or T (time),
+#' to leverage all available data and produce more stable daily K estimates.
 #'
 #' @exportClass metab_Kmodel
 #' @family metab.model.classes
@@ -642,6 +628,10 @@ get_params.metab_Kmodel <- function(
 #' about GPP or ER. So it's not possible to predict metabolism from this model.
 #' Try get_params() to retrieve the predicted values of K600.daily.
 #' @inheritParams predict_metab
+#' @returns This method always throws an error because K models cannot predict
+#'   metabolism.
+#' @examples
+#' try(predict_metab(metab_model("metab_Kmodel")))
 #' @export
 predict_metab.metab_Kmodel <- function(
   metab_model,

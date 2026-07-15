@@ -2,7 +2,7 @@
 % Please edit documentation in R/zz_build_docs.R
 \name{zz_tabular}
 \alias{zz_tabular}
-\title{Format a data.frame for inclusion in a roxygen header}
+\title{Format a data frame for inclusion in a roxygen header}
 \usage{
 zz_tabular(df, bold_headers = TRUE, code = FALSE, ...)
 }

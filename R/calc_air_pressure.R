@@ -1,14 +1,14 @@
-#' Calculates the average air pressure for a site
+#' Calculate average air pressure for a site
 #'
 #' Estimates air pressure from air temperature and elevation
 #'
-#' @param temp.air air temperature in degrees C. Default is 15 degC.
-#' @param elevation the site elevation above sea level in m. Default is the
+#' @param temp.air Air temperature in degrees C. Default is 15 degC.
+#' @param elevation The site elevation above sea level in m. Default is the
 #'   rough mean elevation of the USA at 2500 ft (from
-#'   http://www.infoplease.com/ipa/A0001792.html)
-#' @param attach.units (deprecated, effectively FALSE in future) logical. Should
+#'   http://www.infoplease.com/ipa/A0001792.html).
+#' @param attach.units Deprecated. A logical. Should
 #'   the returned vector be a unitted object?
-#' @return a numeric vector of barometric pressures in mb, with units attached
+#' @returns A numeric vector of barometric pressures in mb, with units attached
 #'   if requested.
 #' @importFrom lifecycle deprecated is_present
 #' @examples

@@ -2,7 +2,7 @@
 
 * Messages, errors, and warnings now use structured cli formatting to make diagnostics clearer and more actionable.
 
-* `calc_DO_at_sat()`, `calc_DO_deficit()`, `calc_is_daytime()`, and `calc_sun_rise_set()` now use lifecycle deprecation warnings.
+* `calc_DO_at_sat()` now has its own deprecated wrapper and help topic, so `calc_DO_sat()` is documented as current; `calc_DO_deficit()`, `calc_is_daytime()`, and `calc_sun_rise_set()` also use lifecycle deprecation warnings.
 
 * improved package maintenance with writable Stan-cache fallbacks, modernized dependencies, concise startup output, and automated R CMD check coverage
 
@@ -11,6 +11,8 @@
 * `metab()`, `mm_model_by_ply()`, `mm_filter_valid_days()`, and `calc_light_merged()` now accept tibbles without coercing them to base data frames, and model data and prediction outputs preserve tibble classes.
 
 * `metab_inputs()` now uses structured cli messages for model specifications, optional inputs, and model information guidance.
+
+* `mm_data_units()` now returns units with Unicode subscripts, superscripts, and SI symbols for clearer display.
 
 * `plot_metab_data()` now provides a faceted quality-control plot for metabolism input data, including dissolved oxygen percent saturation when both dissolved oxygen columns are selected.
 

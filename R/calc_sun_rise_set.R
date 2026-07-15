@@ -1,4 +1,4 @@
-#' Calculates the time of sunrise and sunset
+#' Calculate sunrise and sunset times
 #'
 #' @description
 #' `r lifecycle::badge("deprecated")`
@@ -9,8 +9,9 @@
 #'
 #' @param date Vector of dates in `Date` format.
 #' @param latitude Single latitude value of site. South should be negative,
-#'   North positive
-#' @return data.frame of sunrise and sunset (apparent solar time, nominally UTC)
+#'   North positive.
+#' @returns A data frame containing sunrise and sunset times in apparent solar
+#'   time (nominally UTC).
 #' @importFrom LakeMetabolizer sun.rise.set
 #' @importFrom lubridate force_tz
 #' @keywords internal

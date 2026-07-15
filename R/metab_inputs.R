@@ -1,7 +1,7 @@
 #' Describe the requirements for an argument to metab()
 #'
-#' @param type the type of model you want to fit
-#' @param input the name of an argument to pass into metab()
+#' @param type The type of model you want to fit.
+#' @param input The name of an argument to pass into metab().
 #' @returns For `data` and `data_daily`, a tibble describing the required
 #'   columns when the selected model accepts that input. Otherwise, returns
 #'   `NULL` invisibly after displaying guidance with [cli::cli_inform()].

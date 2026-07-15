@@ -6,16 +6,15 @@
 #' `calc_DO_deficit()` is deprecated. Subtract observed dissolved oxygen from
 #' the output of [calc_DO_sat()] instead.
 #'
-#' @md
-#' @param DO.obs a numeric vector of dissolved oxygen concentration
+#' @param DO.obs A numeric vector of dissolved oxygen concentration
 #'   observations, mgO2 L^-1.
-#' @param temp.water a numeric vector of water temperature in degrees Celsius.
-#' @param pressure.air barometric pressure in millibars.
-#' @param salinity.water a numeric vector of salinity in PSU. Defaults to zero. Length must be
-#'   one or equal to length of `temp.water`.
-#' @param ... additional parameters passed to
-#'   `LakeMetabolizer::o2.at.sat.base`
-#' @return a vector of DO.deficit values
+#' @param temp.water A numeric vector of water temperature in degrees Celsius.
+#' @param pressure.air Barometric pressure in millibars.
+#' @param salinity.water A numeric vector of salinity in PSU. Defaults to zero.
+#'   Its length must be one or equal to the length of `temp.water`.
+#' @param ... Additional parameters passed to
+#'   `LakeMetabolizer::o2.at.sat.base`.
+#' @returns A vector of DO.deficit values.
 #' @examples
 #' # Old:
 #' calc_DO_deficit(

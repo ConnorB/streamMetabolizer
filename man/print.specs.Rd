@@ -7,9 +7,9 @@
 \method{print}{specs}(x, ...)
 }
 \arguments{
-\item{x}{specs list to be displayed.}
+\item{x}{Specs list to be displayed.}
 
-\item{...}{additional arguments passed to inner functions}
+\item{...}{Additional arguments passed to inner functions.}
 }
 \description{
 Print a specs object to the console.

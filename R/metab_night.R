@@ -12,16 +12,14 @@ NULL
 #' @author Alison Appling, Maite Arroita, Bob Hall
 #'
 #' @inheritParams metab
-#' @return A metab_night object containing the fitted model. This object can be
+#' @returns A metab_night object containing the fitted model. This object can be
 #'   inspected with the functions in the [metab_model_interface()].
 #'
 #' @examples
 #' dat <- data_metab('3', day_start=12, day_end=35)
 #' mm <- metab_night(data=dat)
 #' predict_metab(mm)
-#' \dontrun{
 #' plot_DO_preds(predict_DO(mm))
-#' }
 #' @export
 #' @family metab_model
 metab_night <- function(
@@ -96,10 +94,10 @@ metab_night <- function(
 #' Called from metab_night().
 #'
 #' @inheritParams mm_model_by_ply_prototype
-#' @param night_tests character vector of validity tests to conduct on the data
-#'   after subsetting to just nighttime
+#' @param night_tests Character vector of validity tests to conduct on the data
+#'   after subsetting to just nighttime.
 #' @inheritParams metab
-#' @return data.frame of estimates and [stats::lm()] model diagnostics
+#' @returns Data.frame of estimates and [stats::lm()] model diagnostics.
 #' @keywords internal
 #' @references Hornberger, George M., and Mahlon G. Kelly. Atmospheric
 #'   Reaeration in a River Using Productivity Analysis. Journal of the
@@ -375,7 +373,7 @@ predict_DO.metab_night <- function(
 #'
 #' @inheritParams mm_model_by_ply_prototype
 #' @inheritParams mm_predict_DO_1ply
-#' @return a data.frame of predictions
+#' @returns A data.frame of predictions.
 #' @importFrom stats complete.cases
 metab_night_predict_1ply <- function(
   data_ply,

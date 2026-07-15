@@ -7,10 +7,16 @@
 \method{print}{logs_metab}(x, ...)
 }
 \arguments{
-\item{x}{an object to print}
+\item{x}{An object to print.}
 
-\item{...}{ignored; included only for compatibility with \code{base::print}}
+\item{...}{Ignored; included only for compatibility with \code{base::print}.}
+}
+\value{
+\code{x}, invisibly.
 }
 \description{
 Print metab model compilation and/or fitting logs
+}
+\examples{
+print(structure("Sampling complete", class = "logs_metab"))
 }

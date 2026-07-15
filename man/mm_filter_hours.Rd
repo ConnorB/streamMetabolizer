@@ -7,11 +7,11 @@
 mm_filter_hours(data, day_start, day_end)
 }
 \arguments{
-\item{data}{a data.frame containing date and solar.time columns (POSIXct)}
+\item{data}{A data.frame containing date and solar.time columns (POSIXct).}
 
-\item{day_start}{the start time of each day, inclusive, in hours}
+\item{day_start}{The start time of each day, inclusive, in hours.}
 
-\item{day_end}{the end time of each day, exclusive, in hours}
+\item{day_end}{The end time of each day, exclusive, in hours.}
 }
 \description{
 Within each date (as labeled by the 'date' column of \code{data}, select the

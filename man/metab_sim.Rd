@@ -15,7 +15,7 @@ metab_sim(
 )
 }
 \arguments{
-\item{specs}{a list of model specifications and parameters for a model.
+\item{specs}{A list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
@@ -33,8 +33,8 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{info}{any information, in any format, that you would like to store
-within the metab_model object}
+\item{info}{Any information, in any format, that you would like to store
+within the metab_model object.}
 }
 \value{
 A metab_sim object containing the fitted model. This object can be
@@ -51,58 +51,81 @@ other values are ignored), or if in \code{data_daily}, this takes the form of
 a DO.mod.1 column with one starting DO value per day.
 }
 \examples{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 ## simulations with variation all at sub-daily scale
 # prepare input data (DO used only to pick first DO of each day)
-dat <- data_metab('3', res='15')
-dat_daily <- data.frame(date=as.Date(paste0("2012-09-", 18:20)),
-  GPP.daily=2, ER.daily=-3, K600.daily=21, stringsAsFactors=FALSE)
+dat <- data_metab('3', res = '15')
+dat_daily <- data.frame(
+  date = as.Date(paste0("2012-09-", 18:20)),
+  GPP.daily = 2, ER.daily = -3, K600.daily = 21,
+  stringsAsFactors = FALSE
+)
 
-# define simulation parameters
+# define simulation parameters and run a single model
 mm <- metab_sim(
-  specs(mm_name('sim'), err_obs_sigma=0.1, err_proc_sigma=2,
-    GPP_daily=NULL, ER_daily=NULL, K600_daily=NULL),
-  data=dat, data_daily=dat_daily)
-# actual simulation happens during prediction - different each time
+  specs(mm_name('sim'),
+    err_obs_sigma = 0.1,
+    err_proc_sigma = 2,
+    GPP_daily = NULL,
+    ER_daily = NULL,
+    K600_daily = NULL
+  ),
+  data = dat,
+  data_daily = dat_daily
+)
+
 get_params(mm)
 predict_metab(mm)
-predict_DO(mm)[seq(1,50,by=10),]
-predict_DO(mm)[seq(1,50,by=10),]
+predict_DO(mm)[seq(1, 50, by = 10), ]
 
-# or same each time if seed is set
+# stochastic DO (different each time)
+predict_DO(mm)[seq(1, 50, by = 10), ]
+
+# reproducible simulation with seed
 mm@specs$sim_seed <- 236
-predict_DO(mm)$DO.obs[seq(1,50,by=10)]
-predict_DO(mm)$DO.obs[seq(1,50,by=10)]
+predict_DO(mm)$DO.obs[seq(1, 50, by = 10)]
+predict_DO(mm)$DO.obs[seq(1, 50, by = 10)]
 
 # fancy GPP equation
-dat_daily <- data.frame(date=as.Date(paste0("2012-09-", 18:20)),
-  Pmax=8, alpha=0.01, ER.daily=-3, K600.daily=21, stringsAsFactors=FALSE)
+dat_daily <- data.frame(
+  date = as.Date(paste0("2012-09-", 18:20)),
+  Pmax = 8, alpha = 0.01, ER.daily = -3, K600.daily = 21,
+  stringsAsFactors = FALSE
+)
 mm <- metab_sim(
-  specs(mm_name('sim', GPP_fun='satlight'), err_obs_sigma=0.1, err_proc_sigma=2,
-    Pmax=NULL, alpha=NULL, ER_daily=NULL, K600_daily=NULL),
-  data=dat, data_daily=dat_daily)
+  specs(mm_name('sim', GPP_fun = 'satlight'),
+    err_obs_sigma = 0.1,
+    err_proc_sigma = 2,
+    Pmax = NULL,
+    alpha = NULL,
+    ER_daily = NULL,
+    K600_daily = NULL
+  ),
+  data = dat,
+  data_daily = dat_daily
+)
 get_params(mm)
-predict_metab(mm) # metab estimates are for data without errors
-predict_DO(mm)[seq(1,50,by=10),]
+predict_metab(mm)
+predict_DO(mm)[seq(1, 50, by = 10), ]
 
 ## simulations with variation at both sub-daily and multi-day scales
-sp <- specs(mm_name('sim', pool_K600='none'),
-  K600_daily = function(n, ...) pmax(0, rnorm(n, 10, 3))) # n is available within sim models
+sp <- specs(mm_name('sim', pool_K600 = 'none'),
+  K600_daily = function(n, ...) pmax(0, rnorm(n, 10, 3)))
 mm <- metab(sp, dat)
 get_params(mm)
 predict_metab(mm)
 
 ## K~Q model
-dat <- data_metab('10','15')
-sp <- specs(mm_name('sim', pool_K600='binned'))
+dat <- data_metab('10', '15')
+sp <- specs(mm_name('sim', pool_K600 = 'binned'))
 mm <- metab(sp, dat)
 pars <- get_params(mm)
 attr(pars, 'K600_eqn')
 
-\dontrun{
 plot_DO_preds(predict_DO(mm))
 plot_DO_preds(mm)
 library(ggplot2)
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other metab_model:

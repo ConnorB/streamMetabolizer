@@ -7,12 +7,12 @@
 load_french_creek_std(attach.units = deprecated())
 }
 \arguments{
-\item{attach.units}{(deprecated, effectively FALSE in future) logical,
+\item{attach.units}{Deprecated. A logical,
 default TRUE for backward compatibility. Should units be attached to the
 data.frame?}
 }
 \value{
-a data.frame, unitted if attach.units==TRUE
+A data.frame, unitted if attach.units==TRUE.
 }
 \description{
 This function requires \code{chron}, a package that is not formally required

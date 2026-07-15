@@ -14,8 +14,8 @@ Kmodel_allply(
 )
 }
 \arguments{
-\item{data_daily_all}{data to use as input, with columns including K600.daily.obs,
-weight, and any predictors}
+\item{data_daily_all}{A data frame containing \code{K600.daily.obs}, \code{weight}, and
+any predictors.}
 
 \item{engine}{The software or function to use in fitting the model. Should be
 specified via \code{mm_name} rather than here. For \code{type='bayes'},
@@ -36,12 +36,12 @@ data or data_daily) to use in predicting K. Leave blank or set to c() for
 no predictors. Otherwise, one or more of these may be included: c("date",
 "velocity.daily", "discharge.daily").}
 
-\item{transforms}{For Kmodel, a named character vector of names of functions
-(probably 'log' or NA) to apply to K600.daily and/or the predictors. K600.daily should
-probably be logged. The vector names must match the values of
-\code{predictors}, although not all elements of \code{predictors} must be
+\item{transforms}{For Kmodel, a named character vector of function names
+(usually \code{"log"} or \code{NA}) to apply to \code{K600.daily} and the predictors.
+\code{K600.daily} should usually be logged. The vector names must match the
+values of \code{predictors}, although not all elements of \code{predictors} must be
 included in \code{transforms}. Recommended transforms include
-\code{c(K600.daily='log', date=NA, velocity.daily="log", discharge.daily="log")}}
+\code{c(K600.daily = "log", date = NA, velocity.daily = "log", discharge.daily = "log")}.}
 
 \item{other_args}{Other arguments passed to the fitting function given by
 \code{specs$engine}. \code{na.rm=TRUE} is already passed to

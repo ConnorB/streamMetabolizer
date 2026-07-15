@@ -2,7 +2,7 @@
 % Please edit documentation in R/mm_validate_data.R
 \name{mm_validate_data}
 \alias{mm_validate_data}
-\title{Evaluate whether the data argument is properly formatted.}
+\title{Validate model input data}
 \usage{
 mm_validate_data(
   data = mm_data(NULL),
@@ -22,16 +22,20 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{metab_class}{character the class name of the metab_model constructor}
+\item{metab_class}{Character the class name of the metab_model constructor.}
 
-\item{data_tests}{list of tests to conduct to determine whether the input
-data.frames are properly formatted to allow modeling to begin}
+\item{data_tests}{List of tests to conduct to determine whether the input
+data.frames are properly formatted to allow modeling to begin.}
+}
+\value{
+A list containing validated \code{data} and \code{data_daily} objects.
 }
 \description{
 Will most often be called from within a metab_model constructor.
 }
 \examples{
-\dontrun{
-mm_validate_data(dplyr::select(mm_data(),-temp.water), metab_class="metab_mle")
-}
+try(mm_validate_data(
+  dplyr::select(mm_data(), -temp.water),
+  metab_class = "metab_mle"
+))
 }

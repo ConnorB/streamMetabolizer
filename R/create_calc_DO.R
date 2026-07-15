@@ -1,17 +1,16 @@
 #' Create a function to compute the numerical integration of a dDOdt function
 #'
-#' @param calc_dDOdt a function as from `create_calc_dDOdt`
+#' @param calc_dDOdt A function as from `create_calc_dDOdt`.
 #' @inheritParams mm_name
-#' @param err.obs optional numerical vector of length nrow(data) in units of gO2
+#' @param err.obs Optional numerical vector of length nrow(data) in units of gO2
 #'   m^3. Appropriate for simulation, when this vector of observation errors
 #'   will be added to the calculated DO values to simulate observation error.
 #'   But usually (for MLE or prediction from a fitted MLE/Bayesian/nighttime
-#'   regression model) `err.obs` should be missing or 0
-#' @return a function that will return a negative log likelihood of the data
-#'   given a set of metab.pars
+#'   regression model) `err.obs` should be missing or 0.
+#' @returns A function that will return a negative log likelihood of the data
+#'   given a set of metab.pars.
 #' @import deSolve
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' # prepare data for examples
 #' data <- data_metab('3','30')[97:144,][seq(1,48,by=2),]
 #' # preds.init <- list(GPP.daily=2.82,ER.daily=-2.12,K600.daily=31.27)
@@ -71,7 +70,6 @@
 #' DO <- create_calc_DO(dDOdt, ode_method='trapezoid', err.obs=rnorm(nrow(data), 0, 0.1))
 #' DO.mod.operr <- DO(preds.init)
 #' lines(x=DOtime, y=DO.mod.operr, col='red', lty=2)
-#' }
 #' @export
 create_calc_DO <- function(
   calc_dDOdt,

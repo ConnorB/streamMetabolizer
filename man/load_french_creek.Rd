@@ -7,7 +7,7 @@
 load_french_creek(attach.units = deprecated())
 }
 \arguments{
-\item{attach.units}{(deprecated, effectively FALSE in future) logical,
+\item{attach.units}{Deprecated. A logical,
 default TRUE for backward compatibility. Should units be attached to the
 data.frame?}
 }

@@ -12,7 +12,7 @@ select_rstan_draws(extracted_draws, parname, index = TRUE)
 
 \item{parname}{The base parameter name.}
 
-\item{index}{integer or logical. Applicable only if plotting posteriors, and
+\item{index}{Integer or logical. Applicable only if plotting posteriors, and
 useful only if the parname is for a parameter having multiple (e.g., daily)
 instances. In this case, the index selects the instance and corresponds to
 the row number in the data.frame element of \code{get_fit(metab_model)}

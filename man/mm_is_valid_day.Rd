@@ -17,23 +17,23 @@ mm_is_valid_day(
 )
 }
 \arguments{
-\item{data_ply}{a data frame or tibble containing all relevant, validated
+\item{data_ply}{A data frame or tibble containing all relevant, validated
 modeling data for a single ply of data. (1 ply ~= 1 date, although the day
 length has been specified by day_start and day_end and may not be exactly
-24 hours)}
+24 hours).}
 
-\item{day_start}{start time (inclusive) of a day's data in number of hours
+\item{day_start}{Start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
 indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
 fall exactly on an observation time.}
 
-\item{day_end}{end time (exclusive) of a day's data in number of hours from
+\item{day_end}{End time (exclusive) of a day's data in number of hours from
 the midnight that begins the date. For example, day_end=30 indicates that
 data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00.}
 
-\item{day_tests}{list of tests to conduct to determine whether each date
+\item{day_tests}{List of tests to conduct to determine whether each date
 worth of data is valid for modeling. \code{full_day}: Do the data span the
 full expected period (e.g., from 10:30pm on preceding day to 6am on
 following day)? \code{even_timesteps}: are all of the timesteps within the
@@ -45,17 +45,17 @@ further test is implied if \code{required_timestep} is a non-NA numeric.}
 
 \item{required_timestep}{NA or numeric (length 1). If numeric, the timestep
 length in days that a date must have to pass the validity check (to within
-a tolerance of 0.2\% of the value of \code{required_timestep})}
+a tolerance of 0.2\% of the value of \code{required_timestep}).}
 
-\item{ply_date}{the Date this data_ply is intended to match. May be NA}
+\item{ply_date}{The Date this data_ply is intended to match. May be NA.}
 
-\item{timestep_days}{the expected timestep length in fraction of a day; for
+\item{timestep_days}{The expected timestep length in fraction of a day; for
 example, a 1-hour timestep is 1/24 is 0.0416667. This is calculated within
 the function if timestep_days is NA. May be supplied as an argument to (1)
 pre-calculate the value for efficiency, or (2) require a specific timestep.}
 }
 \value{
-character vector of errors if day is invalid, or TRUE if it's valid
+Character vector of errors if day is invalid, or TRUE if it's valid.
 }
 \description{
 Provides ability to skip a poorly-formatted day for calculating metabolism,

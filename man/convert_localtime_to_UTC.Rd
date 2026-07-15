@@ -2,17 +2,24 @@
 % Please edit documentation in R/convert_UTC_to_localtime.R
 \name{convert_localtime_to_UTC}
 \alias{convert_localtime_to_UTC}
-\title{Convert time from local time to UTC.}
+\title{Convert local time to UTC}
 \usage{
 convert_localtime_to_UTC(local.time)
 }
 \arguments{
 \item{local.time}{POSIXct date+time of interest, already in local time as
-specified by the tz attribute}
+specified by the tz attribute.}
+}
+\value{
+A \code{POSIXct} vector in UTC.
 }
 \description{
 Convert time from local time (either standard or with daylight savings) to
 UTC.
+}
+\examples{
+local <- as.POSIXct("2024-01-15 12:00:00", tz = "America/Chicago")
+convert_localtime_to_UTC(local)
 }
 \references{
 https://stackoverflow.com/questions/23414340/convert-to-local-time-zone-using-latitude-and-longitude

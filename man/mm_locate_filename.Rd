@@ -11,9 +11,9 @@ mm_locate_filename(
 )
 }
 \arguments{
-\item{model_name}{a model file in the 'models' folder of the
+\item{model_name}{A model file in the 'models' folder of the
 streamMetabolizer package or a relative or absolute file path of a model
-file}
+file.}
 
 \item{stan_engine}{The Stan interface whose compiler version should be
 validated. If \code{NULL}, CmdStanR is preferred when available, followed by
@@ -22,7 +22,7 @@ RStan.}
 \item{stan_version_fn}{Internal function used to determine the Stan version.}
 }
 \value{
-a file path if the file exists or an error otherwise
+A file path if the file exists or an error otherwise.
 }
 \description{
 Looks first in the models folder of the streamMetabolizer package, second

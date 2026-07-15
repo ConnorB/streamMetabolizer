@@ -5,10 +5,10 @@
 #' changes in this ratio (see Britton and Dodd (1976)).
 #'
 #' @param par Vector of photosynthetically active radiation (400-700 nm;
-#'   umol/m^2/sec)
+#'   umol/m^2/sec).
 #' @param coef Numerical coefficient to convert PAR (umol/m^2/sec) to SW
 #'   (W/m^2). Defaults to value from Britton and Dodd (1976).
-#' @return Numeric vector of shortwave values with units W/m^2
+#' @returns Numeric vector of shortwave values with units W/m^2.
 #'
 #' @examples
 #' convert_PAR_to_SW(par=400, coef=0.47)
@@ -25,10 +25,10 @@ convert_PAR_to_SW <- function(par, coef = 0.473) {
 #' (PAR). Uses a fixed ratio between SW and PAR, ignoring the minor seasonal
 #' changes in this ratio (see Britton and Dodd (1976)).
 #'
-#' @param sw Vector of shortwave radiation (W/m^2)
+#' @param sw Vector of shortwave radiation (W/m^2).
 #' @param coef Numerical coefficient to convert SW (W/m^2) to PAR
 #'   (umol/m^2/sec). Defaults to value from Britton and Dodd (1976).
-#' @return Numeric vector of PAR values in units umol/m^2/sec
+#' @returns Numeric vector of PAR values in units umol/m^2/sec.
 #'
 #' @examples
 #' convert_SW_to_PAR(sw=800)

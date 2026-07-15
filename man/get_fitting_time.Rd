@@ -3,28 +3,32 @@
 \name{get_fitting_time}
 \alias{get_fitting_time}
 \alias{get_fitting_time.metab_model}
-\title{Extract the amount of time that was required to fit the metabolism model.}
+\title{Extract model fitting time}
 \usage{
 get_fitting_time(metab_model)
 
 \method{get_fitting_time}{metab_model}(metab_model)
 }
 \arguments{
-\item{metab_model}{A metabolism model, implementing the
-metab_model_interface, for which to return the time}
+\item{metab_model}{A metabolism model that implements the
+\code{metab_model_interface}.}
 }
 \value{
-An proc_time object
+A \code{proc_time} object.
 }
 \description{
-A function in the metab_model_interface. Returns the time that was taken to
+A function in the \code{metab_model_interface}. Returns the time that was taken to
 fit the model; see \code{\link[=proc.time]{proc.time()}} for details.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{get_fitting_time(metab_model)}: This implementation is shared by many model types
+\item \code{get_fitting_time(metab_model)}: This implementation is shared by many model
+types.
 
 }}
+\examples{
+get_fitting_time(metab_model())
+}
 \seealso{
 Other metab_model_interface:
 \code{\link[=get_data]{get_data()}},

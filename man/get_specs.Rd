@@ -3,21 +3,22 @@
 \name{get_specs}
 \alias{get_specs}
 \alias{get_specs.metab_model}
-\title{Extract the fitting specifications from a metabolism model.}
+\title{Extract model fitting specifications}
 \usage{
 get_specs(metab_model)
 
 \method{get_specs}{metab_model}(metab_model)
 }
 \arguments{
-\item{metab_model}{A metabolism model, implementing the
-metab_model_interface, for which to return the specifications}
+\item{metab_model}{A metabolism model that implements the
+\code{metab_model_interface}.}
 }
 \value{
-The list of specifications that was passed to \code{\link[=metab]{metab()}}
+The list of specifications passed to \code{\link[=metab]{metab()}}.
 }
 \description{
-A function in the metab_model_interface. Returns the specifications that were
+A function in the \code{metab_model_interface}. Returns the specifications that
+were
 passed in when fitting the metabolism model.
 }
 \section{Methods (by class)}{
@@ -25,6 +26,9 @@ passed in when fitting the metabolism model.
 \item \code{get_specs(metab_model)}: This implementation is shared by many model types
 
 }}
+\examples{
+get_specs(metab_model(specs = list(day_start = 4, day_end = 28)))
+}
 \seealso{
 Other metab_model_interface:
 \code{\link[=get_data]{get_data()}},

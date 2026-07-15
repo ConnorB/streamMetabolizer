@@ -4,10 +4,10 @@
 #' @importFrom lubridate with_tz
 #' @importFrom lifecycle deprecated is_present
 #' @importFrom readr read_csv
-#' @param attach.units (deprecated, effectively FALSE in future) logical,
+#' @param attach.units Deprecated. A logical,
 #'   default TRUE for backward compatibility. Should units be attached to the
 #'   data.frame?
-#' @return A tibble.
+#' @returns A tibble.
 load_spring_creek <- function(attach.units = deprecated()) {
   # check units arguments
   if (lifecycle::is_present(attach.units)) {

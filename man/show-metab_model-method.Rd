@@ -7,7 +7,7 @@
 \S4method{show}{metab_model}(object)
 }
 \arguments{
-\item{object}{metab_model to be displayed.}
+\item{object}{Metab_model to be displayed.}
 }
 \description{
 Print a metab_model object to the console.

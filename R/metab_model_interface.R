@@ -1,48 +1,28 @@
-#' Functions implemented by any `streamMetabolizer`-compatible metabolism
-#' model.
+#' Functions implemented by compatible metabolism models
 #'
-#' Metabolism models in the `streamMetabolizer` package all implement a
+#' Metabolism models in streamMetabolizer all implement a
 #' common set of core functions. These functions are conceptually packaged as
 #' the `metab_model_interface` defined here.
 #'
 #' @section Functions in the interface:
 #'
-#'   \itemize{
-#'
-#'   \item \code{[show](metab_model) \{ display(metab_model) \}}
-#'
-#'   \item \code{[get_params](metab_model, ...) \{ return(data.frame) \}}
-#'
-#'   \item \code{[get_param_names](metab_model, ...) \{ return(list) \}}
-#'
-#'   \item \code{[predict_metab](metab_model, ...) \{ return(data.frame)
-#'   \}}
-#'
-#'   \item \code{[predict_DO](metab_model, ...) \{ return(data.frame) \}}
-#'
-#'   \item \code{[get_fit](metab_model) \{ return(fitted.model) \}}
-#'
-#'   \item \code{[get_fitting_time](metab_model) \{ return(proc_time) \}}
-#'
-#'   \item \code{[get_info](metab_model) \{ return(info) \}}
-#'
-#'   \item \code{[get_specs](metab_model) \{ return(specs.list) \}}
-#'
-#'   \item \code{[get_data](metab_model) \{ return(data.frame) \}}
-#'
-#'   \item \code{[get_data_daily](metab_model) \{ return(data.frame) \}}
-#'
-#'   \item \code{[get_version](metab_model) \{ return(version.string) \}}
-#'
-#'   }
+#' * `show(metab_model)` displays the model.
+#' * [get_params()] returns a data frame of model parameters.
+#' * [get_param_names()] returns required and optional parameter names.
+#' * [predict_metab()] returns a data frame of metabolism predictions.
+#' * [predict_DO()] returns a data frame of dissolved oxygen predictions.
+#' * [get_fit()] returns the internal fitted model.
+#' * [get_fitting_time()] returns the model fitting time.
+#' * [get_info()] returns user-supplied metadata.
+#' * [get_specs()] returns model specifications.
+#' * [get_data()] returns the subdaily fitting data.
+#' * [get_data_daily()] returns the daily fitting data.
+#' * [get_version()] returns the package version used to fit the model.
 #'
 #' @name metab_model_interface
 #' @rdname metab_model_interface
-#' @docType data
-#' @format A collection of functions which any metabolism model in
-#'   `streamMetabolizer` should implement.
 #' @examples
-#' methods(class="metab_model")
+#' methods(class = "metab_model")
 NULL
 
 #### show ####
@@ -50,55 +30,65 @@ NULL
 
 #### S3 generics ####
 
-#' Extract the user-supplied metadata about a metabolism model.
+#' Extract user-supplied model metadata
 #'
-#' A function in the metab_model_interface. Returns any user-supplied metadata.
+#' A function in the `metab_model_interface`. Returns any user-supplied
+#' metadata.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, for which to return the metadata information.
-#' @return The user-supplied metadata in the original format.
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @returns The user-supplied metadata in the original format.
+#' @examples
+#' get_info(metab_model(info = list(site = "Example stream")))
 #' @export
 #' @family metab_model_interface
 get_info <- function(metab_model) {
   UseMethod("get_info")
 }
 
-#' Extract the internal model from a metabolism model.
+#' Extract the internal fitted model
 #'
-#' A function in the metab_model_interface. Returns the internal model
+#' A function in the `metab_model_interface`. Returns the internal model
 #' representation as fitted to the supplied data and arguments.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, for which to return the data
-#' @return An internal model representation; may have any class
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @returns An internal model representation, which may have any class.
+#' @examples
+#' get_fit(metab_model(fit = list(converged = TRUE)))
 #' @export
 #' @family metab_model_interface
 get_fit <- function(metab_model) {
   UseMethod("get_fit")
 }
 
-#' Extract the amount of time that was required to fit the metabolism model.
+#' Extract model fitting time
 #'
-#' A function in the metab_model_interface. Returns the time that was taken to
+#' A function in the `metab_model_interface`. Returns the time that was taken to
 #' fit the model; see [proc.time()] for details.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, for which to return the time
-#' @return An proc_time object
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @returns A `proc_time` object.
+#' @examples
+#' get_fitting_time(metab_model())
 #' @export
 #' @family metab_model_interface
 get_fitting_time <- function(metab_model) {
   UseMethod("get_fitting_time")
 }
 
-#' Extract the fitting specifications from a metabolism model.
+#' Extract model fitting specifications
 #'
-#' A function in the metab_model_interface. Returns the specifications that were
+#' A function in the `metab_model_interface`. Returns the specifications that
+#' were
 #' passed in when fitting the metabolism model.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, for which to return the specifications
-#' @return The list of specifications that was passed to [metab()]
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @returns The list of specifications passed to [metab()].
+#' @examples
+#' get_specs(metab_model(specs = list(day_start = 4, day_end = 28)))
 #' @export
 #' @family metab_model_interface
 get_specs <- function(metab_model) {
@@ -106,87 +96,96 @@ get_specs <- function(metab_model) {
 }
 
 
-#' Extract the fitting data from a metabolism model.
+#' Extract model fitting data
 #'
-#' A function in the metab_model_interface. Returns the data that were passed to
+#' A function in the `metab_model_interface`. Returns the data that were passed
+#' to
 #' a metabolism model.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, for which to return the data
-#' @return A data.frame
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @returns A data frame.
+#' @examples
+#' get_data(metab_model())
 #' @export
 #' @family metab_model_interface
 get_data <- function(metab_model) {
   UseMethod("get_data")
 }
 
-#' Extract the daily fitting data, if any, from a metabolism model.
+#' Extract daily model fitting data
 #'
-#' A function in the metab_model_interface. Returns the daily data that were
+#' A function in the `metab_model_interface`. Returns the daily data that were
 #' passed to a metabolism model.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, for which to return the data_daily
-#' @return A data.frame
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @returns A data frame or `NULL` when no daily data were supplied.
+#' @examples
+#' get_data_daily(metab_model())
 #' @export
 #' @family metab_model_interface
 get_data_daily <- function(metab_model) {
   UseMethod("get_data_daily")
 }
 
-#' Extract the version of streamMetabolizer that was used to fit the model.
+#' Extract the streamMetabolizer version used to fit a model
 #'
-#' A function in the metab_model_interface. Returns the version of
+#' A function in the `metab_model_interface`. Returns the version of
 #' streamMetabolizer that was used to fit the model.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, for which to return the data
-#' @return character representation of the package version
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @returns A character representation of the package version.
+#' @examples
+#' get_version(metab_model())
 #' @export
 #' @family metab_model_interface
 get_version <- function(metab_model) {
   UseMethod("get_version")
 }
 
-#' Extract the metabolism parameters (fitted and/or fixed) from a model.
+#' Extract metabolism model parameters
 #'
-#' A function in the metab_model_interface. Returns estimates of those
+#' A function in the `metab_model_interface`. Returns estimates of the
 #' parameters describing the rates and/or shapes of GPP, ER, or reaeration.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, to use in predicting metabolism
-#' @param date_start Date or a class convertible with as.Date. The first date
-#'   (inclusive) for which to report parameters. If NA, no filtering is done.
-#' @param date_end Date or a class convertible with as.Date. The last date
-#'   (inclusive) for which to report parameters.. If NA, no filtering is done.
-#' @param uncertainty character. Should columns for the uncertainty of parameter
-#'   estimates be excluded ('none'), reported as standard deviations ('sd'), or
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @param date_start A `Date` or an object coercible with [as.Date()]. The first
+#'   date (inclusive) for which to report parameters. If `NA`, no filtering is
+#'   done.
+#' @param date_end A `Date` or an object coercible with [as.Date()]. The last
+#'   date (inclusive) for which to report parameters. If `NA`, no filtering is
+#'   done.
+#' @param uncertainty A string. Should columns for parameter uncertainty be
+#'   excluded (`"none"`), reported as standard deviations (`"sd"`), or
 #'   reported as lower and upper bounds of a 95 percent confidence interval
-#'   ('ci')? When available (e.g., for Bayesian models), if 'ci' then the
+#'   (`"ci"`)? When available (e.g., for Bayesian models), if `"ci"` then the
 #'   central value will be the median (50th quantile) and the ranges will be the
-#'   2.5th and 97.5th quantiles. If 'sd' then the central value will always be
+#'   2.5th and 97.5th quantiles. If `"sd"` then the central value will be
 #'   the mean.
-#' @param messages logical. Should warning and error messages from the fitting
+#' @param messages A logical. Should warning and error messages from the fitting
 #'   procedure be included in the output?
-#' @param fixed character. Should values pulled from data_daily (i.e., fixed
-#'   rather that fitted) be treated identically ('none'), paired with a logicals
-#'   column ending in '.fixed' ('columns'), converted to character and marked
-#'   with a leading asterisk ('stars')?
+#' @param fixed A string. Should values pulled from `data_daily` (i.e., fixed
+#'   rather than fitted) be treated identically (`"none"`), paired with logical
+#'   columns ending in `.fixed` (`"columns"`), or converted to character and
+#'   marked with a leading asterisk (`"stars"`)?
 #' @param ... Other arguments passed to class-specific implementations of
-#'   `get_params`
-#' @param attach.units (deprecated, effectively FALSE in future) logical. Should
-#'   units be attached to the output?
-#' @return A data.frame of the parameters needed to predict GPP, ER, D, and DO,
-#'   one row per date
+#'   [get_params()].
+#' @param attach.units Deprecated. A logical indicating whether to attach units
+#'   to the output.
+#' @returns A data frame of the parameters needed to predict GPP, ER, D, and DO,
+#'   with one row per date.
 #' @importFrom lifecycle deprecated is_present
 #' @examples
-#' dat <- data_metab('3', day_start=12, day_end=36)
-#' mm <- metab_night(specs(mm_name('night')), data=dat)
+#' dat <- data_metab("3", day_start = 12, day_end = 36)
+#' mm <- metab_night(specs(mm_name("night")), data = dat)
 #' get_params(mm)
-#' get_params(mm, date_start=get_fit(mm)$date[2])
+#' get_params(mm, date_start = get_fit(mm)$date[2])
 #' @export
 #' @family metab_model_interface
-#' @seealso [predict_metab()] for daily average rates of GPP and ER
+#' @seealso [predict_metab()] for daily average rates of GPP and ER.
 get_params <- function(
   metab_model,
   date_start = NA,
@@ -200,15 +199,16 @@ get_params <- function(
   UseMethod("get_params")
 }
 
-#' Extract the daily parameter names from a metabolism model.
+#' Extract daily metabolism parameter names
 #'
-#' A function in the metab_model_interface. Returns vectors of the required and
+#' A function in the `metab_model_interface`. Returns vectors of the required
+#' and
 #' optional daily metabolism parameters for the model.
 #'
 #' @param metab_model A metabolism model object or model name for which to
 #'   return the list of required and optional metabolism parameters.
-#' @param ... Placeholder for future arguments
-#' @return Returns a list of two vectors, the names of the required and optional
+#' @param ... Reserved for future arguments.
+#' @returns A list of two vectors containing the names of required and optional
 #'   daily metabolism parameters, respectively.
 #' @export
 #' @family metab_model_interface
@@ -216,54 +216,50 @@ get_param_names <- function(metab_model, ...) {
   UseMethod("get_param_names")
 }
 
-#' Predict metabolism from a fitted model.
+#' Predict metabolism from a fitted model
 #'
-#' A function in the metab_model_interface. Returns predictions (estimates) of
+#' A function in the `metab_model_interface`. Returns estimates of
 #' GPP, ER, and K600.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, to use in predicting metabolism
-#' @param date_start Date or a class convertible with as.Date. The first date
-#'   (inclusive) for which to report metabolism predictions. If NA, no filtering
-#'   is done.
-#' @param date_end Date or a class convertible with as.Date. The last date
-#'   (inclusive) for which to report metabolism predictions. If NA, no filtering
-#'   is done.
-#' @param day_start start time (inclusive) of a day's data in number of hours
-#'   from the midnight that begins the date. For example, day_start=-1.5
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @param date_start A `Date` or an object coercible with [as.Date()]. The first
+#'   date (inclusive) for which to report metabolism predictions. If `NA`, no
+#'   filtering is done.
+#' @param date_end A `Date` or an object coercible with [as.Date()]. The last
+#'   date (inclusive) for which to report metabolism predictions. If `NA`, no
+#'   filtering is done.
+#' @param day_start Start time (inclusive) of a day's data in number of hours
+#'   from the midnight that begins the date. For example, `day_start = -1.5`
 #'   indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 #'   the first observation time that occurs after that time if day_start doesn't
 #'   fall exactly on an observation time. For daily metabolism predictions,
-#'   day_end - day_start should probably equal 24 so that each day's estimate is
-#'   representative of a 24-hour period.
-#' @param day_end end time (exclusive) of a day's data in number of hours from
-#'   the midnight that begins the date. For example, day_end=30 indicates that
+#'   `day_end - day_start` should probably equal 24 so that each day's estimate
+#'   is representative of a 24-hour period.
+#' @param day_end End time (exclusive) of a day's data in number of hours from
+#'   the midnight that begins the date. For example, `day_end = 30` indicates
+#'   that
 #'   data describing 2006-06-26 end at the last observation time that occurs
-#'   before 2006-06-27 06:00. For daily metabolism predictions, day_end -
-#'   day_start should probably equal 24 so that each day's estimate is
-#'   representative of a 24-hour period.
+#'   before 2006-06-27 06:00.
 #' @param ... Other arguments passed to class-specific implementations of
-#'   `predict_metab`
-#' @param attach.units (deprecated, effectively FALSE in future) logical. Should
-#'   units be attached to the output?
-#' @param use_saved logical. Is it OK to use predictions that were saved with
+#'   [predict_metab()].
+#' @param attach.units Deprecated. A logical indicating whether to attach units
+#'   to the output.
+#' @param use_saved A logical. Is it OK to use predictions that were saved with
 #'   the model?
-#' @return A data.frame of daily metabolism estimates. Columns include:
-#'   \describe{
+#' @returns A data frame with one row per date and columns that include:
 #'
-#'   \item{GPP}{numeric estimate of Gross Primary Production, positive when
-#'   realistic, \eqn{g O_2 m^{-2} d^{-1}}{g O2 / m^2 / d}}
-#'
-#'   \item{ER}{numeric estimate of Ecosystem Respiration, negative when
-#'   realistic, \eqn{g O_2 m^{-2} d^{-1}}{g O2 / m^2 / d}}
-#'
-#'   \item{K600}{numeric estimate of the reaeration rate \eqn{d^{-1}}{1 / d}} }
+#'   * `GPP`: Gross primary production, which is positive when realistic, in
+#'     gO₂ m⁻² d⁻¹.
+#'   * `ER`: Ecosystem respiration, which is negative when realistic, in
+#'     gO₂ m⁻² d⁻¹.
+#'   * `K600`: The reaeration rate, in d⁻¹.
 #' @importFrom lifecycle deprecated is_present
 #' @examples
-#' dat <- data_metab('3', day_start=12, day_end=36)
-#' mm <- metab_night(specs(mm_name('night')), data=dat)
+#' dat <- data_metab("3", day_start = 12, day_end = 36)
+#' mm <- metab_night(specs(mm_name("night")), data = dat)
 #' predict_metab(mm)
-#' predict_metab(mm, date_start=get_fit(mm)$date[2])
+#' predict_metab(mm, date_start = get_fit(mm)$date[2])
 #' @export
 #' @family metab_model_interface
 predict_metab <- function(
@@ -280,32 +276,32 @@ predict_metab <- function(
 }
 
 
-#' Predict DO from a fitted model.
+#' Predict dissolved oxygen from a fitted model
 #'
-#' A function in the metab_model_interface. Returns predictions of dissolved
+#' A function in the `metab_model_interface`. Returns predictions of dissolved
 #' oxygen.
 #'
-#' @param metab_model A metabolism model, implementing the
-#'   metab_model_interface, to use in predicting metabolism
-#' @param date_start Date or a class convertible with as.Date. The first date
-#'   (inclusive) for which to report DO predictions. If NA, no filtering is
-#'   done.
-#' @param date_end Date or a class convertible with as.Date. The last date
-#'   (inclusive) for which to report DO predictions. If NA, no filtering is
-#'   done.
+#' @param metab_model A metabolism model that implements the
+#'   `metab_model_interface`.
+#' @param date_start A `Date` or an object coercible with [as.Date()]. The first
+#'   date (inclusive) for which to report DO predictions. If `NA`, no filtering
+#'   is done.
+#' @param date_end A `Date` or an object coercible with [as.Date()]. The last
+#'   date (inclusive) for which to report DO predictions. If `NA`, no filtering
+#'   is done.
 #' @param ... Other arguments passed to class-specific implementations of
-#'   `predict_DO`
-#' @param attach.units (deprecated, effectively FALSE in future) logical. Should
-#'   units be attached to the output?
-#' @param use_saved logical. Is it OK to use predictions that were saved with
+#'   [predict_DO()].
+#' @param attach.units Deprecated. A logical indicating whether to attach units
+#'   to the output.
+#' @param use_saved A logical. Is it OK to use predictions that were saved with
 #'   the model?
-#' @return A data.frame of dissolved oxygen predictions at the temporal
-#'   resolution of the input data
+#' @returns A data frame of dissolved oxygen predictions at the temporal
+#'   resolution of the input data.
 #' @importFrom lifecycle deprecated is_present
 #' @examples
-#' dat <- data_metab('3', day_start=12, day_end=36)
-#' mm <- metab_night(specs(mm_name('night')), data=dat)
-#' preds <- predict_DO(mm, date_start=get_fit(mm)$date[3])
+#' dat <- data_metab("3", day_start = 12, day_end = 36)
+#' mm <- metab_night(specs(mm_name("night")), data = dat)
+#' preds <- predict_DO(mm, date_start = get_fit(mm)$date[3])
 #' head(preds)
 #' @export
 #' @family metab_model_interface

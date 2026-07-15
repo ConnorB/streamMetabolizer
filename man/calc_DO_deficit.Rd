@@ -7,21 +7,21 @@
 calc_DO_deficit(DO.obs, temp.water, pressure.air, salinity.water = 0, ...)
 }
 \arguments{
-\item{DO.obs}{a numeric vector of dissolved oxygen concentration
+\item{DO.obs}{A numeric vector of dissolved oxygen concentration
 observations, mgO2 L^-1.}
 
-\item{temp.water}{a numeric vector of water temperature in degrees Celsius.}
+\item{temp.water}{A numeric vector of water temperature in degrees Celsius.}
 
-\item{pressure.air}{barometric pressure in millibars.}
+\item{pressure.air}{Barometric pressure in millibars.}
 
-\item{salinity.water}{a numeric vector of salinity in PSU. Defaults to zero. Length must be
-one or equal to length of \code{temp.water}.}
+\item{salinity.water}{A numeric vector of salinity in PSU. Defaults to zero.
+Its length must be one or equal to the length of \code{temp.water}.}
 
-\item{...}{additional parameters passed to
-\code{LakeMetabolizer::o2.at.sat.base}}
+\item{...}{Additional parameters passed to
+\code{LakeMetabolizer::o2.at.sat.base}.}
 }
 \value{
-a vector of DO.deficit values
+A vector of DO.deficit values.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}

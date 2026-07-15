@@ -3,14 +3,14 @@
 #' Looks first in the models folder of the streamMetabolizer package, second
 #' along the relative or absolute file path given by model_name
 #'
-#' @param model_name a model file in the 'models' folder of the
+#' @param model_name A model file in the 'models' folder of the
 #'   streamMetabolizer package or a relative or absolute file path of a model
-#'   file
+#'   file.
 #' @param stan_engine The Stan interface whose compiler version should be
 #'   validated. If `NULL`, CmdStanR is preferred when available, followed by
 #'   RStan.
 #' @param stan_version_fn Internal function used to determine the Stan version.
-#' @return a file path if the file exists or an error otherwise
+#' @returns A file path if the file exists or an error otherwise.
 #' @keywords internal
 mm_locate_filename <- function(
   model_name,
@@ -53,7 +53,7 @@ mm_locate_filename <- function(
 #' Find the Stan compiler version used by an interface
 #'
 #' @inheritParams mm_locate_filename
-#' @return A numeric version, or `NA` when the requested interface is not
+#' @returns A numeric version, or `NA` when the requested interface is not
 #'   available and configured.
 #' @keywords internal
 stan_version_for_engine <- function(stan_engine = NULL) {

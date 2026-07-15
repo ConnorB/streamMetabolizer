@@ -6,8 +6,9 @@ test_that("zz_build_docs() writes literal Rd tables", {
 
   expect_match(doc_text, "#' @rawRd", fixed = TRUE)
   expect_match(doc_text, "#' \\section{Formatting \\code{data}}{", fixed = TRUE)
-  expect_match(doc_text, "\\eqn{°C}", fixed = TRUE)
-  expect_match(doc_text, "\\eqn{mgO_2 L^{-1}}", fixed = TRUE)
+  expect_match(doc_text, "°C", fixed = TRUE)
+  expect_match(doc_text, "mgO₂ L⁻¹", fixed = TRUE)
+  expect_no_match(doc_text, paste0("\\", "eqn{"), fixed = TRUE)
   expect_match(
     doc_text,
     "#'     \\strong{Example}:\n#'     \\tabular{lrrrrrr}{",

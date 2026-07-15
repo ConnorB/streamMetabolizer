@@ -1,18 +1,20 @@
-#' Evaluate whether the data argument is properly formatted.
+#' Validate model input data
 #'
 #' Will most often be called from within a metab_model constructor.
 #'
 #' @inheritParams metab
-#' @param metab_class character the class name of the metab_model constructor
-#' @param data_tests list of tests to conduct to determine whether the input
-#'   data.frames are properly formatted to allow modeling to begin
+#' @param metab_class Character the class name of the metab_model constructor.
+#' @param data_tests List of tests to conduct to determine whether the input
+#'   data.frames are properly formatted to allow modeling to begin.
+#' @returns A list containing validated `data` and `data_daily` objects.
 #' @import dplyr
 #' @importFrom lubridate is.POSIXct is.Date
 #' @importFrom stats setNames
 #' @examples
-#' \dontrun{
-#' mm_validate_data(dplyr::select(mm_data(),-temp.water), metab_class="metab_mle")
-#' }
+#' try(mm_validate_data(
+#'   dplyr::select(mm_data(), -temp.water),
+#'   metab_class = "metab_mle"
+#' ))
 #' @export
 mm_validate_data <- function(
   data = mm_data(NULL),

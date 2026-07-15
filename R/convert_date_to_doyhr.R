@@ -2,10 +2,10 @@
 #'
 #' Inspired by / copied from LakeMetabolizer date2doy
 #'
-#' @param date A datetime object as POSIXct or POSIXt
-#' @return Numeric value expressing the date as the number of days, with decimal
-#'   hours, since 00:00 of December 31 of the preceding year (i.e., January 1st
-#'   at 00:01 is ~1.01)
+#' @param date A datetime object as POSIXct or POSIXt.
+#' @returns A number expressing the date as days, including fractional days,
+#'   since 00:00 on December 31 of the preceding year (that is, January 1 at
+#'   00:01 is approximately 1.01).
 #' @examples
 #' streamMetabolizer:::convert_date_to_doyhr(as.POSIXct("2015-02-03 12:01:00 UTC"))
 #' @keywords internal
@@ -18,15 +18,15 @@ convert_date_to_doyhr <- function(date) {
   out
 }
 
-#' Convert a a day of year (1-366) with decimal hours to a date
+#' Convert a decimal day of year to a date
 #'
 #' @param doyhr Numeric value expressing the date as the number of days, with
-#'   decimal hours, since 00:00 of December 31 of the preceding year
-#' @param year Numeric 4-digit year
-#' @param tz The time zone to pass to as.POSIXct()
-#' @param origin The origin to pass to as.POSIXct()
-#' @param ... Other arguments to pass to as.POSIXct()
-#' @return A datetime object as POSIXct
+#'   decimal hours, since 00:00 of December 31 of the preceding year.
+#' @param year Numeric 4-digit year.
+#' @param tz The time zone to pass to as.POSIXct().
+#' @param origin The origin to pass to as.POSIXct().
+#' @param ... Other arguments to pass to as.POSIXct().
+#' @returns A datetime object as POSIXct.
 #' @examples
 #' streamMetabolizer:::convert_doyhr_to_date(34.500695, 2015)
 #' @keywords internal

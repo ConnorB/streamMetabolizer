@@ -7,7 +7,7 @@
 mm_check_mcmc_file(model_file, stan_engine = c("rstan", "cmdstanr"))
 }
 \arguments{
-\item{model_file}{the file path of the model file to check; the extension
+\item{model_file}{The file path of the model file to check; the extension
 will be used to determine which engine to use for checking.}
 
 \item{stan_engine}{Character string specifying whether to check with RStan or

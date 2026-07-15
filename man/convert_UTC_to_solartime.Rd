@@ -11,25 +11,29 @@ convert_UTC_to_solartime(
 )
 }
 \arguments{
-\item{date.time}{date-time values in POSIXct format and UTC timezone.}
+\item{date.time}{Date-time values in POSIXct format and UTC timezone.}
 
-\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or
-"degW") or with sign indicating direction (positive = East)}
+\item{longitude}{Numeric, in degrees, either positive and unitted ("degE" or
+"degW") or with sign indicating direction (positive = East).}
 
-\item{time.type}{character. "apparent solar", i.e. true solar time, is noon
+\item{time.type}{Character. "apparent solar", i.e. true solar time, is noon
 when the sun is at its zenith. "mean solar" approximates apparent solar
 time but with noons exactly 24 hours apart. Elsewhere in this package,
 variables named "solar.time" are mean solar time, whereas "app.solar.time"
 is apparent solar and "any.solar.time" is either.}
 }
 \value{
-a POSIXct object that says it's in tz="UTC" but that's actually in
-solar time, with noon being very close to solar noon
+A POSIXct object that says it's in tz="UTC" but that's actually in
+solar time, with noon being very close to solar noon.
 }
 \description{
 Convert DateTime from UTC to local solar time, which may be either apparent
 solar (perfect match between noon and solar zenith) or mean solar (exactly 24
 hours between solar noons).
+}
+\examples{
+utc <- as.POSIXct("2024-06-01 18:00:00", tz = "UTC")
+convert_UTC_to_solartime(utc, longitude = -105)
 }
 \references{
 Yard, Bennett, Mietz, Coggins, Stevens, Hueftle, and Blinn. 2005.

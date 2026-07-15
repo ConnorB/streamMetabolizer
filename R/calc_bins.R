@@ -4,15 +4,17 @@
 #' bin. This function provides one interface to the functions
 #' `base::cut`, `ggplot2::cut_interval`, and `ggplot2::cut_number`.
 #'
-#' @param vec the numeric vector whose values should be binned.
+#' @param vec The numeric vector whose values should be binned.
 #'   log(discharge.daily) is a good candidate when using this function for
 #'   pooling of K600 values.
-#' @param method a single character string indicating the automated bin
-#'   selection method to use
-#' @param bounds if method=='bounds', a numeric vector of bin boundaries
-#' @param \dots other arguments (e.g. `n`, `width`) passed to the
+#' @param method A single character string indicating the automated bin
+#'   selection method to use.
+#' @param bounds If method=='bounds', a numeric vector of bin boundaries.
+#' @param ... Other arguments (e.g. `n`, `width`) passed to the
 #'   ggplot function corresponding to the value of cuts, if cuts is a character
-#'   (otherwise ignored)
+#'   (otherwise ignored).
+#' @returns A list containing the integer bin assignment for each value (`vec`),
+#'   the numeric bin boundaries (`bounds`), and the bin labels (`names`).
 #' @export
 #' @examples
 #' ln.disch <- log(rlnorm(100))
@@ -42,7 +44,6 @@
 #' bins_arb <- calc_bins(ln.disch, bounds=seq(-4,4,by=1))
 #' df_arb <- data.frame(t=1:length(ln.disch), vec=ln.disch, bin=bins_arb$names[bins_arb$vec])
 #' table(bins_arb$vec)
-#' \dontrun{
 #' library(ggplot2)
 #' ggplot(df_num, aes(x=t, y=vec, color=bin)) + geom_point() +
 #'   geom_hline(data=as.data.frame(bins_num['bounds']), aes(yintercept=bounds))
@@ -52,7 +53,6 @@
 #'   geom_hline(data=as.data.frame(bins_wid['bounds']), aes(yintercept=bounds))
 #' ggplot(df_arb, aes(x=t, y=vec, color=bin)) + geom_point() +
 #'   geom_hline(data=as.data.frame(bins_arb['bounds']), aes(yintercept=bounds))
-#' }
 calc_bins <- function(
   vec,
   method = c('bounds', 'interval', 'number', 'width'),

@@ -2,20 +2,20 @@
 % Please edit documentation in R/calc_solar_insolation.R
 \name{calc_hour_angle}
 \alias{calc_hour_angle}
-\title{Calculate hour angle as in
-http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html.}
+\title{Calculate hour angle using the
+\href{http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html}{NASA solar insolation method}.}
 \usage{
 calc_hour_angle(hour, format = c("degrees", "radians"))
 }
 \arguments{
-\item{hour}{numeric value or vector. hour since solar midnight as number
-between 0 and 23.999}
+\item{hour}{Numeric value or vector. hour since solar midnight as number
+between 0 and 23.999.}
 
 \item{format}{The format of both the input and the output. May be "degrees"
 or "radians".}
 }
 \value{
-numeric value or vector, in the units specified by \code{format},
+Numeric value or vector, in the units specified by \code{format},
 indicating the angle corresponding to each value supplied in \code{hour}.
 }
 \description{
@@ -25,9 +25,7 @@ in solar time
 \examples{
 hourdf <- data.frame(hour=c(0:12,12.5:23.5),
   hragl=streamMetabolizer:::calc_hour_angle(c(0:12,12.5:23.5)))
-\dontrun{
 library(ggplot2)
 ggplot(hourdf, aes(x=hour, y=hragl)) +
   geom_hline(yintercept=0, color="gold") + geom_line()
-}
 }

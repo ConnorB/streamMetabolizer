@@ -7,11 +7,15 @@
 lookup_timezone(latitude, longitude)
 }
 \arguments{
-\item{latitude}{degrees latitude (positive for north) of the location to look
+\item{latitude}{Degrees latitude (positive for north) of the location to look
 up.}
 
-\item{longitude}{degrees longitude (positive for east) of the location to
+\item{longitude}{Degrees longitude (positive for east) of the location to
 look up.}
+}
+\value{
+A list containing the IANA time zone name (\code{tz}), daylight-saving
+offset (\code{dst_offset}), standard UTC offset (\code{std_offset}), and retry count.
 }
 \description{
 Uses the \code{lutz} package to determine the local timezone name, standard

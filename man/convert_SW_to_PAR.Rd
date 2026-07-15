@@ -7,13 +7,13 @@
 convert_SW_to_PAR(sw, coef = 2.114)
 }
 \arguments{
-\item{sw}{Vector of shortwave radiation (W/m^2)}
+\item{sw}{Vector of shortwave radiation (W/m^2).}
 
 \item{coef}{Numerical coefficient to convert SW (W/m^2) to PAR
 (umol/m^2/sec). Defaults to value from Britton and Dodd (1976).}
 }
 \value{
-Numeric vector of PAR values in units umol/m^2/sec
+Numeric vector of PAR values in units umol/m^2/sec.
 }
 \description{
 Convert shortwave radiation (SW) to photosynthetically active radiation

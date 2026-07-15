@@ -1,83 +1,49 @@
-#' Return the data types that may be used by metab_models using the
-#' metab_model_interface.
+#' Describe model input data types
 #'
-#' @description Produces a data.frame with the column names and
-#'   data format to be used by metab_models that comply strictly with the
-#'   metab_model_interface. These are the columns that may be included:
+#' @description Produces a data frame containing the column names and formats
+#'   used by models that comply with [metab_model_interface()]. The available
+#'   columns are:
 #'
-#'   \itemize{
-#'
-#'   \item{`solar.time` date-time values in mean solar time (see
-#'   [calc_solar_time()] and/or
-#'   [convert_UTC_to_solartime()]), in POSIXct format with a tzone
-#'   attribute of 'UTC'. May be approximated by local, non-daylight-savings
-#'   clock time (still with nominal UTC timezone but with clock noons close to
-#'   solar noon), but mean solar time is better for matching model time windows
-#'   to the diel cycle of light availability. Throughout this package, variables
-#'   named "solar.time" are mean solar time, "app.solar.time" means apparent
-#'   solar time, and "any.solar.time" means either.}
-#'
-#'   \item{`DO.obs` dissolved oxygen concentration observations, \eqn{mg
-#'   O_2 L^{-1}}{mg O2 / L}}
-#'
-#'   \item{`DO.sat` dissolved oxygen concentrations if the water were at
-#'   equilibrium saturation \eqn{mg O_2 L^{-1}}{mg O2 / L}. Calculate using
-#'   [calc_DO_sat]}
-#'
-#'   \item{`depth` stream depth, \eqn{m}{m}}.
-#'
-#'   \item{`temp.water` water temperature, \eqn{^\circ}{ }C}
-#'
-#'   \item{`light` photosynthetically active radiation, \eqn{\mu mol\
-#'   m^{-2} s^{-1}}{micro mols / m^2 / s}}
-#'
-#'   \item{`date` dates of interest in Date format}
-#'
-#'   \item{`err.obs.sigma` SD of observation error to use in simulating
-#'   data}
-#'
-#'   \item{`err.obs.phi` autocorrelation of observation error to use in
-#'   simulating data}
-#'
-#'   \item{`err.proc.sigma` SD of process error to use in simulating data}
-#'
-#'   \item{`err.proc.phi` autocorrelation of process error to use in
-#'   simulating data}
-#'
-#'   \item{`DO.obs` dissolved oxygen concentration observations, \eqn{mg
-#'   O_2 L^{-1}}{mg O2 / L}}
-#'
-#'   \item{`GPP` daily estimates of GPP, \eqn{g O_2 m^{-2} d^{-1}}}
-#'
-#'   \item{`ER` daily estimates of ER, \eqn{g O_2 m^{-2} d^{-1}}}
-#'
-#'   \item{`K600` daily estimates of K600, \eqn{d^{-1}}}
-#'
-#'   \item{`GPP.init` daily initial values of GPP, \eqn{g O_2 m^{-2}
-#'   d^{-1}}}, for use in maximum likelihood estimation
-#'
-#'   \item{`ER.init` daily initial values of ER, \eqn{g O_2 m^{-2} d^{-1}}},
-#'   for use in maximum likelihood estimation
-#'
-#'   \item{`K600.init` daily initial values of K600, \eqn{d^{-1}}}, for use
-#'   in maximum likelihood estimation
-#'
-#'   \item{`discharge.daily` daily mean river discharge, \eqn{m^3 s^{-1}}}
-#'
-#'   \item{`velocity.daily` daily mean river flow velocity, \eqn{m s^{-1}}}
-#'
-#'   }
+#'   * `solar.time`: Datetimes in mean solar time, stored as `POSIXct` with a
+#'     `tzone` attribute of `"UTC"`. See [calc_solar_time()] and
+#'     [convert_UTC_to_solartime()]. Local standard time may approximate solar
+#'     time, but mean solar time better aligns model windows with the diel light
+#'     cycle. In this package, `solar.time` means mean solar time,
+#'     `app.solar.time` means apparent solar time, and `any.solar.time` means
+#'     either.
+#'   * `DO.obs`: Dissolved oxygen concentration observations, mgO₂ L⁻¹.
+#'   * `DO.sat`: Dissolved oxygen concentrations at equilibrium saturation,
+#'     mgO₂ L⁻¹. Calculate with [calc_DO_sat()].
+#'   * `depth`: Stream depth, m.
+#'   * `temp.water`: Water temperature, °C.
+#'   * `light`: Photosynthetically active radiation, µmol m⁻² s⁻¹.
+#'   * `date`: Dates of interest as `Date` values.
+#'   * `err.obs.sigma`: Observation-error standard deviation for simulations.
+#'   * `err.obs.phi`: Observation-error autocorrelation for simulations.
+#'   * `err.proc.sigma`: Process-error standard deviation for simulations.
+#'   * `err.proc.phi`: Process-error autocorrelation for simulations.
+#'   * `GPP`: Daily GPP estimates, gO₂ m⁻² d⁻¹.
+#'   * `ER`: Daily ER estimates, gO₂ m⁻² d⁻¹.
+#'   * `K600`: Daily K600 estimates, d⁻¹.
+#'   * `GPP.init`: Initial daily GPP values for maximum likelihood estimation,
+#'     gO₂ m⁻² d⁻¹.
+#'   * `ER.init`: Initial daily ER values for maximum likelihood estimation,
+#'     gO₂ m⁻² d⁻¹.
+#'   * `K600.init`: Initial daily K600 values for maximum likelihood estimation,
+#'     d⁻¹.
+#'   * `discharge.daily`: Daily mean river discharge, m³ s⁻¹.
+#'   * `velocity.daily`: Daily mean river flow velocity, m s⁻¹.
 #'
 #' @details Most models will require a subset of these data columns. Specialized
 #'   models may deviate from this format, but this is discouraged.
 #'
-#' @param ... column names to select, as passed to [dplyr::select()]
-#' @param optional one or more character strings listing the columns, if any,
+#' @param ... Column names to select, as passed to [dplyr::select()].
+#' @param optional One or more character strings listing the columns, if any,
 #'   that may be excluded. If 'all', the entire data.frame may be omitted. If
 #'   'none', the entire data.frame must be included as prototyped. If specific
 #'   column names are given, those columns may be omitted entirely or passed to
 #'   [metab()] as all NAs.
-#' @return data data.frame with columns as in the description
+#' @returns A data frame containing the columns described above.
 #'
 #' @export
 #' @import dplyr
@@ -181,44 +147,44 @@ mm_data <- function(..., optional = 'none') {
 mm_data_units <- function() {
   c(
     solar.time = NA_character_,
-    DO.obs = "mgO_2 L^-1",
-    DO.sat = "mgO_2 L^-1",
+    DO.obs = "mgO\u2082 L\u207B\u00B9",
+    DO.sat = "mgO\u2082 L\u207B\u00B9",
     depth = "m",
-    temp.water = "°C",
-    light = "umol m^-2 s^-1",
-    discharge = "m^3 s^-1",
-    velocity = "m s^-1",
+    temp.water = "\u00B0C",
+    light = "\u00B5mol m\u207B\u00B2 s\u207B\u00B9",
+    discharge = "m\u00B3 s\u207B\u00B9",
+    velocity = "m s\u207B\u00B9",
     date = NA_character_,
-    DO.mod.1 = "mgO_2 L^-1",
-    err.obs.sigma = "mgO_2 L^-1",
+    DO.mod.1 = "mgO\u2082 L\u207B\u00B9",
+    err.obs.sigma = "mgO\u2082 L\u207B\u00B9",
     err.obs.phi = NA_character_,
-    err.proc.sigma = "gO_2 m^-2 d^-1",
+    err.proc.sigma = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
     err.proc.phi = NA_character_,
-    GPP.daily = "gO_2 m^-2 d^-1",
-    Pmax = "gO_2 m^-2 d^-1",
-    alpha = "gO_2 s d^-1 umol^-1",
-    ER.daily = "gO_2 m^-2 d^-1",
-    ER20 = "gO_2 m^-2 d^-1",
-    K600.daily = "d^-1",
-    K600.daily.lower = "d^-1",
-    K600.daily.upper = "d^-1",
-    init.GPP.daily = "gO_2 m^-2 d^-1",
-    init.Pmax = "gO_2 m^-2 d^-1",
-    init.alpha = "gO_2 s d^-1 umol^-1",
-    init.ER.daily = "gO_2 m^-2 d^-1",
-    init.ER20 = "gO_2 m^-2 d^-1",
-    init.K600.daily = "d^-1",
-    discharge.daily = "m^3 s^-1",
-    velocity.daily = "m s^-1",
-    GPP = "gO_2 m^-2 d^-1",
-    GPP.lower = "gO_2 m^-2 d^-1",
-    GPP.upper = "gO_2 m^-2 d^-1",
-    ER = "gO_2 m^-2 d^-1",
-    ER.lower = "gO_2 m^-2 d^-1",
-    ER.upper = "gO_2 m^-2 d^-1",
-    D = "gO_2 m^-3 d^-1",
-    D.lower = "gO_2 m^-3 d^-1",
-    D.upper = "gO_2 m^-3 d^-1"
+    GPP.daily = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    Pmax = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    alpha = "gO\u2082 s d\u207B\u00B9 \u00B5mol\u207B\u00B9",
+    ER.daily = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    ER20 = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    K600.daily = "d\u207B\u00B9",
+    K600.daily.lower = "d\u207B\u00B9",
+    K600.daily.upper = "d\u207B\u00B9",
+    init.GPP.daily = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    init.Pmax = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    init.alpha = "gO\u2082 s d\u207B\u00B9 \u00B5mol\u207B\u00B9",
+    init.ER.daily = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    init.ER20 = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    init.K600.daily = "d\u207B\u00B9",
+    discharge.daily = "m\u00B3 s\u207B\u00B9",
+    velocity.daily = "m s\u207B\u00B9",
+    GPP = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    GPP.lower = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    GPP.upper = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    ER = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    ER.lower = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    ER.upper = "gO\u2082 m\u207B\u00B2 d\u207B\u00B9",
+    D = "gO\u2082 m\u207B\u00B3 d\u207B\u00B9",
+    D.lower = "gO\u2082 m\u207B\u00B3 d\u207B\u00B9",
+    D.upper = "gO\u2082 m\u207B\u00B3 d\u207B\u00B9"
   )
 }
 

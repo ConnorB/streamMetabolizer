@@ -2,16 +2,16 @@
 % Please edit documentation in R/mm_sd_to_ci.R
 \name{mm_sd_to_ci}
 \alias{mm_sd_to_ci}
-\title{Convert SD columns into CI columns in a data.frame}
+\title{Convert standard deviation columns to confidence intervals}
 \usage{
 mm_sd_to_ci(data, alpha = 0.05)
 }
 \arguments{
-\item{data}{a data.frame with 1+ pairs of columns named var and var.sd
-(where var can be anything)}
+\item{data}{A data.frame with 1+ pairs of columns named var and var.sd
+(where var can be anything).}
 
-\item{alpha}{the desired significance level described by the confidence
-interval}
+\item{alpha}{The desired significance level described by the confidence
+interval.}
 }
 \description{
 Convert data with var and var.sd columns into data with var, var.lower, and

@@ -11,10 +11,10 @@ get_mcmc_data(metab_model)
 }
 \arguments{
 \item{metab_model}{A Bayesian metabolism model (metab_bayes) from which to
-return the data list that was passed to the MCMC}
+return the data list that was passed to the MCMC.}
 }
 \value{
-The MCMC data list
+The MCMC data list.
 }
 \description{
 A function specific to metab_bayes models. Returns data as formatted to run
@@ -28,3 +28,7 @@ lists are not saved by default; see \code{keep_mcmc_data} argument to
 a metab_bayes model
 
 }}
+\examples{
+mm <- metab_model("metab_bayes", mcmc_data = list(n = 10))
+get_mcmc_data(mm)
+}

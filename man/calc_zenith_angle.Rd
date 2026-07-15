@@ -13,14 +13,14 @@ calc_zenith_angle(
 )
 }
 \arguments{
-\item{latitude}{numeric value or vector indicating the site latitude in
+\item{latitude}{Numeric value or vector indicating the site latitude in
 decimal degrees (never radians or deg-min-sec, no matter what \code{format}
 is) between -90 (South Pole) and 90 (North Pole).}
 
-\item{declination.angle}{numeric value or vector, in the units specified by
+\item{declination.angle}{Numeric value or vector, in the units specified by
 \code{format}, indicating the declination angle.}
 
-\item{hour.angle}{numeric value or vector, in the units specified by
+\item{hour.angle}{Numeric value or vector, in the units specified by
 \code{format}, indicating the angle.}
 
 \item{format}{The format of both the output. May be "degrees" or "radians".}
@@ -39,10 +39,8 @@ zendf <- transform(zendf,
   hragl=streamMetabolizer:::calc_hour_angle(hour))
 zendf <- transform(zendf,
   zen=streamMetabolizer:::calc_zenith_angle(lat, dec, hragl))
-\dontrun{
 library(ggplot2)
 ggplot(zendf, aes(x=hour, y=zen, color=jday, group=jday)) +
   geom_line() + facet_wrap(~lat) +
   ggtitle('zenith angles by latitude (panels) and day of year (colors)')
-}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/metab_mle.R
 \name{metab_mle}
 \alias{metab_mle}
-\title{Maximum likelihood metabolism model fitting function}
+\title{Fit a metabolism model by maximum likelihood}
 \usage{
 metab_mle(
   specs = specs(mm_name("mle")),
@@ -14,7 +14,7 @@ metab_mle(
 )
 }
 \arguments{
-\item{specs}{a list of model specifications and parameters for a model.
+\item{specs}{A list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
@@ -32,8 +32,8 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{info}{any information, in any format, that you would like to store
-within the metab_model object}
+\item{info}{Any information, in any format, that you would like to store
+within the metab_model object.}
 }
 \value{
 A metab_mle object containing the fitted model. This object can be
@@ -47,26 +47,33 @@ on DO, temperature, light, etc. Discharge is only used, if at all, to
 identify and exclude days with any negative discharge.
 }
 \examples{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 dat <- data_metab('3','30')
 # PRK
 mm <- metab_mle(data=dat)
 predict_metab(mm)
 
 # PR with fixed K on two days
-dat_daily <- data.frame(date=as.Date(c("2012-09-18","2012-09-20")), K600.daily=35)
-metab_mle(data=dat, data_daily=dat_daily)
+dat_daily <- data.frame(
+  date = as.Date(c("2012-09-18","2012-09-20")),
+  K600.daily = 35
+)
+metab_mle(data = dat, data_daily = dat_daily)
 
-# PRK with day-specific inits on some days
-dat_daily <- data.frame(date=as.Date("2012-09-19"),
-  init.GPP.daily=4, init.K600.daily=60)
-metab_mle(data=dat, data_daily=dat_daily)
+# PRK with day-specific initial values
+dat_daily <- data.frame(
+  date = as.Date("2012-09-19"),
+  init.GPP.daily = 4,
+  init.K600.daily = 60
+)
+metab_mle(data = dat, data_daily = dat_daily)
 
 # Nonlinear GPP or ER equations
-metab_mle(specs(mm_name('mle', GPP_fun='satlight')), data=dat)
-metab_mle(specs(mm_name('mle', ER_fun='q10temp')), data=dat)
-\dontrun{
+metab_mle(specs(mm_name('mle', GPP_fun = 'satlight')), data = dat)
+metab_mle(specs(mm_name('mle', ER_fun = 'q10temp')), data = dat)
+
 plot_DO_preds(predict_DO(mm))
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other metab_model:

@@ -1,21 +1,25 @@
-#' Convert time from UTC to local time.
+#' Convert UTC to local time
 #'
 #' Convert time from UTC to local time, either standard or with daylight
 #' savings. Recommended for post-analysis visualization only; most functions in
 #' streamMetabolizer use times in UTC. If you know the timezone code for your
 #' local site, use [lubridate::with_tz()] instead.
 #'
-#' @param date.time POSIXct object the date and time in UTC
-#' @param latitude numeric, in degrees, either positive and unitted ("degN" or
-#'   "degS") or with sign indicating direction (positive = North)
-#' @param longitude numeric, in degrees, either positive and unitted ("degE" or
-#'   "degW") or with sign indicating direction (positive = East)
-#' @param time.type character. The type of time zone desired - either standard
+#' @param date.time POSIXct object the date and time in UTC.
+#' @param latitude Numeric, in degrees, either positive and unitted ("degN" or
+#'   "degS") or with sign indicating direction (positive = North).
+#' @param longitude Numeric, in degrees, either positive and unitted ("degE" or
+#'   "degW") or with sign indicating direction (positive = East).
+#' @param time.type Character. The type of time zone desired - either standard
 #'   time without any daylight savings time or daylight time where daylight
-#'   savings is on during the appropriate days
+#'   savings is on during the appropriate days.
+#' @returns A `POSIXct` vector in the requested local time zone.
 #' @importFrom lubridate with_tz
 #' @references
 #' https://stackoverflow.com/questions/23414340/convert-to-local-time-zone-using-latitude-and-longitude
+#' @examples
+#' utc <- as.POSIXct("2024-01-15 18:00:00", tz = "UTC")
+#' convert_UTC_to_localtime(utc, latitude = 41.88, longitude = -87.63)
 #' @export
 convert_UTC_to_localtime <- function(
   date.time,
@@ -52,16 +56,20 @@ convert_UTC_to_localtime <- function(
   }
 }
 
-#' Convert time from local time to UTC.
+#' Convert local time to UTC
 #'
 #' Convert time from local time (either standard or with daylight savings) to
 #' UTC.
 #'
 #' @param local.time POSIXct date+time of interest, already in local time as
-#'   specified by the tz attribute
+#'   specified by the tz attribute.
+#' @returns A `POSIXct` vector in UTC.
 #' @importFrom lubridate with_tz
 #' @references
 #' https://stackoverflow.com/questions/23414340/convert-to-local-time-zone-using-latitude-and-longitude
+#' @examples
+#' local <- as.POSIXct("2024-01-15 12:00:00", tz = "America/Chicago")
+#' convert_localtime_to_UTC(local)
 #' @export
 convert_localtime_to_UTC <- function(local.time) {
   return(with_tz(local.time, "UTC"))

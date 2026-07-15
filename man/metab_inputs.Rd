@@ -10,9 +10,9 @@ metab_inputs(
 )
 }
 \arguments{
-\item{type}{the type of model you want to fit}
+\item{type}{The type of model you want to fit.}
 
-\item{input}{the name of an argument to pass into metab()}
+\item{input}{The name of an argument to pass into metab().}
 }
 \value{
 For \code{data} and \code{data_daily}, a tibble describing the required

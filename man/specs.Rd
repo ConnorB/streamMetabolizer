@@ -95,7 +95,7 @@ specs(
 )
 }
 \arguments{
-\item{model_name}{character string identifying the model features. Use
+\item{model_name}{Character string identifying the model features. Use
 \code{\link[=mm_name]{mm_name()}} to create a valid name based on desired attributes,
 or \code{\link[=mm_valid_names]{mm_valid_names()}} to see all valid names. Two alternatives to
 the names given by \code{mm_valid_names()} are also accepted: (1) a model
@@ -120,7 +120,7 @@ model fitting). For type='Kmodel', the name of an interpolation or
 regression method relating K to the predictor(s) of choice. One of
 \code{c("mean", "lm", "loess")}.}
 
-\item{day_start}{start time (inclusive) of a day's data in number of hours
+\item{day_start}{Start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
 indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
@@ -133,12 +133,12 @@ regression, the date assigned to a chunk of data should be the date whose
 evening contains the data. The default is therefore 12 to 36 for
 metab_night, of which the times of darkness will be used.}
 
-\item{day_end}{end time (exclusive) of a day's data in number of hours from
+\item{day_end}{End time (exclusive) of a day's data in number of hours from
 the midnight that begins the date. For example, day_end=30 indicates that
 data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00. See day_start for recommended start and end times.}
 
-\item{day_tests}{list of tests to conduct to determine whether each date
+\item{day_tests}{List of tests to conduct to determine whether each date
 worth of data is valid for modeling. The results of these tests will be
 combined with the result of the test implied if \code{required_timestep} is
 numeric and then will be passed to \code{model_fun} as the
@@ -151,42 +151,42 @@ of this test will be combined with the results of the tests listed in
 \code{day_tests} and reported to \code{model_fun} as the
 \code{ply_validity} argument to that function.}
 
-\item{init.GPP.daily}{the initial value of daily mean GPP
-(\eqn{g O_2 m^{-2} d^{-1}}) to use in the NLM fitting process. See the MLE
+\item{init.GPP.daily}{The initial value of daily mean GPP
+(gO₂ m⁻² d⁻¹) to use in the NLM fitting process. See the MLE
 Initial Values section under
 Details.}
 
-\item{init.Pmax}{the initial value of Pmax (\eqn{g O_2 m^{-2} d^{-1}}) to use
+\item{init.Pmax}{The initial value of Pmax (gO₂ m⁻² d⁻¹) to use
 in the GPP versus light relationship in the NLM fitting process. Pmax is
 the maximum
 GPP value of the GPP-light curve. See the MLE Initial Values section under
 Details.}
 
-\item{init.alpha}{the initial value of alpha
-(\eqn{g O_2 s d^{-1} umol^{-1}}, i.e., units of GPP/light) to use in the
+\item{init.alpha}{The initial value of alpha
+(gO₂ s d⁻¹ µmol⁻¹, i.e., units of GPP/light) to use in the
 GPP versus light relationship in the NLM
 fitting process. alpha is the initial slope of the GPP-light curve. See the
 MLE Initial Values section under Details.}
 
-\item{init.ER.daily}{the initial value of daily mean ER
-(\eqn{g O_2 m^{-2} d^{-1}}) to use in the NLM fitting process. See the MLE
+\item{init.ER.daily}{The initial value of daily mean ER
+(gO₂ m⁻² d⁻¹) to use in the NLM fitting process. See the MLE
 Initial Values section under
 Details.}
 
-\item{init.ER20}{the initial value of ER20 (\eqn{g O_2 m^{-2} d^{-1}}) to use
+\item{init.ER20}{The initial value of ER20 (gO₂ m⁻² d⁻¹) to use
 in the ER versus temperature relationship in the NLM fitting process.
 ER20 is the
 respiration rate at 20 degrees C. See the MLE Initial Values section under
 Details.}
 
-\item{init.K600.daily}{the initial value of daily mean K600 (\eqn{d^{-1}}) to
+\item{init.K600.daily}{The initial value of daily mean K600 (d⁻¹) to
 use in the NLM fitting process. Ignored if K600 is supplied in data_daily,
 except
 for those dates where K600 is NA. If there are any such dates, K600_init
 must have a numeric (non-NA) value, as this will be used to estimate K600
 for those dates. See the MLE Initial Values section under Details.}
 
-\item{split_dates}{logical indicating whether the data should be split into
+\item{split_dates}{Logical indicating whether the data should be split into
 daily chunks first (TRUE) or processed within one big model (FALSE). If
 valid days differ in their timestep length, split_dates will need to be
 TRUE; otherwise, FALSE is generally more efficient. FALSE is also the only
@@ -204,7 +204,7 @@ the mcmc model objects (TRUE), none of them (FALSE), or specific dates. The
 default is FALSE because these objects can be very large.}
 
 \item{GPP_daily_mu}{The mean of a dnorm distribution for GPP_daily, the daily
-rate of gross primary production}
+rate of gross primary production.}
 
 \item{GPP_daily_lower}{The lower bound on every fitted value of GPP_daily,
 the daily rate of gross primary production. Use values other than -Inf with
@@ -213,11 +213,11 @@ a negative estimate of GPP_daily (when unconstrained) could be your only
 indication.}
 
 \item{GPP_daily_sigma}{The standard deviation of a dnorm distribution for
-GPP_daily, the daily rate of gross primary production}
+GPP_daily, the daily rate of gross primary production.}
 
 \item{alpha_meanlog}{The mean of a dlnorm (lognormal) distribution for alpha,
 the daily initial slope of the Jassby-Platt saturating curve relating GPP
-to light}
+to light.}
 
 \item{alpha_sdlog}{The standard deviation parameter of a dlnorm (lognormal)
 distribution for alpha, the daily initial slope of the Jassby-Platt
@@ -231,7 +231,7 @@ Pmax, the daily maximum GPP value of a Jassby-Platt saturating curve
 relating GPP to light.}
 
 \item{ER_daily_mu}{The mean of a dnorm distribution for ER_daily, the daily
-rate of ecosystem respiration}
+rate of ecosystem respiration.}
 
 \item{ER_daily_upper}{The upper (less negative) bound on every fitted value
 of ER_daily, the daily rate of ecosystem respiration. Use values other than
@@ -240,47 +240,47 @@ and that a positive estimate of ER_daily (when unconstrained) could be your
 only indication.}
 
 \item{ER_daily_sigma}{The standard deviation of a dnorm distribution for
-ER_daily, the daily rate of ecosystem respiration}
+ER_daily, the daily rate of ecosystem respiration.}
 
 \item{K600_daily_meanlog}{Applies when pool_K600 is 'none'. The mean of a
-dlnorm distribution for K600_daily, the daily rate of reaeration}
+dlnorm distribution for K600_daily, the daily rate of reaeration.}
 
-\item{K600_daily_meanlog_meanlog}{hyperparameter for pool_K600='normal'. The
+\item{K600_daily_meanlog_meanlog}{Hyperparameter for pool_K600='normal'. The
 mean parameter (meanlog_meanlog) of a lognormal distribution of meanlog in
-K ~ lN(meanlog, sdlog), meanlog ~ lN(meanlog_meanlog, meanlog_sdlog)}
+K ~ lN(meanlog, sdlog), meanlog ~ lN(meanlog_meanlog, meanlog_sdlog).}
 
-\item{K600_daily_meanlog_sdlog}{hyperparameter for pool_K600='normal'. The
+\item{K600_daily_meanlog_sdlog}{Hyperparameter for pool_K600='normal'. The
 standard deviation parameter (meanlog_sdlog) of a lognormal distribution of
 meanlog in K ~ lN(meanlog, sdlog), meanlog ~ lN(meanlog_meanlog,
-meanlog_sdlog)}
+meanlog_sdlog).}
 
-\item{lnK600_lnQ_intercept_mu}{hyperparameter for pool_K600 == 'linear'. The
+\item{lnK600_lnQ_intercept_mu}{Hyperparameter for pool_K600 == 'linear'. The
 mean of the prior distribution for the intercept parameter in
-\code{log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)}}
+\code{log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)}.}
 
-\item{lnK600_lnQ_intercept_sigma}{hyperparameter for pool_K600 == 'linear'.
+\item{lnK600_lnQ_intercept_sigma}{Hyperparameter for pool_K600 == 'linear'.
 The standard deviation of the prior distribution for the intercept
-parameter in \code{log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)}}
+parameter in \code{log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)}.}
 
-\item{lnK600_lnQ_slope_mu}{hyperparameter for pool_K600='linear'. The mean of
-the prior distribution for the slope parameter in \code{log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)}}
+\item{lnK600_lnQ_slope_mu}{Hyperparameter for pool_K600='linear'. The mean of
+the prior distribution for the slope parameter in \code{log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)}.}
 
-\item{lnK600_lnQ_slope_sigma}{hyperparameter for pool_K600='linear'. The
+\item{lnK600_lnQ_slope_sigma}{Hyperparameter for pool_K600='linear'. The
 standard deviation of the prior distribution for the slope parameter in
-\code{log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)}}
+\code{log(K600) ~ lnK600_lnQ_intercept + lnK600_lnQ_slope*log(Q)}.}
 
-\item{K600_lnQ_nodes_centers}{data configuration argument for
+\item{K600_lnQ_nodes_centers}{Data configuration argument for
 pool_K600='binned'. numeric vector giving the natural-log-space centers of
-the discharge bins. See also \code{\link[=calc_bins]{calc_bins()}}}
+the discharge bins. See also \code{\link[=calc_bins]{calc_bins()}}.}
 
-\item{K600_lnQ_nodediffs_sdlog}{hyperparameter for pool_K600='binned'. The
+\item{K600_lnQ_nodediffs_sdlog}{Hyperparameter for pool_K600='binned'. The
 standard deviations of the differences in estimated K600 between successive
-lnQ_nodes (bins), where the means of those differences are always zero}
+lnQ_nodes (bins), where the means of those differences are always zero.}
 
-\item{K600_lnQ_nodes_meanlog}{hyperparameter for pool_K600='binned'. The
+\item{K600_lnQ_nodes_meanlog}{Hyperparameter for pool_K600='binned'. The
 means of lognormal prior distributions for the K600_lnQ_nodes parameters.}
 
-\item{K600_lnQ_nodes_sdlog}{hyperparameter for pool_K600='binned'. The
+\item{K600_lnQ_nodes_sdlog}{Hyperparameter for pool_K600='binned'. The
 standard deviations of lognormal prior distributions for the K600_lnQ_nodes
 parameters.}
 
@@ -288,19 +288,19 @@ parameters.}
 a dlnorm distribution having meanlog equal to \code{K600_daily_meanlog}
 (when pool_K600 is 'none') or \code{K600_daily_predlog} (when pool_K600 is
 'normal_sdfixed') for K600_daily, the daily rate of reaeration as corrected
-for temperature and the diffusivity of oxygen}
+for temperature and the diffusivity of oxygen.}
 
 \item{K600_daily_sigma}{The standard deviation of a dnorm distribution having
 mean equal to \code{exp(K600_daily_predlog)} (applicable when pool_K600 is
 'linear_sdfixed' or 'binned_sdfixed') for K600_daily, the daily rate of
-reaeration as corrected for temperature and the diffusivity of oxygen}
+reaeration as corrected for temperature and the diffusivity of oxygen.}
 
-\item{K600_daily_sdlog_sigma}{hyperparameter for pool_K600 in c('normal').
+\item{K600_daily_sdlog_sigma}{Hyperparameter for pool_K600 in c('normal').
 The scale (= sigma) parameter of a half-normal distribution of sdlog in K ~
 lN(meanlog, sdlog), sdlog ~ halfnormal(0, sigma=sdlog_sigma). Visualize the
 PDF of K600_daily_sdlog with \code{\link[=plot_distribs]{plot_distribs()}}.}
 
-\item{K600_daily_sigma_sigma}{hyperparameter for pool_K600 in
+\item{K600_daily_sigma_sigma}{Hyperparameter for pool_K600 in
 c('linear','binned'). The scale (= sigma) parameter of a half-normal
 distribution of sigma in K ~ lN(meanlog, sigma), sigma ~ halfnormal(0,
 sigma=sigma_sigma). Visualize the PDF of K600_daily_sdlog with
@@ -351,19 +351,19 @@ list into the data list for the MCMC run. Will be automatically generated
 during the specs() call; need only be revised if you're using a custom
 model that requires different hyperparameters.}
 
-\item{params_out}{a character vector of parameters whose values in the MCMC
-runs should be recorded and summarized}
+\item{params_out}{A character vector of parameters whose values in the MCMC
+runs should be recorded and summarized.}
 
-\item{n_chains}{the number of chains to run}
+\item{n_chains}{The number of chains to run.}
 
-\item{n_cores}{the number of cores to apply to this run}
+\item{n_cores}{The number of cores to apply to this run.}
 
-\item{burnin_steps}{the number of steps per chain to run and ignore before
-starting to collect MCMC 'data'}
+\item{burnin_steps}{The number of steps per chain to run and ignore before
+starting to collect MCMC 'data'.}
 
-\item{saved_steps}{the number of MCMC steps per chain to save}
+\item{saved_steps}{The number of MCMC steps per chain to save.}
 
-\item{thin_steps}{the number of steps to move before saving another step. 1
+\item{thin_steps}{The number of steps to move before saving another step. 1
 means save all steps.}
 
 \item{stan_engine}{Character string specifying which Stan R interface to use.
@@ -372,7 +372,7 @@ behavior of the streamMetabolizer package. CmdStanR requires both the R
 package and a configured CmdStan installation; see
 \code{\link[cmdstanr:install_cmdstan]{cmdstanr::install_cmdstan()}}.}
 
-\item{verbose}{logical. give status messages?}
+\item{verbose}{Logical. give status messages?}
 
 \item{weights}{For Kmodel, character vector indicating the type of weighting
 to use. Set to c() for no weights. One of c("1/CI", "K600/CI", c()).}
@@ -380,21 +380,22 @@ to use. Set to c() for no weights. One of c("1/CI", "K600/CI", c()).}
 \item{filters}{For Kmodel, named numeric vector of limits to use in filtering
 data_daily. Elements may include
 c("CI.max","discharge.daily.max","velocity.daily.max"). If an element is
-given, the corresponding filter is applied: K600.daily.upper-K600.daily.lower <=
-CI.max, discharge.daily <= discharge.daily.max, velocity.daily <=
-velocity.daily.max}
+given, the corresponding filter is applied:
+\code{K600.daily.upper - K600.daily.lower <= CI.max},
+\code{discharge.daily <= discharge.daily.max}, or
+\code{velocity.daily <= velocity.daily.max}.}
 
 \item{predictors}{For Kmodel, character vector of variables (column names in
 data or data_daily) to use in predicting K. Leave blank or set to c() for
 no predictors. Otherwise, one or more of these may be included: c("date",
 "velocity.daily", "discharge.daily").}
 
-\item{transforms}{For Kmodel, a named character vector of names of functions
-(probably 'log' or NA) to apply to K600.daily and/or the predictors. K600.daily should
-probably be logged. The vector names must match the values of
-\code{predictors}, although not all elements of \code{predictors} must be
+\item{transforms}{For Kmodel, a named character vector of function names
+(usually \code{"log"} or \code{NA}) to apply to \code{K600.daily} and the predictors.
+\code{K600.daily} should usually be logged. The vector names must match the
+values of \code{predictors}, although not all elements of \code{predictors} must be
 included in \code{transforms}. Recommended transforms include
-\code{c(K600.daily='log', date=NA, velocity.daily="log", discharge.daily="log")}}
+\code{c(K600.daily = "log", date = NA, velocity.daily = "log", discharge.daily = "log")}.}
 
 \item{other_args}{Other arguments passed to the fitting function given by
 \code{specs$engine}. \code{na.rm=TRUE} is already passed to
@@ -402,11 +403,11 @@ included in \code{transforms}. Recommended transforms include
 
 \item{K600_lnQ_cnode_meanlog}{For a sim model with pool_K600='binned'. The
 mean of a lognormal distribution describing the y=K600 value of the middle
-(or just past middle) node in the piecewise lnK ~ lnQ relationship}
+(or just past middle) node in the piecewise lnK ~ lnQ relationship.}
 
 \item{K600_lnQ_cnode_sdlog}{For a sim model with pool_K600='binned'. The sd
 of a lognormal distribution describing the y=K600 value of the middle (or
-just past middle) node in the piecewise lnK ~ lnQ relationship}
+just past middle) node in the piecewise lnK ~ lnQ relationship.}
 
 \item{K600_lnQ_nodediffs_meanlog}{For a sim model with pool_K600='binned'.
 The average (in log space) difference between ln(K) values of successive
@@ -417,7 +418,7 @@ of lnK600 at each node. The default value of this spec is a function that
 computes lnK600s based on simulated K~Q relationships.}
 
 \item{discharge_daily}{Daily values, or a function to generate daily values,
-of mean daily discharge in \eqn{m^3 s^{-1}}. Fixed values may alternatively
+of mean daily discharge in m³ s⁻¹. Fixed values may alternatively
 be specified as discharge.daily in the data_daily passed to
 \code{\link[=metab]{metab()}}.}
 
@@ -483,19 +484,18 @@ new values, or an integer, as in the \code{seed} argument to
 of predict_DO and/or predict_metab.}
 }
 \value{
-an internally consistent list of arguments that may be passed to
-\code{metab} as the \code{specs} argument
+An internally consistent list of arguments that may be passed to
+\code{metab} as the \code{specs} argument.
 }
 \description{
 Generates an internally consistent list of model specifications that may be
-passed to \code{metab_bayes}, \code{metab_mle}, etc. via the \code{specs}
-argument. This help file gives the definitive list of all possible model
-specs, but only a subset of these are relevant to any given
+passed to \code{\link[=metab_bayes]{metab_bayes()}}, \code{\link[=metab_mle]{metab_mle()}}, and related functions via the
+\code{specs} argument. This help file gives the definitive list of all possible
+model specifications, but only a subset is relevant to any given
 \code{model_name}. See the 'Relevant arguments' section below. Irrelevant
 arguments for the given \code{model_name} should not be explicitly passed
-into this function (but don't worry - we'll just stop and tell you if you
-make a mistake). Relevant arguments for the given \code{model_name} either
-have default values or do not (see Usage). Relevant arguments without a
+into this function. Relevant arguments for the given \code{model_name} either
+have default values or do not (see usage). Relevant arguments without a
 default should rarely be overridden, because their values will be determined
 based on other arguments. Relevant arguments that do have a default can, and
 often should, be overridden to tailor the model to your needs.
@@ -503,35 +503,46 @@ often should, be overridden to tailor the model to your needs.
 \section{Relevant arguments}{
 
 \itemize{
-\item metab_bayes: Always relevant: \verb{model_name, engine, split_dates,   keep_mcmcs, keep_mcmc_data, day_start, day_end, day_tests, ER_daily_mu,   ER_daily_sigma, params_in, params_out, n_chains, n_cores, burnin_steps,   saved_steps, thin_steps, verbose}. The need for other arguments depends on
-features of the model structure, as from \code{mm_parse_name(model_name)}:
-\itemize{ \item If \code{GPP_fun=='linlight'} then \verb{GPP_daily_mu,   GPP_daily_sigma}, while if \code{GPP_fun=='satlight'} then
-\verb{alpha_meanlog, alpha_sdlog, Pmax_mu, Pmax_sigma}. \item If
-\code{pool_K600=='none'} then \verb{K600_daily_meanlog, K600_daily_sdlog}.
-\item If \code{pool_K600=='normal'} then \verb{K600_daily_meanlog_meanlog,   K600_daily_meanlog_sdlog, K600_daily_sdlog_sigma}. \item If
-\code{pool_K600=='linear'} then \verb{lnK600_lnQ_intercept_mu,   lnK600_lnQ_intercept_sigma, lnK600_lnQ_slope_mu, lnK600_lnQ_slope_sigma,   K600_daily_sigma_sigma}. \item If \code{pool_K600=='binned'} then
-\verb{K600_lnQ_nodes_centers, K600_lnQ_nodediffs_sdlog,   K600_lnQ_nodes_meanlog, K600_lnQ_nodes_sdlog, K600_daily_sigma_sigma}.
-\item If \code{err_obs_iid} then \code{err_obs_iid_sigma_scale}. \item If
-\code{err_proc_acor} then \verb{err_proc_acor_phi_alpha,   err_proc_acor_phi_beta, err_proc_acor_sigma_scale}, and, if
-\code{err_proc_acor_light},
-\code{err_proc_acor_light_alpha_sigma}. \item If
-\code{err_proc_iid} then \code{err_proc_iid_sigma_scale}. \item If
-\code{err_proc_GPP} then \code{err_mult_GPP_sdlog_sigma}.}
-\item metab_mle: \verb{model_name, day_start, day_end, day_tests,   init.GPP.daily, init.Pmax, init.alpha, init.ER.daily, init.ER20,   init.K600.daily}
-\item metab_night: \verb{model_name, day_start, day_end, day_tests}
-\item metab_Kmodel: \verb{model_name, engine, day_start, day_end, day_tests,   weights, filters, predictors, transforms, other_args}. Note that the
-defaults for \code{weights}, \code{predictors}, \code{filters}, and
-\code{transforms} are adjusted according to the \code{engine} implied by
-\code{model_name}.
-\item metab_sim: \verb{model_name, day_start, day_end, day_tests,   err_obs_sigma, err_obs_phi, err_proc_sigma, err_proc_phi, sim_seed}. Those
-arguments whose period-separated name occurs in the default data_daily
-argument to metab(sim) can be specified here as NULL, numeric, or a
-function to be called each time \code{predict_DO} or \code{predict_metab}
-is called on the model. If given as a function, an argument will be called
-with any already-evaluated parameters (including the contents of data_daily
-and n, the number of dates) passed in as arguments; for example, K600_daily
-can see n, discharge.daily, and GPP_daily can see n, discharge.daily, and
-K600.daily.
+\item \code{metab_bayes}: Always relevant: \code{model_name}, \code{engine}, \code{split_dates},
+\code{keep_mcmcs}, \code{keep_mcmc_data}, \code{day_start}, \code{day_end}, \code{day_tests},
+\code{ER_daily_mu}, \code{ER_daily_sigma}, \code{params_in}, \code{params_out}, \code{n_chains},
+\code{n_cores}, \code{burnin_steps}, \code{saved_steps}, \code{thin_steps}, and \code{verbose}. The
+need for other arguments depends on \code{mm_parse_name(model_name)}:
+\itemize{
+\item If \code{GPP_fun == "linlight"}, use \code{GPP_daily_mu} and \code{GPP_daily_sigma}; if
+\code{GPP_fun == "satlight"}, use \code{alpha_meanlog}, \code{alpha_sdlog}, \code{Pmax_mu},
+and \code{Pmax_sigma}.
+\item If \code{pool_K600 == "none"}, use \code{K600_daily_meanlog} and
+\code{K600_daily_sdlog}.
+\item If \code{pool_K600 == "normal"}, use \code{K600_daily_meanlog_meanlog},
+\code{K600_daily_meanlog_sdlog}, and \code{K600_daily_sdlog_sigma}.
+\item If \code{pool_K600 == "linear"}, use \code{lnK600_lnQ_intercept_mu},
+\code{lnK600_lnQ_intercept_sigma}, \code{lnK600_lnQ_slope_mu},
+\code{lnK600_lnQ_slope_sigma}, and \code{K600_daily_sigma_sigma}.
+\item If \code{pool_K600 == "binned"}, use \code{K600_lnQ_nodes_centers},
+\code{K600_lnQ_nodediffs_sdlog}, \code{K600_lnQ_nodes_meanlog},
+\code{K600_lnQ_nodes_sdlog}, and \code{K600_daily_sigma_sigma}.
+\item If \code{err_obs_iid} is \code{TRUE}, use \code{err_obs_iid_sigma_scale}.
+\item If \code{err_proc_acor} is \code{TRUE}, use \code{err_proc_acor_phi_alpha},
+\code{err_proc_acor_phi_beta}, and \code{err_proc_acor_sigma_scale}. If
+\code{err_proc_acor_light} is also \code{TRUE}, use
+\code{err_proc_acor_light_alpha_sigma}.
+\item If \code{err_proc_iid} is \code{TRUE}, use \code{err_proc_iid_sigma_scale}.
+\item If \code{err_proc_GPP} is \code{TRUE}, use \code{err_mult_GPP_sdlog_sigma}.
+}
+\item \code{metab_mle}: \code{model_name}, \code{day_start}, \code{day_end}, \code{day_tests},
+\code{init.GPP.daily}, \code{init.Pmax}, \code{init.alpha}, \code{init.ER.daily}, \code{init.ER20},
+and \code{init.K600.daily}.
+\item \code{metab_night}: \code{model_name}, \code{day_start}, \code{day_end}, and \code{day_tests}.
+\item \code{metab_Kmodel}: \code{model_name}, \code{engine}, \code{day_start}, \code{day_end},
+\code{day_tests}, \code{weights}, \code{filters}, \code{predictors}, \code{transforms}, and
+\code{other_args}. Defaults for the last four arguments depend on the \code{engine}
+implied by \code{model_name}.
+\item \code{metab_sim}: \code{model_name}, \code{day_start}, \code{day_end}, \code{day_tests},
+\code{err_obs_sigma}, \code{err_obs_phi}, \code{err_proc_sigma}, \code{err_proc_phi}, and
+\code{sim_seed}. Arguments whose period-separated name occurs in the default
+\code{data_daily} argument to \code{metab("sim")} may be \code{NULL}, numeric, or a
+function evaluated whenever \code{\link[=predict_DO]{predict_DO()}} or \code{\link[=predict_metab]{predict_metab()}} is called.
 }
 }
 

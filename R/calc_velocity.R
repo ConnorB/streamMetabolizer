@@ -1,13 +1,15 @@
 #' Estimate velocity from discharge and hydraulic geometry coefficients
 #'
-#' Uses the relationship \eqn{U=k*Q^m} (parameter names and definitions as in
+#' Uses the relationship U = k × Qᵐ (parameter names and definitions as in
 #' Leopold and Maddock, 1953; default values for k and m as in Raymond et al.
 #' 2012)
 #'
-#' @param Q discharge (m^3 s^-1)
-#' @param k coefficient representing velocity at unit discharge (usually m/s; e in Raymond et al.)
-#' @param m exponent in velocity-discharge relation (unitless; f in Raymond et al.)
-#' @return v (= V = U), stream flow velcoity, in the same units as k
+#' @param Q Discharge (m^3 s^-1).
+#' @param k A numeric coefficient representing velocity at unit discharge,
+#'   usually in m/s; *e* in Raymond et al. (2012).
+#' @param m A numeric exponent in the velocity-discharge relationship;
+#'   dimensionless and *f* in Raymond et al. (2012).
+#' @returns A numeric vector of streamflow velocities in the same units as `k`.
 #' @examples
 #' Qs <- seq(1,9,2)
 #' calc_velocity(Q=Qs)

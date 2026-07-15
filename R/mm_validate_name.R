@@ -4,11 +4,10 @@
 #' name if it's valid, otherwise gives an error
 #'
 #' @inheritParams specs
+#' @returns The validated model name.
 #' @examples
 #' mm_validate_name("b_np_oipi_tr_plrckm.stan")
-#' \dontrun{
-#' mm_validate_name("b_np_oipn") # throws error
-#' }
+#' try(mm_validate_name("b_np_oipn"))
 #' @export
 mm_validate_name <- function(model_name) {
   # under lazy eval, model_name might not break until here (e.g.,

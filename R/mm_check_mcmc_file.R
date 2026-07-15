@@ -1,6 +1,6 @@
 #' Use an engine-specific function to check the model syntax
 #'
-#' @param model_file the file path of the model file to check; the extension
+#' @param model_file The file path of the model file to check; the extension
 #'   will be used to determine which engine to use for checking.
 #' @param stan_engine Character string specifying whether to check with RStan or
 #'   CmdStanR.
@@ -58,11 +58,10 @@ mm_check_mcmc_file <- function(
 
 #' Check the syntax of all Bayesian model files in the package
 #'
-#' @param grep_pattern string on which to filter the names if only some should
+#' @param grep_pattern String on which to filter the names if only some should
 #'   be checked. fixed=FALSE.
 #' @inheritParams mm_check_mcmc_file
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' # takes a long time, so run only when needed
 #' checks <- streamMetabolizer:::mm_check_mcmc_files()
 #' saveRDS(checks, file='temp/bayes_model_checks.Rds')
@@ -72,7 +71,6 @@ mm_check_mcmc_file <- function(
 #'   "b_np_.*_ko\\.stan", stan_engine = "cmdstanr"
 #' )
 #' cat(checks[[7]])
-#' }
 #' @keywords internal
 mm_check_mcmc_files <- function(
   grep_pattern,

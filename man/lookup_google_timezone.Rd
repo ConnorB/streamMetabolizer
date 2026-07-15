@@ -7,10 +7,10 @@
 lookup_google_timezone(latitude, longitude, timestamp = NULL)
 }
 \arguments{
-\item{latitude}{degrees latitude (positive for north) of the location to look
+\item{latitude}{Degrees latitude (positive for north) of the location to look
 up.}
 
-\item{longitude}{degrees longitude (positive for east) of the location to
+\item{longitude}{Degrees longitude (positive for east) of the location to
 look up.}
 
 \item{timestamp}{Ignored. Kept for backward compatibility.}

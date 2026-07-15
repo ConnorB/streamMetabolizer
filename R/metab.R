@@ -5,7 +5,7 @@
 #'
 #' @author Alison Appling
 #'
-#' @param specs a list of model specifications and parameters for a model.
+#' @param specs A list of model specifications and parameters for a model.
 #'   Although this may be specified manually (it's just a list), it is easier
 #'   and safer to use [specs()] to generate the list, because the set
 #'   of required parameters and their defaults depends on the model given in the
@@ -20,9 +20,9 @@
 #' @param data_daily A data frame or tibble containing inputs with a daily
 #'   timestep. See the **'Formatting `data_daily`'** section below for a full
 #'   description.
-#' @param info any information, in any format, that you would like to store
-#'   within the metab_model object
-#' @return An object inheriting from metab_model and containing the fitted
+#' @param info Any information, in any format, that you would like to store
+#'   within the metab_model object.
+#' @returns An object inheriting from metab_model and containing the fitted
 #'   model. This object can be inspected with the functions in the
 #'   [metab_model_interface()].
 #'
@@ -43,10 +43,8 @@
 #'   specs(init.GPP.daily=40) |>
 #'   metab(data=dat)
 #' predict_metab(mm)
-#' \dontrun{
 #' plot_DO_preds(predict_DO(mm))
-#' plot_DO_preds(predict_DO(mm), y_var='pctsat', style='dygraphs')
-#' }
+#' plot_DO_preds(predict_DO(mm), y_var = "pctsat", style = "dygraphs")
 #' @export
 metab <- function(
   specs = specs(mm_name()),

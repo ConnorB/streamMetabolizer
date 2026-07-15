@@ -13,7 +13,7 @@ metab_night(
 )
 }
 \arguments{
-\item{specs}{a list of model specifications and parameters for a model.
+\item{specs}{A list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
@@ -31,8 +31,8 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{info}{any information, in any format, that you would like to store
-within the metab_model object}
+\item{info}{Any information, in any format, that you would like to store
+within the metab_model object.}
 }
 \value{
 A metab_night object containing the fitted model. This object can be
@@ -49,9 +49,7 @@ and exclude days with any negative discharge.
 dat <- data_metab('3', day_start=12, day_end=35)
 mm <- metab_night(data=dat)
 predict_metab(mm)
-\dontrun{
 plot_DO_preds(predict_DO(mm))
-}
 }
 \seealso{
 Other metab_model:

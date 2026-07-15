@@ -7,7 +7,7 @@
 \S4method{show}{specs}(object)
 }
 \arguments{
-\item{object}{specs list to be displayed.}
+\item{object}{Specs list to be displayed.}
 }
 \description{
 Print a specs object to the console.

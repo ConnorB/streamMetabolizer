@@ -1,26 +1,28 @@
 #' Plot the prior/posterior distributions of a parameter
 #'
-#' Plot the prior and/or posterior disitrubtions as implied by the
-#' hyperparameters in a specs list and/or the
+#' Plot prior and posterior distributions implied by a `specs` list or fitted
+#' metabolism model.
 #'
 #' @param dist_data Either a specs list (for priors only) or a metab_model
 #'   object (for both priors and posteriors).
-#' @param parname character. the name of the parameter whose distribution(s) you
-#'   wish to plot
-#' @param index integer or logical. Applicable only if plotting posteriors, and
+#' @param parname Character. the name of the parameter whose distribution(s) you
+#'   wish to plot.
+#' @param index Integer or logical. Applicable only if plotting posteriors, and
 #'   useful only if the parname is for a parameter having multiple (e.g., daily)
 #'   instances. In this case, the index selects the instance and corresponds to
 #'   the row number in the data.frame element of `get_fit(metab_model)`
 #'   that contains the parameter, e.g. `get_fit(metab_model)$daily` for
 #'   `'GPP_daily'`. The default, TRUE, selects and pools all instances of
 #'   the parameter.
-#' @param style character indicating which graphics package to use
+#' @param style Character indicating which graphics package to use.
+#' @returns A ggplot object when `style = "ggplot2"` or a dygraph object when
+#'   `style = "dygraphs"`.
 #' @import dplyr
 #' @importFrom tidyr pivot_wider
-#' @importFrom stats dunif qnorm dnorm qlnorm dlnorm qbeta dbeta qgamma dgamma qcauchy dcauchy rcauchy density
+#' @importFrom stats dbeta dcauchy density dgamma dlnorm dnorm dunif
+#' @importFrom stats qbeta qcauchy qgamma qlnorm qnorm rcauchy
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' # priors only
 #' plot_distribs(specs('bayes', K600_daily_mu=30), 'K600_daily')
 #'
@@ -32,7 +34,6 @@
 #' plot_distribs(mm, 'err_proc_iid_sigma') |>
 #'   dygraphs::dyRangeSelector(dateWindow=c(-0.1,1.3)) |>
 #'   dygraphs::dyAxis(name='y', valueRange=c(0,15))
-#' }
 plot_distribs <- function(
   dist_data,
   parname = c(
@@ -404,7 +405,7 @@ plot_distribs <- function(
 #'   [rstan::extract()].
 #' @param parname The base parameter name.
 #' @inheritParams plot_distribs
-#' @return A list containing a numeric vector of draws and a logical indicating
+#' @returns A list containing a numeric vector of draws and a logical indicating
 #'   whether the parameter is indexed.
 #' @keywords internal
 select_rstan_draws <- function(extracted_draws, parname, index = TRUE) {
@@ -438,7 +439,7 @@ select_rstan_draws <- function(extracted_draws, parname, index = TRUE) {
 #' @param draws_array A CmdStanR `draws_array`.
 #' @param parname The base parameter name.
 #' @inheritParams plot_distribs
-#' @return A list containing a numeric vector of draws and a logical indicating
+#' @returns A list containing a numeric vector of draws and a logical indicating
 #'   whether the parameter is indexed.
 #' @keywords internal
 select_cmdstan_draws <- function(draws_array, parname, index = TRUE) {

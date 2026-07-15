@@ -8,16 +8,16 @@ approach.}
 bayes_allply(data_all, data_daily_all, removed, specs)
 }
 \arguments{
-\item{data_all}{data.frame of the form \code{mm_data(solar.time, DO.obs, DO.sat, depth, temp.water, light)} and containing data for just one
+\item{data_all}{Data.frame of the form \code{mm_data(solar.time, DO.obs, DO.sat, depth, temp.water, light)} and containing data for just one
 estimation-day (this may be >24 hours but only yields estimates for one
-24-hour period)}
+24-hour period).}
 
-\item{data_daily_all}{data.frame of daily priors, if appropriate to the given
-model_path}
+\item{data_daily_all}{Data.frame of daily priors, if appropriate to the given
+model_path.}
 
-\item{removed}{data.frame of dates that were removed and why}
+\item{removed}{Data.frame of dates that were removed and why.}
 
-\item{specs}{a list of model specifications and parameters for a model.
+\item{specs}{A list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
@@ -26,7 +26,7 @@ of required parameters and their defaults depends on the model given in the
 detail, and gives default values.}
 }
 \value{
-data.frame of estimates and MCMC model diagnostics
+Data.frame of estimates and MCMC model diagnostics.
 }
 \description{
 Called from metab_bayes().

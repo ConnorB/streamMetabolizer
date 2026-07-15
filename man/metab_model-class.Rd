@@ -3,9 +3,9 @@
 \docType{class}
 \name{metab_model-class}
 \alias{metab_model-class}
-\title{A metabolism model class.}
+\title{Metabolism model class}
 \description{
-A metabolism model class.
+Metabolism model class
 }
 \section{Slots}{
 

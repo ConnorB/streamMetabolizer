@@ -7,7 +7,7 @@
 \alias{predict_DO.metab_model}
 \alias{predict_DO.metab_night}
 \alias{predict_DO.metab_sim}
-\title{Predict DO from a fitted model.}
+\title{Predict dissolved oxygen from a fitted model}
 \usage{
 predict_DO(
   metab_model,
@@ -34,32 +34,32 @@ predict_DO(
 \method{predict_DO}{metab_sim}(metab_model, date_start = NA, date_end = NA, ...)
 }
 \arguments{
-\item{metab_model}{A metabolism model, implementing the
-metab_model_interface, to use in predicting metabolism}
+\item{metab_model}{A metabolism model that implements the
+\code{metab_model_interface}.}
 
-\item{date_start}{Date or a class convertible with as.Date. The first date
-(inclusive) for which to report DO predictions. If NA, no filtering is
-done.}
+\item{date_start}{A \code{Date} or an object coercible with \code{\link[=as.Date]{as.Date()}}. The first
+date (inclusive) for which to report DO predictions. If \code{NA}, no filtering
+is done.}
 
-\item{date_end}{Date or a class convertible with as.Date. The last date
-(inclusive) for which to report DO predictions. If NA, no filtering is
-done.}
+\item{date_end}{A \code{Date} or an object coercible with \code{\link[=as.Date]{as.Date()}}. The last
+date (inclusive) for which to report DO predictions. If \code{NA}, no filtering
+is done.}
 
 \item{...}{Other arguments passed to class-specific implementations of
-\code{predict_DO}}
+\code{\link[=predict_DO]{predict_DO()}}.}
 
-\item{attach.units}{(deprecated, effectively FALSE in future) logical. Should
-units be attached to the output?}
+\item{attach.units}{Deprecated. A logical indicating whether to attach units
+to the output.}
 
-\item{use_saved}{logical. Is it OK to use predictions that were saved with
+\item{use_saved}{A logical. Is it OK to use predictions that were saved with
 the model?}
 }
 \value{
-A data.frame of dissolved oxygen predictions at the temporal
-resolution of the input data
+A data frame of dissolved oxygen predictions at the temporal
+resolution of the input data.
 }
 \description{
-A function in the metab_model_interface. Returns predictions of dissolved
+A function in the \code{metab_model_interface}. Returns predictions of dissolved
 oxygen.
 }
 \section{Methods (by class)}{
@@ -81,9 +81,9 @@ error). The errors are randomly generated on every new call to predict_DO.
 
 }}
 \examples{
-dat <- data_metab('3', day_start=12, day_end=36)
-mm <- metab_night(specs(mm_name('night')), data=dat)
-preds <- predict_DO(mm, date_start=get_fit(mm)$date[3])
+dat <- data_metab("3", day_start = 12, day_end = 36)
+mm <- metab_night(specs(mm_name("night")), data = dat)
+preds <- predict_DO(mm, date_start = get_fit(mm)$date[3])
 head(preds)
 }
 \seealso{

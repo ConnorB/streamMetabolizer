@@ -7,10 +7,10 @@
 to_radians(degrees)
 }
 \arguments{
-\item{degrees}{angle in degrees}
+\item{degrees}{Angle in degrees.}
 }
 \value{
-angle in radians
+Angle in radians.
 }
 \description{
 Convert degrees to radians

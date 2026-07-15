@@ -16,7 +16,7 @@ add_specs_class <- function(specs_list) {
 #'
 #' Print a specs object to the console.
 #'
-#' @param object specs list to be displayed.
+#' @param object Specs list to be displayed.
 setMethod(
   "show",
   "specs",
@@ -25,12 +25,12 @@ setMethod(
   }
 )
 
-#' Display the specs object
+#'   Display the specs object
 #'
-#' Print a specs object to the console.
+#'   Print a specs object to the console.
 #'
-#' @param x specs list to be displayed.
-#' @param ... additional arguments passed to inner functions
+#' @param x Specs list to be displayed.
+#' @param ... Additional arguments passed to inner functions.
 #' @export
 print.specs <- function(x, ...) {
   print_specs(x, ...)
@@ -40,10 +40,10 @@ print.specs <- function(x, ...) {
 #'
 #' Print a specs object to the console.
 #'
-#' @param object specs list to be displayed.
-#' @param header line to be catted at start of printout
-#' @param prefix text to prepend to the start of each line that follows the
-#'   header
+#' @param object Specs list to be displayed.
+#' @param header Line to be catted at start of printout.
+#' @param prefix Text to prepend to the start of each line that follows the
+#'   header.
 #' @import dplyr
 #' @importFrom utils capture.output
 #' @keywords internal

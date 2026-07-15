@@ -3,13 +3,14 @@
 #' Calculate photosynthetically active radiation (PAR) for a series of
 #' date-times and site coordinates.
 #'
-#' @param solar.time mean solar time, as required for input to metabolism
+#' @param solar.time Mean solar time, as required for input to metabolism
 #'   models. See [mm_data()] and [calc_solar_time()].
 #' @inheritParams calc_zenith_angle
 #' @inheritParams convert_solartime_to_UTC
-#' @param max.PAR numeric or unitted_numeric: the PAR (umol m^-2 s^-1) that each
-#'   day should reach at peak light
+#' @param max.PAR Numeric or unitted_numeric: the PAR (umol m^-2 s^-1) that each
+#'   day should reach at peak light.
 #' @inheritParams calc_solar_insolation
+#' @returns A numeric vector of modeled PAR values in µmol m⁻² s⁻¹.
 #' @import dplyr
 #' @importFrom lifecycle deprecated is_present
 #' @examples

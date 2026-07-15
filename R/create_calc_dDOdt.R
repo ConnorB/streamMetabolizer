@@ -1,4 +1,4 @@
-#' Create a function that generates a 1-day timeseries of DO.mod
+#' Create a function that calculates a one-day DO time series
 #'
 #' Creates a closure that bundles data and helper functions into a single
 #' function that returns dDOdt in gO2 m^-3 timestep^-1 for any given time t.
@@ -12,7 +12,8 @@
 #'   DO.mod[t] +
 #'    (((GPP[t]+GPP[t+1])/2) / (depth[t]+depth[t+1])/2
 #'    + ((ER[t]+ER[t+1])/2) / (depth[t]+depth[t+1])/2
-#'    + (k.O2[t](DO.sat[t] - DO.mod[t]) + k.O2[t+1](DO.sat[t+1] - DO.mod[t+1]))/2
+#'    + (k.O2[t](DO.sat[t] - DO.mod[t])
+#'       + k.O2[t+1](DO.sat[t+1] - DO.mod[t+1]))/2
 #'    + ((err.proc[t]+err.proc[t+1])/2) / (depth[t]+depth[t+1])/2
 #'    ) * timestep
 #' ```
@@ -30,27 +31,26 @@
 #' where we're treating err.proc as a rate in gO2/m2/d, just like GPP & ER, and
 #' err.proc=0 for model fitting.
 #'
-#' @param data data.frame as in [metab()], except that data must
+#' @param data Data.frame as in [metab()], except that data must
 #'   contain exactly one date worth of inputs (~24 hours according to
 #'   `[specs]$day_start` and `[specs]$day_end`).
 #' @inheritParams mm_name
-#' @param err.proc optional numerical vector of length nrow(data). Process error
+#' @param err.proc Optional numerical vector of length nrow(data). Process error
 #'   in units of gO2 m^-2 d^-1 (THIS MAY DIFFER FROM WHAT YOU'RE USED TO!).
 #'   Appropriate for simulation, when this vector of process errors will be
 #'   added to the calculated values of GPP and ER (then divided by depth and
 #'   multiplied by timestep duration) to simulate process error. But usually
 #'   (for MLE or prediction from a fitted MLE/Bayesian/nighttime regression
-#'   model) `err.proc` should be missing or 0
-#' @return a function that accepts args `t` (the time in 0:(n-1) where n is
+#'   model) `err.proc` should be missing or 0.
+#' @returns A function that accepts args `t` (the time in 0:(n-1) where n is
 #'   the number of timesteps), `DO.mod.t` (the value of DO.mod at time t in
 #'   gO2 m^-3), and `metab` (a list of metabolism parameters; to see which
 #'   parameters should be included in this list, create `dDOdt` with this
-#'   function and then call `environment(dDOdt)$metab.needs`)
+#'   function and then call `environment(dDOdt)$metab.needs`).
 #' @import dplyr
 #' @importFrom stats approxfun
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' data <- data_metab('1','30')[seq(1,48,by=2),]
 #' dDOdt.obs <- diff(data$DO.obs)
 #' preds.init <- as.list(dplyr::select(
@@ -163,7 +163,6 @@
 #'   parms=list(GPP.daily=2, ER.daily=-1.4, K600.daily=21),
 #'   times=1:nrow(data), func=dDOdt.err2, method='rk4')[,'DO.mod']
 #' lines(x=data$solar.time, y=DO.mod.err2, type='l', col='black', lty=2)
-#' }
 create_calc_dDOdt <- function(
   data,
   ode_method,

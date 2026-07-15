@@ -1,8 +1,7 @@
 #' Parse a model name into its features
 #'
-#' Returns a data.frame with one column per model structure detail and one row
-#' per `model_name` supplied to this function. See `?[mm_name]` for a
-#' description of each of the data.frame columns that is returned.
+#' Returns a data frame with one column per model structure detail and one row
+#' per `model_name`. See [mm_name()] for a description of each column.
 #'
 #' Custom model files (for MCMC) may have additional characters after an
 #' underscore at the end of the name and before the prefix. For example,
@@ -11,11 +10,13 @@
 #'
 #' @seealso The converse of this function is [mm_name()].
 #'
-#' @param model_name character: the model name
-#' @param expand logical: should additional columns such as model_name and
+#' @param model_name Character: the model name.
+#' @param expand Logical: should additional columns such as model_name and
 #'   pool_K600_type be added? If expand=TRUE then the result cannot be passed
 #'   directly back into mm_name, but the additional columns may be helpful for
 #'   interpreting the model structure.
+#' @returns A data frame with one row per model name and one column per model
+#'   feature.
 #' @import dplyr
 #' @importFrom stats na.omit
 #' @examples

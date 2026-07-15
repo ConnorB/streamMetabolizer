@@ -2,7 +2,7 @@
 % Please edit documentation in R/metab_bayes.R
 \name{metab_bayes}
 \alias{metab_bayes}
-\title{Basic Bayesian metabolism model fitting function}
+\title{Fit a Bayesian metabolism model}
 \usage{
 metab_bayes(
   specs = specs(mm_name("bayes")),
@@ -13,7 +13,7 @@ metab_bayes(
 )
 }
 \arguments{
-\item{specs}{a list of model specifications and parameters for a model.
+\item{specs}{A list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
@@ -31,8 +31,8 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{info}{any information, in any format, that you would like to store
-within the metab_model object}
+\item{info}{Any information, in any format, that you would like to store
+within the metab_model object.}
 }
 \value{
 A metab_bayes object containing the fitted model. This object can be
@@ -50,7 +50,7 @@ deprecation warnings including \verb{typedef 'size_type' locally defined but not
 model will be quieter, and the model will work.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 dat <- data_metab('3', res='30')
 # fast-ish model version, but still too slow to auto-run in examples
 mm <- metab_bayes(data=dat,
@@ -70,7 +70,7 @@ predict_metab(mm)
 
 # view the Stan model file as stored on your system
 file.edit(get_specs(mm)$model_path)
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other metab_model:

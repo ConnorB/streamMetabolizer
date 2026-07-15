@@ -11,10 +11,10 @@ get_log(metab_model)
 }
 \arguments{
 \item{metab_model}{A Bayesian metabolism model (metab_bayes) from which to
-return the log file, if available}
+return the log file, if available.}
 }
 \value{
-The MCMC log file(s) lines
+The MCMC log file(s) lines.
 }
 \description{
 If a log file was created during a model run, this function can retrieve it.
@@ -26,3 +26,7 @@ metab_bayes() attempted to capture it. Retrieve what was captured with this
 function.
 
 }}
+\examples{
+mm <- metab_model("metab_bayes", log = "Sampling complete")
+get_log(mm)
+}

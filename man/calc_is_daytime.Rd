@@ -2,32 +2,40 @@
 % Please edit documentation in R/calc_is_daytime.R
 \name{calc_is_daytime}
 \alias{calc_is_daytime}
-\title{Determines if specified datetime is during the daytime
-Returns T/F indicating whether a datetime occurs during the daytime (sunlight hours)}
+\title{Determine whether datetimes occur during daylight}
 \usage{
 calc_is_daytime(datetimes, lat)
 }
 \arguments{
-\item{datetimes}{Vector of dates as \code{POSIXct} or \code{POSIXlt} (see \code{\link[=DateTimeClasses]{DateTimeClasses()}}) format, but in SOLAR time}
+\item{datetimes}{A \code{POSIXct} or \code{POSIXlt} vector in solar time. See
+\code{\link[=DateTimeClasses]{DateTimeClasses()}}.}
 
-\item{lat}{Single latitude value of site. South should be negative, north positive}
+\item{lat}{A numeric scalar giving the site latitude. Use negative values
+south of the equator and positive values north of it.}
 }
 \value{
-a boolean vector of same length as \code{datetimes}
+A logical vector with the same length as \code{datetimes}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 \code{calc_is_daytime()} is deprecated.
 }
-\examples{
-\dontrun{
-# Warning: this function is deprecated.
-calc_is_daytime(datetimes=as.POSIXct(paste('2013-03-31', c('1:00','11:00'))), lat=40.75)
+\details{
+Returns a logical vector indicating whether each datetime occurs during
+daylight hours.
 }
+\examples{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+# Warning: this function is deprecated.
+calc_is_daytime(
+  datetimes = as.POSIXct(paste("2013-03-31", c("1:00", "11:00"))),
+  lat = 40.75
+)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
-\link{calc_sun_rise_set}
+\code{\link[=calc_sun_rise_set]{calc_sun_rise_set()}}
 }
 \author{
 Luke A. Winslow

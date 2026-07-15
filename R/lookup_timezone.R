@@ -3,10 +3,12 @@
 #' Uses the `lutz` package to determine the local timezone name, standard
 #' offset, and DST offset of a site from its coordinates.
 #'
-#' @param latitude degrees latitude (positive for north) of the location to look
+#' @param latitude Degrees latitude (positive for north) of the location to look
 #'   up.
-#' @param longitude degrees longitude (positive for east) of the location to
+#' @param longitude Degrees longitude (positive for east) of the location to
 #'   look up.
+#' @returns A list containing the IANA time zone name (`tz`), daylight-saving
+#'   offset (`dst_offset`), standard UTC offset (`std_offset`), and retry count.
 #' @importFrom lutz tz_lookup_coords
 #' @export
 #' @examples

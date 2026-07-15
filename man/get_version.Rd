@@ -3,21 +3,21 @@
 \name{get_version}
 \alias{get_version}
 \alias{get_version.metab_model}
-\title{Extract the version of streamMetabolizer that was used to fit the model.}
+\title{Extract the streamMetabolizer version used to fit a model}
 \usage{
 get_version(metab_model)
 
 \method{get_version}{metab_model}(metab_model)
 }
 \arguments{
-\item{metab_model}{A metabolism model, implementing the
-metab_model_interface, for which to return the data}
+\item{metab_model}{A metabolism model that implements the
+\code{metab_model_interface}.}
 }
 \value{
-character representation of the package version
+A character representation of the package version.
 }
 \description{
-A function in the metab_model_interface. Returns the version of
+A function in the \code{metab_model_interface}. Returns the version of
 streamMetabolizer that was used to fit the model.
 }
 \section{Methods (by class)}{
@@ -25,6 +25,9 @@ streamMetabolizer that was used to fit the model.
 \item \code{get_version(metab_model)}: This implementation is shared by many model types
 
 }}
+\examples{
+get_version(metab_model())
+}
 \seealso{
 Other metab_model_interface:
 \code{\link[=get_data]{get_data()}},

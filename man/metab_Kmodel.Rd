@@ -14,7 +14,7 @@ metab_Kmodel(
 )
 }
 \arguments{
-\item{specs}{a list of model specifications and parameters for a model.
+\item{specs}{A list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
@@ -32,12 +32,12 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{info}{any information, in any format, that you would like to store
-within the metab_model object}
+\item{info}{Any information, in any format, that you would like to store
+within the metab_model object.}
 }
 \value{
-A metab_Kmodel object containing the fitted model. This object can be
-inspected with the functions in the \code{\link[=metab_model_interface]{metab_model_interface()}}.
+A \code{metab_Kmodel} object containing the fitted model. Inspect it with
+the functions in \code{\link[=metab_model_interface]{metab_model_interface()}}.
 }
 \description{
 Takes daily estimates of K, usually from nighttime regression, and regresses
@@ -46,29 +46,20 @@ that only predicts daily K, nothing else.
 }
 \details{
 Possible approaches:
-
-\describe{
-
-\item{mean}{Predict K as the mean of all K values}
-
-\item{weighted mean}{Predict K as the mean of all K values, weighted by the
-inverse of the confidence intervals in the input K values}
-
-\item{KvQ}{Regress K versus Q, tending toward overall mean in ranges of Q
-with sparse data}
-
-\item{weighted KvQ}{Regress K versus Q, tending toward overall mean in
-ranges of Q with sparse data, weighting high-confidence K values more
-heavily}
-
-\item{T smoother}{Predict K using a loess or spline smoother over time}
-
-\item{Q smoother}{Predict K using a loess or spline smoother over
-discharge.daily}
-
-\item{TQ smoother}{Predict K using a loess or spline smoother over both
-time and discharge.daily}
-
+\itemize{
+\item \strong{Mean}: Predict K as the mean of all K values.
+\item \strong{Weighted mean}: Predict K as the mean of all K values, weighted by the
+inverse confidence intervals of the input K values.
+\item \strong{KvQ}: Regress K against Q, tending toward the overall mean in ranges of
+Q with sparse data.
+\item \strong{Weighted KvQ}: Regress K against Q, tending toward the overall mean in
+ranges of Q with sparse data and weighting high-confidence K values more
+heavily.
+\item \strong{T smoother}: Predict K using a loess or spline smoother over time.
+\item \strong{Q smoother}: Predict K using a loess or spline smoother over
+\code{discharge.daily}.
+\item \strong{TQ smoother}: Predict K using a loess or spline smoother over time and
+\code{discharge.daily}.
 }
 }
 \examples{
@@ -84,27 +75,21 @@ mm <- metab_Kmodel(
   specs(mm_name('Kmodel', engine='mean')),
   data_daily=example_Ks) # two warnings expected for engine='mean'
 get_params(mm)
-\dontrun{
 plot(get_params(mm)$date, get_params(mm)$K600.daily)
-}
 
 # linear model
 mm <- metab_Kmodel(
   specs(mm_name('Kmodel', engine='lm'), predictors='discharge.daily'),
   data_daily=example_Ks)
 get_params(mm)
-\dontrun{
 plot(get_data_daily(mm)$discharge.daily, get_params(mm)$K600.daily)
-}
 
 # loess
 mm <- metab_Kmodel(    ### breaks ###
   specs(mm_name('Kmodel', engine='loess'), predictors='date', other_args=list(span=0.4)),
   data_daily=example_Ks)
 get_params(mm)
-\dontrun{
 plot(get_params(mm)$date, get_params(mm)$K600.daily)
-}
 
 ## 3-phase workflow (sort of like complete pooling) for estimating K within
 ## days, then K across days, then GPP and ER within days
@@ -127,10 +112,8 @@ K600_mm2 <- get_params(mm2) |> select(date, K600.daily)
 mm3 <- metab_mle(mle_specs, data=dat, data_daily=K600_mm2)
 get_params(mm3, fixed='stars')
 predict_metab(mm3)
-\dontrun{
 plot_metab_preds(mm1)
 plot_metab_preds(mm3)
-}
 }
 \seealso{
 Other metab_model:

@@ -2,7 +2,7 @@
 % Please edit documentation in R/metab_bayes.R
 \name{format_mcmc_mat_split}
 \alias{format_mcmc_mat_split}
-\title{Format MCMC output into a one-row data.frame}
+\title{Format MCMC output into a one-row data frame}
 \usage{
 format_mcmc_mat_split(
   mcmc_mat,
@@ -13,11 +13,11 @@ format_mcmc_mat_split(
 )
 }
 \arguments{
-\item{mcmc_mat}{matrix as extracted from Stan}
+\item{mcmc_mat}{Matrix as extracted from Stan.}
 
-\item{names_params}{character vector of the names of the parameters}
+\item{names_params}{Character vector of the names of the parameters.}
 
-\item{names_stats}{character vector of the names of the statistics}
+\item{names_stats}{Character vector of the names of the statistics.}
 }
 \description{
 For split_dates models. Formats output into a one-row data.frame for

@@ -2,8 +2,7 @@
 % Please edit documentation in R/metab_Kmodel.R
 \name{prepdata_Kmodel}
 \alias{prepdata_Kmodel}
-\title{Prepare data_daily by aggregating any daily data, renaming K600.daily to K600.daily.obs,
-& setting data_daily$weight to reflect user weights & filters}
+\title{Prepare daily data for K modeling}
 \usage{
 prepdata_Kmodel(
   data,
@@ -17,9 +16,9 @@ prepdata_Kmodel(
 )
 }
 \arguments{
-\item{data}{unit data to aggregate to daily_data. may be NULL.}
+\item{data}{Unit data to aggregate to daily_data. may be NULL.}
 
-\item{data_daily}{daily data to prepare for K modeling}
+\item{data_daily}{Daily data to prepare for K modeling.}
 
 \item{weights}{For Kmodel, character vector indicating the type of weighting
 to use. Set to c() for no weights. One of c("1/CI", "K600/CI", c()).}
@@ -27,11 +26,12 @@ to use. Set to c() for no weights. One of c("1/CI", "K600/CI", c()).}
 \item{filters}{For Kmodel, named numeric vector of limits to use in filtering
 data_daily. Elements may include
 c("CI.max","discharge.daily.max","velocity.daily.max"). If an element is
-given, the corresponding filter is applied: K600.daily.upper-K600.daily.lower <=
-CI.max, discharge.daily <= discharge.daily.max, velocity.daily <=
-velocity.daily.max}
+given, the corresponding filter is applied:
+\code{K600.daily.upper - K600.daily.lower <= CI.max},
+\code{discharge.daily <= discharge.daily.max}, or
+\code{velocity.daily <= velocity.daily.max}.}
 
-\item{day_start}{start time (inclusive) of a day's data in number of hours
+\item{day_start}{Start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
 indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
@@ -44,12 +44,12 @@ regression, the date assigned to a chunk of data should be the date whose
 evening contains the data. The default is therefore 12 to 36 for
 metab_night, of which the times of darkness will be used.}
 
-\item{day_end}{end time (exclusive) of a day's data in number of hours from
+\item{day_end}{End time (exclusive) of a day's data in number of hours from
 the midnight that begins the date. For example, day_end=30 indicates that
 data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00. See day_start for recommended start and end times.}
 
-\item{day_tests}{list of tests to conduct to determine whether each date
+\item{day_tests}{List of tests to conduct to determine whether each date
 worth of data is valid for modeling. The results of these tests will be
 combined with the result of the test implied if \code{required_timestep} is
 numeric and then will be passed to \code{model_fun} as the
@@ -63,6 +63,6 @@ of this test will be combined with the results of the tests listed in
 \code{ply_validity} argument to that function.}
 }
 \description{
-Prepare data_daily by aggregating any daily data, renaming K600.daily to K600.daily.obs,
-& setting data_daily$weight to reflect user weights & filters
+Aggregates daily data, renames \code{K600.daily} to \code{K600.daily.obs}, and sets
+\code{data_daily$weight} to reflect user weights and filters.
 }

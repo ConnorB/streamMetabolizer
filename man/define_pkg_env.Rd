@@ -8,7 +8,7 @@ R session}
 define_pkg_env()
 }
 \value{
-the package environment
+The package environment.
 }
 \description{
 Define a package environment for storing data specific to a project during an

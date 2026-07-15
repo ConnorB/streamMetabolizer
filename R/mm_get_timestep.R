@@ -1,39 +1,37 @@
-#' Return the average timestep in days
+#' Calculate timesteps in days
 #'
-#' @param datetimes a vector of date-times in POSIXct format from which to
-#'   compute the average timestep
-#' @param format the format in which to return the timestep. 'mean' always
-#'   returns one value; 'unique' may return more than one depending on the
-#'   variation in timesteps and the value of `digits`.
-#' @param require_unique logical. should it be required that there is exactly
-#'   one unique timestep (within the given tolerance `tol`)?
-#' @param tol if `format == 'unique'`, unique values are first calculated
-#'   to machine precision, but then subsetted to those that differ from one
-#'   another by at least tol, where tol is a time difference in units of days
-#'   (and thus 1/(24*60*60) is one second).
+#' @param datetimes A `POSIXct` vector from which to calculate timesteps.
+#' @param format A string specifying the output format. `"mean"` always returns
+#'   one value; `"unique"` may return more than one, depending on the variation
+#'   in timesteps and the value of `tol`.
+#' @param require_unique A logical. Should exactly one unique timestep (within
+#'   the tolerance `tol`) be required?
+#' @param tol If `format = "unique"`, the minimum difference in days for two
+#'   timesteps to be considered distinct. For example, `1 / (24 * 60 * 60)` is
+#'   one second.
+#' @returns A numeric vector of timesteps in days. Its length depends on
+#'   `format`.
 #' @importFrom stats approx
-#' @examples {
-#' datetimes <- Sys.time()+ as.difftime(c(0,304,600,900.2,1200,1500,1800), units='secs')
-#' mm_get_timestep(datetimes, 'unique', tol=1/(24*60*60))
-#' mm_get_timestep(datetimes, 'unique', tol=5/(24*60*60))
-#' mm_get_timestep(datetimes, 'unique', tol=10/(24*60*60))
-#' mm_get_timestep(datetimes, 'unique', tol=300/(24*60*60))
-#' mm_get_timestep(datetimes, 'mean')
-#' mm_get_timestep(datetimes, 'mean', require_unique=TRUE, tol=300/(24*60*60))
-#' datetimes <- Sys.time()+ as.difftime(c(-1,0,2,4,5,6,8,10), units='days')
-#' mm_get_timestep(datetimes, 'modal')
-#' mm_get_timestep(c(), 'mean')
-#' mm_get_timestep(c(), 'unique')
-#' mm_get_timestep(c(), 'modal')
-#' \dontrun{
-#' # all of these should and do give errors:
-#' mm_get_timestep(datetimes, 'mean', require_unique=TRUE, tol=1/(24*60*60))
-#' mm_get_timestep(datetimes, 'unique', tol=5/(24*60*60), require_unique=TRUE)
-#' mm_get_timestep(c(), 'mean', require_unique=TRUE)
-#' mm_get_timestep(c(), 'unique', require_unique=TRUE)
-#' mm_get_timestep(c(), 'modal', require_unique=TRUE)
-#' }
-#' }
+#' @examples
+#' datetimes <- Sys.time() +
+#'   as.difftime(c(0, 304, 600, 900.2, 1200, 1500, 1800), units = "secs")
+#' mm_get_timestep(datetimes, "unique", tol = 1 / (24 * 60 * 60))
+#' mm_get_timestep(datetimes, "unique", tol = 5 / (24 * 60 * 60))
+#' mm_get_timestep(datetimes, "mean")
+#' mm_get_timestep(
+#'   datetimes,
+#'   "mean",
+#'   require_unique = TRUE,
+#'   tol = 300 / (24 * 60 * 60)
+#' )
+#'
+#' datetimes <- Sys.time() +
+#'   as.difftime(c(-1, 0, 2, 4, 5, 6, 8, 10), units = "days")
+#' mm_get_timestep(datetimes, "modal")
+#' mm_get_timestep(c(), "mean")
+#'
+#' try(mm_get_timestep(datetimes, "mean", require_unique = TRUE))
+#' try(mm_get_timestep(c(), "unique", require_unique = TRUE))
 #' @export
 mm_get_timestep <- function(
   datetimes,

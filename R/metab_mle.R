@@ -1,38 +1,43 @@
 #' @include metab_model-class.R
 NULL
 
-#' Maximum likelihood metabolism model fitting function
+#' Fit a metabolism model by maximum likelihood
 #'
 #' Uses maximum likelihood to fit a model to estimate GPP and ER from input data
 #' on DO, temperature, light, etc. Discharge is only used, if at all, to
 #' identify and exclude days with any negative discharge.
 #'
 #' @inheritParams metab
-#' @return A metab_mle object containing the fitted model. This object can be
+#' @returns A metab_mle object containing the fitted model. This object can be
 #'   inspected with the functions in the [metab_model_interface()].
 #'   The `code` column in `get_fit(mm)` is defined in the Value
 #'   subsection of `?nlm`.
-#' @examples
+#' @examplesIf interactive()
 #' dat <- data_metab('3','30')
 #' # PRK
 #' mm <- metab_mle(data=dat)
 #' predict_metab(mm)
 #'
 #' # PR with fixed K on two days
-#' dat_daily <- data.frame(date=as.Date(c("2012-09-18","2012-09-20")), K600.daily=35)
-#' metab_mle(data=dat, data_daily=dat_daily)
+#' dat_daily <- data.frame(
+#'   date = as.Date(c("2012-09-18","2012-09-20")),
+#'   K600.daily = 35
+#' )
+#' metab_mle(data = dat, data_daily = dat_daily)
 #'
-#' # PRK with day-specific inits on some days
-#' dat_daily <- data.frame(date=as.Date("2012-09-19"),
-#'   init.GPP.daily=4, init.K600.daily=60)
-#' metab_mle(data=dat, data_daily=dat_daily)
+#' # PRK with day-specific initial values
+#' dat_daily <- data.frame(
+#'   date = as.Date("2012-09-19"),
+#'   init.GPP.daily = 4,
+#'   init.K600.daily = 60
+#' )
+#' metab_mle(data = dat, data_daily = dat_daily)
 #'
 #' # Nonlinear GPP or ER equations
-#' metab_mle(specs(mm_name('mle', GPP_fun='satlight')), data=dat)
-#' metab_mle(specs(mm_name('mle', ER_fun='q10temp')), data=dat)
-#' \dontrun{
+#' metab_mle(specs(mm_name('mle', GPP_fun = 'satlight')), data = dat)
+#' metab_mle(specs(mm_name('mle', ER_fun = 'q10temp')), data = dat)
+#'
 #' plot_DO_preds(predict_DO(mm))
-#' }
 #' @export
 #' @family metab_model
 metab_mle <- function(
@@ -125,8 +130,8 @@ metab_mle <- function(
 #'
 #' @inheritParams mm_model_by_ply_prototype
 #' @inheritParams metab
-#' @return data.frame of estimates and [stats::nlm()] model
-#'   diagnostics
+#' @returns Data.frame of estimates and [stats::nlm()] model
+#'   diagnostics.
 #' @importFrom stats nlm
 #' @keywords internal
 mle_1ply <- function(

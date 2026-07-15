@@ -11,10 +11,10 @@ get_mcmc(metab_model)
 }
 \arguments{
 \item{metab_model}{A Bayesian metabolism model (metab_bayes) from which to
-return the MCMC model object(s)}
+return the MCMC model object(s).}
 }
 \value{
-The MCMC model object(s)
+The MCMC model object(s).
 }
 \description{
 A function specific to metab_bayes models. Returns the fitted object from the
@@ -30,3 +30,7 @@ plotting methods.
 \item \code{get_mcmc(metab_bayes)}: Get the Bayesian MCMC model object
 
 }}
+\examples{
+mm <- metab_model("metab_bayes", mcmc = list(chain = 1))
+get_mcmc(mm)
+}

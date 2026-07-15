@@ -1,21 +1,18 @@
-#' Deprecated Functions in package streamMetabolizer
+#' Deprecated functions in streamMetabolizer
 #'
 #' These functions are provided for compatibility with older versions of
-#' `streamMetabolizer` only, and may be defunct as soon as the next
+#' streamMetabolizer only, and may be defunct as soon as the next
 #' release.
 #'
-#' \itemize{
-#'   \item [calc_DO_deficit()] - instead, subtract `DO.obs` from output of [calc_DO_sat()]
-#'   \item `calc_DO_at_sat` - use [calc_DO_sat()] instead
-#'   \item [calc_is_daytime()] - if you like and want this function, submit a GitHub issue to keep it
-#'   \item [calc_sun_rise_set()] - if you like and want this function, submit a GitHub issue to keep it
-#' }
+#' * [calc_DO_deficit()] is superseded by subtracting `DO.obs` from the output
+#'   of [calc_DO_sat()].
+#' * [calc_DO_at_sat()] is superseded by [calc_DO_sat()].
+#' * [calc_is_daytime()] is deprecated.
+#' * [calc_sun_rise_set()] is deprecated.
 #'
 #' These functions are defunct and will error when called:
 #'
-#' \itemize{
-#'   \item `lookup_google_timezone` - use [lookup_timezone()] instead
-#' }
+#' * `lookup_google_timezone()` is superseded by [lookup_timezone()].
 #'
 #' @name streamMetabolizer-deprecated
 NULL

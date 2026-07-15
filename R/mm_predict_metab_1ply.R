@@ -3,9 +3,9 @@
 #' Usually assigned to model_fun within mm_model_by_ply, called from there
 #'
 #' @inheritParams mm_model_by_ply_prototype
-#' @param model_name the coded model name that will determine the GPP_fun,
-#'   ER_fun, deficit_src, and ode_method to use in prediction
-#' @return a data.frame of predictions
+#' @param model_name The coded model name that will determine the GPP_fun,
+#'   ER_fun, deficit_src, and ode_method to use in prediction.
+#' @returns A data.frame of predictions.
 #' @import dplyr
 mm_predict_metab_1ply <- function(
   data_ply,

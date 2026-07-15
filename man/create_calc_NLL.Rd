@@ -13,19 +13,19 @@ create_calc_NLL(
 )
 }
 \arguments{
-\item{calc_DO}{a function as from \code{create_calc_DO}}
+\item{calc_DO}{A function as from \code{create_calc_DO}.}
 
-\item{par.names}{vector of names of parameters that can be expected in calls
-to the function created by this one (the calc_NLL function)}
+\item{par.names}{Vector of names of parameters that can be expected in calls
+to the function created by this one (the calc_NLL function).}
 
-\item{err_obs_iid}{logical. Should IID observation error be included? If not,
-the model will be fit to the differences in successive DO measurements,
-rather than to the DO measurements themselves.}
+\item{err_obs_iid}{A logical. Should IID observation error be included? If
+not, the model will be fit to the differences in successive DO
+measurements, rather than to the DO measurements themselves.}
 
-\item{err_proc_iid}{logical. Should IID process error be included?}
+\item{err_proc_iid}{A logical. Should IID process error be included?}
 }
 \value{
-a function that will return a negative log likelihood of the data
+A function that will return a negative log likelihood of the data
 given a set of metab.pars. metab.pars is the first argument of the returned
 function; its names are defined in \code{par.names}.
 }

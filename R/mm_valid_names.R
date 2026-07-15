@@ -6,6 +6,7 @@
 #' slightly more readable with [mm_parse_name()] if desired.
 #'
 #' @inheritParams mm_name
+#' @returns A character vector of valid encoded model names.
 #' @import dplyr
 #' @examples
 #' mm_valid_names('mle')

@@ -13,61 +13,82 @@ NULL
 #' a DO.mod.1 column with one starting DO value per day.
 #'
 #' @inheritParams metab
-#' @return A metab_sim object containing the fitted model. This object can be
+#' @returns A metab_sim object containing the fitted model. This object can be
 #'   inspected with the functions in the [metab_model_interface()].
-#' @examples
+#' @examplesIf interactive()
 #' ## simulations with variation all at sub-daily scale
 #' # prepare input data (DO used only to pick first DO of each day)
-#' dat <- data_metab('3', res='15')
-#' dat_daily <- data.frame(date=as.Date(paste0("2012-09-", 18:20)),
-#'   GPP.daily=2, ER.daily=-3, K600.daily=21, stringsAsFactors=FALSE)
+#' dat <- data_metab('3', res = '15')
+#' dat_daily <- data.frame(
+#'   date = as.Date(paste0("2012-09-", 18:20)),
+#'   GPP.daily = 2, ER.daily = -3, K600.daily = 21,
+#'   stringsAsFactors = FALSE
+#' )
 #'
-#' # define simulation parameters
+#' # define simulation parameters and run a single model
 #' mm <- metab_sim(
-#'   specs(mm_name('sim'), err_obs_sigma=0.1, err_proc_sigma=2,
-#'     GPP_daily=NULL, ER_daily=NULL, K600_daily=NULL),
-#'   data=dat, data_daily=dat_daily)
-#' # actual simulation happens during prediction - different each time
+#'   specs(mm_name('sim'),
+#'     err_obs_sigma = 0.1,
+#'     err_proc_sigma = 2,
+#'     GPP_daily = NULL,
+#'     ER_daily = NULL,
+#'     K600_daily = NULL
+#'   ),
+#'   data = dat,
+#'   data_daily = dat_daily
+#' )
+#'
 #' get_params(mm)
 #' predict_metab(mm)
-#' predict_DO(mm)[seq(1,50,by=10),]
-#' predict_DO(mm)[seq(1,50,by=10),]
+#' predict_DO(mm)[seq(1, 50, by = 10), ]
 #'
-#' # or same each time if seed is set
+#' # stochastic DO (different each time)
+#' predict_DO(mm)[seq(1, 50, by = 10), ]
+#'
+#' # reproducible simulation with seed
 #' mm@specs$sim_seed <- 236
-#' predict_DO(mm)$DO.obs[seq(1,50,by=10)]
-#' predict_DO(mm)$DO.obs[seq(1,50,by=10)]
+#' predict_DO(mm)$DO.obs[seq(1, 50, by = 10)]
+#' predict_DO(mm)$DO.obs[seq(1, 50, by = 10)]
 #'
 #' # fancy GPP equation
-#' dat_daily <- data.frame(date=as.Date(paste0("2012-09-", 18:20)),
-#'   Pmax=8, alpha=0.01, ER.daily=-3, K600.daily=21, stringsAsFactors=FALSE)
+#' dat_daily <- data.frame(
+#'   date = as.Date(paste0("2012-09-", 18:20)),
+#'   Pmax = 8, alpha = 0.01, ER.daily = -3, K600.daily = 21,
+#'   stringsAsFactors = FALSE
+#' )
 #' mm <- metab_sim(
-#'   specs(mm_name('sim', GPP_fun='satlight'), err_obs_sigma=0.1, err_proc_sigma=2,
-#'     Pmax=NULL, alpha=NULL, ER_daily=NULL, K600_daily=NULL),
-#'   data=dat, data_daily=dat_daily)
+#'   specs(mm_name('sim', GPP_fun = 'satlight'),
+#'     err_obs_sigma = 0.1,
+#'     err_proc_sigma = 2,
+#'     Pmax = NULL,
+#'     alpha = NULL,
+#'     ER_daily = NULL,
+#'     K600_daily = NULL
+#'   ),
+#'   data = dat,
+#'   data_daily = dat_daily
+#' )
 #' get_params(mm)
-#' predict_metab(mm) # metab estimates are for data without errors
-#' predict_DO(mm)[seq(1,50,by=10),]
+#' predict_metab(mm)
+#' predict_DO(mm)[seq(1, 50, by = 10), ]
 #'
 #' ## simulations with variation at both sub-daily and multi-day scales
-#' sp <- specs(mm_name('sim', pool_K600='none'),
-#'   K600_daily = function(n, ...) pmax(0, rnorm(n, 10, 3))) # n is available within sim models
+#' sp <- specs(mm_name('sim', pool_K600 = 'none'),
+#'   K600_daily = function(n, ...) pmax(0, rnorm(n, 10, 3)))
 #' mm <- metab(sp, dat)
 #' get_params(mm)
 #' predict_metab(mm)
 #'
 #' ## K~Q model
-#' dat <- data_metab('10','15')
-#' sp <- specs(mm_name('sim', pool_K600='binned'))
+#' dat <- data_metab('10', '15')
+#' sp <- specs(mm_name('sim', pool_K600 = 'binned'))
 #' mm <- metab(sp, dat)
 #' pars <- get_params(mm)
 #' attr(pars, 'K600_eqn')
 #'
-#' \dontrun{
 #' plot_DO_preds(predict_DO(mm))
 #' plot_DO_preds(mm)
 #' library(ggplot2)
-#' }
 #' @export
 #' @family metab_model
 metab_sim <- function(
@@ -137,17 +158,17 @@ metab_sim <- function(
 #'
 #' @param par.name The parameter name. Should be period.separated if that's how
 #'   data_daily is. Periods will be converted to underscores when searching
-#'   specs for the parameter
-#' @param specs a specifications list from which parameter values/functions will
-#'   be drawn
-#' @param data_daily a data.frame of daily values from which parameter values
-#'   will be drawn
-#' @param eval_env an environment containing any parameters that have already
+#'   specs for the parameter.
+#' @param specs A specifications list from which parameter values/functions will
+#'   be drawn.
+#' @param data_daily A data.frame of daily values from which parameter values
+#'   will be drawn.
+#' @param eval_env An environment containing any parameters that have already
 #'   been finalized, plus the variable `n` containing the number of daily
-#'   values required
-#' @param required logical. If true and the parameter is unavailable, an error
+#'   values required.
+#' @param required Logical. If true and the parameter is unavailable, an error
 #'   will be thrown.
-#' @return list containing up to three vectors (or NULLs) named `specs`,
+#' @returns List containing up to three vectors (or NULLs) named `specs`,
 #'   `data_daily`, and `combo` according to the source of the numbers
 #'   in each vector.
 #' @keywords internal
@@ -401,6 +422,16 @@ predict_DO.metab_sim <- function(
 #'
 #' @inheritParams specs
 #' @param ... Additional simulation parameters, which are ignored.
+#' @returns A numeric vector of simulated ln(K600) values at the supplied nodes.
+#' @examples
+#' set.seed(42)
+#' sim_Kb(
+#'   K600_lnQ_nodes_centers = c(-1, 0, 1),
+#'   K600_lnQ_cnode_meanlog = log(10),
+#'   K600_lnQ_cnode_sdlog = 0.1,
+#'   K600_lnQ_nodediffs_meanlog = 0.2,
+#'   K600_lnQ_nodediffs_sdlog = 0.05
+#' )
 #' @export
 sim_Kb <- function(
   K600_lnQ_nodes_centers,
@@ -451,8 +482,15 @@ sim_Kb <- function(
 #' specified by `K600_lnQ_nodes_centers` and `lnK600_lnQ_nodes`
 #'
 #' @inheritParams specs
-#' @param lnQ.daily vector of daily values of the natural log of discharge,
-#'   e.g., `log(data_daily$discharge.daily)`
+#' @param lnQ.daily Vector of daily values of the natural log of discharge,
+#'   e.g., `log(data_daily$discharge.daily)`.
+#' @returns A numeric vector of predicted daily ln(K600) values.
+#' @examples
+#' sim_pred_Kb(
+#'   K600_lnQ_nodes_centers = c(-1, 0, 1),
+#'   lnK600_lnQ_nodes = log(c(5, 10, 20)),
+#'   lnQ.daily = c(-0.5, 0.5)
+#' )
 #' @export
 sim_pred_Kb <- function(K600_lnQ_nodes_centers, lnK600_lnQ_nodes, lnQ.daily) {
   # this function is HIGHLY REDUNDANT with metab_bayes.R. See GH#236

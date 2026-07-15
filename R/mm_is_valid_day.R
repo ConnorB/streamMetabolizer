@@ -10,7 +10,7 @@
 #'
 #' @inheritParams mm_model_by_ply_prototype
 #' @inheritParams mm_model_by_ply
-#' @param day_tests list of tests to conduct to determine whether each date
+#' @param day_tests List of tests to conduct to determine whether each date
 #'   worth of data is valid for modeling. `full_day`: Do the data span the
 #'   full expected period (e.g., from 10:30pm on preceding day to 6am on
 #'   following day)? `even_timesteps`: are all of the timesteps within the
@@ -21,13 +21,13 @@
 #'   further test is implied if `required_timestep` is a non-NA numeric.
 #' @param required_timestep NA or numeric (length 1). If numeric, the timestep
 #'   length in days that a date must have to pass the validity check (to within
-#'   a tolerance of 0.2% of the value of `required_timestep`)
-#' @param ply_date the Date this data_ply is intended to match. May be NA
-#' @param timestep_days the expected timestep length in fraction of a day; for
+#'   a tolerance of 0.2% of the value of `required_timestep`).
+#' @param ply_date The Date this data_ply is intended to match. May be NA.
+#' @param timestep_days The expected timestep length in fraction of a day; for
 #'   example, a 1-hour timestep is 1/24 is 0.0416667. This is calculated within
 #'   the function if timestep_days is NA. May be supplied as an argument to (1)
 #'   pre-calculate the value for efficiency, or (2) require a specific timestep.
-#' @return character vector of errors if day is invalid, or TRUE if it's valid
+#' @returns Character vector of errors if day is invalid, or TRUE if it's valid.
 #' @importFrom lubridate tz
 #' @examples
 #' mm_is_valid_day(data_metab('1'))

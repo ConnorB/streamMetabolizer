@@ -7,17 +7,20 @@
 mm_parse_name(model_name, expand = FALSE)
 }
 \arguments{
-\item{model_name}{character: the model name}
+\item{model_name}{Character: the model name.}
 
-\item{expand}{logical: should additional columns such as model_name and
+\item{expand}{Logical: should additional columns such as model_name and
 pool_K600_type be added? If expand=TRUE then the result cannot be passed
 directly back into mm_name, but the additional columns may be helpful for
 interpreting the model structure.}
 }
+\value{
+A data frame with one row per model name and one column per model
+feature.
+}
 \description{
-Returns a data.frame with one column per model structure detail and one row
-per \code{model_name} supplied to this function. See \verb{?[mm_name]} for a
-description of each of the data.frame columns that is returned.
+Returns a data frame with one column per model structure detail and one row
+per \code{model_name}. See \code{\link[=mm_name]{mm_name()}} for a description of each column.
 }
 \details{
 Custom model files (for MCMC) may have additional characters after an

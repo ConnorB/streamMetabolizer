@@ -5,7 +5,7 @@
 \alias{get_param_names}
 \alias{get_param_names.character}
 \alias{get_param_names.metab_model}
-\title{Extract the daily parameter names from a metabolism model.}
+\title{Extract daily metabolism parameter names}
 \usage{
 get_param_names(metab_model, ...)
 
@@ -17,14 +17,15 @@ get_param_names(metab_model, ...)
 \item{metab_model}{A metabolism model object or model name for which to
 return the list of required and optional metabolism parameters.}
 
-\item{...}{Placeholder for future arguments}
+\item{...}{Reserved for future arguments.}
 }
 \value{
-Returns a list of two vectors, the names of the required and optional
+A list of two vectors containing the names of required and optional
 daily metabolism parameters, respectively.
 }
 \description{
-A function in the metab_model_interface. Returns vectors of the required and
+A function in the \code{metab_model_interface}. Returns vectors of the required
+and
 optional daily metabolism parameters for the model.
 }
 \section{Methods (by class)}{

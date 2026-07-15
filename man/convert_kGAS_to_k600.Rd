@@ -2,20 +2,23 @@
 % Please edit documentation in R/convert_k600_to_kGAS.R
 \name{convert_kGAS_to_k600}
 \alias{convert_kGAS_to_k600}
-\title{Returns the gas exchange velocity as k600 for gas of interest w/ no unit conversions}
+\title{Convert a gas-specific exchange velocity to K600}
 \usage{
 convert_kGAS_to_k600(kGAS, temperature, gas = "O2")
 }
 \arguments{
-\item{kGAS}{k of gas as vector of numbers or single number}
+\item{kGAS}{K of gas as vector of numbers or single number.}
 
-\item{temperature}{Water temperature (deg C) as vector array of numbers or single number}
+\item{temperature}{A numeric vector of water temperatures in degrees Celsius.}
 
-\item{gas}{gas for conversion, as string (e.g., 'CO2' or 'O2')}
+\item{gas}{Gas for conversion, as string (e.g., 'CO2' or 'O2').}
 }
 \value{
-Numeric value of gas exchange velocity for gas
+Numeric value of gas exchange velocity for gas.
 }
 \description{
-Returns the gas exchange velocity as k600 for gas of interest w/ no unit conversions
+Convert a gas-specific exchange velocity to K600
+}
+\examples{
+convert_kGAS_to_k600(8, temperature = 20, gas = "O2")
 }

@@ -7,7 +7,7 @@
 mm_validate_name(model_name)
 }
 \arguments{
-\item{model_name}{character string identifying the model features. Use
+\item{model_name}{Character string identifying the model features. Use
 \code{\link[=mm_name]{mm_name()}} to create a valid name based on desired attributes,
 or \code{\link[=mm_valid_names]{mm_valid_names()}} to see all valid names. Two alternatives to
 the names given by \code{mm_valid_names()} are also accepted: (1) a model
@@ -21,13 +21,14 @@ this directory can be found with \code{system.file("models", package="streamMeta
 the current working directory (the second assumption, if the first
 assumption turns up no files of the given name).}
 }
+\value{
+The validated model name.
+}
 \description{
 Check the syntactic & scientific validity of a model name. Returns the model
 name if it's valid, otherwise gives an error
 }
 \examples{
 mm_validate_name("b_np_oipi_tr_plrckm.stan")
-\dontrun{
-mm_validate_name("b_np_oipn") # throws error
-}
+try(mm_validate_name("b_np_oipn"))
 }

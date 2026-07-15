@@ -1,26 +1,26 @@
-#' Plot predictions produced with predict_DO
+#' Plot dissolved oxygen predictions
 #'
 #' Plots modeled values as lines, observed values as points
 #'
-#' @param DO_preds a data.frame of predictions such as that returned by
-#'   predict_DO()
-#' @param y_var character. Should the plot display predicted & observed values
+#' @param DO_preds A data.frame of predictions such as that returned by
+#'   predict_DO().
+#' @param y_var Character. Should the plot display predicted & observed values
 #'   in concentration (conc) or as percent of saturation (pctsat)? The default
 #'   is to plot both.
-#' @param style character indicating which graphics package to use
-#' @param y_lim list of named vectors, each of which has length 2 and is numeric
+#' @param style Character indicating which graphics package to use.
+#' @param y_lim List of named vectors, each of which has length 2 and is numeric
 #'   and has a name in the possible values of y_var. NA within a vector
 #'   indicates that the data range should be used. for ggplot2, y_lim is only
 #'   used to exclude values outside that range and is ignored if the data span a
-#'   narrower range
+#'   narrower range.
 #' @inheritParams predict_DO
-#' @examples
-#' \dontrun{
+#' @returns A ggplot object when `style = "ggplot2"` or a dygraph object when
+#'   `style = "dygraphs"`.
+#' @examplesIf interactive()
 #' mm <- metab_night(specs(mm_name('night')), data=data_metab('3', day_start=12, day_end=36))
 #' plot_DO_preds(mm)
 #' plot_DO_preds(mm, date_start='2012-09-19', date_end='2012-09-19')
 #' plot_DO_preds(mm, style='dygraphs', y_var='pctsat')
-#' }
 #' @import dplyr
 #' @export
 plot_DO_preds <- function(

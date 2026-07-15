@@ -17,91 +17,59 @@ implemented along with many promising new variants that produce more accurate
 and precise metabolism estimates.
 }
 \details{
-See http://usgs-r.github.io/streamMetabolizer for vignettes on the web.
+See \url{https://usgs-r.github.io/streamMetabolizer} for package vignettes.
 }
 \section{Calculate new input variables}{
 
-
 \itemize{
-
-\item \code{\link[=calc_depth]{calc_depth()}}
-
-\item \code{\link[=calc_DO_sat]{calc_DO_sat()}}
-
-\item \code{\link[=calc_light]{calc_light()}}
-
+\item \code{\link[=calc_depth]{calc_depth()}} estimates stream depth from discharge.
+\item \code{\link[=calc_DO_sat]{calc_DO_sat()}} calculates dissolved oxygen saturation.
+\item \code{\link[=calc_light]{calc_light()}} models photosynthetically active radiation.
 }
 }
 
 \section{Convert existing input variables}{
 
-
 \itemize{
-
-\item \code{\link[=convert_localtime_to_UTC]{convert_localtime_to_UTC()}}
-
-\item \code{\link[=convert_UTC_to_solartime]{convert_UTC_to_solartime()}}
-
-\item \code{\link[=convert_k600_to_kGAS]{convert_k600_to_kGAS()}}
-
-\item \code{\link[=convert_PAR_to_SW]{convert_PAR_to_SW()}}
-
+\item \code{\link[=convert_localtime_to_UTC]{convert_localtime_to_UTC()}} converts local time to UTC.
+\item \code{\link[=convert_UTC_to_solartime]{convert_UTC_to_solartime()}} converts UTC to local solar time.
+\item \code{\link[=convert_k600_to_kGAS]{convert_k600_to_kGAS()}} converts K600 to another gas.
+\item \code{\link[=convert_PAR_to_SW]{convert_PAR_to_SW()}} converts photosynthetically active radiation to
+shortwave radiation.
 }
 }
 
 \section{Model metabolism}{
 
-
-\itemize{
-
-\item \code{\link[=mm_name]{mm_name()}} 1. Choose a model structure
-
-\item \code{\link[=specs]{specs()}} 2. Set the specifications
-
-\item \code{\link[=metab]{metab()}} 3. Fit the model
-
+\enumerate{
+\item \code{\link[=mm_name]{mm_name()}} chooses a model structure.
+\item \code{\link[=specs]{specs()}} sets model specifications.
+\item \code{\link[=metab]{metab()}} fits the model.
 }
 }
 
 \section{Inspect model results}{
 
-
 \itemize{
-
-\item \code{\link[=predict_metab]{predict_metab()}}
-
-\item \code{\link[=predict_DO]{predict_DO()}}
-
-\item \code{\link[=plot_metab_preds]{plot_metab_preds()}}
-
-\item \code{\link[=plot_DO_preds]{plot_DO_preds()}}
-
-\item \code{\link[=get_params]{get_params()}}
-
-\item \code{\link[=get_fit]{get_fit()}}
-
-\item \code{\link[=get_mcmc]{get_mcmc()}} (Bayesian models only)
-
-\item \code{\link[=get_fitting_time]{get_fitting_time()}}
-
+\item \code{\link[=predict_metab]{predict_metab()}} predicts daily metabolism.
+\item \code{\link[=predict_DO]{predict_DO()}} predicts dissolved oxygen.
+\item \code{\link[=plot_metab_preds]{plot_metab_preds()}} plots daily metabolism predictions.
+\item \code{\link[=plot_DO_preds]{plot_DO_preds()}} plots dissolved oxygen predictions.
+\item \code{\link[=get_params]{get_params()}} extracts fitted and fixed parameters.
+\item \code{\link[=get_fit]{get_fit()}} extracts the internal fitted model.
+\item \code{\link[=get_mcmc]{get_mcmc()}} extracts Bayesian MCMC model objects.
+\item \code{\link[=get_fitting_time]{get_fitting_time()}} extracts the model fitting time.
 }
 }
 
 \section{Inspect model inputs/properties}{
 
-
 \itemize{
-
-\item \code{\link[=get_specs]{get_specs()}}
-
-\item \code{\link[=get_data]{get_data()}}
-
-\item \code{\link[=get_data_daily]{get_data_daily()}}
-
-\item \code{\link[=get_info]{get_info()}}
-
-\item \code{\link[=get_version]{get_version()}}
-
+\item \code{\link[=get_specs]{get_specs()}} extracts model specifications.
+\item \code{\link[=get_data]{get_data()}} extracts subdaily fitting data.
+\item \code{\link[=get_data_daily]{get_data_daily()}} extracts daily fitting data.
+\item \code{\link[=get_info]{get_info()}} extracts user-supplied metadata.
+\item \code{\link[=get_version]{get_version()}} extracts the package version used to fit the model.
 }
 }
 

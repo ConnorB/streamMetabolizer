@@ -2,8 +2,7 @@
 % Please edit documentation in R/calc_solar_insolation.R
 \name{calc_solar_insolation}
 \alias{calc_solar_insolation}
-\title{Model solar insolation on a horizontal surface (W/m2 == J/s/m2) as in
-http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html}
+\title{Model solar insolation on a horizontal surface}
 \usage{
 calc_solar_insolation(
   app.solar.time,
@@ -15,24 +14,26 @@ calc_solar_insolation(
 }
 \arguments{
 \item{app.solar.time}{POSIXct vector of date-time values in apparent solar
-time, e.g., as returned by \code{convert_UTC_to_solartime(..., time.type="apparent solar")}}
+time, e.g., as returned by \code{convert_UTC_to_solartime(..., time.type="apparent solar")}.}
 
-\item{latitude}{numeric value or vector indicating the site latitude in
+\item{latitude}{Numeric value or vector indicating the site latitude in
 decimal degrees (never radians or deg-min-sec, no matter what \code{format}
 is) between -90 (South Pole) and 90 (North Pole).}
 
-\item{max.insolation}{insolation rate at solar noon, W/m2 == J/s/m2. varies
-greatly with atmospheric conditions}
+\item{max.insolation}{Insolation rate at solar noon, W/m2 == J/s/m2. varies
+greatly with atmospheric conditions.}
 
 \item{format}{The format of both the input and the output. May be "degrees"
 or "radians".}
 
-\item{attach.units}{(deprecated, effectively FALSE in future) logical. Should
+\item{attach.units}{Deprecated. A logical. Should
 the returned vector be a unitted object?}
 }
+\value{
+A numeric vector of solar insolation in W m⁻².
+}
 \description{
-Model solar insolation on a horizontal surface (W/m2 == J/s/m2) as in
-http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html
+Implements the solar insolation equations described by Yard et al. (2005).
 }
 \examples{
 insdf <- data.frame(
@@ -44,10 +45,8 @@ insdf <- transform(insdf, datetime=lubridate::with_tz(as.POSIXct(date), 'UTC') +
   as.difftime(hour, units='hours'))
 insdf <- transform(insdf, date=as.character(date))
 insdf <- transform(insdf, ins=calc_solar_insolation(datetime, lat))
-\dontrun{
 library(ggplot2)
 ggplot(insdf, aes(color=date, y=ins, x=hour)) +
   geom_line() + facet_wrap(~lat) +
   ggtitle('solar insolation by latitude (panels) and day of year (colors)')
-}
 }

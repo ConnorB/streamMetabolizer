@@ -9,7 +9,7 @@
 #' @param data_daily A data frame or tibble of daily estimates/statistics, to be
 #'   filtered in accordance with the filtering of data.
 #' @inheritParams mm_model_by_ply
-#' @return A list of data and data_daily with the same structure as the inputs
+#' @returns A list of data and data_daily with the same structure as the inputs
 #'   but with invalid days removed, plus a third data frame of dates that were
 #'   removed.
 #' @import dplyr

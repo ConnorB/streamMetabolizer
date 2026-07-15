@@ -3,9 +3,10 @@
 #' Primary use case is for revising a list of specifications as originally
 #' created by specs()
 #'
-#' @param specs a list of specifications to revise
-#' @param ... named values to replace in or add to `specs`
-#' @param delete a vector of names of elements to remove from the specs list
+#' @param specs A list of specifications to revise.
+#' @param ... Named values to replace in or add to `specs`.
+#' @param delete A vector of names of elements to remove from the specs list.
+#' @returns The revised list.
 #' @export
 #' @examples
 #' sp <- specs(mm_name('bayes'))

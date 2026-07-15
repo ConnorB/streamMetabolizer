@@ -5,11 +5,11 @@
 #' that function within the p vector (for fitting K600.daily) or as an
 #' additional argument (for fixing it).
 #'
-#' @param calc_DO a function as from `create_calc_DO`
-#' @param par.names vector of names of parameters that can be expected in calls
-#'   to the function created by this one (the calc_NLL function)
+#' @param calc_DO A function as from `create_calc_DO`.
+#' @param par.names Vector of names of parameters that can be expected in calls
+#'   to the function created by this one (the calc_NLL function).
 #' @inheritParams mm_name
-#' @return a function that will return a negative log likelihood of the data
+#' @returns A function that will return a negative log likelihood of the data
 #'   given a set of metab.pars. metab.pars is the first argument of the returned
 #'   function; its names are defined in `par.names`.
 #' @importFrom stats dnorm

@@ -3,21 +3,21 @@
 \name{get_fit}
 \alias{get_fit}
 \alias{get_fit.metab_model}
-\title{Extract the internal model from a metabolism model.}
+\title{Extract the internal fitted model}
 \usage{
 get_fit(metab_model)
 
 \method{get_fit}{metab_model}(metab_model)
 }
 \arguments{
-\item{metab_model}{A metabolism model, implementing the
-metab_model_interface, for which to return the data}
+\item{metab_model}{A metabolism model that implements the
+\code{metab_model_interface}.}
 }
 \value{
-An internal model representation; may have any class
+An internal model representation, which may have any class.
 }
 \description{
-A function in the metab_model_interface. Returns the internal model
+A function in the \code{metab_model_interface}. Returns the internal model
 representation as fitted to the supplied data and arguments.
 }
 \section{Methods (by class)}{
@@ -25,6 +25,9 @@ representation as fitted to the supplied data and arguments.
 \item \code{get_fit(metab_model)}: This implementation is shared by many model types
 
 }}
+\examples{
+get_fit(metab_model(fit = list(converged = TRUE)))
+}
 \seealso{
 Other metab_model_interface:
 \code{\link[=get_data]{get_data()}},

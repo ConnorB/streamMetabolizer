@@ -7,12 +7,12 @@
 print_specs(object, header = "Model specifications:\\n", prefix = "  ")
 }
 \arguments{
-\item{object}{specs list to be displayed.}
+\item{object}{Specs list to be displayed.}
 
-\item{header}{line to be catted at start of printout}
+\item{header}{Line to be catted at start of printout.}
 
-\item{prefix}{text to prepend to the start of each line that follows the
-header}
+\item{prefix}{Text to prepend to the start of each line that follows the
+header.}
 }
 \description{
 Print a specs object to the console.

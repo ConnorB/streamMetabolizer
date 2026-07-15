@@ -1,4 +1,6 @@
 test_that("proper results for calc_DO_sat", {
+  withr::local_options(lifecycle_verbosity = "warning")
+
   expect_equal(
     calc_DO_sat(temp = 21, press = 1013.25, sal = 0),
     8.914559,
@@ -6,4 +8,10 @@ test_that("proper results for calc_DO_sat", {
     info = "with no units"
   )
   expect_type(calc_DO_sat(temp = 21, press = 1013.25, sal = 0), "double")
+})
+
+test_that("calc_DO_sat() is not deprecated", {
+  withr::local_options(lifecycle_verbosity = "warning")
+
+  expect_no_condition(calc_DO_sat(21, 1013.25))
 })

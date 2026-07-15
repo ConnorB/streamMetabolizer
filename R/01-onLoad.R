@@ -21,7 +21,7 @@
 #' R session
 #'
 #' @importFrom lifecycle deprecate_warn
-#' @return the package environment
+#' @returns The package environment.
 #' @keywords internal
 define_pkg_env <- function() {
   pkg.env <- new.env()

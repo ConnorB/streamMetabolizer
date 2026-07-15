@@ -8,10 +8,13 @@ calc_solar_time(local.time, longitude)
 }
 \arguments{
 \item{local.time}{POSIXct date+time of interest, already in local time as
-specified by the tz attribute}
+specified by the tz attribute.}
 
-\item{longitude}{numeric, in degrees, either positive and unitted ("degE" or
-"degW") or with sign indicating direction (positive = East)}
+\item{longitude}{Numeric, in degrees, either positive and unitted ("degE" or
+"degW") or with sign indicating direction (positive = East).}
+}
+\value{
+A \code{POSIXct} vector containing mean solar time with time zone \code{UTC}.
 }
 \description{
 Calculate the appropriate solar.time column for input to metab(). The input

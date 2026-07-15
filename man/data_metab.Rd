@@ -14,17 +14,17 @@ data_metab(
 )
 }
 \arguments{
-\item{num_days}{the number of days to include in the data. character format
+\item{num_days}{The number of days to include in the data. character format
 because only certain numbers of days are permitted (see defaults in Usage
-for the accepted options)}
+for the accepted options).}
 
-\item{res}{character specifying the desired resolution of the data in minutes
-(character; see defaults in Usage for the accepted options)}
+\item{res}{Character specifying the desired resolution of the data in minutes
+(character; see defaults in Usage for the accepted options).}
 
-\item{flaws}{character specifying one or more flaws to include in the data,
+\item{flaws}{Character specifying one or more flaws to include in the data,
 or empty (\code{c()}) for no flaws. default is no flaws.}
 
-\item{day_start}{start time (inclusive) of a day's data in number of hours
+\item{day_start}{Start time (inclusive) of a day's data in number of hours
 from the midnight that begins the date. For example, day_start=-1.5
 indicates that data describing 2006-06-26 begin at 2006-06-25 22:30, or at
 the first observation time that occurs after that time if day_start doesn't
@@ -37,14 +37,17 @@ regression, the date assigned to a chunk of data should be the date whose
 evening contains the data. The default is therefore 12 to 36 for
 metab_night, of which the times of darkness will be used.}
 
-\item{day_end}{end time (exclusive) of a day's data in number of hours from
+\item{day_end}{End time (exclusive) of a day's data in number of hours from
 the midnight that begins the date. For example, day_end=30 indicates that
 data describing 2006-06-26 end at the last observation time that occurs
 before 2006-06-27 06:00. See day_start for recommended start and end times.}
 
-\item{attach.units}{(deprecated, effectively FALSE in future) logical,
+\item{attach.units}{Deprecated. A logical,
 default TRUE for backward compatibility. Should units be attached to the
 data.frame?}
+}
+\value{
+A data frame of example metabolism inputs.
 }
 \description{
 Get a formatted data.frame of inputs from which metabolism can be modeled.

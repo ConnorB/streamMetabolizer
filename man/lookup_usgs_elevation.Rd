@@ -14,10 +14,10 @@ lookup_usgs_elevation(
 )
 }
 \arguments{
-\item{latitude}{degrees latitude (positive for north) of the location to look
+\item{latitude}{Degrees latitude (positive for north) of the location to look
 up.}
 
-\item{longitude}{degrees longitude (positive for east) of the location to
+\item{longitude}{Degrees longitude (positive for east) of the location to
 look up.}
 
 \item{units}{A single string specifying the elevation units. Accepts \code{"m"},
@@ -38,7 +38,7 @@ precision or on the lifetime of the API service used by the function. The
 lookup uses the JSON response from the service.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 elevation_m <- lookup_usgs_elevation(
   latitude = 39.102075,
   longitude = -96.594689
@@ -51,7 +51,7 @@ elevation_ft <- lookup_usgs_elevation(
   units = "ft"
 )
 elevation_ft
-}
+\dontshow{\}) # examplesIf}
 }
 \references{
 https://epqs.nationalmap.gov/v1/docs

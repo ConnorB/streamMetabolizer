@@ -4,7 +4,7 @@
       . <- calc_DO_at_sat(21, 1013.25)
     Condition
       Warning:
-      `calc_DO_at_sat()` was deprecated in streamMetabolizer 0.13.0.
+      `calc_DO_at_sat()` was deprecated in streamMetabolizer 0.12.0.
       i Please use `calc_DO_sat()` instead.
 
 # calc_DO_deficit() is deprecated

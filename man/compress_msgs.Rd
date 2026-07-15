@@ -12,15 +12,15 @@ compress_msgs(
 )
 }
 \arguments{
-\item{ddat}{a data.frame including warnings and errors columns}
+\item{ddat}{A data.frame including warnings and errors columns.}
 
-\item{colname}{the name of the column where the summary should be placed}
+\item{colname}{The name of the column where the summary should be placed.}
 
-\item{warnings.overall}{any general warnings (for the whole model) to be
-included in the summary}
+\item{warnings.overall}{Any general warnings (for the whole model) to be
+included in the summary.}
 
-\item{errors.overall}{any general errors (for the whole model) to be included
-in the summary}
+\item{errors.overall}{Any general errors (for the whole model) to be included
+in the summary.}
 }
 \description{
 Compress two columns of warning and error messages into one short-hand column

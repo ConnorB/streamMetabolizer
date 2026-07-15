@@ -6,10 +6,11 @@ vignette: >
   %\VignetteIndexEntry{Quickstart}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
+execute:
+  cache: true
 ---
 
 ```{r knitr_init, echo=FALSE, cache=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 options(width=80)
 ```
 

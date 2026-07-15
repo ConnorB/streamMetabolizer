@@ -12,7 +12,7 @@ metab(
 )
 }
 \arguments{
-\item{specs}{a list of model specifications and parameters for a model.
+\item{specs}{A list of model specifications and parameters for a model.
 Although this may be specified manually (it's just a list), it is easier
 and safer to use \code{\link[=specs]{specs()}} to generate the list, because the set
 of required parameters and their defaults depends on the model given in the
@@ -30,8 +30,8 @@ have a timezone code ('tzone' attribute) of 'UTC'. See the
 timestep. See the \strong{'Formatting \code{data_daily}'} section below for a full
 description.}
 
-\item{info}{any information, in any format, that you would like to store
-within the metab_model object}
+\item{info}{Any information, in any format, that you would like to store
+within the metab_model object.}
 }
 \value{
 An object inheriting from metab_model and containing the fitted
@@ -57,10 +57,8 @@ mm <- mm_name('mle', ode_method='euler') |>
   specs(init.GPP.daily=40) |>
   metab(data=dat)
 predict_metab(mm)
-\dontrun{
 plot_DO_preds(predict_DO(mm))
-plot_DO_preds(predict_DO(mm), y_var='pctsat', style='dygraphs')
-}
+plot_DO_preds(predict_DO(mm), y_var = "pctsat", style = "dygraphs")
 }
 \author{
 Alison Appling
@@ -74,14 +72,14 @@ depend on the model \code{type}, as follows.
 \describe{
   \item{\code{mle} or \code{night}}{
     \tabular{llll}{
-      \strong{colname} \tab \strong{class} \tab \strong{units}           \tab \strong{need}\cr
-      solar.time        \tab POSIXct,POSIXt  \tab                           \tab required      \cr
-      DO.obs            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
-      DO.sat            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
-      depth             \tab numeric         \tab \eqn{m}                  \tab required      \cr
-      temp.water        \tab numeric         \tab \eqn{°C}                 \tab required      \cr
-      light             \tab numeric         \tab \eqn{umol m^{-2} s^{-1}} \tab required      \cr
-      discharge         \tab numeric         \tab \eqn{m^{3} s^{-1}}       \tab optional
+      \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
+      solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
+      DO.obs            \tab numeric         \tab mgO₂ L⁻¹        \tab required      \cr
+      DO.sat            \tab numeric         \tab mgO₂ L⁻¹        \tab required      \cr
+      depth             \tab numeric         \tab m               \tab required      \cr
+      temp.water        \tab numeric         \tab °C              \tab required      \cr
+      light             \tab numeric         \tab µmol m⁻² s⁻¹    \tab required      \cr
+      discharge         \tab numeric         \tab m³ s⁻¹          \tab optional
     }
 
     \strong{Example}:
@@ -92,14 +90,14 @@ depend on the model \code{type}, as follows.
   }
   \item{\code{bayes}}{
     \tabular{llll}{
-      \strong{colname} \tab \strong{class} \tab \strong{units}           \tab \strong{need}\cr
-      solar.time        \tab POSIXct,POSIXt  \tab                           \tab required      \cr
-      DO.obs            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
-      DO.sat            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
-      depth             \tab numeric         \tab \eqn{m}                  \tab required      \cr
-      temp.water        \tab numeric         \tab \eqn{°C}                 \tab required      \cr
-      light             \tab numeric         \tab \eqn{umol m^{-2} s^{-1}} \tab required      \cr
-      discharge         \tab numeric         \tab \eqn{m^{3} s^{-1}}       \tab optional
+      \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
+      solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
+      DO.obs            \tab numeric         \tab mgO₂ L⁻¹        \tab required      \cr
+      DO.sat            \tab numeric         \tab mgO₂ L⁻¹        \tab required      \cr
+      depth             \tab numeric         \tab m               \tab required      \cr
+      temp.water        \tab numeric         \tab °C              \tab required      \cr
+      light             \tab numeric         \tab µmol m⁻² s⁻¹    \tab required      \cr
+      discharge         \tab numeric         \tab m³ s⁻¹          \tab optional
     }
 
     \strong{Example}:
@@ -110,10 +108,10 @@ depend on the model \code{type}, as follows.
   }
   \item{\code{Kmodel}}{
     \tabular{llll}{
-      \strong{colname} \tab \strong{class} \tab \strong{units}     \tab \strong{need}\cr
-      solar.time        \tab POSIXct,POSIXt  \tab                     \tab optional      \cr
-      discharge         \tab numeric         \tab \eqn{m^{3} s^{-1}} \tab optional      \cr
-      velocity          \tab numeric         \tab \eqn{m s^{-1}}     \tab optional
+      \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
+      solar.time        \tab POSIXct,POSIXt  \tab                 \tab optional      \cr
+      discharge         \tab numeric         \tab m³ s⁻¹          \tab optional      \cr
+      velocity          \tab numeric         \tab m s⁻¹           \tab optional
     }
 
     \strong{Example}:
@@ -124,13 +122,13 @@ depend on the model \code{type}, as follows.
   }
   \item{\code{sim}}{
     \tabular{llll}{
-      \strong{colname} \tab \strong{class} \tab \strong{units}           \tab \strong{need}\cr
-      solar.time        \tab POSIXct,POSIXt  \tab                           \tab required      \cr
-      DO.obs            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab optional      \cr
-      DO.sat            \tab numeric         \tab \eqn{mgO_2 L^{-1}}       \tab required      \cr
-      depth             \tab numeric         \tab \eqn{m}                  \tab required      \cr
-      temp.water        \tab numeric         \tab \eqn{°C}                 \tab required      \cr
-      light             \tab numeric         \tab \eqn{umol m^{-2} s^{-1}} \tab required
+      \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
+      solar.time        \tab POSIXct,POSIXt  \tab                 \tab required      \cr
+      DO.obs            \tab numeric         \tab mgO₂ L⁻¹        \tab optional      \cr
+      DO.sat            \tab numeric         \tab mgO₂ L⁻¹        \tab required      \cr
+      depth             \tab numeric         \tab m               \tab required      \cr
+      temp.water        \tab numeric         \tab °C              \tab required      \cr
+      light             \tab numeric         \tab µmol m⁻² s⁻¹    \tab required
     }
 
     \strong{Example}:
@@ -153,15 +151,15 @@ depend on the model \code{type}, as follows.
   }
   \item{\code{mle}}{
     \tabular{llll}{
-      \strong{colname} \tab \strong{class} \tab \strong{units}                \tab \strong{need}\cr
-      date              \tab Date            \tab                                \tab optional      \cr
-      K600.daily        \tab numeric         \tab \eqn{d^{-1}}                  \tab optional      \cr
-      init.GPP.daily    \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      init.Pmax         \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      init.alpha        \tab numeric         \tab \eqn{gO_2 s d^{-1} umol^{-1}} \tab optional      \cr
-      init.ER.daily     \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      init.ER20         \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      init.K600.daily   \tab numeric         \tab \eqn{d^{-1}}                  \tab optional
+      \strong{colname} \tab \strong{class} \tab \strong{units}  \tab \strong{need}\cr
+      date              \tab Date            \tab                  \tab optional      \cr
+      K600.daily        \tab numeric         \tab d⁻¹              \tab optional      \cr
+      init.GPP.daily    \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      init.Pmax         \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      init.alpha        \tab numeric         \tab gO₂ s d⁻¹ µmol⁻¹ \tab optional      \cr
+      init.ER.daily     \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      init.ER20         \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      init.K600.daily   \tab numeric         \tab d⁻¹              \tab optional
     }
 
     \strong{Example}:
@@ -172,9 +170,9 @@ depend on the model \code{type}, as follows.
   }
   \item{\code{bayes}}{
     \tabular{llll}{
-      \strong{colname} \tab \strong{class} \tab \strong{units}     \tab \strong{need}\cr
-      date              \tab Date            \tab                     \tab optional      \cr
-      discharge.daily   \tab numeric         \tab \eqn{m^{3} s^{-1}} \tab optional
+      \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
+      date              \tab Date            \tab                 \tab optional      \cr
+      discharge.daily   \tab numeric         \tab m³ s⁻¹          \tab optional
     }
 
     \strong{Example}:
@@ -185,13 +183,13 @@ depend on the model \code{type}, as follows.
   }
   \item{\code{Kmodel}}{
     \tabular{llll}{
-      \strong{colname} \tab \strong{class} \tab \strong{units}     \tab \strong{need}\cr
-      date              \tab Date            \tab                     \tab required      \cr
-      K600.daily        \tab numeric         \tab \eqn{d^{-1}}       \tab required      \cr
-      K600.daily.lower  \tab numeric         \tab \eqn{d^{-1}}       \tab optional      \cr
-      K600.daily.upper  \tab numeric         \tab \eqn{d^{-1}}       \tab optional      \cr
-      discharge.daily   \tab numeric         \tab \eqn{m^{3} s^{-1}} \tab optional      \cr
-      velocity.daily    \tab numeric         \tab \eqn{m s^{-1}}     \tab optional
+      \strong{colname} \tab \strong{class} \tab \strong{units} \tab \strong{need}\cr
+      date              \tab Date            \tab                 \tab required      \cr
+      K600.daily        \tab numeric         \tab d⁻¹             \tab required      \cr
+      K600.daily.lower  \tab numeric         \tab d⁻¹             \tab optional      \cr
+      K600.daily.upper  \tab numeric         \tab d⁻¹             \tab optional      \cr
+      discharge.daily   \tab numeric         \tab m³ s⁻¹          \tab optional      \cr
+      velocity.daily    \tab numeric         \tab m s⁻¹           \tab optional
     }
 
     \strong{Example}:
@@ -202,20 +200,20 @@ depend on the model \code{type}, as follows.
   }
   \item{\code{sim}}{
     \tabular{llll}{
-      \strong{colname} \tab \strong{class} \tab \strong{units}                \tab \strong{need}\cr
-      date              \tab Date            \tab                                \tab optional      \cr
-      discharge.daily   \tab numeric         \tab \eqn{m^{3} s^{-1}}            \tab optional      \cr
-      DO.mod.1          \tab numeric         \tab \eqn{mgO_2 L^{-1}}            \tab optional      \cr
-      K600.daily        \tab numeric         \tab \eqn{d^{-1}}                  \tab optional      \cr
-      GPP.daily         \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      Pmax              \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      alpha             \tab numeric         \tab \eqn{gO_2 s d^{-1} umol^{-1}} \tab optional      \cr
-      ER.daily          \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      ER20              \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      err.obs.sigma     \tab numeric         \tab \eqn{mgO_2 L^{-1}}            \tab optional      \cr
-      err.obs.phi       \tab numeric         \tab                                \tab optional      \cr
-      err.proc.sigma    \tab numeric         \tab \eqn{gO_2 m^{-2} d^{-1}}      \tab optional      \cr
-      err.proc.phi      \tab numeric         \tab                                \tab optional
+      \strong{colname} \tab \strong{class} \tab \strong{units}  \tab \strong{need}\cr
+      date              \tab Date            \tab                  \tab optional      \cr
+      discharge.daily   \tab numeric         \tab m³ s⁻¹           \tab optional      \cr
+      DO.mod.1          \tab numeric         \tab mgO₂ L⁻¹         \tab optional      \cr
+      K600.daily        \tab numeric         \tab d⁻¹              \tab optional      \cr
+      GPP.daily         \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      Pmax              \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      alpha             \tab numeric         \tab gO₂ s d⁻¹ µmol⁻¹ \tab optional      \cr
+      ER.daily          \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      ER20              \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      err.obs.sigma     \tab numeric         \tab mgO₂ L⁻¹         \tab optional      \cr
+      err.obs.phi       \tab numeric         \tab                  \tab optional      \cr
+      err.proc.sigma    \tab numeric         \tab gO₂ m⁻² d⁻¹      \tab optional      \cr
+      err.proc.phi      \tab numeric         \tab                  \tab optional
     }
 
     \strong{Example}:

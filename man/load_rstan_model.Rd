@@ -9,7 +9,7 @@ load_rstan_model(model_path, verbose = FALSE, stan_model_fn = rstan_stan_model)
 \arguments{
 \item{model_path}{Path to a Stan program.}
 
-\item{verbose}{logical. give status messages?}
+\item{verbose}{Logical. give status messages?}
 
 \item{stan_model_fn}{Internal function used to compile the Stan model.}
 }

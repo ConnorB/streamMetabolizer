@@ -11,7 +11,7 @@
 #'   to all five. The dissolved oxygen saturation percentage panel is shown when
 #'   both `"DO.obs"` and `"DO.sat"` are selected.
 #'
-#' @return A ggplot object. The dissolved oxygen saturation percentage is
+#' @returns A ggplot object. The dissolved oxygen saturation percentage is
 #'   calculated as `100 * DO.obs / DO.sat`; values where `DO.sat` is zero are
 #'   shown as missing.
 #'

@@ -7,17 +7,17 @@
 calc_depth(Q, c = 0.409, f = 0.294)
 }
 \arguments{
-\item{Q}{discharge (m^3 s^-1)}
+\item{Q}{Discharge (m^3 s^-1).}
 
-\item{c}{coefficient representing depth at unit discharge (usually m)}
+\item{c}{Coefficient representing depth at unit discharge (usually m).}
 
-\item{f}{exponent in depth-discharge relation (unitless)}
+\item{f}{Exponent in depth-discharge relation (unitless).}
 }
 \value{
-d, stream depth, in the same units as c
+D, stream depth, in the same units as c.
 }
 \description{
-Uses the relationship \eqn{d=c*Q^f} (parameter names and definitions as in
+Uses the relationship d = c × Qᶠ (parameter names and definitions as in
 Leopold and Maddock, 1953; default values for c and f as in Raymond et al.
 2012)
 }

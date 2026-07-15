@@ -5,9 +5,9 @@
 #' precision or on the lifetime of the API service used by the function. The
 #' lookup uses the JSON response from the service.
 #'
-#' @param latitude degrees latitude (positive for north) of the location to look
+#' @param latitude Degrees latitude (positive for north) of the location to look
 #'   up.
-#' @param longitude degrees longitude (positive for east) of the location to
+#' @param longitude Degrees longitude (positive for east) of the location to
 #'   look up.
 #' @param units A single string specifying the elevation units. Accepts `"m"`,
 #'   `"meters"`, `"ft"`, or `"feet"`, case-insensitively.
@@ -17,8 +17,7 @@
 #'   request attempts.
 #' @returns The numeric elevation in the requested units.
 #' @references https://epqs.nationalmap.gov/v1/docs
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' elevation_m <- lookup_usgs_elevation(
 #'   latitude = 39.102075,
 #'   longitude = -96.594689
@@ -31,7 +30,6 @@
 #'   units = "ft"
 #' )
 #' elevation_ft
-#' }
 #' @export
 lookup_usgs_elevation <- function(
   latitude,

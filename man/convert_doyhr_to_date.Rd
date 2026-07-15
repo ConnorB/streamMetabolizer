@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_date_to_doyhr.R
 \name{convert_doyhr_to_date}
 \alias{convert_doyhr_to_date}
-\title{Convert a a day of year (1-366) with decimal hours to a date}
+\title{Convert a decimal day of year to a date}
 \usage{
 convert_doyhr_to_date(
   doyhr,
@@ -14,21 +14,21 @@ convert_doyhr_to_date(
 }
 \arguments{
 \item{doyhr}{Numeric value expressing the date as the number of days, with
-decimal hours, since 00:00 of December 31 of the preceding year}
+decimal hours, since 00:00 of December 31 of the preceding year.}
 
-\item{year}{Numeric 4-digit year}
+\item{year}{Numeric 4-digit year.}
 
-\item{tz}{The time zone to pass to as.POSIXct()}
+\item{tz}{The time zone to pass to as.POSIXct().}
 
-\item{origin}{The origin to pass to as.POSIXct()}
+\item{origin}{The origin to pass to as.POSIXct().}
 
-\item{...}{Other arguments to pass to as.POSIXct()}
+\item{...}{Other arguments to pass to as.POSIXct().}
 }
 \value{
-A datetime object as POSIXct
+A datetime object as POSIXct.
 }
 \description{
-Convert a a day of year (1-366) with decimal hours to a date
+Convert a decimal day of year to a date
 }
 \examples{
 streamMetabolizer:::convert_doyhr_to_date(34.500695, 2015)

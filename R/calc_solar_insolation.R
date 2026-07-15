@@ -1,35 +1,33 @@
 #' Convert degrees to radians
 #'
-#' @param degrees angle in degrees
-#' @return angle in radians
+#' @param degrees Angle in degrees.
+#' @returns Angle in radians.
 to_radians <- function(degrees) {
   degrees * pi / 180
 }
 
-#' Convert radians to degrees
+#'   Convert radians to degrees
 #'
-#' @param radians angle in radians
-#' @return angle in degrees
+#' @param radians Angle in radians.
+#' @returns Angle in degrees.
 to_degrees <- function(radians) {
   radians * 180 / pi
 }
 
-#' Calculate declination angle as in Yard et al. (2005)
+#'   Calculate declination angle as in Yard et al. (2005)
 #'
 #' @param jday The day of year as a number between 0 (Jan 1) and 364 (365 also
-#'   OK for leap year)
+#'   OK for leap year).
 #' @param format The format of both the input and the output. May be "degrees"
 #'   or "radians".
-#' @return numeric value or vector, in the units specified by `format`,
+#' @returns Numeric value or vector, in the units specified by `format`,
 #'   indicating the declination angle corresponding to each value supplied in
 #'   `jday`.
 #' @examples
 #' decdf <- data.frame(jday=1:366,
 #'   dec=streamMetabolizer:::calc_declination_angle(1:366))
-#' \dontrun{
 #' library(ggplot2)
 #' ggplot(decdf, aes(x=jday, y=dec)) + geom_line()
-#' }
 #' @references Yard, Michael D., Glenn E. Bennett, Steve N. Mietz, Lewis G.
 #'   Coggins Jr., Lawrence E. Stevens, Susan Hueftle, and Dean W. Blinn.
 #'   *Influence of Topographic Complexity on Solar Insolation Estimates for
@@ -44,26 +42,24 @@ calc_declination_angle <- function(jday, format = c("degrees", "radians")) {
   declination.angle
 }
 
-#' Calculate hour angle as in
-#' http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html.
+#' Calculate hour angle using the
+#' [NASA solar insolation method](http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html).
 #'
 #' This is an approximation when hour is in clock time; should actually be given
 #' in solar time
 #'
-#' @param hour numeric value or vector. hour since solar midnight as number
-#'   between 0 and 23.999
+#' @param hour Numeric value or vector. hour since solar midnight as number
+#'   between 0 and 23.999.
 #' @param format The format of both the input and the output. May be "degrees"
 #'   or "radians".
-#' @return numeric value or vector, in the units specified by `format`,
+#' @returns Numeric value or vector, in the units specified by `format`,
 #'   indicating the angle corresponding to each value supplied in `hour`.
 #' @examples
 #' hourdf <- data.frame(hour=c(0:12,12.5:23.5),
 #'   hragl=streamMetabolizer:::calc_hour_angle(c(0:12,12.5:23.5)))
-#' \dontrun{
 #' library(ggplot2)
 #' ggplot(hourdf, aes(x=hour, y=hragl)) +
 #'   geom_hline(yintercept=0, color="gold") + geom_line()
-#' }
 calc_hour_angle <- function(hour, format = c("degrees", "radians")) {
   format <- match.arg(format)
   hour.angle <- (360 / 24) * (hour - 12)
@@ -76,12 +72,12 @@ calc_hour_angle <- function(hour, format = c("degrees", "radians")) {
 #' Calculate zenith angle as in
 #' http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html
 #'
-#' @param latitude numeric value or vector indicating the site latitude in
+#' @param latitude Numeric value or vector indicating the site latitude in
 #'   decimal degrees (never radians or deg-min-sec, no matter what `format`
 #'   is) between -90 (South Pole) and 90 (North Pole).
-#' @param declination.angle numeric value or vector, in the units specified by
+#' @param declination.angle Numeric value or vector, in the units specified by
 #'   `format`, indicating the declination angle.
-#' @param hour.angle numeric value or vector, in the units specified by
+#' @param hour.angle Numeric value or vector, in the units specified by
 #'   `format`, indicating the angle.
 #' @param format The format of both the output. May be "degrees" or "radians".
 #' @examples
@@ -94,12 +90,10 @@ calc_hour_angle <- function(hour, format = c("degrees", "radians")) {
 #'   hragl=streamMetabolizer:::calc_hour_angle(hour))
 #' zendf <- transform(zendf,
 #'   zen=streamMetabolizer:::calc_zenith_angle(lat, dec, hragl))
-#' \dontrun{
 #' library(ggplot2)
 #' ggplot(zendf, aes(x=hour, y=zen, color=jday, group=jday)) +
 #'   geom_line() + facet_wrap(~lat) +
 #'   ggtitle('zenith angles by latitude (panels) and day of year (colors)')
-#' }
 calc_zenith_angle <- function(
   latitude,
   declination.angle,
@@ -125,20 +119,22 @@ calc_zenith_angle <- function(
 }
 
 
-#' Model solar insolation on a horizontal surface (W/m2 == J/s/m2) as in
-#' http://education.gsfc.nasa.gov/experimental/July61999siteupdate/inv99Project.Site/Pages/solar.insolation.html
+#' Model solar insolation on a horizontal surface
+#'
+#' Implements the solar insolation equations described by Yard et al. (2005).
 #'
 #' @importFrom lifecycle deprecated is_present
 #' @param app.solar.time POSIXct vector of date-time values in apparent solar
 #'   time, e.g., as returned by `convert_UTC_to_solartime(...,
-#'   time.type="apparent solar")`
+#'   time.type="apparent solar")`.
 #' @inheritParams calc_declination_angle
 #' @inheritParams calc_hour_angle
 #' @inheritParams calc_zenith_angle
-#' @param max.insolation insolation rate at solar noon, W/m2 == J/s/m2. varies
-#'   greatly with atmospheric conditions
-#' @param attach.units (deprecated, effectively FALSE in future) logical. Should
+#' @param max.insolation Insolation rate at solar noon, W/m2 == J/s/m2. varies
+#'   greatly with atmospheric conditions.
+#' @param attach.units Deprecated. A logical. Should
 #'   the returned vector be a unitted object?
+#' @returns A numeric vector of solar insolation in W m⁻².
 #' @examples
 #' insdf <- data.frame(
 #'   lat=rep(c(0,20,40,60), each=48*4),
@@ -149,12 +145,10 @@ calc_zenith_angle <- function(
 #'   as.difftime(hour, units='hours'))
 #' insdf <- transform(insdf, date=as.character(date))
 #' insdf <- transform(insdf, ins=calc_solar_insolation(datetime, lat))
-#' \dontrun{
 #' library(ggplot2)
 #' ggplot(insdf, aes(color=date, y=ins, x=hour)) +
 #'   geom_line() + facet_wrap(~lat) +
 #'   ggtitle('solar insolation by latitude (panels) and day of year (colors)')
-#' }
 #' @export
 calc_solar_insolation <- function(
   app.solar.time,
