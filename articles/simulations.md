@@ -68,9 +68,9 @@ get_params(mm_sim_q10_trial)
     # A tibble: 3 × 9
       date       K600.daily GPP.daily  ER20 err.obs.sigma err.obs.phi err.proc.sigma err.proc.phi
       <date>          <dbl>     <dbl> <dbl>         <dbl>       <dbl>          <dbl>        <dbl>
-    1 2012-09-18      0.376      1.62 -5.51          0.01           0            0.2            0
-    2 2012-09-19      0         13.8  -7.22          0.01           0            0.2            0
-    3 2012-09-20      0          7.05 -2.57          0.01           0            0.2            0
+    1 2012-09-18       4.77    3.96   -15.0          0.01           0            0.2            0
+    2 2012-09-19       4.41    5.18   -15.4          0.01           0            0.2            0
+    3 2012-09-20       0       0.0114 -14.8          0.01           0            0.2            0
     # ℹ 1 more variable: discharge.daily <dbl>
 
 Great: we need `GPP.daily`, `ER20`, and `K600.daily`. Now we can pick
@@ -202,11 +202,11 @@ head(predict_DO(mm_sim_q10a))
       date       solar.time          DO.sat depth temp.water light DO.pure DO.mod DO.obs
       <date>     <dttm>               <dbl> <dbl>      <dbl> <dbl>   <dbl>  <dbl>  <dbl>
     1 2012-09-18 2012-09-18 04:05:58   9.08  0.16       3.6      0    8.41   8.41   8.41
-    2 2012-09-18 2012-09-18 04:20:58   9.09  0.16       3.56     0    8.33   8.37   8.37
-    3 2012-09-18 2012-09-18 04:35:58   9.11  0.16       3.51     0    8.27   8.34   8.34
-    4 2012-09-18 2012-09-18 04:50:58   9.11  0.16       3.48     0    8.21   8.24   8.24
-    5 2012-09-18 2012-09-18 05:05:58   9.13  0.16       3.42     0    8.16   8.18   8.18
-    6 2012-09-18 2012-09-18 05:20:58   9.14  0.16       3.38     0    8.11   8.20   8.20
+    2 2012-09-18 2012-09-18 04:20:58   9.09  0.16       3.56     0    8.33   8.32   8.32
+    3 2012-09-18 2012-09-18 04:35:58   9.11  0.16       3.51     0    8.27   8.17   8.17
+    4 2012-09-18 2012-09-18 04:50:58   9.11  0.16       3.48     0    8.21   8.09   8.09
+    5 2012-09-18 2012-09-18 05:05:58   9.13  0.16       3.42     0    8.16   8.04   8.04
+    6 2012-09-18 2012-09-18 05:20:58   9.14  0.16       3.38     0    8.11   8.01   8.01
 
 ``` r
 
@@ -217,25 +217,25 @@ head(predict_DO(mm_sim_q10b))
       date       solar.time          DO.sat depth temp.water light DO.pure DO.mod DO.obs
       <date>     <dttm>               <dbl> <dbl>      <dbl> <dbl>   <dbl>  <dbl>  <dbl>
     1 2012-09-18 2012-09-18 04:05:58   9.08  0.16       3.6      0    8.41   8.41   8.41
-    2 2012-09-18 2012-09-18 04:20:58   9.09  0.16       3.56     0    8.43   8.34   8.34
-    3 2012-09-18 2012-09-18 04:35:58   9.11  0.16       3.51     0    8.45   8.27   8.27
-    4 2012-09-18 2012-09-18 04:50:58   9.11  0.16       3.48     0    8.47   8.27   8.27
-    5 2012-09-18 2012-09-18 05:05:58   9.13  0.16       3.42     0    8.49   8.36   8.36
-    6 2012-09-18 2012-09-18 05:20:58   9.14  0.16       3.38     0    8.50   8.49   8.49
+    2 2012-09-18 2012-09-18 04:20:58   9.09  0.16       3.56     0    8.43   8.50   8.50
+    3 2012-09-18 2012-09-18 04:35:58   9.11  0.16       3.51     0    8.45   8.51   8.51
+    4 2012-09-18 2012-09-18 04:50:58   9.11  0.16       3.48     0    8.47   8.47   8.47
+    5 2012-09-18 2012-09-18 05:05:58   9.13  0.16       3.42     0    8.49   8.47   8.47
+    6 2012-09-18 2012-09-18 05:20:58   9.14  0.16       3.38     0    8.50   8.50   8.50
 
 ``` r
 
 plot_DO_preds(mm_sim_q10a, y_var='conc')
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-11-1.png)
+![](simulations_files/figure-html/sim_q10_prediction_plots-1.png)
 
 ``` r
 
 plot_DO_preds(mm_sim_q10b, y_var='conc')
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-11-2.png)
+![](simulations_files/figure-html/sim_q10_prediction_plots-2.png)
 
 ## Simulating Errors
 
@@ -264,14 +264,14 @@ mm_sim_sat_i <- metab(specs_sim_sat, dat, data_daily=params_sim_sat)
 plot_DO_preds(mm_sim_sat_i, y_var='conc')
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-13-1.png)
+![](simulations_files/figure-html/sim_sat_innovative-1.png)
 
 ``` r
 
 plot_DO_preds(mm_sim_sat_i, y_var='conc')
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-13-2.png)
+![](simulations_files/figure-html/sim_sat_innovative-2.png)
 
 ### Fixed errors
 
@@ -284,14 +284,14 @@ mm_sim_sat_f <- metab(revise(specs_sim_sat, sim_seed=47), dat, data_daily=params
 plot_DO_preds(mm_sim_sat_f, y_var='conc')
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-14-1.png)
+![](simulations_files/figure-html/sim_sat_fixed-1.png)
 
 ``` r
 
 plot_DO_preds(mm_sim_sat_f, y_var='conc')
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-14-2.png)
+![](simulations_files/figure-html/sim_sat_fixed-2.png)
 
 ## Inspecting Models
 
@@ -351,16 +351,16 @@ mm
     9  2012-09-26        16* 5.671489* 0.009372155* -7.103388*          0.2           0              1
     10 2012-09-27        16* 8.824851* 0.011480065* -3.531540*          0.2           0              1
        err.proc.phi discharge.daily msgs.fit
-    1            0        27.45587        NA
-    2            0        24.21128        NA
-    3            0        18.36246        NA
-    4            0        14.88563        NA
-    5            0        20.74129        NA
-    6            0        21.15688        NA
-    7            0        18.77226        NA
-    8            0        22.67406        NA
-    9            0        18.92484        NA
-    10           0        20.26449        NA
+    1            0        16.68038        NA
+    2            0        19.22725        NA
+    3            0        19.49108        NA
+    4            0        21.31775        NA
+    5            0        16.67995        NA
+    6            0        22.57157        NA
+    7            0        18.07964        NA
+    8            0        20.17713        NA
+    9            0        14.24117        NA
+    10           0        20.58617        NA
     Predictions (10 dates):
     # A tibble: 10 × 9
        date         GPP GPP.lower GPP.upper     ER ER.lower ER.upper msgs.fit msgs.pred
@@ -385,7 +385,7 @@ bars because they’re direct calculations from the daily parameters.
 plot_metab_preds(mm)
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-17-1.png)
+![](simulations_files/figure-html/sim_inspect_predictions-1.png)
 
 ## Multi-Day Simulations
 
@@ -419,7 +419,8 @@ lapply(unclass(sp)[c('K600_daily','GPP_daily','ER_daily')], function(fun) {
     NULL
 
     $K600_daily$example_vals
-     [1] 4.642328 0.000000 6.206512 2.329847 7.764979 6.412372 3.247985 7.999264 1.410806 0.000000
+     [1] 1.7513931 3.3944354 0.1149945 2.4103963 6.4021173 9.4782605 2.1073986 2.0837559 2.4890243
+    [10] 0.0000000
 
 
     $GPP_daily
@@ -427,8 +428,8 @@ lapply(unclass(sp)[c('K600_daily','GPP_daily','ER_daily')], function(fun) {
     NULL
 
     $GPP_daily$example_vals
-     [1]  2.2726121 13.4190115 15.0030008  7.2227772 10.3082785  0.0000000  0.7794359  0.8213886
-     [9]  2.7363882  6.6081886
+     [1]  3.164087  6.454913  6.218762  3.954867  9.132143  5.346469 14.232066  6.452049  5.326161
+    [10] 14.967311
 
 
     $ER_daily
@@ -436,8 +437,8 @@ lapply(unclass(sp)[c('K600_daily','GPP_daily','ER_daily')], function(fun) {
     NULL
 
     $ER_daily$example_vals
-     [1] -11.666418  -9.190293 -17.718207  -3.860406 -10.952647   0.000000 -12.502522  -9.584487
-     [9]  -9.526393  -7.986615
+     [1] -16.430518   0.000000 -10.007315  -1.267789 -18.011094  -7.757120  -9.918301 -11.573018
+     [9]  -6.189056  -7.915214
 
 These functions get called to generate new values for K600.daily,
 GPP.daily, and ER.daily each time you call `get_params`,
@@ -453,26 +454,26 @@ get_params(mm)[c('date','K600.daily','GPP.daily','ER.daily')]
     # A tibble: 20 × 4
        date       K600.daily GPP.daily ER.daily
        <date>          <dbl>     <dbl>    <dbl>
-     1 2012-09-18      7.92      4.64     -9.14
-     2 2012-09-19      1.31      0        -8.59
-     3 2012-09-20      2.40     16.2       0
-     4 2012-09-21      3.42      0.670    -7.05
-     5 2012-09-22      3.53      3.60    -16.9
-     6 2012-09-23      2.40      3.35    -10.4
-     7 2012-09-24      4.81      5.22    -10.4
-     8 2012-09-25      0.591     5.23    -13.6
-     9 2012-09-26      0        11.7     -12.2
-    10 2012-09-27      0        10.4     -11.3
-    11 2012-09-28      0        10.5     -17.4
-    12 2012-09-29      6.71     10.2      -7.98
-    13 2012-09-30      8.08      9.08    -10.3
-    14 2012-10-01      6.26      9.92     -7.64
-    15 2012-10-02      2.73     11.4       0
-    16 2012-10-03      4.16      7.04     -5.83
-    17 2012-10-04      8.52     11.8       0
-    18 2012-10-05      2.96     13.2      -5.26
-    19 2012-10-06      3.44      6.71    -13.2
-    20 2012-10-07      7.62     10.1     -15.7 
+     1 2012-09-18      0.381      4.56   -19.3
+     2 2012-09-19      0          4.08    -6.79
+     3 2012-09-20      4.33       9.35    -9.17
+     4 2012-09-21      6.13      11.1     -1.53
+     5 2012-09-22      0          6.27   -13.2
+     6 2012-09-23      4.19       2.44    -2.74
+     7 2012-09-24      2.60      15.8    -13.6
+     8 2012-09-25      2.26      10.8      0
+     9 2012-09-26      2.21       6.17   -13.5
+    10 2012-09-27      5.78       8.41   -14.1
+    11 2012-09-28      0         13.5     -4.47
+    12 2012-09-29      7.99      14.0     -8.93
+    13 2012-09-30      0.566     14.8    -10.8
+    14 2012-10-01      0          0      -11.4
+    15 2012-10-02      3.93       7.52   -12.9
+    16 2012-10-03      1.98      10.3    -11.5
+    17 2012-10-04      0.840      4.64   -11.6
+    18 2012-10-05      0.924      7.68   -12.1
+    19 2012-10-06      6.73       6.56     0
+    20 2012-10-07      0         11.9    -15.7 
 
 You can also set `err_obs_sigma` and other error terms as daily values
 and/or functions. The defaults are simple numeric values that get
@@ -489,26 +490,26 @@ get_params(mm)
     # A tibble: 20 × 9
        date       K600.daily GPP.daily ER.daily err.obs.sigma err.obs.phi err.proc.sigma err.proc.phi
        <date>          <dbl>     <dbl>    <dbl>         <dbl>       <dbl>          <dbl>        <dbl>
-     1 2012-09-18         16         3       -4          0.19           0         0.0900       0
-     2 2012-09-19         16         3       -4          0.36           0         0.102        0.0526
-     3 2012-09-20         16         3       -4          0.51           0         0.100        0.105
-     4 2012-09-21         16         3       -4          0.64           0         0.0984       0.158
-     5 2012-09-22         16         3       -4          0.75           0         0.103        0.211
-     6 2012-09-23         16         3       -4          0.84           0         0.0934       0.263
-     7 2012-09-24         16         3       -4          0.91           0         0.106        0.316
-     8 2012-09-25         16         3       -4          0.96           0         0.0963       0.368
-     9 2012-09-26         16         3       -4          0.99           0         0.0939       0.421
-    10 2012-09-27         16         3       -4          1              0         0.0986       0.474
-    11 2012-09-28         16         3       -4          0.99           0         0.103        0.526
-    12 2012-09-29         16         3       -4          0.96           0         0.0980       0.579
-    13 2012-09-30         16         3       -4          0.91           0         0.0976       0.632
-    14 2012-10-01         16         3       -4          0.84           0         0.0910       0.684
-    15 2012-10-02         16         3       -4          0.75           0         0.0902       0.737
-    16 2012-10-03         16         3       -4          0.64           0         0.105        0.789
-    17 2012-10-04         16         3       -4          0.51           0         0.105        0.842
-    18 2012-10-05         16         3       -4          0.36           0         0.100        0.895
-    19 2012-10-06         16         3       -4          0.19           0         0.102        0.947
-    20 2012-10-07         16         3       -4          0              0         0.0956       1
+     1 2012-09-18         16         3       -4          0.19           0         0.101        0
+     2 2012-09-19         16         3       -4          0.36           0         0.104        0.0526
+     3 2012-09-20         16         3       -4          0.51           0         0.0962       0.105
+     4 2012-09-21         16         3       -4          0.64           0         0.0950       0.158
+     5 2012-09-22         16         3       -4          0.75           0         0.108        0.211
+     6 2012-09-23         16         3       -4          0.84           0         0.0984       0.263
+     7 2012-09-24         16         3       -4          0.91           0         0.100        0.316
+     8 2012-09-25         16         3       -4          0.96           0         0.0962       0.368
+     9 2012-09-26         16         3       -4          0.99           0         0.0901       0.421
+    10 2012-09-27         16         3       -4          1              0         0.117        0.474
+    11 2012-09-28         16         3       -4          0.99           0         0.0963       0.526
+    12 2012-09-29         16         3       -4          0.96           0         0.0996       0.579
+    13 2012-09-30         16         3       -4          0.91           0         0.100        0.632
+    14 2012-10-01         16         3       -4          0.84           0         0.0994       0.684
+    15 2012-10-02         16         3       -4          0.75           0         0.106        0.737
+    16 2012-10-03         16         3       -4          0.64           0         0.106        0.789
+    17 2012-10-04         16         3       -4          0.51           0         0.0994       0.842
+    18 2012-10-05         16         3       -4          0.36           0         0.104        0.895
+    19 2012-10-06         16         3       -4          0.19           0         0.106        0.947
+    20 2012-10-07         16         3       -4          0              0         0.102        1
     # ℹ 1 more variable: discharge.daily <dbl>
 
 ``` r
@@ -516,7 +517,7 @@ get_params(mm)
 plot_DO_preds(mm)
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-21-1.png)
+![](simulations_files/figure-html/sim_multiday_error_obs-1.png)
 
 The above simulation emphasized day-to-day variation in `err_obs_sigma`.
 Here’s a simulation emphasizing variation in `err_proc_sigma` and
@@ -559,7 +560,7 @@ get_params(mm)
 plot_DO_preds(mm)
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-22-1.png)
+![](simulations_files/figure-html/sim_multiday_error_proc-1.png)
 
 The daily parameter functions that you assign in
 [`specs()`](https://connorb.github.io/streamMetabolizer/reference/specs.md)
@@ -581,26 +582,26 @@ get_params(mm)
     # A tibble: 20 × 9
        date       K600.daily GPP.daily ER.daily err.obs.sigma err.obs.phi err.proc.sigma err.proc.phi
        <date>          <dbl>     <dbl>    <dbl>         <dbl>       <dbl>          <dbl>        <dbl>
-     1 2012-09-18         16       2.3     -4.6          0.01           0            0.4            0
-     2 2012-09-19         16       4.4     -8.8          0.01           0            0.4            0
-     3 2012-09-20         16       3.9     -7.8          0.01           0            0.4            0
-     4 2012-09-21         16       3.8     -7.6          0.01           0            0.4            0
-     5 2012-09-22         16       2.7     -5.4          0.01           0            0.4            0
-     6 2012-09-23         16       3.3     -6.6          0.01           0            0.4            0
-     7 2012-09-24         16       1.4     -2.8          0.01           0            0.4            0
-     8 2012-09-25         16       3.7     -7.4          0.01           0            0.4            0
-     9 2012-09-26         16       4.5     -9            0.01           0            0.4            0
-    10 2012-09-27         16       3.1     -6.2          0.01           0            0.4            0
-    11 2012-09-28         16       2.4     -4.8          0.01           0            0.4            0
-    12 2012-09-29         16       3.5     -7            0.01           0            0.4            0
-    13 2012-09-30         16       4.3     -8.6          0.01           0            0.4            0
-    14 2012-10-01         16       5.6    -11.2          0.01           0            0.4            0
-    15 2012-10-02         16       4.9     -9.8          0.01           0            0.4            0
-    16 2012-10-03         16       3.9     -7.8          0.01           0            0.4            0
-    17 2012-10-04         16       4.9     -9.8          0.01           0            0.4            0
-    18 2012-10-05         16       4.4     -8.8          0.01           0            0.4            0
-    19 2012-10-06         16       4.6     -9.2          0.01           0            0.4            0
-    20 2012-10-07         16       3.8     -7.6          0.01           0            0.4            0
+     1 2012-09-18         16       3.9     -7.8          0.01           0            0.4            0
+     2 2012-09-19         16       3.4     -6.8          0.01           0            0.4            0
+     3 2012-09-20         16       4.7     -9.4          0.01           0            0.4            0
+     4 2012-09-21         16       5.1    -10.2          0.01           0            0.4            0
+     5 2012-09-22         16       3.1     -6.2          0.01           0            0.4            0
+     6 2012-09-23         16       5.4    -10.8          0.01           0            0.4            0
+     7 2012-09-24         16       6.4    -12.8          0.01           0            0.4            0
+     8 2012-09-25         16       3.4     -6.8          0.01           0            0.4            0
+     9 2012-09-26         16       5      -10            0.01           0            0.4            0
+    10 2012-09-27         16       2.1     -4.2          0.01           0            0.4            0
+    11 2012-09-28         16       4.3     -8.6          0.01           0            0.4            0
+    12 2012-09-29         16       3.4     -6.8          0.01           0            0.4            0
+    13 2012-09-30         16       4       -8            0.01           0            0.4            0
+    14 2012-10-01         16       5.2    -10.4          0.01           0            0.4            0
+    15 2012-10-02         16       3.2     -6.4          0.01           0            0.4            0
+    16 2012-10-03         16       4.8     -9.6          0.01           0            0.4            0
+    17 2012-10-04         16       4.2     -8.4          0.01           0            0.4            0
+    18 2012-10-05         16       4       -8            0.01           0            0.4            0
+    19 2012-10-06         16       3       -6            0.01           0            0.4            0
+    20 2012-10-07         16       3.9     -7.8          0.01           0            0.4            0
     # ℹ 1 more variable: discharge.daily <dbl>
 
 The K600_daily function can also take advantage of pre-specified model
@@ -701,6 +702,6 @@ ggplot(KQ, aes(x=K600_lnQ_nodes_centers, y=lnK600_lnQ_nodes)) + geom_line(color=
   geom_point(data=Kpred, aes(x=log(discharge.daily), y=log(K600.daily)), color='red')
 ```
 
-![](simulations_files/figure-html/unnamed-chunk-27-1.png)
+![](simulations_files/figure-html/sim_multiday_k_binned_plot-1.png)
 
 \`\`\`

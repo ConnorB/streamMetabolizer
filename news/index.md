@@ -40,6 +40,11 @@
 - `mm_data_units()` now returns units with Unicode subscripts,
   superscripts, and SI symbols for clearer display.
 
+- [`mm_validate_name()`](https://connorb.github.io/streamMetabolizer/reference/mm_validate_name.md)
+  errors now link to
+  [`mm_valid_names()`](https://connorb.github.io/streamMetabolizer/reference/mm_valid_names.md)
+  in the package manual.
+
 - [`plot_metab_data()`](https://connorb.github.io/streamMetabolizer/reference/plot_metab_data.md)
   now provides a faceted quality-control plot for metabolism input data,
   including dissolved oxygen percent saturation when both dissolved

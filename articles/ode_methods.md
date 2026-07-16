@@ -89,7 +89,7 @@ ggplot(ode_preds, aes(x=solar.time)) +
     Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
     ℹ Please use `linewidth` instead.
 
-![](ode_methods_files/figure-html/unnamed-chunk-8-1.png)
+![](ode_methods_files/figure-html/ode_plot_comparison-1.png)
 
 To inspect the details, we can also plot the predictions as deviations
 from the rk4 method.
@@ -103,4 +103,4 @@ ggplot(ode_preds, aes(x=solar.time)) +
   theme_bw()
 ```
 
-![](ode_methods_files/figure-html/unnamed-chunk-9-1.png)
+![](ode_methods_files/figure-html/ode_plot_deviations-1.png)

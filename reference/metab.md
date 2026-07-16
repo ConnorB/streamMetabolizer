@@ -251,7 +251,7 @@ get_info(mm)
 #> [1] "my info"
 get_fitting_time(mm)
 #>    user  system elapsed 
-#>   0.737   0.000   0.737 
+#>   0.763   0.000   0.763 
 
 # with chaining & customization
 library(dplyr)
