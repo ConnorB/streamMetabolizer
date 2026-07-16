@@ -14,6 +14,8 @@
 
 * `mm_data_units()` now returns units with Unicode subscripts, superscripts, and SI symbols for clearer display.
 
+* `mm_validate_name()` errors now link to `mm_valid_names()` in the package manual.
+
 * `plot_metab_data()` now provides a faceted quality-control plot for metabolism input data, including dissolved oxygen percent saturation when both dissolved oxygen columns are selected.
 
 * improved RStan support with safe persistent compilation caching outside the

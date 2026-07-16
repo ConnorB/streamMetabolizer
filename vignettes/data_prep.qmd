@@ -81,13 +81,13 @@ a few examples of specific scenarios and solutions.
 ### Starting with numeric datetimes, e.g., from PMEs
 
 If you have datetimes stored in seconds since 1/1/1970 at Greenwich (i.e., in UTC):
-```{r}
+```{r datetime_numeric_utc}
 num.time <- 1471867200
 (posix.time.localtz <- as.POSIXct(num.time, origin='1970-01-01', tz='UTC'))
 ```
 
 If you have datetimes stored in seconds since 1/1/1970 at Laramie, WY (i.e., in MST, no daylight savings):
-```{r}
+```{r datetime_numeric_mst}
 num.time <- 1471867200
 (posix.time.nominalUTC <- as.POSIXct(num.time, origin='1970-01-01', tz='UTC')) # the numbers get treated as UTC no matter what tz you request
 (posix.time.localtz <- lubridate::force_tz(posix.time.nominalUTC, 'Etc/GMT+7')) # +7 = mountain standard time
@@ -97,19 +97,19 @@ num.time <- 1471867200
 ### Starting with text timestamps
 
 If you have datetimes stored as text timestamps in UTC, you can bypass the conversion to local time and just start with UTC. Then rather than using `calc_solar_time()` in Step 2, you'll use `convert_UTC_to_solartime()`.
-```{r}
+```{r datetime_text_utc}
 text.time <- '2016-08-22 12:00:00'
 (posix.time.utc <- as.POSIXct(text.time, tz='UTC'))
 ```
 
 If you have datetimes stored as text timestamps in EST/EDT (with daylight savings):
-```{r}
+```{r datetime_text_est_edt}
 text.time <- '2016-08-22 12:00:00'
 (posix.time.localtz <- as.POSIXct(text.time, format="%Y-%m-%d %H:%M:%S", tz='America/New_York'))
 ```
 
 If you have datetimes stored as text timestamps in EST (no daylight savings):
-```{r}
+```{r datetime_text_est}
 text.time <- '2016-08-22 12:00:00'
 (posix.time.localtz <- as.POSIXct(text.time, format="%Y-%m-%d %H:%M:%S", tz='Etc/GMT+5'))
 ```
@@ -120,7 +120,7 @@ See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a list of t
 ### Starting with `chron` datetimes
 
 If you have datetimes stored in the `chron` time format in EST (no daylight savings):
-```{r}
+```{r datetime_chron_est}
 chron.time <- chron::chron('08/22/16', '12:00:00')
 time.format <- "%Y-%m-%d %H:%M:%S"
 text.time <- format(chron.time, time.format) # direct as.POSIXct time works poorly
@@ -135,7 +135,7 @@ exactly 24 hours, in contrast to apparent solar time. You're ready for this step
 when you have the correct time in a local timezone and `lubridate::tz(yourtime)`
 reflects the correct timezone.
 
-```{r}
+```{r solar_time}
 lubridate::tz(posix.time.localtz) # yep, we want and have the code for EST
 (posix.time.solar <- streamMetabolizer::calc_solar_time(posix.time.localtz, longitude=-106.3))
 ```

@@ -1,3 +1,16 @@
+test_that("mm_get_timestep groups near-equivalent intervals", {
+  datetimes <- as.POSIXct(
+    cumsum(c(0, 0, 0.3, 0.6)) * 24 * 60 * 60,
+    origin = "1970-01-01",
+    tz = "UTC"
+  )
+
+  expect_equal(
+    mm_get_timestep(datetimes, format = "unique", tol = 0.5),
+    c(0, 0.6)
+  )
+})
+
 test_that("mm_data works", {
   # runs and can be used to select columns
   expect_s3_class(mm_data(), "data.frame")

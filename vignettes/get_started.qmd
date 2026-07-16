@@ -128,7 +128,7 @@ Once you've fit a model, you can inspect the output with functions including
 `get_params()`, and `get_fit()`.
 
 Start by simply printing the model to the console.
-```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
+```{r bayes_show, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 mm
 ```
 
@@ -142,7 +142,7 @@ plot_metab_preds(mm)
 ```
 
 You can inspect more of the fitted daily parameters, including K600, with `get_params()`:
-```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
+```{r bayes_params, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 get_params(mm)
 ```
 
@@ -161,7 +161,7 @@ For Bayesian models only, you can dig even deeper using `get_mcmc`, which
 returns a Stan model object that can be inspected using the `rstan` or `cmdstanr` packages.
 (These traceplots are pretty bad because we used so few MCMC iterations. You
 should strive for better in your final models.)
-```{r, fig.width=5, fig.height=5, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
+```{r bayes_traceplot, fig.width=5, fig.height=5, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 mcmc <- get_mcmc(mm)
 # bayesplot::mcmc_trace(mcmc$draws("K600_daily"), n_warmup = 0) +
 #   ggplot2::facet_wrap(~ parameter, nrow = 3)
@@ -173,13 +173,13 @@ resolution, containing all fitted values and details about their distributions
 and convergence. Here are just the overall metrics of model convergence
 (`Rhat`s, or potential scale reduction statistics; see Gelman and Rubin 1992 or
 Brooks and Gelman 1998):
-```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
+```{r bayes_convergence, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 get_fit(mm)$overall |>
   select(ends_with('Rhat'))
 ```
 
 And here is a list of all column names available through `get_fit()`:
-```{r, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
+```{r bayes_fit_columns, eval=identical(tolower(Sys.getenv("STREAMMETABOLIZER_RUN_STAN_VIGNETTE")), "true")}
 get_fit(mm) |>
   lapply(names)
 ```

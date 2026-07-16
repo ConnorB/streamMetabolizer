@@ -43,7 +43,7 @@ instead, you can construct and interpret such names using the `mm_name` and
 
 The `mm_name()` function creates a cryptic (but complete and concise) model name from several options that you can specify. For example:
 
-```{r}
+```{r model_name_examples}
 mm_name(type='bayes') # the default Bayesian model
 mm_name(type='bayes', pool_K600='normal') # a Bayesian model with simple pooling of K600 to a shared mean
 mm_name(type='mle') # the default MLE model
@@ -57,7 +57,7 @@ See the help file at `?mm_name` to learn about the structural options that you c
 
 The `mm_parse_name()` function splits a cryptic model name into its component features. For example:
 
-```{r}
+```{r model_name_parse}
 mm_parse_name(c('b_np_oipi_tr_plrckm.stan', 'm_np_pi_tr_psrqkm.nlm'))
 ```
 
@@ -68,7 +68,7 @@ See the help file at `?mm_parse_name`, and refer again to `?mm_name` for definit
 You can see the full list of available model structures by
 calling `mm_valid_names()` (here we'll just print a sampling of the full list):
 
-```{r}
+```{r model_name_list}
 valid_names <- mm_valid_names(type=c('bayes','mle','night'))
 length(valid_names)
 c(valid_names[seq(1,length(valid_names),length.out=20)], '...')

@@ -20,7 +20,7 @@ To install the `streamMetabolizer` package, use the `remotes` package (running `
 replacing yyyy with the PAT you established on the GitHub website.
 
 You can install the most cutting edge version of streamMetabolizer with this command:
-```{r, eval=FALSE}
+```{r install_github, eval=FALSE}
 remotes::install_github(
   "USGS-R/streamMetabolizer", # soon to be "DOI-USGS/streamMetabolizer"
   build_vignettes = TRUE)

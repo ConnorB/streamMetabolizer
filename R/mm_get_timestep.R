@@ -63,13 +63,21 @@ mm_get_timestep <- function(
     },
     unique = {
       all_unique <- sort(unique(timesteps))
-      sufficiently_unique <- c()
-      while (length(all_unique) > 0) {
-        sufficiently_unique <- c(sufficiently_unique, all_unique[1])
-        all_unique <- all_unique[which(
-          all_unique > tail(sufficiently_unique, 1) + tol
-        )]
+      sufficiently_unique <- rep(NA_real_, length(all_unique))
+      sufficiently_unique[1] <- all_unique[1]
+      n_sufficient <- 1L
+      if (length(all_unique) > 1) {
+        for (i in seq.int(2L, length(all_unique))) {
+          if (
+            !is.na(all_unique[i]) &&
+              all_unique[i] > sufficiently_unique[n_sufficient] + tol
+          ) {
+            n_sufficient <- n_sufficient + 1L
+            sufficiently_unique[n_sufficient] <- all_unique[i]
+          }
+        }
       }
+      sufficiently_unique <- sufficiently_unique[seq_len(n_sufficient)]
       if (require_unique == TRUE && length(sufficiently_unique) != 1) {
         .cli_abort(
           "Found {length(sufficiently_unique)} unique timesteps; expected exactly one."

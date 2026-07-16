@@ -24,7 +24,7 @@ and/or temperature.
 
 Load streamMetabolizer and dplyr.
 
-```{r, message=FALSE}
+```{r gpp_er_libs, message=FALSE}
 library(streamMetabolizer)
 library(dplyr)
 ```
@@ -32,7 +32,7 @@ library(dplyr)
 Get some data to work with: here we're requesting three days of data at
 15-minute resolution. Thanks to Bob Hall for the test data.
 
-```{r}
+```{r gpp_er_data}
 dat <- data_metab('3', '15')
 ```
 
@@ -40,7 +40,7 @@ dat <- data_metab('3', '15')
 
 Here's a basic model with GPP proportional to light and ER constant over time.
 
-```{r}
+```{r gpp_er_classic}
 # the Classic: linear GPP, constant ER (also the default)
 mm_classic <-
   mm_name('mle', GPP_fun='linlight', ER_fun='constant') |>
@@ -51,7 +51,7 @@ mm_classic
 
 Here's one where GPP is a saturating function of light. ER is still constant.
 
-```{r}
+```{r gpp_er_saturator}
 # the Saturator: GPP saturating with light, constant ER
 mm_saturator <-
   mm_name('mle', GPP_fun='satlight', ER_fun='constant') |>
@@ -64,7 +64,7 @@ The Saturator produces fitting warnings, which are condensed to 'w' and a
 summary in the above print-out. They can be inspected in detail by looking
 directly at the fitted daily parameters:
 
-```{r}
+```{r gpp_er_fit_messages}
 get_params(mm_saturator) |> select(date, warnings, errors)
 ```
 
@@ -72,12 +72,12 @@ Similary, you can inspect the warnings and errors that arise during prediction
 by pulling out the daily metabolism predictions (but there aren't any, so those
 columns are empty):
 
-```{r}
+```{r gpp_er_prediction_messages}
 predict_metab(mm_saturator) |> select(date, warnings, errors)
 ```
 
 You can predict and/or plot instantaneous DO values from the fitted daily parameters.
-```{r}
+```{r gpp_er_saturator_predictions}
 predict_DO(mm_saturator) |> head()
 plot_DO_preds(mm_saturator)
 ```
@@ -88,7 +88,7 @@ the fitting function should explore likelihood space. There are two ways to do
 this - as date-specific values in data_daily, or as values that apply to every
 date in specs(). The two methods can even be combined.
 
-```{r}
+```{r gpp_er_initial_values}
 mm_saturator2 <-
   mm_name('mle', GPP_fun='satlight', ER_fun='constant') |>
   specs() |>
@@ -109,7 +109,7 @@ get_params(mm_saturator4)
 Despite the remaining warnings, DO predictions from the saturating GPP-light
 function do look better than from the classic model for this particular dataset.
 
-```{r}
+```{r gpp_er_compare_predictions}
 plot_DO_preds(mm_classic)
 plot_DO_preds(mm_saturator4)
 ```

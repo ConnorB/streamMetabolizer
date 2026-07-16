@@ -22,7 +22,8 @@
       Error in `mm_validate_name()`:
       ! `model_name` is not valid for type "mle".
       x Received "m_np_oipi_tr_plrckm.nlm".
-      i See `mm_valid_names()` for valid names.
+      i See `mm_valid_names()` (`?streamMetabolizer::mm_valid_names()`) for valid names.
+
 ---
 
     Code
@@ -31,7 +32,7 @@
       Error in `mm_validate_name()`:
       ! `model_name` is not valid for type "sim".
       x Received "s_np_oipc_tr_plrckm.rnorm".
-      i See `mm_valid_names()` for valid names.
+      i See `mm_valid_names()` (`?streamMetabolizer::mm_valid_names()`) for valid names.
 
 ---
 
@@ -41,4 +42,4 @@
       Error in `mm_validate_name()`:
       ! `model_name` is not valid for type "night".
       x Received "n_np_pi_tr_rckf.lm".
-      i See `mm_valid_names()` for valid names.
+      i See `mm_valid_names()` (`?streamMetabolizer::mm_valid_names()`) for valid names.

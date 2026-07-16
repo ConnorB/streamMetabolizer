@@ -51,7 +51,7 @@ mm_validate_name <- function(model_name) {
       c(
         "{.arg model_name} is not valid for type {.val {type}}.",
         "x" = "Received {.val {model_name}}.",
-        "i" = "See {.fn mm_valid_names} for valid names."
+        "i" = "See {.help [{.fun mm_valid_names}](streamMetabolizer::mm_valid_names)} for valid names."
       )
     )
   }
