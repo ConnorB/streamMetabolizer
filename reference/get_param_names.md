@@ -96,27 +96,12 @@ get_param_names(mm_name('sim'))
 #> 
 
 # or pass in a metab_model object:
-dat <- data_metab('1','30')
-get_param_names(metab(specs(mm_name('mle', ER_fun='q10temp')), data=dat))
-#> $required
-#> [1] "GPP.daily"  "ER20"       "K600.daily"
-#> 
-#> $optional
-#> [1] "DO.mod.1"
-#> 
-get_param_names(metab(specs('night'), data=dat))
+model <- metab_model(specs = list(model_name = mm_name('night')))
+get_param_names(model)
 #> $required
 #> [1] "ER.daily"   "K600.daily"
 #> 
 #> $optional
 #> [1] "DO.mod.1"
-#> 
-get_param_names(metab(specs('sim'), data=dat))
-#> $required
-#> [1] "K600.daily"     "GPP.daily"      "ER.daily"       "err.obs.sigma" 
-#> [5] "err.obs.phi"    "err.proc.sigma" "err.proc.phi"  
-#> 
-#> $optional
-#> [1] "discharge.daily" "DO.mod.1"       
 #> 
 ```

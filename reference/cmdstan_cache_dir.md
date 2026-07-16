@@ -33,5 +33,5 @@ cmdstan_cache_dir(
 
 ## Value
 
-A writable cache directory unique to the model contents, CmdStan and
-CmdStanR versions, and platform.
+A writable cache directory unique to the model contents and CmdStan
+toolchain.

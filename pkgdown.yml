@@ -11,7 +11,7 @@ articles:
   models_mle: models_mle.html
   ode_methods: ode_methods.html
   simulations: simulations.html
-last_built: 2026-07-15T03:48Z
+last_built: 2026-07-16T18:50Z
 urls:
   reference: https://connorb.github.io/streamMetabolizer/reference
   article: https://connorb.github.io/streamMetabolizer/articles

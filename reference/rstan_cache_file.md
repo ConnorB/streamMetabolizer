@@ -16,5 +16,4 @@ rstan_cache_file(model_path)
 
 ## Value
 
-A cache file unique to the model contents, RStan and Stan versions, R
-version, and platform.
+A cache file unique to the model contents and RStan toolchain.
