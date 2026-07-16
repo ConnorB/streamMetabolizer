@@ -46,10 +46,8 @@ get_param_names(mm_name('night'))
 get_param_names(mm_name('sim'))
 
 # or pass in a metab_model object:
-dat <- data_metab('1','30')
-get_param_names(metab(specs(mm_name('mle', ER_fun='q10temp')), data=dat))
-get_param_names(metab(specs('night'), data=dat))
-get_param_names(metab(specs('sim'), data=dat))
+model <- metab_model(specs = list(model_name = mm_name('night')))
+get_param_names(model)
 }
 \seealso{
 Other metab_model_interface:

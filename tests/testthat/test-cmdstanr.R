@@ -99,6 +99,13 @@ test_that('CmdStan cache keys include the toolchain and model contents', {
   )))
 })
 
+test_that('Stan model hashes use SHA-256', {
+  stan_file <- tempfile(fileext = '.stan')
+  writeLines('parameters { real y; } model { y ~ normal(0, 1); }', stan_file)
+
+  expect_identical(stan_model_hash(stan_file), cli::hash_file_sha256(stan_file))
+})
+
 test_that('CmdStan cache paths reject missing model files', {
   expect_snapshot(
     cmdstan_cache_dir(tempfile(fileext = '.stan'), '2.39.0'),

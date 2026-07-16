@@ -10,8 +10,7 @@ rstan_cache_file(model_path)
 \item{model_path}{Path to a Stan program.}
 }
 \value{
-A cache file unique to the model contents, RStan and Stan versions,
-R version, and platform.
+A cache file unique to the model contents and RStan toolchain.
 }
 \description{
 Locate the persistent compilation cache for an RStan model

@@ -1216,54 +1216,23 @@ load_rstan_model <- function(
 #' Locate the persistent compilation cache for an RStan model
 #'
 #' @param model_path Path to a Stan program.
-#' @returns A cache file unique to the model contents, RStan and Stan versions,
-#'   R version, and platform.
+#' @returns A cache file unique to the model contents and RStan toolchain.
 #' @keywords internal
 rstan_cache_file <- function(model_path) {
-  cache_root <- getOption('streamMetabolizer.rstan_cache_dir')
-  use_default_cache <- is.null(cache_root)
-  if (use_default_cache) {
-    cache_root <- if (getRversion() >= '4.0.0') {
-      tools::R_user_dir('streamMetabolizer', which = 'cache')
-    } else {
-      file.path(tempdir(), 'streamMetabolizer-cache')
-    }
-  }
   model_hash <- stan_model_hash(model_path)
   dependency_versions <- vapply(
     c('StanHeaders', 'Rcpp', 'RcppEigen', 'RcppParallel', 'BH'),
     package_version_for_cache,
     character(1)
   )
-  version_key <- paste0(
-    'rs-',
-    utils::packageVersion('rstan'),
-    '_s-',
-    rstan::stan_version(),
-    '_deps-',
-    paste(unname(dependency_versions), collapse = '-'),
-    '_R-',
-    getRversion(),
-    '_',
-    R.version$platform
-  )
-  version_key <- gsub('[^[:alnum:]_.-]', '-', version_key)
-  cache_dir <- file.path(cache_root, 'rstan', version_key)
-  writable <- cache_dir_is_writable(cache_dir)
-  if (!writable && use_default_cache) {
-    cache_dir <- file.path(
-      tempdir(),
-      'streamMetabolizer-cache',
-      'rstan',
-      version_key
-    )
-    writable <- cache_dir_is_writable(cache_dir)
-  }
-  if (!writable) {
-    .cli_abort(
-      "Could not create a writable RStan model cache at {.path {cache_dir}}."
-    )
-  }
+  cache_key <- cli::hash_obj_sha256(list(
+    rstan = package_version_for_cache('rstan'),
+    stan = rstan::stan_version(),
+    dependencies = dependency_versions,
+    r = getRversion(),
+    platform = R.version$platform
+  ))
+  cache_dir <- stan_cache_directory('rstan', cache_key)
   file.path(cache_dir, paste0(model_hash, '.rds'))
 }
 
@@ -1283,8 +1252,8 @@ package_version_for_cache <- function(package) {
 #' @param cmdstan_version The configured CmdStan version.
 #' @param cmdstanr_version The installed CmdStanR version.
 #' @param platform The platform on which the model executable will run.
-#' @returns A writable cache directory unique to the model contents, CmdStan and
-#'   CmdStanR versions, and platform.
+#' @returns A writable cache directory unique to the model contents and CmdStan
+#'   toolchain.
 #' @keywords internal
 cmdstan_cache_dir <- function(
   model_path,
@@ -1292,48 +1261,14 @@ cmdstan_cache_dir <- function(
   cmdstanr_version = package_version_for_cache('cmdstanr'),
   platform = R.version$platform
 ) {
-  cache_root <- getOption('streamMetabolizer.cmdstan_cache_dir')
-  use_default_cache <- is.null(cache_root)
-  if (use_default_cache) {
-    cache_root <- if (getRversion() >= '4.0.0') {
-      tools::R_user_dir('streamMetabolizer', which = 'cache')
-    } else {
-      file.path(tempdir(), 'streamMetabolizer-cache')
-    }
-  }
   model_hash <- stan_model_hash(model_path)
-  version_key <- paste0(
-    'csr-',
-    cmdstanr_version,
-    '_cs-',
-    cmdstan_version,
-    '_',
-    platform
-  )
-  version_key <- gsub('[^[:alnum:]_.-]', '-', version_key)
-  cache_dir <- file.path(
-    cache_root,
-    'cmdstan',
-    version_key,
-    model_hash
-  )
-  writable <- cache_dir_is_writable(cache_dir)
-  if (!writable && use_default_cache) {
-    cache_dir <- file.path(
-      tempdir(),
-      'streamMetabolizer-cache',
-      'cmdstan',
-      version_key,
-      model_hash
-    )
-    writable <- cache_dir_is_writable(cache_dir)
-  }
-  if (!writable) {
-    .cli_abort(
-      "Could not create a writable CmdStan model cache at {.path {cache_dir}}."
-    )
-  }
-  cache_dir
+  cache_key <- cli::hash_obj_sha256(list(
+    cmdstan = cmdstan_version,
+    cmdstanr = cmdstanr_version,
+    platform = platform,
+    model = model_hash
+  ))
+  stan_cache_directory('cmdstan', cache_key)
 }
 
 stan_model_hash <- function(model_path) {
@@ -1348,11 +1283,39 @@ stan_model_hash <- function(model_path) {
     .cli_abort("{.arg model_path} must identify an existing Stan file.")
   }
 
-  model_hash <- unname(tools::md5sum(model_path))
-  if (length(model_hash) != 1 || is.na(model_hash)) {
+  model_hash <- cli::hash_file_sha256(model_path)
+  if (length(model_hash) != 1 || is.na(model_hash) || !nzchar(model_hash)) {
     .cli_abort("Could not hash the Stan model at {.file {model_path}}.")
   }
   model_hash
+}
+
+stan_cache_directory <- function(engine, cache_key) {
+  cache_root <- getOption(paste0('streamMetabolizer.', engine, '_cache_dir'))
+  use_default_cache <- is.null(cache_root)
+  if (use_default_cache) {
+    cache_root <- if (getRversion() >= '4.0.0') {
+      tools::R_user_dir('streamMetabolizer', which = 'cache')
+    } else {
+      file.path(tempdir(), 'streamMetabolizer-cache')
+    }
+  }
+
+  cache_dir <- file.path(cache_root, engine, cache_key)
+  if (!cache_dir_is_writable(cache_dir) && use_default_cache) {
+    cache_dir <- file.path(
+      tempdir(),
+      'streamMetabolizer-cache',
+      engine,
+      cache_key
+    )
+  }
+  if (!cache_dir_is_writable(cache_dir)) {
+    .cli_abort(
+      "Could not create a writable {engine} model cache at {.path {cache_dir}}."
+    )
+  }
+  cache_dir
 }
 
 cache_dir_is_writable <- function(cache_dir) {

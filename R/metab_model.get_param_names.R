@@ -63,10 +63,8 @@ get_param_names.character <- function(metab_model, ...) {
 #' @examples
 #'
 #' # or pass in a metab_model object:
-#' dat <- data_metab('1','30')
-#' get_param_names(metab(specs(mm_name('mle', ER_fun='q10temp')), data=dat))
-#' get_param_names(metab(specs('night'), data=dat))
-#' get_param_names(metab(specs('sim'), data=dat))
+#' model <- metab_model(specs = list(model_name = mm_name('night')))
+#' get_param_names(model)
 get_param_names.metab_model <- function(metab_model, ...) {
   get_param_names(get_specs(metab_model)$model_name)
 }

@@ -21,8 +21,8 @@ cmdstan_cache_dir(
 \item{platform}{The platform on which the model executable will run.}
 }
 \value{
-A writable cache directory unique to the model contents, CmdStan and
-CmdStanR versions, and platform.
+A writable cache directory unique to the model contents and CmdStan
+toolchain.
 }
 \description{
 Locate the persistent compilation cache for a CmdStan model
