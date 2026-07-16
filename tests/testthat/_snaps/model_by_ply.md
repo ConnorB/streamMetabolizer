@@ -14,7 +14,6 @@
     Condition
       Error in `mm_model_by_ply()`:
       ! `day_end` must be between 0 and 48.
-
 ---
 
     Code

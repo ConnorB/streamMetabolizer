@@ -19,7 +19,7 @@ jobs:
         config:
           - {os: macos-latest, r: release}
           - {os: windows-latest, r: release}
-          #- {os: ubuntu-latest, r: devel, http-user-agent: release}
+          - {os: ubuntu-latest, r: devel, http-user-agent: release}
           - {os: ubuntu-latest, r: release}
 
     env:
@@ -51,7 +51,7 @@ jobs:
             any::RcppEigen,
             any::RcppParallel,
             any::StanHeaders,
-            github::quarto-dev/quarto-r@65ad2a42c6c079e712ab69fad93202984ee40d59
+            github::quarto-dev/quarto-r
           install-quarto: false
           needs: check
 

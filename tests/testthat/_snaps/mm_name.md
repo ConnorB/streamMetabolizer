@@ -23,7 +23,6 @@
       ! `model_name` is not valid for type "mle".
       x Received "m_np_oipi_tr_plrckm.nlm".
       i See `mm_valid_names()` for valid names.
-
 ---
 
     Code
