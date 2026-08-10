@@ -51,6 +51,7 @@ jobs:
             any::RcppEigen,
             any::RcppParallel,
             any::StanHeaders,
+            r-universe::rstan,
             github::quarto-dev/quarto-r
           install-quarto: false
           needs: check
