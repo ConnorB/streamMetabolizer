@@ -1,0 +1,244 @@
+# Data Preparation
+
+## Requirements
+
+A properly formatted input dataset for streamMetabolizer models has:
+
+- exactly the right data columns and column names. Call
+  [`metab_inputs()`](https://connorb.github.io/streamMetabolizer/dev/reference/metab_inputs.md)
+  to see the requirements for a specific model type.
+- data in the right units. See
+  [`?mm_data`](https://connorb.github.io/streamMetabolizer/dev/reference/mm_data.md)
+  for definitions of each column.
+
+An input dataset may optionally include:
+
+- partial days; partial days will be automatically excluded, so you
+  don’t need to do this yourself.
+- non-continuous days; no current streamMetabolizer models require
+  continuous days.
+
+## Example
+
+An example of a properly formatted input dataset is available in the
+streamMetabolizer package - data are from French Creek in Laramie, WY,
+courtesy of Bob Hall.
+
+``` r
+
+library(streamMetabolizer)
+dat <- data_metab(num_days='3', res='15')
+```
+
+Inspect the dimensions and column names of the data.
+
+``` r
+
+dim(dat)
+```
+
+    [1] 288   6
+
+``` r
+
+dat[c(1,48,96,240,288),] # some example rows
+```
+
+    # A tibble: 5 × 6
+      solar.time          DO.obs DO.sat depth temp.water light
+      <dttm>               <dbl>  <dbl> <dbl>      <dbl> <dbl>
+    1 2012-09-18 04:05:58   8.41   9.08  0.16       3.6     0
+    2 2012-09-18 15:50:58   8.36   7.40  0.16      11.8   925.
+    3 2012-09-19 03:50:58   8.17   8.93  0.16       4.25    0
+    4 2012-09-20 15:50:58   8.35   7.36  0.16      12.1   899.
+    5 2012-09-21 03:50:58   8.21   8.85  0.16       4.56    0 
+
+You can get additional information about the expected format of the data
+in the
+[`?metab`](https://connorb.github.io/streamMetabolizer/dev/reference/metab.md)
+help document. When preparing your own data, make sure the class and
+units of your data match those specified in that document.
+
+## Exploring input data
+
+Use
+[`plot_metab_data()`](https://connorb.github.io/streamMetabolizer/dev/reference/plot_metab_data.md)
+to graphically inspect the input data. Look for outliers and other
+oddities before fitting a model. By default, the function plots all five
+measurement columns and calculates dissolved oxygen percent saturation.
+
+``` r
+
+plot_metab_data(dat)
+```
+
+![](data_prep_files/figure-html/viz_inputs-1.png)
+
+## Check the input data format
+
+Your data need to have specific column names and units. To see what is
+required, use the `metab_inputs` function to get a description of the
+required inputs for a given model type. The output of metab_inputs is a
+table describing the required column names, the classes and units of the
+values in each column, and whether that column is required or optional.
+The inputs are identical for the model types ‘mle’, ‘bayes’, and
+‘night’, so here we’ll just print the requriements for ‘mle’.
+
+``` r
+
+metab_inputs('mle', 'data')
+```
+
+    # A tibble: 7 × 4
+      colname    class          units          need
+      <chr>      <chr>          <chr>          <chr>
+    1 solar.time POSIXct,POSIXt ""             required
+    2 DO.obs     numeric        "mgO₂ L⁻¹"     required
+    3 DO.sat     numeric        "mgO₂ L⁻¹"     required
+    4 depth      numeric        "m"            required
+    5 temp.water numeric        "°C"           required
+    6 light      numeric        "µmol m⁻² s⁻¹" required
+    7 discharge  numeric        "m³ s⁻¹"       optional
+
+Also read through the help pages at
+[`?metab`](https://connorb.github.io/streamMetabolizer/dev/reference/metab.md)
+and
+[`?mm_data`](https://connorb.github.io/streamMetabolizer/dev/reference/mm_data.md)
+for more detailed variable definitions and requirements.
+
+## Prepare the timestamps
+
+To prepare your timestamps for metabolism modeling, you need to convert
+from the initial number or text format into POSIXct with the correct
+timezone (tz), then to solar mean time.
+
+### Step 1: POSIXct
+
+Convert your logger-format data to POSIXct in a local timezone (with or
+without daylight savings, as long as you have that timezone scheme
+specified). Here are a few examples of specific scenarios and solutions.
+
+#### Starting with numeric datetimes, e.g., from PMEs
+
+If you have datetimes stored in seconds since 1/1/1970 at Greenwich
+(i.e., in UTC):
+
+``` r
+
+num.time <- 1471867200
+(posix.time.localtz <- as.POSIXct(num.time, origin='1970-01-01', tz='UTC'))
+```
+
+    [1] "2016-08-22 12:00:00 UTC"
+
+If you have datetimes stored in seconds since 1/1/1970 at Laramie, WY
+(i.e., in MST, no daylight savings):
+
+``` r
+
+num.time <- 1471867200
+(posix.time.nominalUTC <- as.POSIXct(num.time, origin='1970-01-01', tz='UTC')) # the numbers get treated as UTC no matter what tz you request
+```
+
+    [1] "2016-08-22 12:00:00 UTC"
+
+``` r
+
+(posix.time.localtz <- lubridate::force_tz(posix.time.nominalUTC, 'Etc/GMT+7')) # +7 = mountain standard time
+```
+
+    [1] "2016-08-22 12:00:00 -07"
+
+#### Starting with text timestamps
+
+If you have datetimes stored as text timestamps in UTC, you can bypass
+the conversion to local time and just start with UTC. Then rather than
+using
+[`calc_solar_time()`](https://connorb.github.io/streamMetabolizer/dev/reference/calc_solar_time.md)
+in Step 2, you’ll use
+[`convert_UTC_to_solartime()`](https://connorb.github.io/streamMetabolizer/dev/reference/convert_UTC_to_solartime.md).
+
+``` r
+
+text.time <- '2016-08-22 12:00:00'
+(posix.time.utc <- as.POSIXct(text.time, tz='UTC'))
+```
+
+    [1] "2016-08-22 12:00:00 UTC"
+
+If you have datetimes stored as text timestamps in EST/EDT (with
+daylight savings):
+
+``` r
+
+text.time <- '2016-08-22 12:00:00'
+(posix.time.localtz <- as.POSIXct(text.time, format="%Y-%m-%d %H:%M:%S", tz='America/New_York'))
+```
+
+    [1] "2016-08-22 12:00:00 EDT"
+
+If you have datetimes stored as text timestamps in EST (no daylight
+savings):
+
+``` r
+
+text.time <- '2016-08-22 12:00:00'
+(posix.time.localtz <- as.POSIXct(text.time, format="%Y-%m-%d %H:%M:%S", tz='Etc/GMT+5'))
+```
+
+    [1] "2016-08-22 12:00:00 -05"
+
+See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a
+list of timezone names.
+
+#### Starting with `chron` datetimes
+
+If you have datetimes stored in the `chron` time format in EST (no
+daylight savings):
+
+``` r
+
+chron.time <- chron::chron('08/22/16', '12:00:00')
+time.format <- "%Y-%m-%d %H:%M:%S"
+text.time <- format(chron.time, time.format) # direct as.POSIXct time works poorly
+(posix.time.localtz <- as.POSIXct(text.time, format=time.format, tz='Etc/GMT+5'))
+```
+
+    [1] "2016-08-22 12:00:00 -05"
+
+### Step 2: Solar time
+
+Now convert from local time to solar time. In `streamMetabolizer`
+vocabulary, `solar.time` specifically means mean solar time, the kind
+where every day is exactly 24 hours, in contrast to apparent solar time.
+You’re ready for this step when you have the correct time in a local
+timezone and `lubridate::tz(yourtime)` reflects the correct timezone.
+
+``` r
+
+lubridate::tz(posix.time.localtz) # yep, we want and have the code for EST
+```
+
+    [1] "Etc/GMT+5"
+
+``` r
+
+(posix.time.solar <- streamMetabolizer::calc_solar_time(posix.time.localtz, longitude=-106.3))
+```
+
+    [1] "2016-08-22 09:55:58 UTC"
+
+## Other data preparation
+
+streamMetabolizer offers many functions to help you prepare your data
+for modeling. We recommend that you explore the help pages for the
+following functions:
+
+- `calc_depth`
+- `calc_DO_sat`
+- `calc_light`
+- `convert_date_to_doyhr`
+- `convert_localtime_to_UTC`
+- `convert_UTC_to_solartime`
+- `convert_k600_to_kGAS`
+- `convert_PAR_to_SW`
