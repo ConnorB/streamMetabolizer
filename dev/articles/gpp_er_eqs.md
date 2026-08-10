@@ -49,7 +49,7 @@ mm_classic
       init.GPP.daily    8
       init.ER.daily     -10
       init.K600.daily   10
-    Fitting time: 0.392 secs elapsed
+    Fitting time: 0.391 secs elapsed
     Parameters (3 dates):
             date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily ER.daily.lower ER.daily.upper
     1 2012-09-18 2.814873         2.158411        3.471335 -2.113937       -2.647969      -1.579906
@@ -92,7 +92,7 @@ mm_saturator
       init.alpha        1e-04
       init.ER.daily     -10
       init.K600.daily   10
-    Fitting time: 1.358 secs elapsed
+    Fitting time: 1.395 secs elapsed
     Parameters (3 dates):
             date       Pmax Pmax.lower Pmax.upper         alpha  alpha.lower alpha.upper    ER.daily
     1 2012-09-18  6.033049    5.715948   6.350149 0.0083268781  0.0078854775 0.008768279 -1.9344527
