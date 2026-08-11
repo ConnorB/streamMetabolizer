@@ -23,12 +23,11 @@
 <link href="models_mle_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="MLE Models">
 <meta name="robots" content="noindex">
-<!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-ELB0F4QNPS"></script><script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-ELB0F4QNPS');
-</script>
+<script>
+    window.goatcounter = {
+        path: function(p) { return location.host + p }
+    }
+</script><script data-goatcounter="https://connor.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -89,7 +88,7 @@
       <h1>MLE Models</h1>
 
       <p class="author">Alison Appling</p>
-      <p class="date">2026-08-10</p>
+      <p class="date">2026-08-11</p>
 
       <small class="dont-index">Source: <a href="https://github.com/ConnorB/streamMetabolizer/blob/main/vignettes/models_mle.qmd" class="external-link"><code>vignettes/models_mle.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -195,7 +194,7 @@ Specifications:
   init.GPP.daily    2
   init.ER.daily     -1
   init.K600.daily   3
-Fitting time: 0.419 secs elapsed
+Fitting time: 0.432 secs elapsed
 Parameters (3 dates):
         date GPP.daily GPP.daily.lower GPP.daily.upper   ER.daily
 1 2012-09-18 2.814768         2.160462        3.469074 -2.113856
@@ -247,7 +246,7 @@ Predictions (3 dates):
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_fitting_time.html">get_fitting_time</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span> <span class="co"># the time it took to fit the model</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   user  system elapsed
-  0.416   0.002   0.419 </code></pre>
+  0.431   0.001   0.432 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_version.html">get_version</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span> <span class="co"># the streamMetabolizer version used to fit the model</span></span></code></pre></div>
