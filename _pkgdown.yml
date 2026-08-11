@@ -27,8 +27,6 @@ template:
 deploy:
   install_metadata: true
 
-development:
-  mode: auto
 reference:
 - title: Plotting
 - contents:
